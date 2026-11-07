@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+  output = "../src/generated/prisma"
+  engineType = "client"
+}
+datasource db {
+  provider = "postgresql"
+}
+enum Role {
+  AUTHOR
+  MODERATOR
+}
+enum CommentStatus {
+  PENDING
+  PUBLISHED
+  REJECTED
+  HIDDEN
+}
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          Role      @default(AUTHOR)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  comments      Comment[]
+  reports       Report[]
+  decisions     ModerationDecision[]
+}
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
+}
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([providerId, accountId])
+  @@index([userId])
+}
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  @@index([identifier])
+}
+model RateLimit {
+  id          String @id @default(cuid())
+  key         String @unique
+  count       Int
+  lastRequest BigInt
+}
+model ApiRateLimit {
+  key       String   @id
+  count     Int
+  expiresAt DateTime
+  @@index([expiresAt])
+}
+model Fund {
+  id          String @id
+  name        String
+  description String
+  documents   Document[]
+}
+model Document {
+  id           String   @id
+  title        String
+  description  String
+  reference    String   @unique
+  year         Int
+  type         String
+  sourceUrl    String?
+  rights       String
+  isDemo       Boolean  @default(true)
+  isPublic     Boolean  @default(false)
+  fundId       String
+  createdAt    DateTime @default(now())
+  fund         Fund     @relation(fields: [fundId], references: [id])
+  files        ArchiveFile[]
+  comments     Comment[]
+  @@index([isPublic, year, id])
+  @@index([fundId])
+  @@index([type])
+}
+model ArchiveFile {
+  id           String   @id
+  documentId   String
+  storageKey   String   @unique
+  name         String
+  mimeType     String
+  size         Int
+  downloadable Boolean  @default(false)
+  isPublic     Boolean  @default(false)
+  document     Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  @@index([documentId])
+}
+model Comment {
+  id                String        @id @default(cuid())
+  documentId        String
+  authorId          String
+  body              String
+  status            CommentStatus @default(PENDING)
+  reason            String
+  moderationVersion String
+  idempotencyKey    String
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  document          Document      @relation(fields: [documentId], references: [id])
+  author            User          @relation(fields: [authorId], references: [id])
+  reports           Report[]
+  decisions         ModerationDecision[]
+  @@unique([authorId, idempotencyKey])
+  @@index([documentId, status, createdAt, id])
+  @@index([status, createdAt, id])
+}
+model Report {
+  id         String   @id @default(cuid())
+  commentId  String
+  reporterId String
+  reason     String
+  resolvedAt DateTime?
+  createdAt  DateTime @default(now())
+  comment    Comment  @relation(fields: [commentId], references: [id])
+  reporter   User     @relation(fields: [reporterId], references: [id])
+  @@unique([commentId, reporterId])
+  @@index([resolvedAt, createdAt])
+}
+model ModerationDecision {
+  id          String        @id @default(cuid())
+  commentId   String
+  moderatorId String
+  fromStatus  CommentStatus
+  toStatus    CommentStatus
+  reason      String
+  createdAt   DateTime      @default(now())
+  comment     Comment       @relation(fields: [commentId], references: [id])
+  moderator   User          @relation(fields: [moderatorId], references: [id])
+  @@index([commentId, createdAt])
+}

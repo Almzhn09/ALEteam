@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:16.14-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?Run npm run setup:local}
+      POSTGRES_USER: ${POSTGRES_USER:?Run npm run setup:local}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run npm run setup:local}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - archive_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+volumes:
+  archive_pg:
