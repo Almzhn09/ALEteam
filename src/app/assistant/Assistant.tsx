@@ -5,7 +5,9 @@ import { useEffect, useId, useRef, useState, type FormEvent, type KeyboardEvent 
 import type { AssistantAnswer } from '@/contracts/api';
 import { ApiClientError, apiSend, errorText } from '@/lib/api';
 import { useSession } from '@/lib/session';
-import { DemoBadge, Loading, Notice } from '@/components/ui';
+import { DemoBadge, Loading, Notice, Ru } from '@/components/ui';
+import { useI18n } from '@/lib/lang';
+import type { Translate } from '@/lib/i18n';
 
 const MAX = 1000;
 const STORE = 'aleteam-assistant-history-v1';
@@ -24,16 +26,17 @@ function isMessage(v: unknown): v is Message {
     && m.sources.every(s => typeof s?.id === 'string' && typeof s.title === 'string');
 }
 
-function errorMessage(error: unknown): string {
-  if (!(error instanceof ApiClientError)) return errorText(error);
-  if (error.status === 503) return 'Помощник сейчас недоступен: сервис ИИ не подключён или не ответил вовремя. Ответ не сформирован.';
-  if (error.status === 502) return 'Ответ помощника не прошёл проверку источников и не показан. Попробуйте переформулировать вопрос.';
-  if (error.status === 429) return `Лимит вопросов исчерпан. ${error.retryAfter ? errorText(error) : 'Повторите позже.'}`;
-  return errorText(error);
+function errorMessage(error: unknown, t: Translate): string {
+  if (!(error instanceof ApiClientError)) return errorText(error, t);
+  if (error.status === 503) return t('Помощник сейчас недоступен: сервис ИИ не подключён или не ответил вовремя. Ответ не сформирован.');
+  if (error.status === 502) return t('Ответ помощника не прошёл проверку источников и не показан. Попробуйте переформулировать вопрос.');
+  if (error.status === 429) return `${t('Лимит вопросов исчерпан.')} ${error.retryAfter ? errorText(error, t) : t('Повторите позже.')}`;
+  return errorText(error, t);
 }
 
 export function Assistant() {
   const { state, user } = useSession();
+  const { t } = useI18n();
   const params = useSearchParams();
   const [messages, setMessages] = useState<Message[]>([]);
   const [question, setQuestion] = useState(() => (params.get('q') ?? '').slice(0, MAX));
@@ -70,8 +73,8 @@ export function Assistant() {
       ]);
       setMessages(m => [...m, { role: 'assistant', content: r.answer, noAnswer: r.noAnswer, sources: r.sources }]);
     } catch (error) {
-      if ((error as Error)?.name === 'AbortError') setMessages(m => [...m, { role: 'error', content: 'Запрос отменён.', retry: q }]);
-      else setMessages(m => [...m, { role: 'error', content: errorMessage(error), retry: error instanceof ApiClientError && error.status !== 429 ? q : undefined }]);
+      if ((error as Error)?.name === 'AbortError') setMessages(m => [...m, { role: 'error', content: t('Запрос отменён.'), retry: q }]);
+      else setMessages(m => [...m, { role: 'error', content: errorMessage(error, t), retry: error instanceof ApiClientError && error.status !== 429 ? q : undefined }]);
     } finally {
       setPending(false); controller.current = null;
       input.current?.focus();
@@ -84,11 +87,11 @@ export function Assistant() {
   }
   function clear() { setMessages([]); try { sessionStorage.removeItem(STORE); } catch { /* ignore */ } }
 
-  if (state.status === 'loading') return <Loading rows={1} label="Проверка входа" />;
+  if (state.status === 'loading') return <Loading rows={1} label={t('Проверка входа…')} />;
   if (!user) return (
-    <Notice tone="info" title="Войдите, чтобы задать вопрос">
-      <p>ИИ-помощник доступен участникам после входа — это защищает сервис от злоупотреблений.</p>
-      <Link className="btn btn-primary btn-sm" href={`/login?returnTo=${encodeURIComponent('/assistant')}`}>Войти</Link>
+    <Notice tone="info" title={t('Войдите, чтобы задать вопрос')}>
+      <p>{t('ИИ-помощник доступен участникам после входа — это защищает сервис от злоупотреблений.')}</p>
+      <Link className="btn btn-primary btn-sm" href={`/login?returnTo=${encodeURIComponent('/assistant')}`}>{t('Войти')}</Link>
     </Notice>
   );
 
@@ -97,37 +100,37 @@ export function Assistant() {
     <div className="chat">
       {messages.length === 0 ? (
         <div className="panel">
-          <p style={{ fontWeight: 600 }}>Примеры вопросов</p>
+          <p style={{ fontWeight: 600 }}>{t('Примеры вопросов')}</p>
           <div className="row">
-            {examples.map(x => <button key={x} type="button" className="btn btn-secondary btn-sm" onClick={() => void ask(x)}>{x}</button>)}
+            {examples.map(x => <button key={x} type="button" className="btn btn-secondary btn-sm" onClick={() => void ask(t(x))}>{t(x)}</button>)}
           </div>
-          <p className="small muted" style={{ margin: 'var(--space-3) 0 0' }}>Не отправляйте персональные данные. Помощник может ошибаться: решения принимайте по самим документам.</p>
+          <p className="small muted" style={{ margin: 'var(--space-3) 0 0' }}>{t('Не отправляйте персональные данные. Помощник может ошибаться: решения принимайте по самим документам.')}</p>
         </div>
       ) : (
         <div className="row spread">
-          <span className="small muted">История хранится только до закрытия вкладки.</span>
-          <button type="button" className="btn btn-ghost btn-sm" onClick={clear} disabled={pending}>Очистить историю</button>
+          <span className="small muted">{t('История хранится только до закрытия вкладки.')}</span>
+          <button type="button" className="btn btn-ghost btn-sm" onClick={clear} disabled={pending}>{t('Очистить историю')}</button>
         </div>
       )}
 
-      <ol className="chat-log" aria-label="Диалог с помощником" aria-live="polite" aria-relevant="additions">
+      <ol className="chat-log" aria-label={t('Диалог с помощником')} aria-live="polite" aria-relevant="additions">
         {messages.map((m, i) => (
           <li key={i} className={`msg ${m.role === 'user' ? 'msg-user' : m.role === 'error' ? 'msg-error' : `msg-assistant${m.noAnswer ? ' msg-noanswer' : ''}`}`}>
-            <span className="visually-hidden">{m.role === 'user' ? 'Вы:' : 'Помощник:'} </span>
+            <span className="visually-hidden">{m.role === 'user' ? t('Вы:') : t('Помощник:')} </span>
             {m.role === 'error' ? (
-              <Notice tone="error" title="Ответ не получен">
+              <Notice tone="error" title={t('Ответ не получен')}>
                 <p>{m.content}</p>
-                {m.retry && <button type="button" className="btn btn-secondary btn-sm" onClick={() => void ask(m.retry!)}>Повторить вопрос</button>}
+                {m.retry && <button type="button" className="btn btn-secondary btn-sm" onClick={() => void ask(m.retry!)}>{t('Повторить вопрос')}</button>}
               </Notice>
             ) : m.role === 'assistant' ? <>
-              {m.noAnswer && <strong className="notice-title">В материалах архива ответа не найдено</strong>}
+              {m.noAnswer && <strong className="notice-title">{t('В материалах архива ответа не найдено')}</strong>}
               {m.content}
               {m.sources.length > 0 && (
                 <div className="sources small">
-                  <strong>Источники:</strong>
+                  <strong>{t('Источники:')}</strong>
                   <ul>
                     {m.sources.map(s => (
-                      <li key={s.id}><Link href={`/documents/${encodeURIComponent(s.id)}`}>{s.title}</Link> <DemoBadge show={s.isDemo} /></li>
+                      <li key={s.id}><Link href={`/documents/${encodeURIComponent(s.id)}`}><Ru>{s.title}</Ru></Link> <DemoBadge show={s.isDemo} /></li>
                     ))}
                   </ul>
                 </div>
@@ -137,8 +140,8 @@ export function Assistant() {
         ))}
         {pending && (
           <li className="msg msg-assistant row" role="status">
-            <span className="spinner" aria-hidden="true" /> Ищу в материалах архива…
-            <button type="button" className="btn btn-ghost btn-sm" onClick={() => controller.current?.abort()}>Отменить</button>
+            <span className="spinner" aria-hidden="true" /> {t('Ищу в материалах архива…')}
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => controller.current?.abort()}>{t('Отменить')}</button>
           </li>
         )}
       </ol>
@@ -146,12 +149,12 @@ export function Assistant() {
 
       <form className="chat-form" onSubmit={onSubmit}>
         <div className="field" style={{ flex: 1 }}>
-          <label htmlFor={id} className="visually-hidden">Ваш вопрос</label>
+          <label htmlFor={id} className="visually-hidden">{t('Ваш вопрос')}</label>
           <textarea ref={input} id={id} className="textarea" rows={2} value={question} onChange={e => setQuestion(e.target.value)} onKeyDown={onKey}
-            placeholder="Задайте вопрос об архиве или материалах…" aria-invalid={over} aria-describedby={`${id}-hint`} />
-          <span id={`${id}-hint`} className="hint counter" data-over={over}>{question.length} / {MAX} · Enter — отправить, Shift+Enter — новая строка</span>
+            placeholder={t('Задайте вопрос об архиве или материалах…')} aria-invalid={over} aria-describedby={`${id}-hint`} />
+          <span id={`${id}-hint`} className="hint counter" data-over={over}>{question.length} / {MAX} · {t('Enter — отправить, Shift+Enter — новая строка')}</span>
         </div>
-        <button type="submit" className="btn btn-primary" disabled={pending || !question.trim() || over}>Спросить</button>
+        <button type="submit" className="btn btn-primary" disabled={pending || !question.trim() || over}>{t('Спросить')}</button>
       </form>
     </div>
   );

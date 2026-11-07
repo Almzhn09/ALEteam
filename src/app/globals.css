@@ -262,3 +262,14 @@ legend { padding: 0; }
 
 dialog { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text); padding: var(--space-5); width: min(520px, calc(100vw - 2 * var(--gutter))); box-shadow: var(--shadow); }
 dialog::backdrop { background: rgb(10 12 18 / 55%); }
+
+/* Timeline (E06) */
+.decade-nav { display: flex; gap: var(--space-2); overflow-x: auto; padding-bottom: var(--space-2); position: sticky; top: 64px; background: var(--bg); z-index: 5; padding-top: var(--space-2); }
+.decade-nav a { flex: none; padding: var(--space-1) var(--space-3); border: 1px solid var(--border-strong); border-radius: 999px; text-decoration: none; font-weight: 600; }
+.timeline { list-style: none; margin: 0; padding: 0 0 0 var(--space-5); border-left: 3px solid var(--border); }
+.timeline-decade { position: relative; padding-bottom: var(--space-6); scroll-margin-top: 130px; }
+.timeline-decade::before { content: ""; position: absolute; left: calc(-1 * var(--space-5) - 9px); top: 6px; width: 15px; height: 15px; border-radius: 50%; background: var(--accent); border: 3px solid var(--bg); }
+.timeline-year { font-size: 1.4rem; }
+.timeline-items { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
+.clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+@media (max-width: 419px) { .brand small { display: none; } }

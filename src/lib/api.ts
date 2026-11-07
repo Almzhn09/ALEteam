@@ -1,5 +1,6 @@
 import type { ApiErrorBody } from '@/contracts/api';
 import { mockFetch, mockFileUrl } from './mock';
+import type { Translate } from './i18n';
 
 // Mock mode is a development aid only: the banner in the layout makes it visible.
 export const MOCK_MODE = process.env.NEXT_PUBLIC_API_MOCK === '1';
@@ -59,16 +60,18 @@ export function fileUrl(id: string, download = false) {
   return `/api/files/${encodeURIComponent(id)}${download ? '?download=1' : ''}`;
 }
 
-export function errorText(error: unknown): string {
+// Server messages are Russian; known ones are translated through the dictionary.
+export function errorText(error: unknown, t: Translate = s => s): string {
   if (error instanceof ApiClientError) {
-    if (error.status === 429 && error.retryAfter) return `${error.message} Повторите через ${formatWait(error.retryAfter)}.`;
-    return error.message;
+    const message = t(error.message);
+    if (error.status === 429 && error.retryAfter) return `${message} ${t('Повторите через {wait}.', { wait: formatWait(error.retryAfter, t) })}`;
+    return message;
   }
-  return 'Непредвиденная ошибка. Повторите попытку.';
+  return t('Непредвиденная ошибка. Повторите попытку.');
 }
 
-function formatWait(seconds: number) {
-  if (seconds < 60) return `${seconds} с`;
-  if (seconds < 3600) return `${Math.ceil(seconds / 60)} мин`;
-  return `${Math.ceil(seconds / 3600)} ч`;
+function formatWait(seconds: number, t: Translate) {
+  if (seconds < 60) return t('{n} с', { n: seconds });
+  if (seconds < 3600) return t('{n} мин', { n: Math.ceil(seconds / 60) });
+  return t('{n} ч', { n: Math.ceil(seconds / 3600) });
 }

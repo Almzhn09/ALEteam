@@ -1,5 +1,6 @@
 import type { CommentStatus, DocumentType } from '@/contracts/api';
 
+// Russian source strings; components pass them through t().
 export const typeLabel: Record<DocumentType, string> = {
   LETTER: 'Письмо', PHOTO: 'Фотография', MAP: 'Карта', REPORT: 'Отчёт',
 };
@@ -18,11 +19,8 @@ export const reasonText: Record<string, string> = {
   MANUAL_DECISION: 'Решение принято модератором.',
 };
 
-export const dateFormat = new Intl.DateTimeFormat('ru-RU', { dateStyle: 'medium', timeStyle: 'short' });
-export const formatDate = (iso: string) => dateFormat.format(new Date(iso));
-
 export function formatSize(bytes: number) {
-  if (bytes < 1024) return `${bytes} Б`;
-  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} КБ`;
-  return `${(bytes / 1024 / 1024).toFixed(1)} МБ`;
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
+  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
