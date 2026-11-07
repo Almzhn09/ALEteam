@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { ApiError } from './http';
+import { moderateText } from './moderation';
 
 export function serviceUrl(value: string) {
   const url = new URL(value);
@@ -29,7 +30,9 @@ export const moderationResult = z.object({
 }).strict().refine(r => (r.status === 'PUBLISHED' && r.reason === 'CLEAN') || (r.status === 'REJECTED' && r.reason === 'PROFANITY') || (r.status === 'PENDING' && r.reason === 'REVIEW_REQUIRED'));
 export async function moderate(body: string) {
   const pending = { status: 'PENDING' as const, reason: 'REVIEW_REQUIRED', version: 'manual-review-v1' };
-  if (!process.env.MODERATION_SERVICE_URL) return pending;
+  if (process.env.MODERATION_MODE === 'manual') return pending;
+  const local = moderateText(body);
+  if (local.status !== 'PUBLISHED' || !process.env.MODERATION_SERVICE_URL) return local;
   try {
     const result = moderationResult.parse(await serviceRequest(process.env.MODERATION_SERVICE_URL, process.env.MODERATION_SERVICE_TOKEN, { text: body }, 3000));
     return { status: result.status, reason: result.reason, version: result.version };

@@ -1,0 +1,820 @@
+{
+  "generatedAt": "2026-11-07T18:39:03.174Z",
+  "moderationVersion": "ru-kk-rules-1.0.0",
+  "moderation": {
+    "total": 118,
+    "passed": 118,
+    "profanityPublished": 0,
+    "cleanRejected": 0,
+    "cases": [
+      {
+        "id": "rejected-01",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-02",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-03",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-04",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-05",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-06",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-07",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-08",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-09",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-10",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-11",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-12",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-13",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-14",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-15",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-16",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-17",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-18",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-19",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-20",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-21",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-22",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-23",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-24",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-25",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-26",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-27",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-28",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-29",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-30",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-31",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-32",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-33",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-34",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-35",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-36",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-37",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-38",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-39",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-40",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-41",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-42",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-43",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-44",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-45",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-46",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-47",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-48",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-49",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-50",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-51",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-52",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-53",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-54",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-55",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-56",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "rejected-57",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "published-01",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-02",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-03",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-04",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-05",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-06",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-07",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-08",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-09",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-10",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-11",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-12",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-13",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-14",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-15",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-16",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-17",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-18",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-19",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-20",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-21",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-22",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-23",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-24",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-25",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-26",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-27",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-28",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-29",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "published-30",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      },
+      {
+        "id": "pending-01",
+        "expected": "PENDING",
+        "actual": "PENDING"
+      },
+      {
+        "id": "pending-02",
+        "expected": "PENDING",
+        "actual": "PENDING"
+      },
+      {
+        "id": "pending-03",
+        "expected": "PENDING",
+        "actual": "PENDING"
+      },
+      {
+        "id": "pending-04",
+        "expected": "PENDING",
+        "actual": "PENDING"
+      },
+      {
+        "id": "pending-05",
+        "expected": "PENDING",
+        "actual": "PENDING"
+      },
+      {
+        "id": "pending-06",
+        "expected": "PENDING",
+        "actual": "PENDING"
+      },
+      {
+        "id": "pending-07",
+        "expected": "PENDING",
+        "actual": "PENDING"
+      },
+      {
+        "id": "pending-08",
+        "expected": "PENDING",
+        "actual": "PENDING"
+      },
+      {
+        "id": "pending-09",
+        "expected": "PENDING",
+        "actual": "PENDING"
+      },
+      {
+        "id": "pending-10",
+        "expected": "PENDING",
+        "actual": "PENDING"
+      },
+      {
+        "id": "additional-reject-1",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "additional-reject-2",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "additional-reject-3",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "additional-reject-4",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "additional-reject-5",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "additional-reject-6",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "additional-reject-7",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "additional-reject-8",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "additional-review-1",
+        "expected": "PENDING",
+        "actual": "PENDING"
+      },
+      {
+        "id": "additional-review-2",
+        "expected": "PENDING",
+        "actual": "PENDING"
+      },
+      {
+        "id": "holdout-reject-1",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "holdout-reject-2",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "holdout-reject-3",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "holdout-reject-4",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "holdout-reject-5",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "holdout-reject-6",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "holdout-reject-7",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "holdout-reject-8",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "holdout-reject-9",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "holdout-reject-10",
+        "expected": "REJECTED",
+        "actual": "REJECTED"
+      },
+      {
+        "id": "holdout-clean-1",
+        "expected": "PUBLISHED",
+        "actual": "PUBLISHED"
+      }
+    ]
+  },
+  "assistant": {
+    "mode": "retrieval",
+    "total": 20,
+    "passed": 20,
+    "cases": [
+      {
+        "id": "library-ru",
+        "expectedIds": [
+          "demo-doc-01"
+        ],
+        "actualIds": [
+          "demo-doc-01",
+          "demo-doc-06",
+          "demo-doc-11"
+        ],
+        "noAnswer": false,
+        "passed": true
+      },
+      {
+        "id": "library-kk",
+        "expectedIds": [
+          "demo-doc-01"
+        ],
+        "actualIds": [
+          "demo-doc-01",
+          "demo-doc-06",
+          "demo-doc-11"
+        ],
+        "noAnswer": false,
+        "passed": true
+      },
+      {
+        "id": "school-ru",
+        "expectedIds": [
+          "demo-doc-03"
+        ],
+        "actualIds": [
+          "demo-doc-03",
+          "demo-doc-08",
+          "demo-doc-13"
+        ],
+        "noAnswer": false,
+        "passed": true
+      },
+      {
+        "id": "school-kk",
+        "expectedIds": [
+          "demo-doc-03"
+        ],
+        "actualIds": [
+          "demo-doc-03",
+          "demo-doc-08",
+          "demo-doc-13"
+        ],
+        "noAnswer": false,
+        "passed": true
+      },
+      {
+        "id": "museum",
+        "expectedIds": [
+          "demo-doc-04"
+        ],
+        "actualIds": [
+          "demo-doc-04",
+          "demo-doc-09",
+          "demo-doc-14"
+        ],
+        "noAnswer": false,
+        "passed": true
+      },
+      {
+        "id": "square",
+        "expectedIds": [
+          "demo-doc-02"
+        ],
+        "actualIds": [
+          "demo-doc-02",
+          "demo-doc-07",
+          "demo-doc-12"
+        ],
+        "noAnswer": false,
+        "passed": true
+      },
+      {
+        "id": "railway",
+        "expectedIds": [
+          "demo-doc-05"
+        ],
+        "actualIds": [
+          "demo-doc-05",
+          "demo-doc-10",
+          "demo-doc-15"
+        ],
+        "noAnswer": false,
+        "passed": true
+      },
+      {
+        "id": "year",
+        "expectedIds": [
+          "demo-doc-01"
+        ],
+        "actualIds": [
+          "demo-doc-01"
+        ],
+        "noAnswer": false,
+        "passed": true
+      },
+      {
+        "id": "reference",
+        "expectedIds": [
+          "demo-doc-01"
+        ],
+        "actualIds": [
+          "demo-doc-01"
+        ],
+        "noAnswer": false,
+        "passed": true
+      },
+      {
+        "id": "unknown",
+        "expectedIds": [],
+        "actualIds": [],
+        "noAnswer": true,
+        "passed": true
+      },
+      {
+        "id": "false-year",
+        "expectedIds": [],
+        "actualIds": [],
+        "noAnswer": true,
+        "passed": true
+      },
+      {
+        "id": "injection-ru",
+        "expectedIds": [],
+        "actualIds": [],
+        "noAnswer": true,
+        "passed": true
+      },
+      {
+        "id": "injection-en",
+        "expectedIds": [],
+        "actualIds": [],
+        "noAnswer": true,
+        "passed": true
+      },
+      {
+        "id": "private-config",
+        "expectedIds": [],
+        "actualIds": [],
+        "noAnswer": true,
+        "passed": true
+      },
+      {
+        "id": "fund-guide",
+        "expectedIds": [
+          "guide-fund"
+        ],
+        "actualIds": [
+          "guide-fund"
+        ],
+        "noAnswer": false,
+        "passed": true
+      },
+      {
+        "id": "reference-guide",
+        "expectedIds": [
+          "guide-reference"
+        ],
+        "actualIds": [
+          "guide-reference"
+        ],
+        "noAnswer": false,
+        "passed": true
+      },
+      {
+        "id": "search-guide",
+        "expectedIds": [
+          "guide-search"
+        ],
+        "actualIds": [
+          "guide-search"
+        ],
+        "noAnswer": false,
+        "passed": true
+      },
+      {
+        "id": "comments-guide",
+        "expectedIds": [
+          "guide-comments"
+        ],
+        "actualIds": [
+          "guide-comments"
+        ],
+        "noAnswer": false,
+        "passed": true
+      },
+      {
+        "id": "missing-topic",
+        "expectedIds": [],
+        "actualIds": [],
+        "noAnswer": true,
+        "passed": true
+      },
+      {
+        "id": "missing-period",
+        "expectedIds": [],
+        "actualIds": [],
+        "noAnswer": true,
+        "passed": true
+      }
+    ]
+  },
+  "limitations": [
+    "Curated development set, not an independent benchmark.",
+    "No real provider call or historical facts verified.",
+    "Kazakh text requires native-speaker review."
+  ]
+}

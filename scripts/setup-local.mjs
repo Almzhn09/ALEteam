@@ -14,6 +14,8 @@ DEMO_MODERATOR_PASSWORD=${secret()}
 FILE_STORAGE_ROOT=.local/files
 ALLOW_DEMO_SEED=1
 TEST_DATABASE_URL=postgresql://archive:${password}@127.0.0.1:5432/archive_test
+MODERATION_MODE=local
+ASSISTANT_MODE=retrieval
 `;
 await mkdir('.local/files', { recursive: true });
 try {

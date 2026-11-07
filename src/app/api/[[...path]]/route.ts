@@ -4,6 +4,7 @@ import { getAuth } from '@/server/auth';
 import { documentList, fileResponse, publicDocument } from '@/server/catalog';
 import { createComment, decideComment, decisionHistory, listComments, moderationQueue, ownComments, reportComment } from '@/server/discussions';
 import { assistant } from '@/server/assistant';
+import { getGuide, guides } from '@/server/guides';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -26,6 +27,12 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
       return response;
     }
     if (method !== 'GET') sameOrigin(request);
+    if (route === 'guides' && method === 'GET') return json({ items: guides });
+    if (path[0] === 'guides' && path.length === 2 && method === 'GET') {
+      const item = getGuide(path[1]);
+      if (!item) throw new ApiError(404, 'NOT_FOUND', 'Справка не найдена.');
+      return json({ item });
+    }
     if (route === 'health' && method === 'GET') {
       try { await db.$queryRaw`SELECT 1`; return json({ status: 'ok', database: 'ok' }); }
       catch { return json({ status: 'unavailable', database: 'unavailable' }, 503); }

@@ -10,13 +10,16 @@
     "build": "npm run db:generate && next build --webpack",
     "start": "node --use-env-proxy node_modules/next/dist/bin/next start --hostname 0.0.0.0",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests/unit.test.ts",
+    "test": "tsx --test tests/unit.test.ts tests/moderation.test.ts tests/assistant.test.ts",
     "test:integration": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/integration.test.ts",
     "db:generate": "node --import tsx scripts/generate-client.ts",
     "db:migrate": "node --env-file-if-exists=.env --import tsx scripts/migrate.ts",
     "db:seed": "node --env-file-if-exists=.env --import tsx prisma/seed.ts",
     "setup:local": "node scripts/setup-local.mjs",
-    "maintenance": "node --env-file-if-exists=.env --import tsx scripts/maintenance.ts"
+    "maintenance": "node --env-file-if-exists=.env --import tsx scripts/maintenance.ts",
+    "evaluate:artur": "node --env-file-if-exists=.env --import tsx scripts/evaluate-artur.ts",
+    "demo:artur": "node --env-file-if-exists=.env --import tsx scripts/demo-artur.ts",
+    "capture:artur": "node --env-file-if-exists=.env --import tsx scripts/capture-demo.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.10.1",
@@ -35,6 +38,7 @@
     "@types/pg": "8.23.1",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "playwright-core": "1.65.0",
     "prisma": "7.10.1",
     "tsx": "4.23.15",
     "typescript": "7.0.2"

@@ -35,3 +35,6 @@ jobs:
       # Build does not use DATABASE_URL or auth/LLM secrets.
       - run: npm run build
       - run: npm run test:integration
+      - run: npm run evaluate:artur
+        env:
+          DATABASE_URL: ${{ env.TEST_DATABASE_URL }}

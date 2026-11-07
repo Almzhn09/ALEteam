@@ -3,10 +3,16 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { hashPassword } from 'better-auth/crypto';
 import { db } from '../src/server/db';
+import corpus from '../data/demo-corpus.json';
 
 // Original synthetic backend fixtures, not imported government archive records.
-function demoPdf(index: number) {
-  const content = `BT /F1 18 Tf 40 740 Td (ALEteam DEMO ${index}) Tj 0 -30 Td /F1 12 Tf (Fictional backend fixture. Not an archival source.) Tj ET`;
+function demoPdf(index: number, body: string) {
+  // ASCII transliteration keeps the PDF portable without downloading/embedding fonts.
+  const alphabet = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя';
+  const latin = ['a','b','v','g','d','e','yo','zh','z','i','y','k','l','m','n','o','p','r','s','t','u','f','h','ts','ch','sh','sch','','y','','e','yu','ya'];
+  const ascii = body.toLowerCase().replace(/[а-яё]/gu, c => latin[alphabet.indexOf(c)] ?? '').replace(/[^\x20-\x7E]/gu, ' ');
+  const lines = ascii.match(/.{1,75}(?:\s|$)|.{1,75}/gu) ?? [];
+  const content = `BT /F1 18 Tf 40 780 Td (ALEteam DEMO ${index} - CC0-1.0) Tj 0 -25 Td /F1 10 Tf (Original fictional demo sheet. Russian text is transliterated.) Tj ${lines.map(line => `0 -16 Td (${line.replace(/[\\()]/g,'\\$&')}) Tj`).join(' ')} ET`;
   const objects = [
     '<< /Type /Catalog /Pages 2 0 R >>',
     '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
@@ -28,23 +34,21 @@ async function seed() {
   for (const [id, name] of [['demo-fund-1', 'Демо: городская история'], ['demo-fund-2', 'Демо: культура и образование']]) {
     await db.fund.upsert({ where: { id }, create: { id, name, description: 'Вымышленный фонд для тестирования API.' }, update: {} });
   }
-  const topics = ['библиотеки', 'городской площади', 'школы', 'музея', 'железной дороги'];
-  const types = ['LETTER', 'PHOTO', 'MAP', 'REPORT'];
   const root = path.resolve(process.env.FILE_STORAGE_ROOT || '.local/files');
   await mkdir(root, { recursive: true });
-  for (let i = 1; i <= 20; i++) {
-    const id = `demo-doc-${String(i).padStart(2, '0')}`;
+  for (const [offset, record] of corpus.entries()) {
+    const i = offset + 1; const id = record.id;
     const existing = await db.document.findUnique({ where: { id } });
     if (existing && !existing.isDemo) throw new Error('Refusing to overwrite a non-demo record.');
     await db.document.upsert({ where: { id }, create: {
-      id, title: `Демо: история ${topics[(i - 1) % topics.length]} №${i}`,
-      description: 'Полностью вымышленная запись для разработки и проверки поиска. Не является историческим свидетельством.',
-      year: 1900 + i * 5, type: types[(i - 1) % 4], reference: `DEMO-Ф${i % 2 + 1}-О1-Д${i}`,
-      fundId: `demo-fund-${i % 2 + 1}`, rights: 'Оригинальные синтетические данные ALEteam. Только для демонстрации.',
+      id, title: record.title, description: record.description,
+      year: record.year, type: record.type, reference: record.reference,
+      fundId: record.fundId, rights: 'Оригинальный вымышленный материал ALEteam, CC0-1.0. Не архивный источник.',
       isDemo: true, isPublic: true,
-    }, update: {} });
+    }, update: existing?.description === 'Полностью вымышленная запись для разработки и проверки поиска. Не является историческим свидетельством.' && existing.title === record.title
+      ? { description: record.description, rights: 'Оригинальный вымышленный материал ALEteam, CC0-1.0. Не архивный источник.' } : {} });
     if (i <= 5) {
-      const data = demoPdf(i); const storageKey = `${id}.pdf`;
+      const data = demoPdf(i, record.description); const storageKey = `${id}.pdf`;
       await writeFile(path.join(root, storageKey), data);
       await db.archiveFile.upsert({ where: { id: `demo-file-${i}` }, create: {
         id: `demo-file-${i}`, documentId: id, storageKey, name: `Демонстрационный файл ${i}.pdf`,

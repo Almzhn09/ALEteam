@@ -1,0 +1,592 @@
+[
+  {
+    "id": "rejected-01",
+    "text": "хуй",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-02",
+    "text": "нахуй",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-03",
+    "text": "похуй",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-04",
+    "text": "хуя",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-05",
+    "text": "хую",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-06",
+    "text": "хуйню",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-07",
+    "text": "пизда",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-08",
+    "text": "пиздец",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-09",
+    "text": "пиздеть",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-10",
+    "text": "пиздёж",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-11",
+    "text": "блядь",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-12",
+    "text": "бля",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-13",
+    "text": "сука",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-14",
+    "text": "суки",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-15",
+    "text": "сукой",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-16",
+    "text": "ебать",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-17",
+    "text": "ебаный",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-18",
+    "text": "ёбаный",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-19",
+    "text": "ебал",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-20",
+    "text": "заебал",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-21",
+    "text": "мудак",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-22",
+    "text": "мудила",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-23",
+    "text": "пидор",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-24",
+    "text": "пидорас",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-25",
+    "text": "гандон",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-26",
+    "text": "говно",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-27",
+    "text": "шлюха",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-28",
+    "text": "залупа",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-29",
+    "text": "идиот",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-30",
+    "text": "дебил",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-31",
+    "text": "дурак",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-32",
+    "text": "тупица",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-33",
+    "text": "қотақ",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-34",
+    "text": "котак",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-35",
+    "text": "боқ",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-36",
+    "text": "шешеңді",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-37",
+    "text": "сігейін",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-38",
+    "text": "сiгейін",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-39",
+    "text": "сигем",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-40",
+    "text": "х.у.й",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-41",
+    "text": "х у й",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-42",
+    "text": "с у к а",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-43",
+    "text": "п-и-з-д-а",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-44",
+    "text": "ХУЙ",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-45",
+    "text": "х​уй",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-46",
+    "text": "х́уй",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-47",
+    "text": "сyкa",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-48",
+    "text": "хyй",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-49",
+    "text": "п1зда",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-50",
+    "text": "6лядь",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-51",
+    "text": "suka",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-52",
+    "text": "blyad",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-53",
+    "text": "pidor",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-54",
+    "text": "kotak",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-55",
+    "text": "huy",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-56",
+    "text": "pizda",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "rejected-57",
+    "text": "ebat",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "published-01",
+    "text": "Спасибо за документ!",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-02",
+    "text": "Как найти фонд?",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-03",
+    "text": "Здравствуйте, нужен архивный шифр.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-04",
+    "text": "Благодарю за помощь.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-05",
+    "text": "Пожалуйста, уточните дату.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-06",
+    "text": "Материалы о библиотеке интересны.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-07",
+    "text": "Этот документ плохо отсканирован.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-08",
+    "text": "Не согласен с описанием.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-09",
+    "text": "Качество изображения ужасное.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-10",
+    "text": "На картине виден барсук.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-11",
+    "text": "Образец ткани: сукно.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-12",
+    "text": "Сук дерева на фотографии.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-13",
+    "text": "Страхуй меня при подъёме.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-14",
+    "text": "Подстрахуйте коллегу.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-15",
+    "text": "Стоимость — три рубля.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-16",
+    "text": "Ведомость о кораблях.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-17",
+    "text": "Коллекция ансамбля.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-18",
+    "text": "Бляха на форме солдата.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-19",
+    "text": "Виноградный херес.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-20",
+    "text": "Суккулент на подоконнике.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-21",
+    "text": "Сигнализация здания.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-22",
+    "text": "Буква сигма в записи.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-23",
+    "text": "Архив материалдары үшін рақмет!",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-24",
+    "text": "Құжатты қалай табуға болады?",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-25",
+    "text": "Кітапхана туралы мәлімет керек.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-26",
+    "text": "Мектеп құжаттары бар ма?",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-27",
+    "text": "Рақмет!",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-28",
+    "text": "Фонд №2, опись 1, дело 3.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-29",
+    "text": "hello archive team",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "published-30",
+    "text": "Это исследование требует проверки.",
+    "expected": "PUBLISHED"
+  },
+  {
+    "id": "pending-01",
+    "text": "В источнике сказано «сука».",
+    "expected": "PENDING"
+  },
+  {
+    "id": "pending-02",
+    "text": "Историческая цитата: \"пиздец\".",
+    "expected": "PENDING"
+  },
+  {
+    "id": "pending-03",
+    "text": "<script>alert(1)</script>",
+    "expected": "PENDING"
+  },
+  {
+    "id": "pending-04",
+    "text": "х*й",
+    "expected": "PENDING"
+  },
+  {
+    "id": "pending-05",
+    "text": "бл***дь",
+    "expected": "PENDING"
+  },
+  {
+    "id": "pending-06",
+    "text": "с_к_а",
+    "expected": "PENDING"
+  },
+  {
+    "id": "pending-07",
+    "text": "Что означает «архивный фонд»?",
+    "expected": "PENDING"
+  },
+  {
+    "id": "pending-08",
+    "text": "[цитата: требуется проверка]",
+    "expected": "PENDING"
+  },
+  {
+    "id": "pending-09",
+    "text": "***нахуй*** в цитате «пример»",
+    "expected": "PENDING"
+  },
+  {
+    "id": "pending-10",
+    "text": "Непонятное слово абвхуйгдеж",
+    "expected": "PENDING"
+  },
+  {
+    "id": "additional-reject-1",
+    "text": "fuck",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "additional-reject-2",
+    "text": "shit",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "additional-reject-3",
+    "text": "bitch",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "additional-reject-4",
+    "text": "asshole",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "additional-reject-5",
+    "text": "хуууй",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "additional-reject-6",
+    "text": "сссука",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "additional-reject-7",
+    "text": "пииизда",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "additional-reject-8",
+    "text": "пздц",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "additional-review-1",
+    "text": "бл@дь",
+    "expected": "PENDING"
+  },
+  {
+    "id": "additional-review-2",
+    "text": "х@й",
+    "expected": "PENDING"
+  },
+  {
+    "id": "holdout-reject-1",
+    "text": "ебу",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "holdout-reject-2",
+    "text": "ебём",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "holdout-reject-3",
+    "text": "ебет",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "holdout-reject-4",
+    "text": "ебут",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "holdout-reject-5",
+    "text": "ебись",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "holdout-reject-6",
+    "text": "заебись",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "holdout-reject-7",
+    "text": "выебу",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "holdout-reject-8",
+    "text": "ёбнулся",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "holdout-reject-9",
+    "text": "pid0r",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "holdout-reject-10",
+    "text": "дол6оеб",
+    "expected": "REJECTED"
+  },
+  {
+    "id": "holdout-clean-1",
+    "text": "Образец ебенового дерева.",
+    "expected": "PUBLISHED"
+  }
+]
