@@ -16,7 +16,8 @@
     "db:migrate": "node --env-file-if-exists=.env --import tsx scripts/migrate.ts",
     "db:seed": "node --env-file-if-exists=.env --import tsx prisma/seed.ts",
     "setup:local": "node scripts/setup-local.mjs",
-    "maintenance": "node --env-file-if-exists=.env --import tsx scripts/maintenance.ts"
+    "maintenance": "node --env-file-if-exists=.env --import tsx scripts/maintenance.ts",
+    "i18n:check": "tsx scripts/i18n-keys.mjs --check"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.10.1",
