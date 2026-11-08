@@ -39,6 +39,8 @@ export function Assistant() {
   const { t } = useI18n();
   const params = useSearchParams();
   const [messages, setMessages] = useState<Message[]>([]);
+  const [messageOwner, setMessageOwner] = useState<string | null>(null);
+  const activeUser = useRef(user?.id); activeUser.current = user?.id;
   const [question, setQuestion] = useState(() => (params.get('q') ?? '').slice(0, MAX));
   const [pending, setPending] = useState(false);
   const controller = useRef<AbortController | null>(null);
@@ -48,19 +50,24 @@ export function Assistant() {
 
   // History lives only for the current browser tab session.
   useEffect(() => {
+    controller.current?.abort(); setPending(false);
+    setMessages([]); setMessageOwner(user?.id ?? null);
+    if (!user) return;
     try {
-      const saved: unknown = JSON.parse(sessionStorage.getItem(STORE) ?? '[]');
+      const saved: unknown = JSON.parse(sessionStorage.getItem(`${STORE}:${user.id}`) ?? '[]');
       if (Array.isArray(saved)) setMessages(saved.filter(isMessage).slice(-30));
     } catch { /* ignore broken storage */ }
-  }, []);
+  }, [user?.id]);
   useEffect(() => {
-    try { sessionStorage.setItem(STORE, JSON.stringify(messages.slice(-30))); } catch { /* storage unavailable */ }
+    if (!user || messageOwner !== user.id) return;
+    try { sessionStorage.setItem(`${STORE}:${user.id}`, JSON.stringify(messages.slice(-30))); } catch { /* storage unavailable */ }
     logEnd.current?.scrollIntoView({ block: 'nearest' });
-  }, [messages]);
+  }, [messages, user?.id, messageOwner]);
 
   async function ask(text: string) {
     const q = text.trim();
-    if (!q || q.length > MAX || pending) return;
+    if (!q || q.length > MAX || pending || !user || messageOwner !== user.id) return;
+    const owner = user.id;
     const history = messages.filter((m): m is Exclude<Message, { role: 'error' }> => m.role !== 'error')
       .slice(-6).map(m => ({ role: m.role, content: m.content.slice(0, MAX) }));
     setMessages(m => [...m.filter(x => x.role !== 'error'), { role: 'user', content: q }]);
@@ -71,13 +78,13 @@ export function Assistant() {
         apiSend<AssistantAnswer>('/assistant', 'POST', { question: q, history }, {}, abort.signal),
         new Promise<never>((_, reject) => abort.signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')))),
       ]);
-      setMessages(m => [...m, { role: 'assistant', content: r.answer, noAnswer: r.noAnswer, sources: r.sources, mode: r.mode }]);
+      if (activeUser.current === owner) setMessages(m => [...m, { role: 'assistant', content: r.answer, noAnswer: r.noAnswer, sources: r.sources, mode: r.mode }]);
     } catch (error) {
+      if (activeUser.current !== owner) return;
       if ((error as Error)?.name === 'AbortError') setMessages(m => [...m, { role: 'error', content: t('Запрос отменён.'), retry: q }]);
       else setMessages(m => [...m, { role: 'error', content: errorMessage(error, t), retry: error instanceof ApiClientError && error.status !== 429 ? q : undefined }]);
     } finally {
-      setPending(false); controller.current = null;
-      input.current?.focus();
+      if (activeUser.current === owner) { setPending(false); controller.current = null; input.current?.focus(); }
     }
   }
 
@@ -85,7 +92,7 @@ export function Assistant() {
   function onKey(e: KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void ask(question); }
   }
-  function clear() { setMessages([]); try { sessionStorage.removeItem(STORE); } catch { /* ignore */ } }
+  function clear() { setMessages([]); try { if (user) sessionStorage.removeItem(`${STORE}:${user.id}`); } catch { /* ignore */ } }
 
   if (state.status === 'loading') return <Loading rows={1} label={t('Проверка входа…')} />;
   if (!user) return (
@@ -114,7 +121,7 @@ export function Assistant() {
       )}
 
       <ol className="chat-log" aria-label={t('Диалог с помощником')} aria-live="polite" aria-relevant="additions">
-        {messages.map((m, i) => (
+        {(messageOwner === user.id ? messages : []).map((m, i) => (
           <li key={i} className={`msg ${m.role === 'user' ? 'msg-user' : m.role === 'error' ? 'msg-error' : `msg-assistant${m.noAnswer ? ' msg-noanswer' : ''}`}`}>
             <span className="visually-hidden">{m.role === 'user' ? t('Вы:') : t('Помощник:')} </span>
             {m.role === 'error' ? (

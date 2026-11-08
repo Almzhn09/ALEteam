@@ -10,7 +10,7 @@
         "demo-doc-06",
         "demo-doc-11"
       ],
-      "milliseconds": 338.7893969999999
+      "milliseconds": 102.49660500000002
     },
     {
       "id": "library-kk",
@@ -20,7 +20,7 @@
         "demo-doc-06",
         "demo-doc-11"
       ],
-      "milliseconds": 33.54536200000007
+      "milliseconds": 5.297121000000004
     },
     {
       "id": "school-ru",
@@ -30,7 +30,7 @@
         "demo-doc-08",
         "demo-doc-13"
       ],
-      "milliseconds": 58.750215000000026
+      "milliseconds": 6.577917999999954
     },
     {
       "id": "school-kk",
@@ -40,7 +40,7 @@
         "demo-doc-08",
         "demo-doc-13"
       ],
-      "milliseconds": 7.619535000000042
+      "milliseconds": 4.556376999999998
     },
     {
       "id": "museum",
@@ -50,7 +50,7 @@
         "demo-doc-09",
         "demo-doc-14"
       ],
-      "milliseconds": 5.167165000000068
+      "milliseconds": 5.921269999999993
     },
     {
       "id": "square",
@@ -60,7 +60,7 @@
         "demo-doc-07",
         "demo-doc-12"
       ],
-      "milliseconds": 4.377676000000065
+      "milliseconds": 3.4911630000000287
     },
     {
       "id": "railway",
@@ -70,7 +70,7 @@
         "demo-doc-10",
         "demo-doc-15"
       ],
-      "milliseconds": 4.087651000000051
+      "milliseconds": 3.6726259999999797
     },
     {
       "id": "year",
@@ -78,7 +78,7 @@
       "actual": [
         "demo-doc-01"
       ],
-      "milliseconds": 7.336307999999917
+      "milliseconds": 3.7812400000000252
     },
     {
       "id": "reference",
@@ -86,37 +86,37 @@
       "actual": [
         "demo-doc-01"
       ],
-      "milliseconds": 5.7393849999998565
+      "milliseconds": 3.4275880000000143
     },
     {
       "id": "unknown",
       "passed": true,
       "actual": [],
-      "milliseconds": 44.628337999999985
+      "milliseconds": 4.004546000000005
     },
     {
       "id": "false-year",
       "passed": true,
       "actual": [],
-      "milliseconds": 33.47978899999998
+      "milliseconds": 3.8265179999999646
     },
     {
       "id": "injection-ru",
       "passed": true,
       "actual": [],
-      "milliseconds": 0.030214999999998327
+      "milliseconds": 0.0062590000000000146
     },
     {
       "id": "injection-en",
       "passed": true,
       "actual": [],
-      "milliseconds": 0.40586999999982254
+      "milliseconds": 0.23194899999998597
     },
     {
       "id": "private-config",
       "passed": true,
       "actual": [],
-      "milliseconds": 0.00787199999990662
+      "milliseconds": 0.0047969999999963875
     },
     {
       "id": "fund-guide",
@@ -124,7 +124,7 @@
       "actual": [
         "guide-fund"
       ],
-      "milliseconds": 2.1218619999999646
+      "milliseconds": 1.5419999999999732
     },
     {
       "id": "reference-guide",
@@ -132,7 +132,7 @@
       "actual": [
         "guide-reference"
       ],
-      "milliseconds": 1.7131779999999708
+      "milliseconds": 1.4598970000000122
     },
     {
       "id": "search-guide",
@@ -140,7 +140,7 @@
       "actual": [
         "guide-search"
       ],
-      "milliseconds": 1.7965429999999287
+      "milliseconds": 1.4338280000000054
     },
     {
       "id": "comments-guide",
@@ -148,19 +148,19 @@
       "actual": [
         "guide-comments"
       ],
-      "milliseconds": 2.2407120000000305
+      "milliseconds": 1.6885109999999486
     },
     {
       "id": "missing-topic",
       "passed": true,
       "actual": [],
-      "milliseconds": 1.4870269999998982
+      "milliseconds": 2.756036999999992
     },
     {
       "id": "missing-period",
       "passed": true,
       "actual": [],
-      "milliseconds": 2.660622999999987
+      "milliseconds": 3.7975440000000162
     },
     {
       "id": "frontend-example-kk-railway",
@@ -170,7 +170,7 @@
         "demo-doc-10",
         "demo-doc-15"
       ],
-      "milliseconds": 2.584758999999849
+      "milliseconds": 3.247717000000023
     },
     {
       "id": "frontend-example-kk-reference",
@@ -178,7 +178,7 @@
       "actual": [
         "guide-reference"
       ],
-      "milliseconds": 1.5876290000001063
+      "milliseconds": 1.6435430000000224
     },
     {
       "id": "frontend-example-kk-library",
@@ -188,7 +188,7 @@
         "demo-doc-06",
         "demo-doc-11"
       ],
-      "milliseconds": 2.072648000000072
+      "milliseconds": 3.2747679999999946
     },
     {
       "id": "reading-ru",
@@ -196,7 +196,7 @@
       "actual": [
         "demo-doc-06"
       ],
-      "milliseconds": 2.2246869999999035
+      "milliseconds": 3.3868659999999977
     },
     {
       "id": "readers-kk",
@@ -204,7 +204,7 @@
       "actual": [
         "demo-doc-11"
       ],
-      "milliseconds": 2.370826000000079
+      "milliseconds": 1.1585129999999708
     },
     {
       "id": "library-latin",
@@ -212,7 +212,7 @@
       "actual": [
         "demo-doc-16"
       ],
-      "milliseconds": 2.3727299999998195
+      "milliseconds": 1.274769000000049
     },
     {
       "id": "students-ru",
@@ -220,7 +220,7 @@
       "actual": [
         "demo-doc-08"
       ],
-      "milliseconds": 2.3119279999998525
+      "milliseconds": 1.0155079999999543
     },
     {
       "id": "students-kk",
@@ -228,7 +228,7 @@
       "actual": [
         "demo-doc-13"
       ],
-      "milliseconds": 2.475885999999946
+      "milliseconds": 1.025794000000019
     },
     {
       "id": "class-kk",
@@ -236,7 +236,7 @@
       "actual": [
         "demo-doc-18"
       ],
-      "milliseconds": 2.344047000000046
+      "milliseconds": 1.0485780000000204
     },
     {
       "id": "school-latin",
@@ -244,7 +244,7 @@
       "actual": [
         "demo-doc-03"
       ],
-      "milliseconds": 2.1603710000001684
+      "milliseconds": 0.985952999999995
     },
     {
       "id": "exhibits-ru",
@@ -252,7 +252,7 @@
       "actual": [
         "demo-doc-09"
       ],
-      "milliseconds": 2.2877320000000054
+      "milliseconds": 1.0298999999999978
     },
     {
       "id": "exhibition-kk",
@@ -260,7 +260,7 @@
       "actual": [
         "demo-doc-14"
       ],
-      "milliseconds": 2.0994580000001406
+      "milliseconds": 1.0290190000000052
     },
     {
       "id": "museum-kk",
@@ -268,7 +268,7 @@
       "actual": [
         "demo-doc-19"
       ],
-      "milliseconds": 2.2878319999999803
+      "milliseconds": 1.5702829999999608
     },
     {
       "id": "improvement-ru",
@@ -276,7 +276,7 @@
       "actual": [
         "demo-doc-07"
       ],
-      "milliseconds": 4.093007999999827
+      "milliseconds": 1.1369210000000294
     },
     {
       "id": "square-kk",
@@ -284,7 +284,7 @@
       "actual": [
         "demo-doc-12"
       ],
-      "milliseconds": 3.084100000000035
+      "milliseconds": 1.022559000000001
     },
     {
       "id": "improvement-kk",
@@ -292,7 +292,7 @@
       "actual": [
         "demo-doc-17"
       ],
-      "milliseconds": 2.104096000000027
+      "milliseconds": 1.0108510000000024
     },
     {
       "id": "station-ru",
@@ -300,7 +300,7 @@
       "actual": [
         "demo-doc-10"
       ],
-      "milliseconds": 2.3695349999998143
+      "milliseconds": 1.0449219999999855
     },
     {
       "id": "station-kk",
@@ -308,7 +308,7 @@
       "actual": [
         "demo-doc-15"
       ],
-      "milliseconds": 2.114231000000018
+      "milliseconds": 1.2499799999999937
     },
     {
       "id": "transport-kk",
@@ -316,7 +316,7 @@
       "actual": [
         "demo-doc-20"
       ],
-      "milliseconds": 2.0081210000000738
+      "milliseconds": 1.0238200000000006
     },
     {
       "id": "railway-latin",
@@ -324,7 +324,7 @@
       "actual": [
         "demo-doc-05"
       ],
-      "milliseconds": 2.2948030000000017
+      "milliseconds": 1.1644420000000082
     },
     {
       "id": "library-before-ru",
@@ -332,7 +332,7 @@
       "actual": [
         "demo-doc-01"
       ],
-      "milliseconds": 2.7033279999998285
+      "milliseconds": 0.8693380000000275
     },
     {
       "id": "library-before-kk",
@@ -340,7 +340,7 @@
       "actual": [
         "demo-doc-01"
       ],
-      "milliseconds": 2.664007999999967
+      "milliseconds": 0.899784000000011
     },
     {
       "id": "school-after-ru",
@@ -348,7 +348,7 @@
       "actual": [
         "demo-doc-18"
       ],
-      "milliseconds": 0.9948259999998754
+      "milliseconds": 0.9521730000000161
     },
     {
       "id": "school-after-kk",
@@ -356,7 +356,7 @@
       "actual": [
         "demo-doc-18"
       ],
-      "milliseconds": 0.8444099999999253
+      "milliseconds": 0.9217569999999569
     },
     {
       "id": "museum-range-kk",
@@ -366,7 +366,7 @@
         "demo-doc-14",
         "demo-doc-19"
       ],
-      "milliseconds": 1.1680579999999736
+      "milliseconds": 1.0484880000000203
     },
     {
       "id": "library-range-ru",
@@ -375,7 +375,7 @@
         "demo-doc-06",
         "demo-doc-11"
       ],
-      "milliseconds": 0.9393629999999575
+      "milliseconds": 0.9753979999999842
     },
     {
       "id": "fund-guide-kk",
@@ -383,7 +383,7 @@
       "actual": [
         "guide-fund"
       ],
-      "milliseconds": 0.28024200000004384
+      "milliseconds": 0.228033000000039
     },
     {
       "id": "search-guide-kk",
@@ -391,7 +391,7 @@
       "actual": [
         "guide-search"
       ],
-      "milliseconds": 0.20151299999997718
+      "milliseconds": 0.21271100000001297
     },
     {
       "id": "favorites-guide-ru",
@@ -399,7 +399,7 @@
       "actual": [
         "guide-favorites"
       ],
-      "milliseconds": 0.21973099999991064
+      "milliseconds": 0.2211730000000216
     },
     {
       "id": "favorites-guide-kk",
@@ -407,7 +407,7 @@
       "actual": [
         "guide-favorites"
       ],
-      "milliseconds": 0.17695600000001832
+      "milliseconds": 0.1723700000000008
     },
     {
       "id": "notifications-guide-ru",
@@ -415,7 +415,7 @@
       "actual": [
         "guide-notifications"
       ],
-      "milliseconds": 0.1808530000000701
+      "milliseconds": 0.18244500000002972
     },
     {
       "id": "notifications-guide-kk",
@@ -423,7 +423,7 @@
       "actual": [
         "guide-notifications"
       ],
-      "milliseconds": 0.20120299999985036
+      "milliseconds": 0.17011600000000726
     },
     {
       "id": "ocr-guide-ru",
@@ -431,7 +431,7 @@
       "actual": [
         "guide-ocr"
       ],
-      "milliseconds": 0.21114799999986644
+      "milliseconds": 0.22797300000001997
     },
     {
       "id": "ocr-guide-kk",
@@ -439,7 +439,7 @@
       "actual": [
         "guide-ocr"
       ],
-      "milliseconds": 0.22374700000000303
+      "milliseconds": 0.19457299999999123
     },
     {
       "id": "source-guide-ru",
@@ -447,7 +447,7 @@
       "actual": [
         "guide-sources"
       ],
-      "milliseconds": 0.22518800000011652
+      "milliseconds": 0.1985180000000355
     },
     {
       "id": "source-guide-kk",
@@ -455,49 +455,49 @@
       "actual": [
         "guide-sources"
       ],
-      "milliseconds": 0.19076700000005076
+      "milliseconds": 0.18739199999998846
     },
     {
       "id": "wrong-year-kk",
       "passed": true,
       "actual": [],
-      "milliseconds": 0.9364089999999123
+      "milliseconds": 1.0828799999999887
     },
     {
       "id": "unknown-kk",
       "passed": true,
       "actual": [],
-      "milliseconds": 0.2277120000001105
+      "milliseconds": 0.4220550000000003
     },
     {
       "id": "injection-kk",
       "passed": true,
       "actual": [],
-      "milliseconds": 0.008433000000195534
+      "milliseconds": 0.006249999999965894
     },
     {
       "id": "secrets-kk",
       "passed": true,
       "actual": [],
-      "milliseconds": 0.0032049999999799184
+      "milliseconds": 0.0019730000000208747
     },
     {
       "id": "no-reference",
       "passed": true,
       "actual": [],
-      "milliseconds": 0.6178999999999633
+      "milliseconds": 0.519301999999982
     },
     {
       "id": "early-school",
       "passed": true,
       "actual": [],
-      "milliseconds": 0.8710900000000947
+      "milliseconds": 0.9865250000000287
     },
     {
       "id": "future-railway",
       "passed": true,
       "actual": [],
-      "milliseconds": 0.851511999999957
+      "milliseconds": 0.8920529999999758
     }
   ]
 }

@@ -4,6 +4,7 @@ import { retrievePassages } from '../src/server/knowledge';
 import { answerFromSources } from '../src/server/grounded-assistant';
 import { rankSimilar } from '../src/server/similarity';
 import { db } from '../src/server/db';
+import { guides } from '../src/server/guides';
 try {
   type Result = { passed: boolean; sourceIds: string[]; noAnswer: boolean };
   const cases: { id: string; language: string; expectedIds: string[]; expectedNoAnswer: boolean; legacy: Result; expanded: Result }[] = [];
@@ -27,7 +28,7 @@ try {
     const group = cases.filter(c => !language || c.language === language);
     return { total: group.length, legacyPassed: group.filter(c => c.legacy.passed).length, expandedPassed: group.filter(c => c.expanded.passed).length };
   };
-  const report = { generatedAt: new Date().toISOString(), mode: 'retrieval', corpus: { demoDocuments: documents.length, bilingualGuides: 8 },
+  const report = { generatedAt: new Date().toISOString(), mode: 'retrieval', corpus: { demoDocuments: documents.length, bilingualGuides: guides.length },
     overall: counts(), russian: counts('ru'), kazakh: counts('kk'), cases,
     similarity: { method: 'tfidf-cosine-v1', total: similarity.length, meanPrecisionAt3: similarity.reduce((s,c) => s + c.precisionAt3, 0) / Math.max(1, similarity.length), cases: similarity },
     limitations: ['Curated synthetic corpus, not an independent or historical benchmark.', 'Expected IDs are required relevant sources; other retrieved public sources are not independently judged.', 'No live LLM call.', 'Kazakh wording requires native-speaker review.'] };

@@ -6,7 +6,9 @@ import { generateLocalQuery } from '../src/server/local-model';
 import report from '../training/report.json';
 test('artifact comes from the recorded from-scratch training run', async () => {
  assert.equal(report.pretrained, false);
- assert.equal(report.parameters, 112895);
+ assert.ok(report.parameters > 100000);
+ const model=JSON.parse(await readFile('training/models/query-model.json','utf8'));
+ assert.equal(Object.values(model.weights).reduce((sum:number,value)=>sum+(value as number[][]).flat().length,0),report.parameters);
  assert.equal(createHash('sha256').update(await readFile('training/models/query-model.json')).digest('hex'), report.artifactSha256);
  assert.ok(report.history[0].trainLoss > report.history.at(-1)!.trainLoss);
 });

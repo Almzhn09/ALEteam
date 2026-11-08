@@ -5,6 +5,7 @@ import { serviceRequest, unavailableAssistant } from './services';
 import { retrievePassages } from './knowledge';
 import { answerFromSources } from './grounded-assistant';
 import { getGuide } from './guides';
+import { answerSiteDialog } from './site-dialog';
 
 export const assistantInput = z.object({
   question: z.string().trim().min(1).max(1000),
@@ -14,13 +15,15 @@ const assistantOutput = z.object({ answer: z.string().trim().min(1).max(8000), s
 export async function assistant(request: Request) {
   const user = await requireUser(request);
   const input = assistantInput.parse(await readJson(request));
-  await rateLimit(`assistant:${user.id}`, 10, 3600);
-  await rateLimit('assistant:global-daily', 100, 86400);
+  const local = process.env.ASSISTANT_MODE === 'local-model' && !process.env.ASSISTANT_SERVICE_URL;
+  await rateLimit(`assistant:${local ? 'local:' : ''}${user.id}`, local ? 30 : 10, local ? 60 : 3600);
+  await rateLimit(`assistant:global-daily${local ? ':local' : ''}`, local ? 10000 : 100, 86400);
   let result: z.infer<typeof assistantOutput>;
   try {
     result = assistantOutput.parse(process.env.ASSISTANT_SERVICE_URL
       ? await serviceRequest(process.env.ASSISTANT_SERVICE_URL, process.env.ASSISTANT_SERVICE_TOKEN, { ...input, maxOutputTokens: 500 }, 15000)
-      : await answerFromSources(input.question, await retrievePassages(input.question, process.env.ASSISTANT_MODE === 'local-model' ? 'local' : 'expanded')));
+      : local ? await answerSiteDialog(input.question, input.history)
+      : await answerFromSources(input.question, await retrievePassages(input.question, 'expanded')));
   } catch { unavailableAssistant(); }
   if ((!result.noAnswer && !result.sourceIds.length) || (result.noAnswer && result.sourceIds.length)) throw new ApiError(502, 'INVALID_ASSISTANT_RESPONSE', 'Ответ помощника не прошёл проверку источников.');
   const ids = [...new Set(result.sourceIds)];

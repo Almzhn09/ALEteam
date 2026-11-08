@@ -10,7 +10,7 @@
     "build": "npm run db:generate && next build --webpack",
     "start": "node --use-env-proxy node_modules/next/dist/bin/next start --hostname 0.0.0.0",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests/unit.test.ts tests/moderation.test.ts tests/moderation-variants.test.ts tests/assistant.test.ts tests/corpus.test.ts tests/discovery.test.ts tests/local-model.test.ts",
+    "test": "tsx --test tests/unit.test.ts tests/moderation.test.ts tests/moderation-variants.test.ts tests/assistant.test.ts tests/corpus.test.ts tests/discovery.test.ts tests/local-model.test.ts tests/site-dialog.test.ts",
     "test:integration": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/integration.test.ts",
     "db:generate": "node --import tsx scripts/generate-client.ts",
     "db:migrate": "node --env-file-if-exists=.env --import tsx scripts/migrate.ts",
@@ -32,7 +32,8 @@
     "evaluate:ocr": "node --import tsx scripts/evaluate-ocr.ts",
     "evaluate:search": "node --env-file-if-exists=.env --import tsx scripts/evaluate-search.ts",
     "train:local": ".local/model-env/bin/python training/train.py",
-    "evaluate:local": "node --env-file-if-exists=.env --import tsx scripts/evaluate-local-model.ts"
+    "evaluate:local": "node --env-file-if-exists=.env --import tsx scripts/evaluate-local-model.ts",
+    "evaluate:dialog": "node --env-file-if-exists=.env --import tsx scripts/evaluate-site-dialog.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.10.1",
