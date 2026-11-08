@@ -19,7 +19,8 @@
     "maintenance": "node --env-file-if-exists=.env --import tsx scripts/maintenance.ts",
     "evaluate:artur": "node --env-file-if-exists=.env --import tsx scripts/evaluate-artur.ts",
     "demo:artur": "node --env-file-if-exists=.env --import tsx scripts/demo-artur.ts",
-    "capture:artur": "node --env-file-if-exists=.env --import tsx scripts/capture-demo.ts"
+    "capture:artur": "node --env-file-if-exists=.env --import tsx scripts/capture-demo.ts",
+    "i18n:check": "tsx scripts/i18n-keys.mjs --check"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.10.1",
