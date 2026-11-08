@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { Passage } from './knowledge';
 import { unsafeInstructions } from './knowledge';
 
-export interface GroundedAnswer { answer: string; sourceIds: string[]; noAnswer: boolean; mode: 'retrieval' | 'llm' }
+export interface GroundedAnswer { answer: string; sourceIds: string[]; noAnswer: boolean; mode: 'retrieval' | 'llm' | 'local-model' }
 export function isKazakh(question: string) { return /[әғқңөұүһі]|рақмет|мектеп|kitaphana|mektep|temir\s*zhol/iu.test(question); }
 export function noAnswer(question: string, mode: GroundedAnswer['mode'] = 'retrieval'): GroundedAnswer {
   return { answer: isKazakh(question) ? 'Қолжетімді дереккөздерден жауап табылмады. Каталогтағы іздеуді нақтылап көріңіз.' : 'В доступных источниках ответа нет. Уточните тему, период или архивный шифр в каталоге.', sourceIds: [], noAnswer: true, mode };
@@ -34,10 +34,10 @@ export function assembleAnswer(question: string, passages: Passage[], selections
 }
 export async function answerFromSources(question: string, passages: Passage[], options: { mode?: string; key?: string; model?: string; fetcher?: typeof fetch } = {}): Promise<GroundedAnswer> {
   const mode = options.mode ?? process.env.ASSISTANT_MODE ?? 'retrieval';
-  if (!['retrieval', 'llm'].includes(mode)) throw new Error('INVALID_ASSISTANT_MODE');
+  if (!['retrieval', 'llm', 'local-model'].includes(mode)) throw new Error('INVALID_ASSISTANT_MODE');
   passages = passages.filter(p => !unsafeInstructions(p.text));
   if (unsafeInstructions(question) || !passages.length) return noAnswer(question, mode as GroundedAnswer['mode']);
-  if (mode === 'retrieval') return assembleAnswer(question, passages);
+  if (mode === 'retrieval' || mode === 'local-model') return assembleAnswer(question, passages, undefined, mode);
   const key = options.key ?? process.env.ARCHIVE_LLM_API_KEY;
   const model = options.model ?? process.env.ARCHIVE_LLM_MODEL;
   if (!key || !model) throw new Error('LLM_CONFIGURATION_MISSING');

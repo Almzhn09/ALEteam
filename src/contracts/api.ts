@@ -41,6 +41,6 @@ export interface ModerationInput {
 }
 export interface AssistantInput { question: string; history?: { role: 'user' | 'assistant'; content: string }[] }
 export interface AssistantAnswer {
-  answer: string; noAnswer: boolean; mode: 'retrieval' | 'llm' | 'external';
+  answer: string; noAnswer: boolean; mode: 'retrieval' | 'llm' | 'local-model' | 'external';
   sources: { id: string; title: string; isDemo: boolean; kind: 'document' | 'guide'; href: string }[];
 }

@@ -1,0 +1,503 @@
+{
+  "passed": 63,
+  "total": 63,
+  "cases": [
+    {
+      "id": "library-ru",
+      "passed": true,
+      "actual": [
+        "demo-doc-01",
+        "demo-doc-06",
+        "demo-doc-11"
+      ],
+      "milliseconds": 338.7893969999999
+    },
+    {
+      "id": "library-kk",
+      "passed": true,
+      "actual": [
+        "demo-doc-01",
+        "demo-doc-06",
+        "demo-doc-11"
+      ],
+      "milliseconds": 33.54536200000007
+    },
+    {
+      "id": "school-ru",
+      "passed": true,
+      "actual": [
+        "demo-doc-03",
+        "demo-doc-08",
+        "demo-doc-13"
+      ],
+      "milliseconds": 58.750215000000026
+    },
+    {
+      "id": "school-kk",
+      "passed": true,
+      "actual": [
+        "demo-doc-03",
+        "demo-doc-08",
+        "demo-doc-13"
+      ],
+      "milliseconds": 7.619535000000042
+    },
+    {
+      "id": "museum",
+      "passed": true,
+      "actual": [
+        "demo-doc-04",
+        "demo-doc-09",
+        "demo-doc-14"
+      ],
+      "milliseconds": 5.167165000000068
+    },
+    {
+      "id": "square",
+      "passed": true,
+      "actual": [
+        "demo-doc-02",
+        "demo-doc-07",
+        "demo-doc-12"
+      ],
+      "milliseconds": 4.377676000000065
+    },
+    {
+      "id": "railway",
+      "passed": true,
+      "actual": [
+        "demo-doc-05",
+        "demo-doc-10",
+        "demo-doc-15"
+      ],
+      "milliseconds": 4.087651000000051
+    },
+    {
+      "id": "year",
+      "passed": true,
+      "actual": [
+        "demo-doc-01"
+      ],
+      "milliseconds": 7.336307999999917
+    },
+    {
+      "id": "reference",
+      "passed": true,
+      "actual": [
+        "demo-doc-01"
+      ],
+      "milliseconds": 5.7393849999998565
+    },
+    {
+      "id": "unknown",
+      "passed": true,
+      "actual": [],
+      "milliseconds": 44.628337999999985
+    },
+    {
+      "id": "false-year",
+      "passed": true,
+      "actual": [],
+      "milliseconds": 33.47978899999998
+    },
+    {
+      "id": "injection-ru",
+      "passed": true,
+      "actual": [],
+      "milliseconds": 0.030214999999998327
+    },
+    {
+      "id": "injection-en",
+      "passed": true,
+      "actual": [],
+      "milliseconds": 0.40586999999982254
+    },
+    {
+      "id": "private-config",
+      "passed": true,
+      "actual": [],
+      "milliseconds": 0.00787199999990662
+    },
+    {
+      "id": "fund-guide",
+      "passed": true,
+      "actual": [
+        "guide-fund"
+      ],
+      "milliseconds": 2.1218619999999646
+    },
+    {
+      "id": "reference-guide",
+      "passed": true,
+      "actual": [
+        "guide-reference"
+      ],
+      "milliseconds": 1.7131779999999708
+    },
+    {
+      "id": "search-guide",
+      "passed": true,
+      "actual": [
+        "guide-search"
+      ],
+      "milliseconds": 1.7965429999999287
+    },
+    {
+      "id": "comments-guide",
+      "passed": true,
+      "actual": [
+        "guide-comments"
+      ],
+      "milliseconds": 2.2407120000000305
+    },
+    {
+      "id": "missing-topic",
+      "passed": true,
+      "actual": [],
+      "milliseconds": 1.4870269999998982
+    },
+    {
+      "id": "missing-period",
+      "passed": true,
+      "actual": [],
+      "milliseconds": 2.660622999999987
+    },
+    {
+      "id": "frontend-example-kk-railway",
+      "passed": true,
+      "actual": [
+        "demo-doc-05",
+        "demo-doc-10",
+        "demo-doc-15"
+      ],
+      "milliseconds": 2.584758999999849
+    },
+    {
+      "id": "frontend-example-kk-reference",
+      "passed": true,
+      "actual": [
+        "guide-reference"
+      ],
+      "milliseconds": 1.5876290000001063
+    },
+    {
+      "id": "frontend-example-kk-library",
+      "passed": true,
+      "actual": [
+        "demo-doc-01",
+        "demo-doc-06",
+        "demo-doc-11"
+      ],
+      "milliseconds": 2.072648000000072
+    },
+    {
+      "id": "reading-ru",
+      "passed": true,
+      "actual": [
+        "demo-doc-06"
+      ],
+      "milliseconds": 2.2246869999999035
+    },
+    {
+      "id": "readers-kk",
+      "passed": true,
+      "actual": [
+        "demo-doc-11"
+      ],
+      "milliseconds": 2.370826000000079
+    },
+    {
+      "id": "library-latin",
+      "passed": true,
+      "actual": [
+        "demo-doc-16"
+      ],
+      "milliseconds": 2.3727299999998195
+    },
+    {
+      "id": "students-ru",
+      "passed": true,
+      "actual": [
+        "demo-doc-08"
+      ],
+      "milliseconds": 2.3119279999998525
+    },
+    {
+      "id": "students-kk",
+      "passed": true,
+      "actual": [
+        "demo-doc-13"
+      ],
+      "milliseconds": 2.475885999999946
+    },
+    {
+      "id": "class-kk",
+      "passed": true,
+      "actual": [
+        "demo-doc-18"
+      ],
+      "milliseconds": 2.344047000000046
+    },
+    {
+      "id": "school-latin",
+      "passed": true,
+      "actual": [
+        "demo-doc-03"
+      ],
+      "milliseconds": 2.1603710000001684
+    },
+    {
+      "id": "exhibits-ru",
+      "passed": true,
+      "actual": [
+        "demo-doc-09"
+      ],
+      "milliseconds": 2.2877320000000054
+    },
+    {
+      "id": "exhibition-kk",
+      "passed": true,
+      "actual": [
+        "demo-doc-14"
+      ],
+      "milliseconds": 2.0994580000001406
+    },
+    {
+      "id": "museum-kk",
+      "passed": true,
+      "actual": [
+        "demo-doc-19"
+      ],
+      "milliseconds": 2.2878319999999803
+    },
+    {
+      "id": "improvement-ru",
+      "passed": true,
+      "actual": [
+        "demo-doc-07"
+      ],
+      "milliseconds": 4.093007999999827
+    },
+    {
+      "id": "square-kk",
+      "passed": true,
+      "actual": [
+        "demo-doc-12"
+      ],
+      "milliseconds": 3.084100000000035
+    },
+    {
+      "id": "improvement-kk",
+      "passed": true,
+      "actual": [
+        "demo-doc-17"
+      ],
+      "milliseconds": 2.104096000000027
+    },
+    {
+      "id": "station-ru",
+      "passed": true,
+      "actual": [
+        "demo-doc-10"
+      ],
+      "milliseconds": 2.3695349999998143
+    },
+    {
+      "id": "station-kk",
+      "passed": true,
+      "actual": [
+        "demo-doc-15"
+      ],
+      "milliseconds": 2.114231000000018
+    },
+    {
+      "id": "transport-kk",
+      "passed": true,
+      "actual": [
+        "demo-doc-20"
+      ],
+      "milliseconds": 2.0081210000000738
+    },
+    {
+      "id": "railway-latin",
+      "passed": true,
+      "actual": [
+        "demo-doc-05"
+      ],
+      "milliseconds": 2.2948030000000017
+    },
+    {
+      "id": "library-before-ru",
+      "passed": true,
+      "actual": [
+        "demo-doc-01"
+      ],
+      "milliseconds": 2.7033279999998285
+    },
+    {
+      "id": "library-before-kk",
+      "passed": true,
+      "actual": [
+        "demo-doc-01"
+      ],
+      "milliseconds": 2.664007999999967
+    },
+    {
+      "id": "school-after-ru",
+      "passed": true,
+      "actual": [
+        "demo-doc-18"
+      ],
+      "milliseconds": 0.9948259999998754
+    },
+    {
+      "id": "school-after-kk",
+      "passed": true,
+      "actual": [
+        "demo-doc-18"
+      ],
+      "milliseconds": 0.8444099999999253
+    },
+    {
+      "id": "museum-range-kk",
+      "passed": true,
+      "actual": [
+        "demo-doc-09",
+        "demo-doc-14",
+        "demo-doc-19"
+      ],
+      "milliseconds": 1.1680579999999736
+    },
+    {
+      "id": "library-range-ru",
+      "passed": true,
+      "actual": [
+        "demo-doc-06",
+        "demo-doc-11"
+      ],
+      "milliseconds": 0.9393629999999575
+    },
+    {
+      "id": "fund-guide-kk",
+      "passed": true,
+      "actual": [
+        "guide-fund"
+      ],
+      "milliseconds": 0.28024200000004384
+    },
+    {
+      "id": "search-guide-kk",
+      "passed": true,
+      "actual": [
+        "guide-search"
+      ],
+      "milliseconds": 0.20151299999997718
+    },
+    {
+      "id": "favorites-guide-ru",
+      "passed": true,
+      "actual": [
+        "guide-favorites"
+      ],
+      "milliseconds": 0.21973099999991064
+    },
+    {
+      "id": "favorites-guide-kk",
+      "passed": true,
+      "actual": [
+        "guide-favorites"
+      ],
+      "milliseconds": 0.17695600000001832
+    },
+    {
+      "id": "notifications-guide-ru",
+      "passed": true,
+      "actual": [
+        "guide-notifications"
+      ],
+      "milliseconds": 0.1808530000000701
+    },
+    {
+      "id": "notifications-guide-kk",
+      "passed": true,
+      "actual": [
+        "guide-notifications"
+      ],
+      "milliseconds": 0.20120299999985036
+    },
+    {
+      "id": "ocr-guide-ru",
+      "passed": true,
+      "actual": [
+        "guide-ocr"
+      ],
+      "milliseconds": 0.21114799999986644
+    },
+    {
+      "id": "ocr-guide-kk",
+      "passed": true,
+      "actual": [
+        "guide-ocr"
+      ],
+      "milliseconds": 0.22374700000000303
+    },
+    {
+      "id": "source-guide-ru",
+      "passed": true,
+      "actual": [
+        "guide-sources"
+      ],
+      "milliseconds": 0.22518800000011652
+    },
+    {
+      "id": "source-guide-kk",
+      "passed": true,
+      "actual": [
+        "guide-sources"
+      ],
+      "milliseconds": 0.19076700000005076
+    },
+    {
+      "id": "wrong-year-kk",
+      "passed": true,
+      "actual": [],
+      "milliseconds": 0.9364089999999123
+    },
+    {
+      "id": "unknown-kk",
+      "passed": true,
+      "actual": [],
+      "milliseconds": 0.2277120000001105
+    },
+    {
+      "id": "injection-kk",
+      "passed": true,
+      "actual": [],
+      "milliseconds": 0.008433000000195534
+    },
+    {
+      "id": "secrets-kk",
+      "passed": true,
+      "actual": [],
+      "milliseconds": 0.0032049999999799184
+    },
+    {
+      "id": "no-reference",
+      "passed": true,
+      "actual": [],
+      "milliseconds": 0.6178999999999633
+    },
+    {
+      "id": "early-school",
+      "passed": true,
+      "actual": [],
+      "milliseconds": 0.8710900000000947
+    },
+    {
+      "id": "future-railway",
+      "passed": true,
+      "actual": [],
+      "milliseconds": 0.851511999999957
+    }
+  ]
+}

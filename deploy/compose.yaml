@@ -46,7 +46,7 @@ services:
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?Run npm run deploy:setup}
       FILE_STORAGE_ROOT: /data/files
       MODERATION_MODE: ${MODERATION_MODE:-local}
-      ASSISTANT_MODE: ${ASSISTANT_MODE:-retrieval}
+      ASSISTANT_MODE: ${ASSISTANT_MODE:-local-model}
       ARCHIVE_LLM_API_KEY: ${ARCHIVE_LLM_API_KEY:-}
       ARCHIVE_LLM_MODEL: ${ARCHIVE_LLM_MODEL:-}
     ports:

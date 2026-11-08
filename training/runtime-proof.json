@@ -1,0 +1,8 @@
+{
+  "testedAt": "2026-11-08T16:08:03.966Z",
+  "target": "http://localhost:3100",
+  "mode": "local-model",
+  "authenticated": true,
+  "documentSource": "demo-doc-01",
+  "browserCheckPassed": true
+}

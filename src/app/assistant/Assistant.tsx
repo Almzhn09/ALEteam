@@ -123,7 +123,7 @@ export function Assistant() {
                 {m.retry && <button type="button" className="btn btn-secondary btn-sm" onClick={() => void ask(m.retry!)}>{t('Повторить вопрос')}</button>}
               </Notice>
             ) : m.role === 'assistant' ? <>
-              <span className="badge badge-neutral" data-assistant-mode={m.mode ?? 'external'}>{m.mode === 'retrieval' ? t('Поиск по источникам') : m.mode === 'llm' ? t('LLM: выбор цитат') : t('Внешний сервис')}</span>
+              <span className="badge badge-neutral" data-assistant-mode={m.mode ?? 'external'}>{m.mode === 'local-model' ? t('Локальная модель ALEteam') : m.mode === 'retrieval' ? t('Поиск по источникам') : m.mode === 'llm' ? t('LLM: выбор цитат') : t('Внешний сервис')}</span>
               {m.noAnswer && <strong className="notice-title">{t('В материалах архива ответа не найдено')}</strong>}
               {m.content}
               {m.sources.length > 0 && (

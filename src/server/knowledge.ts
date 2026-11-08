@@ -1,6 +1,7 @@
 import { Prisma } from '../generated/prisma/index.js';
 import { db } from './db';
 import { guides } from './guides';
+import { generateLocalQuery } from './local-model';
 export interface Passage { id: string; title: string; text: string; isDemo: boolean; kind: 'document' | 'guide' }
 const topics: [RegExp,string,string][] = [
   [/библиотек|кітапхана|kitaphana/iu, 'библиотека', 'библиотек'],
@@ -54,9 +55,20 @@ export function searchIntent(question: string) {
     yearFrom: year === undefined ? undefined : before ? undefined : after ? year + 1 : Math.min(...legacy.years),
     yearTo: year === undefined ? undefined : after ? undefined : before ? year - 1 : Math.max(...legacy.years) };
 }
-export async function retrievePassages(question: string, version: 'expanded' | 'legacy' = 'expanded'): Promise<Passage[]> {
+export function localSearchIntent(question: string) {
+  const base = searchIntent(question);
+  // Dates and exact archive IDs are structured filters. Semantic routing comes from learned weights.
+  if (base.reference) return { ...base, guide: undefined };
+  const prediction = generateLocalQuery(question);
+  const guideIds: Record<string,string> = { 'архивный фонд':'guide-fund', 'архивный шифр':'guide-reference', 'поиск документов':'guide-search', 'правила комментариев':'guide-comments', 'избранное':'guide-favorites', 'уведомления':'guide-notifications', 'распознавание текста':'guide-ocr', 'проверка источников':'guide-sources' };
+  const accepted = prediction.complete && prediction.confidence >= 0.6;
+  const queries = accepted ? prediction.query.split(' ; ').filter(q => ['библиотека','площадь','школа','музей','станция'].includes(q)) : [];
+  const guide = accepted ? guides.find(g => g.id === guideIds[prediction.query]) : undefined;
+  return { ...base, guide, query: queries[0] ?? '', titleTerm: undefined, titleTerms: queries.map(q => ({ 'библиотека':'библиотек', 'площадь':'площад', 'школа':'школ', 'музей':'музе', 'станция':'железн' }[q]!)), topicQueries: queries };
+}
+export async function retrievePassages(question: string, version: 'expanded' | 'legacy' | 'local' = 'expanded'): Promise<Passage[]> {
   if (unsafeInstructions(question)) return [];
-  const intent = version === 'legacy' ? { ...legacySearchIntent(question), topicQueries: [], titleTerms: [], yearFrom: undefined, yearTo: undefined } : searchIntent(question);
+  const intent = version === 'legacy' ? { ...legacySearchIntent(question), topicQueries: [], titleTerms: [], yearFrom: undefined, yearTo: undefined } : version === 'local' ? localSearchIntent(question) : searchIntent(question);
   if (intent.guide) return [{ ...intent.guide, isDemo: false, kind: 'guide' }];
   if (!intent.query && !intent.reference) return [];
   const terms = intent.topicQueries.length ? Prisma.join(intent.topicQueries.map(query => Prisma.sql`d."searchVector" @@ plainto_tsquery('russian', ${query})`), ' OR ') : Prisma.sql`d."searchVector" @@ plainto_tsquery('russian', ${intent.query})`;
