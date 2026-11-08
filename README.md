@@ -28,3 +28,5 @@ npm run dev
 Материалы Артура: [аудит доступа](docs/artur/AUDIT.md), [модерация](docs/artur/MODERATION.md), [помощник](docs/artur/ASSISTANT.md), [демонстрация](docs/artur/DEMO.md).
 
 [Полные браузерные проверки и оставшиеся блокировки — 8 ноября](docs/artur/RELEASE-CHECKS.md).
+
+Запуск всего стенда через Docker: [инструкция](deploy/README.md), [проверка копирования и восстановления](docs/DEPLOYMENT-VALIDATION.md). Хостинг пока не требуется; интернет-публикация не выполнялась.

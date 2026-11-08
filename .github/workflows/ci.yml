@@ -51,3 +51,21 @@ jobs:
           path: |
             .local/release/report.json
             .local/release/screenshots
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Build the standalone application
+        run: docker build --target runtime -t aleteam:local .
+      - name: Build migration and seed tools
+        run: docker build --target tools -t aleteam-tools:local .
+      - name: Check persistence, backup and restore in isolated projects
+        run: node tests/deploy.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: docker-validation-report
+          path: .local/deploy-validation.json

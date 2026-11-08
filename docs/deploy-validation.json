@@ -1,0 +1,35 @@
+{
+  "testedAt": "2026-11-08T07:16:12.363Z",
+  "target": "isolated local Docker projects, not a public deployment",
+  "checks": [
+    {
+      "name": "runtime is non-root and both images exclude environment files",
+      "passed": true
+    },
+    {
+      "name": "fresh Compose stack initializes schema, original assets and two accounts",
+      "passed": true
+    },
+    {
+      "name": "standalone runtime serves a PNG and persists an authenticated comment",
+      "passed": true
+    },
+    {
+      "name": "database and app restart preserve the marker comment and file volume",
+      "passed": true
+    },
+    {
+      "name": "backup includes private database and files with an integrity manifest",
+      "passed": true
+    },
+    {
+      "name": "same-project, corrupted-backup and occupied-volume restore fail before changing resources",
+      "passed": true
+    },
+    {
+      "name": "restore to a fresh project recovers the marker, users and exact file bytes",
+      "passed": true
+    }
+  ],
+  "backupRetainedPrivately": true
+}

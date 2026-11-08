@@ -24,7 +24,10 @@
     "scans:generate": "node --import tsx scripts/generate-demo-scans.ts",
     "test:release": "node --env-file-if-exists=.env --import tsx scripts/release-checks.ts",
     "check:llm": "node --use-env-proxy --env-file-if-exists=.env --import tsx scripts/check-live-llm.ts",
-    "presentation:export": "node --import tsx scripts/export-presentation.ts"
+    "presentation:export": "node --import tsx scripts/export-presentation.ts",
+    "deploy:setup": "node deploy/setup.mjs",
+    "deploy:backup": "node deploy/backup.mjs",
+    "deploy:restore": "node deploy/restore.mjs"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.10.1",

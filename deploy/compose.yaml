@@ -1,0 +1,82 @@
+name: ale-stand
+services:
+  db:
+    image: postgres:16.14-alpine@sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777
+    environment:
+      POSTGRES_DB: archive
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:?Run npm run deploy:setup}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:?Run npm run deploy:setup}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db-init.sh:/docker-entrypoint-initdb.d/10-app-user.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d archive"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+  setup:
+    image: ${TOOLS_IMAGE:-aleteam-tools:local}
+    pull_policy: never
+    build:
+      context: ..
+      target: tools
+    environment:
+      DATABASE_URL: postgresql://archive_app:${APP_DB_PASSWORD}@db:5432/archive
+      ALLOW_DEMO_SEED: ${ALLOW_DEMO_SEED:-0}
+      DEMO_AUTHOR_PASSWORD: ${DEMO_AUTHOR_PASSWORD:-}
+      DEMO_MODERATOR_PASSWORD: ${DEMO_MODERATOR_PASSWORD:-}
+      FILE_STORAGE_ROOT: /data/files
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - archive_files:/data/files
+    restart: "no"
+  app:
+    image: ${APP_IMAGE:-aleteam:local}
+    pull_policy: never
+    build:
+      context: ..
+      target: runtime
+    environment:
+      DATABASE_URL: postgresql://archive_app:${APP_DB_PASSWORD}@db:5432/archive
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL:?Run npm run deploy:setup}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?Run npm run deploy:setup}
+      FILE_STORAGE_ROOT: /data/files
+      MODERATION_MODE: ${MODERATION_MODE:-local}
+      ASSISTANT_MODE: ${ASSISTANT_MODE:-retrieval}
+      ARCHIVE_LLM_API_KEY: ${ARCHIVE_LLM_API_KEY:-}
+      ARCHIVE_LLM_MODEL: ${ARCHIVE_LLM_MODEL:-}
+    ports:
+      - "127.0.0.1:${DEPLOY_HTTP_PORT:-3100}:3000"
+    volumes:
+      - archive_files:/data/files
+    depends_on:
+      db:
+        condition: service_healthy
+      setup:
+        condition: service_completed_successfully
+    restart: unless-stopped
+  https:
+    image: caddy:2-alpine@sha256:78bd35025c7ba85961dd149ae670315129954e77abe2383ac47c89106b35ade9
+    profiles: [public]
+    environment:
+      DEPLOY_DOMAIN: ${DEPLOY_DOMAIN:-}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  postgres_data:
+  archive_files:
+  caddy_data:
+  caddy_config:
