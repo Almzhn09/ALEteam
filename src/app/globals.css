@@ -147,17 +147,21 @@ legend { padding: 0; }
 .nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); color: var(--text); text-decoration: none; font-weight: 500; white-space: nowrap; }
 .nav a:hover { background: var(--surface-2); }
 .nav a[aria-current="page"] { color: var(--accent); background: var(--accent-soft); font-weight: 700; }
-.nav-toggle { display: none; }
+.nav-toggle, .menu-toggle { display: none; }
 .user-chip { display: flex; align-items: center; gap: var(--space-2); font-size: .9rem; }
-@media (max-width: 959px) {
-  .nav-toggle { display: inline-flex; }
+@media (max-width: 959px) { .nav-toggle { display: inline-flex; } }
+/* Header collapses earlier than the page grid: the longest menu is Kazakh for a moderator. */
+@media (max-width: 1199px) {
+  .menu-toggle { display: inline-flex; }
   .nav-wrap { display: none; position: absolute; left: 0; right: 0; top: 100%; background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow); padding: var(--space-3) var(--gutter) var(--space-4); }
   .nav-wrap[data-open="true"] { display: block; }
   .nav { flex-direction: column; align-items: stretch; }
   .nav a { padding: var(--space-3); }
   .user-chip { margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--border); flex-wrap: wrap; }
 }
-@media (min-width: 960px) {
+@media (min-width: 1200px) {
+  .nav a { padding-inline: var(--space-2); }
+  .nav { flex-wrap: nowrap; }
   .header-inner { flex-wrap: wrap; padding-top: var(--space-2); padding-bottom: var(--space-2); gap: var(--space-2); }
   .nav-wrap { display: flex; flex-basis: 100%; align-items: center; justify-content: space-between; gap: var(--space-4); }
   .user-chip { flex-shrink: 0; }

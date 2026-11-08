@@ -1,6 +1,6 @@
 // In-browser imitation of docs/API.md for frontend work without PostgreSQL.
 // Enabled only with NEXT_PUBLIC_API_MOCK=1; it is not an integration and never ships as one.
-import type { CommentStatus, CurrentUser, DocumentDetail, DocumentType, Fund, ModerationQueueItem } from '@/contracts/api';
+import type { CommentStatus, CurrentUser, DocumentDetail, DocumentType, EditorContentItem, Fund, ModerationQueueItem } from '@/contracts/api';
 
 const funds: Fund[] = [
   { id: 'demo-fund-1', name: 'Демо: городская история', description: 'Вымышленный фонд для тестирования интерфейса.' },
@@ -51,6 +51,11 @@ function restore() {
   } catch { /* start fresh */ }
 }
 function persist() { try { sessionStorage.setItem(stateKey, JSON.stringify({ comments, decisions })); } catch { /* ignore */ } }
+
+const content: EditorContentItem[] = [
+  { id: 'mock-news-1', kind: 'NEWS', title: 'Мок: новость со ссылкой на источник', summary: '', sourceUrl: 'http://e-arhiv.vko.gov.kz/ru/Page/ListNewsArchive', publishedAt: '2026-11-01T00:00:00.000Z', isDemo: true, documents: [], isVisible: true, updatedAt: '2026-11-07T00:00:00.000Z' },
+  { id: 'mock-collection-1', kind: 'COLLECTION', title: 'Демо: библиотеки города', summary: 'Учебная подборка вымышленных записей.', sourceUrl: null, publishedAt: '2026-11-02T00:00:00.000Z', isDemo: true, documents: documents.slice(0, 3), isVisible: true, updatedAt: '2026-11-07T00:00:00.000Z' },
+];
 
 const sessionKey = 'aleteam-mock-session';
 function currentUser(): CurrentUser | null {
@@ -175,6 +180,20 @@ async function route(url: URL, method: string, init: RequestInit) {
     needUser(true); const p = paging(url.searchParams);
     const list = decisions.filter(d => d.commentId === path[2]).reverse();
     return json({ items: slice(list, p), total: list.length, ...p });
+  }
+  if (r === 'content' || r === 'editor/content') {
+    if (r === 'editor/content') needUser(true);
+    const p = paging(url.searchParams); const kind = url.searchParams.get('kind');
+    const list = content.filter(c => (!kind || c.kind === kind) && (r === 'editor/content' || c.isVisible));
+    return json({ items: slice(list, p), total: list.length, ...p });
+  }
+  if (path[0] === 'editor' && path[1] === 'content' && path.length === 3 && method === 'PATCH') {
+    needUser(true); const input = body() as { isVisible?: boolean; expectedUpdatedAt?: string };
+    const item = content.find(c => c.id === path[2]);
+    if (!item) throw new MockError(404, 'NOT_FOUND', 'Материал не найден.');
+    if (item.updatedAt !== input.expectedUpdatedAt) throw new MockError(409, 'STALE_CONTENT', 'Материал изменился. Обновите список.');
+    Object.assign(item, { isVisible: !!input.isVisible, updatedAt: new Date(Date.parse(item.updatedAt) + 1).toISOString() });
+    return json({ item: { id: item.id, isVisible: item.isVisible, updatedAt: item.updatedAt } });
   }
   if (r === 'assistant' && method === 'POST') {
     needUser(); const question = String(body().question ?? '').trim();

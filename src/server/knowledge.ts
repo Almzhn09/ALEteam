@@ -38,8 +38,13 @@ export function legacySearchIntent(question: string) {
 export function searchIntent(question: string) {
   const legacy = legacySearchIntent(question);
   const matches = expandedTopics.filter(([pattern]) => pattern.test(question));
-  const guide = !matches.length && !legacy.reference
-    ? /избранн|таңдаул/iu.test(question) ? guides.find(g => g.id === 'guide-favorites')
+  // Practical questions about the archive itself win over a topic word such as «читальный».
+  const archiveFact = !legacy.reference && /(?:время|часы|режим)\s+работ\p{L}*\s+(?:читальн|архив)|(?:телефон|адрес)\p{L}*\s+(?:читальн|архив)/iu.test(question);
+  const guide = archiveFact ? guides.find(g => g.id === 'guide-contacts')
+    : !matches.length && !legacy.reference
+    ? /контакт|телефон|как связат|адрес архив|где находит|режим работ|время работ|часы работ|читальн\p{L}* зал|байланыс|мекенжай|жұмыс уақыт|оқу зал|қайда орналас/iu.test(question) ? guides.find(g => g.id === 'guide-contacts')
+      : /услуг|архивн\p{L}* справк|архивн\p{L}* выписк|архивтік анықтама|архивтік үзінді|қызметтер/iu.test(question) ? guides.find(g => g.id === 'guide-services')
+      : /избранн|таңдаул/iu.test(question) ? guides.find(g => g.id === 'guide-favorites')
       : /уведомлен|хабарландыр/iu.test(question) ? guides.find(g => g.id === 'guide-notifications')
       : /ocr|распозна|тану|танылған/iu.test(question) ? guides.find(g => g.id === 'guide-ocr')
       : /источник|дереккөз/iu.test(question) ? guides.find(g => g.id === 'guide-sources')

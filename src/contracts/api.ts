@@ -39,6 +39,12 @@ export interface ModerationQueueItem extends CreatedComment {
 export interface ModerationInput {
   status: 'PUBLISHED' | 'REJECTED' | 'HIDDEN'; reason: string; expectedUpdatedAt: string;
 }
+export type ContentKind = 'NEWS' | 'COLLECTION';
+export interface ContentItem {
+  id: string; kind: ContentKind; title: string; summary: string; sourceUrl: string | null; publishedAt: string;
+  isDemo: boolean; documents: DocumentSummary[];
+}
+export interface EditorContentItem extends ContentItem { isVisible: boolean; updatedAt: string }
 export interface AssistantInput { question: string; history?: { role: 'user' | 'assistant'; content: string }[] }
 export interface AssistantAnswer {
   answer: string; noAnswer: boolean; mode: 'retrieval' | 'llm' | 'external';

@@ -6,6 +6,10 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+enum ContentKind {
+  NEWS
+  COLLECTION
+}
 enum Role {
   AUTHOR
   MODERATOR
@@ -199,4 +203,20 @@ model ModerationDecision {
   comment     Comment       @relation(fields: [commentId], references: [id])
   moderator   User          @relation(fields: [moderatorId], references: [id])
   @@index([commentId, createdAt])
+}
+
+model ContentItem {
+  id          String      @id
+  kind        ContentKind
+  title       String
+  summary     String      @default("")
+  sourceUrl   String?
+  publishedAt DateTime
+  documentIds String[]    @default([])
+  isDemo      Boolean     @default(false)
+  isVisible   Boolean     @default(true)
+  updatedById String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  @@index([kind, isVisible, publishedAt, id])
 }

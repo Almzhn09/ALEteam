@@ -9,6 +9,7 @@ import { useI18n } from '@/lib/lang';
 
 const links = [
   { href: '/catalog', label: 'Каталог' },
+  { href: '/news', label: 'Новости' },
   { href: '/timeline', label: 'Шкала времени' },
   { href: '/favorites', label: 'Избранное' },
   { href: '/assistant', label: 'ИИ-помощник' },
@@ -66,7 +67,7 @@ export function Header() {
           lang={lang === 'ru' ? 'kk' : 'ru'} aria-label={lang === 'ru' ? 'Қазақ тіліне ауысу' : 'Переключить на русский язык'}>
           {lang === 'ru' ? 'ҚАЗ' : 'РУС'}
         </button>
-        <button ref={toggle} type="button" className="btn btn-secondary btn-sm nav-toggle" aria-expanded={open} aria-controls="site-nav" onClick={() => setOpen(v => !v)}>
+        <button ref={toggle} type="button" className="btn btn-secondary btn-sm menu-toggle" aria-expanded={open} aria-controls="site-nav" onClick={() => setOpen(v => !v)}>
           {open ? t('Закрыть') : t('Меню')}
         </button>
         <div className="nav-wrap" id="site-nav" data-open={open}>

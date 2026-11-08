@@ -1,0 +1,23 @@
+{
+  "provenance": {
+    "news": "Дата, заголовок и ссылка с http://e-arhiv.vko.gov.kz/ru/Page/ListNewsArchive, получены 8 ноября 2026. Тексты и фотографии не копировались: разрешение на воспроизведение на сайте не указано.",
+    "collections": "Собственные учебные подборки ALEteam из вымышленных демозаписей, CC0-1.0."
+  },
+  "news": [
+    { "id": "src-news-52813", "date": "2026-09-21", "title": "«День открытых дверей»", "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52813" },
+    { "id": "src-news-52812", "date": "2026-09-18", "title": "«Архив и будущее поколение»", "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52812" },
+    { "id": "src-news-52811", "date": "2026-09-04", "title": "Экспозиционно-тематическая выставка", "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52811" },
+    { "id": "src-news-52793", "date": "2026-06-02", "title": "«Символы независимости — наследие поколений»", "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52793" },
+    { "id": "src-news-52792", "date": "2026-05-29", "title": "«Эхо трагических лет: незабываемые уроки истории»", "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52792" },
+    { "id": "src-news-52790", "date": "2026-05-08", "title": "Выставка «Ұрпақтар ұмытпайтын ұлы ерлік»", "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52790" },
+    { "id": "src-news-52786", "date": "2026-04-30", "title": "«60 лет сохраняя память»", "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52786" },
+    { "id": "src-news-52766", "date": "2026-02-27", "title": "Литературному объединению «Звено Алтая» исполнилось 105 лет", "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52766" },
+    { "id": "src-news-52763", "date": "2026-02-24", "title": "Учеба по изменениям в законодательстве РК в сфере архивного дела", "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52763" },
+    { "id": "src-news-52756", "date": "2025-12-22", "title": "День архивиста", "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52756" }
+  ],
+  "collections": [
+    { "id": "demo-collection-libraries", "date": "2026-11-08", "title": "Демо: библиотеки города", "summary": "Учебная подборка вымышленных записей о библиотеках разных десятилетий.", "documentIds": ["demo-doc-01", "demo-doc-06", "demo-doc-11", "demo-doc-16"] },
+    { "id": "demo-collection-schools", "date": "2026-11-07", "title": "Демо: школьная история", "summary": "Учебная подборка вымышленных записей о школах.", "documentIds": ["demo-doc-03", "demo-doc-08", "demo-doc-13", "demo-doc-18"] },
+    { "id": "demo-collection-railway", "date": "2026-11-06", "title": "Демо: железная дорога", "summary": "Учебная подборка вымышленных записей о железной дороге.", "documentIds": ["demo-doc-05", "demo-doc-10", "demo-doc-15", "demo-doc-20"] }
+  ]
+}
