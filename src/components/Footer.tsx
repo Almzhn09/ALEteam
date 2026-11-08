@@ -16,6 +16,7 @@ export function Footer() {
           <h2 id="footer-nav">{t('Разделы')}</h2>
           <ul>
             <li><Link href="/catalog">{t('Каталог документов')}</Link></li>
+            <li><Link href="/news">{t('Новости и подборки')}</Link></li>
             <li><Link href="/timeline">{t('Шкала времени')}</Link></li>
             <li><Link href="/favorites">{t('Избранное')}</Link></li>
             <li><Link href="/assistant">{t('ИИ-помощник')}</Link></li>

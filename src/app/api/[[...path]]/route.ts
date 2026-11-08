@@ -9,6 +9,7 @@ import { deleteFavorites, listFavorites, saveFavorites } from '@/server/personal
 import { listNotifications, notificationSettings, readNotification } from '@/server/notifications';
 import { similarDocuments } from '@/server/similarity';
 import { recognizedText } from '@/server/ocr';
+import { editorContent, publicContent, setContentVisibility } from '@/server/content';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -41,6 +42,9 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
       try { await db.$queryRaw`SELECT 1`; return json({ status: 'ok', database: 'ok' }); }
       catch { return json({ status: 'unavailable', database: 'unavailable' }, 503); }
     }
+    if (route === 'content' && method === 'GET') return publicContent(request);
+    if (route === 'editor/content' && method === 'GET') return editorContent(request);
+    if (path[0] === 'editor' && path[1] === 'content' && path.length === 3 && method === 'PATCH') return setContentVisibility(request, path[2]);
     if (route === 'funds' && method === 'GET') return json({ items: await db.fund.findMany({ where: { documents: { some: { isPublic: true } } }, orderBy: { id: 'asc' } }) });
     if (route === 'documents' && method === 'GET') return documentList(request);
     if (path[0] === 'documents' && path.length === 2 && method === 'GET') return json({ item: await publicDocument(path[1]) });

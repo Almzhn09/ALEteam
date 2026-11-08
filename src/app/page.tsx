@@ -56,7 +56,7 @@ export default async function Home() {
       <section className="section" aria-labelledby="about-title">
         <div className="panel prose">
           <h2 id="about-title">{t('Об архиве')}</h2>
-          <p>{t('Это прототип обновлённого интерфейса. Проверенные сведения об архиве, режим работы, контакты и перечень услуг будут добавлены после аудита исходного сайта — мы не публикуем непроверенных фактов.')}</p>
+          <p>{t('Прототип обновлённого интерфейса Государственного архива Восточно-Казахстанской области. Адрес, режим работы и услуги проверены по официальному сайту 8 ноября 2026 года.')}</p>
           <p style={{ margin: 0 }}>{t('Официальная информация:')} <a href="http://e-arhiv.vko.gov.kz/ru" rel="noopener noreferrer" target="_blank">e-arhiv.vko.gov.kz<span className="visually-hidden"> {t('(откроется в новой вкладке)')}</span></a> · <Link href="/about">{t('Подробнее и помощь')}</Link></p>
         </div>
       </section>

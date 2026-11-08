@@ -61,6 +61,7 @@ export function Moderation() {
 
   return (
     <div className="stack">
+      <p style={{ margin: 0 }}><Link href="/moderation/content">{t('Управление новостями и подборками')} →</Link></p>
       <nav aria-label={t('Фильтр очереди')}>
         <div className="tabs">
           {tabs.map(tab => <Link key={tab.label} href={href(tab.status)} aria-current={tab.status === status ? 'page' : undefined}>{t(tab.label)}</Link>)}

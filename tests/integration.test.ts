@@ -344,3 +344,38 @@ test('similarity and OCR endpoints serve actual public evidence and omit inacces
   try { assert.equal((await call('/api/files/demo-scan-1/ocr')).status, 404); }
   finally { await db.document.update({ where: { id: 'demo-doc-01' }, data: { isPublic: true } }); }
 });
+
+test('news and collections: visibility, roles, stale writes and public-only documents', async () => {
+  const pub = async (query: string) => (await call(`/api/content?${query}`)).json();
+  const list = await pub('kind=NEWS&pageSize=50');
+  assert.ok(list.total >= 10);
+  assert.ok(list.items.every((i: { sourceUrl: string }) => new URL(i.sourceUrl).hostname === 'e-arhiv.vko.gov.kz'));
+  assert.ok(list.items.every((i: Record<string, unknown>) => !('isVisible' in i) && !('documentIds' in i) && !('updatedAt' in i)), 'public payload hides editor fields');
+  assert.equal((await call('/api/content?kind=OTHER')).status, 400);
+  assert.equal((await call('/api/content?kind=NEWS&kind=NEWS')).status, 400);
+
+  assert.equal((await call('/api/editor/content')).status, 401);
+  assert.equal((await call('/api/editor/content', 'GET', undefined, authorCookie)).status, 403);
+  const editor = await (await call('/api/editor/content?kind=NEWS&pageSize=50', 'GET', undefined, moderatorCookie)).json();
+  const target = editor.items[0];
+  assert.equal((await call(`/api/editor/content/${target.id}`, 'PATCH', { isVisible: false, expectedUpdatedAt: target.updatedAt }, authorCookie)).status, 403);
+  assert.equal((await fetch(`${base}/api/editor/content/${target.id}`, { method: 'PATCH', headers: { origin: 'https://evil.test', 'Content-Type': 'application/json', cookie: moderatorCookie }, body: JSON.stringify({ isVisible: false, expectedUpdatedAt: target.updatedAt }) })).status, 403);
+  assert.equal((await call(`/api/editor/content/${target.id}`, 'PATCH', { isVisible: false, expectedUpdatedAt: target.updatedAt, title: 'x' }, moderatorCookie)).status, 400);
+
+  const hidden = await call(`/api/editor/content/${target.id}`, 'PATCH', { isVisible: false, expectedUpdatedAt: target.updatedAt }, moderatorCookie);
+  assert.equal(hidden.status, 200);
+  const hiddenItem = (await hidden.json()).item;
+  assert.equal((await pub('kind=NEWS&pageSize=50')).total, list.total - 1);
+  assert.equal((await call(`/api/editor/content/${target.id}`, 'PATCH', { isVisible: true, expectedUpdatedAt: target.updatedAt }, moderatorCookie)).status, 409);
+  assert.equal((await call(`/api/editor/content/${target.id}`, 'PATCH', { isVisible: true, expectedUpdatedAt: hiddenItem.updatedAt }, moderatorCookie)).status, 200);
+  assert.equal((await pub('kind=NEWS&pageSize=50')).total, list.total);
+  assert.equal((await call('/api/editor/content/unknown-id', 'PATCH', { isVisible: true, expectedUpdatedAt: target.updatedAt }, moderatorCookie)).status, 404);
+
+  await db.document.update({ where: { id: 'demo-doc-06' }, data: { isPublic: false } });
+  try {
+    const collections = await pub('kind=COLLECTION&pageSize=50');
+    const libraries = collections.items.find((c: { id: string }) => c.id === 'demo-collection-libraries');
+    assert.deepEqual(libraries.documents.map((d: { id: string }) => d.id), ['demo-doc-01', 'demo-doc-11', 'demo-doc-16']);
+    assert.ok(libraries.isDemo);
+  } finally { await db.document.update({ where: { id: 'demo-doc-06' }, data: { isPublic: true } }); }
+});

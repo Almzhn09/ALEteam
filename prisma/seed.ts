@@ -5,6 +5,7 @@ import { hashPassword } from 'better-auth/crypto';
 import { db } from '../src/server/db';
 import corpus from '../data/demo-corpus.json';
 import scanManifest from '../data/scans/manifest.json';
+import siteContent from '../data/site-content.json';
 import { validateDemoCorpus } from '../src/server/demo-corpus';
 
 // Original synthetic backend fixtures, not imported government archive records.
@@ -86,6 +87,14 @@ async function seed() {
       } });
     }
   }
-  console.log('Seed ready: 20 synthetic documents, 5 demo PDFs, 5 demo PNG sheets, author and moderator. Credentials were not printed.');
+  // Preserve editor decisions on repeat seeding: update stays empty.
+  for (const n of siteContent.news) {
+    if (new URL(n.url).hostname !== 'e-arhiv.vko.gov.kz') throw new Error('NEWS_SOURCE_NOT_ALLOWED');
+    await db.contentItem.upsert({ where: { id: n.id }, update: {}, create: { id: n.id, kind: 'NEWS', title: n.title, sourceUrl: n.url, publishedAt: new Date(n.date) } });
+  }
+  for (const c of siteContent.collections) {
+    await db.contentItem.upsert({ where: { id: c.id }, update: {}, create: { id: c.id, kind: 'COLLECTION', title: c.title, summary: c.summary, documentIds: c.documentIds, isDemo: true, publishedAt: new Date(c.date) } });
+  }
+  console.log('Seed ready: 20 synthetic documents, 5 demo PDFs, 5 demo PNG sheets, site links and collections, author and moderator. Credentials were not printed.');
 }
 seed().finally(() => db.$disconnect());

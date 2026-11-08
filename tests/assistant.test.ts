@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { answerFromSources, assembleAnswer, validatedSelections } from '../src/server/grounded-assistant';
 import { searchIntent, unsafeInstructions, type Passage } from '../src/server/knowledge';
 import { db } from '../src/server/db';
+import siteContent from '../data/site-content.json';
+import { getGuide } from '../src/server/guides';
 
 after(() => db.$disconnect());
 const passages: Passage[] = [{ id: 'demo-doc-01', title: 'Демо библиотеки', text: 'Это вымышленная учебная запись о библиотеке. Условный год записи: 1905.', isDemo: true, kind: 'document' }];
@@ -72,4 +74,21 @@ test('LLM adapter accepts exact excerpts and passes bounded data, not history or
 test('LLM outage and invented statements are rejected', async () => {
   await assert.rejects(answerFromSources('q', passages, { mode: 'llm', key: 'test-only', model: 'test-model', fetcher: async () => new Response('', { status: 503 }) }), /UNAVAILABLE/);
   await assert.rejects(answerFromSources('q', passages, { mode: 'llm', key: 'test-only', model: 'test-model', fetcher: async () => Response.json({ choices: [{ message: { content: JSON.stringify({ selections: [{ sourceId: passages[0].id, quote: 'Выдуманный факт, которого нет в документе.' }] }) } }] }) }), /UNSUPPORTED/);
+});
+
+test('verified archive facts are reachable in Russian and Kazakh and keep their official source', () => {
+  for (const q of ['Какой телефон архива?', 'Где находится архив?', 'Какое время работы читального зала?', 'Архивтің мекенжайы қандай?', 'Оқу залының жұмыс уақыты қандай?']) assert.equal(searchIntent(q).guide?.id, 'guide-contacts', q);
+  for (const q of ['Как получить архивную справку?', 'Какие услуги есть?', 'Архивтік анықтама қалай алуға болады?']) assert.equal(searchIntent(q).guide?.id, 'guide-services', q);
+  const contacts = getGuide('guide-contacts')!;
+  assert.match(contacts.text, /25-59-76/); assert.match(contacts.text, /e-arhiv\.vko\.gov\.kz/);
+  assert.doesNotMatch(contacts.text, /Жапаров|Костина/, 'official contacts only, no staff names');
+});
+test('site news keeps only headline, date and an official link', () => {
+  for (const item of siteContent.news) {
+    assert.equal(new URL(item.url).hostname, 'e-arhiv.vko.gov.kz');
+    assert.deepEqual(Object.keys(item).sort(), ['date', 'id', 'title', 'url']);
+    assert.ok(!Number.isNaN(Date.parse(item.date)));
+  }
+  assert.equal(new Set(siteContent.news.map(n => n.id)).size, siteContent.news.length);
+  for (const collection of siteContent.collections) assert.ok(collection.documentIds.length && collection.documentIds.every(id => id.startsWith('demo-doc-')));
 });
