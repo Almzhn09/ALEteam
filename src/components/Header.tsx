@@ -25,6 +25,15 @@ export function Header() {
   const [busy, setBusy] = useState(false);
   const [logoutError, setLogoutError] = useState('');
   const toggle = useRef<HTMLButtonElement>(null);
+  const header = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const node = header.current;
+    if (!node) return;
+    const update = () => document.documentElement.style.setProperty('--header-height', `${node.getBoundingClientRect().height}px`);
+    update();
+    const observer = new ResizeObserver(update); observer.observe(node);
+    return () => { observer.disconnect(); document.documentElement.style.removeProperty('--header-height'); };
+  }, []);
 
   useEffect(() => { setOpen(false); }, [pathname]);
   useEffect(() => {
@@ -47,7 +56,7 @@ export function Header() {
   }
 
   return (
-    <header className="site-header">
+    <header className="site-header" ref={header}>
       <div className="container header-inner">
         <Link href="/" className="brand" aria-label={t('Электронный архив — на главную')}>
           <span className="brand-mark" aria-hidden="true">ЭА</span>

@@ -10,7 +10,7 @@
     "build": "npm run db:generate && next build --webpack",
     "start": "node --use-env-proxy node_modules/next/dist/bin/next start --hostname 0.0.0.0",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests/unit.test.ts tests/moderation.test.ts tests/assistant.test.ts",
+    "test": "tsx --test tests/unit.test.ts tests/moderation.test.ts tests/moderation-variants.test.ts tests/assistant.test.ts tests/corpus.test.ts",
     "test:integration": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/integration.test.ts",
     "db:generate": "node --import tsx scripts/generate-client.ts",
     "db:migrate": "node --env-file-if-exists=.env --import tsx scripts/migrate.ts",
@@ -20,7 +20,11 @@
     "evaluate:artur": "node --env-file-if-exists=.env --import tsx scripts/evaluate-artur.ts",
     "demo:artur": "node --env-file-if-exists=.env --import tsx scripts/demo-artur.ts",
     "capture:artur": "node --env-file-if-exists=.env --import tsx scripts/capture-demo.ts",
-    "i18n:check": "tsx scripts/i18n-keys.mjs --check"
+    "i18n:check": "tsx scripts/i18n-keys.mjs --check",
+    "scans:generate": "node --import tsx scripts/generate-demo-scans.ts",
+    "test:release": "node --env-file-if-exists=.env --import tsx scripts/release-checks.ts",
+    "check:llm": "node --use-env-proxy --env-file-if-exists=.env --import tsx scripts/check-live-llm.ts",
+    "presentation:export": "node --import tsx scripts/export-presentation.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.10.1",
@@ -39,6 +43,7 @@
     "@types/pg": "8.23.1",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "axe-core": "4.10.2",
     "playwright-core": "1.65.0",
     "prisma": "7.10.1",
     "tsx": "4.23.15",

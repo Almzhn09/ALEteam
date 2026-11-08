@@ -7,7 +7,7 @@ const topics: [RegExp,string,string][] = [
   [/школ|мектеп|mektep/iu, 'школа', 'школ'],
   [/музе|мұражай/iu, 'музей', 'музе'],
   [/площад|алаң/iu, 'площадь', 'площад'],
-  [/железн|дорог|станци|теміржол/iu, 'станция', 'железн'],
+  [/железн|дорог|станци|темір\s*жол/iu, 'станция', 'железн'],
 ];
 export function unsafeInstructions(text: string) {
   return /ignore[\s\S]{0,40}(?:instruction|previous)|игнориру[\s\S]{0,40}(?:инструкц|правил)|system\s*prompt|системн\p{L}*\s+(?:промпт|инструкц)|api[_ -]?key|(?:покажи|раскрой|выведи)[\s\S]{0,30}(?:секрет|парол|токен)|<\/?(?:system|script)>/iu.test(text);
@@ -19,7 +19,7 @@ export function searchIntent(question: string) {
   const reference = question.match(/DEMO-Ф[12]-О1-Д\d{1,2}/iu)?.[0];
   if (!topic && !reference) {
     const guide = /фонд|қор деген/iu.test(question) && /что|такое|деген|түсіндір/iu.test(question) ? guides[0]
-      : /шифр|опись|мұрағаттық шифр/iu.test(question) && /что|такое|как|деген/iu.test(question) ? guides[1]
+      : /шифр|опись|мұрағаттық шифр/iu.test(question) && /что|такое|как|деген|нені|білдір|түсіндір/iu.test(question) ? guides[1]
       : /комментар|материт|матерш|пікір/iu.test(question) && /как|почему|правил|нельзя|қалай/iu.test(question) ? guides[3]
       : /как.*(?:найти|искать|поиск)|қалай.*(?:табу|іздеу)|құжатты қалай/iu.test(question) ? guides[2] : undefined;
     if (guide) return { query: '', years, guide, reference, titleTerm: undefined };

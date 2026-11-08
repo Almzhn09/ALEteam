@@ -1,0 +1,67 @@
+[
+  {
+    "id": "demo-scan-1",
+    "documentId": "demo-doc-01",
+    "storageKey": "demo-doc-01.png",
+    "mimeType": "image/png",
+    "size": 121464,
+    "sha256": "fec8c4f347183718e7709f3101d5b3637bcfdf922af0b141057929fc72c52ef1",
+    "sourceTextSha256": "614709a597ed8d5ca30e705966be9198322ad57e64a73cac7d387f9ed278b0b3",
+    "creator": "ALEteam",
+    "license": "CC0-1.0",
+    "historicalScan": false,
+    "provenance": "Raster rendering of original fictional ALEteam text"
+  },
+  {
+    "id": "demo-scan-2",
+    "documentId": "demo-doc-02",
+    "storageKey": "demo-doc-02.png",
+    "mimeType": "image/png",
+    "size": 122671,
+    "sha256": "2bc8730825381dd620ebaa310514789db43fb19b793e9e157de917f8efcc96b0",
+    "sourceTextSha256": "762ce0625091615349059a87d12a39075e3bfac52303a01ef9fa6e475de2c4e5",
+    "creator": "ALEteam",
+    "license": "CC0-1.0",
+    "historicalScan": false,
+    "provenance": "Raster rendering of original fictional ALEteam text"
+  },
+  {
+    "id": "demo-scan-3",
+    "documentId": "demo-doc-03",
+    "storageKey": "demo-doc-03.png",
+    "mimeType": "image/png",
+    "size": 119138,
+    "sha256": "93804e8be659178a0bf203ce088797ffa300b66daa219c602293656b8a148828",
+    "sourceTextSha256": "e76db53bf2c1e7a364de8aeaa3c31f4af41a5581b73b6a925f25ca928edeeec1",
+    "creator": "ALEteam",
+    "license": "CC0-1.0",
+    "historicalScan": false,
+    "provenance": "Raster rendering of original fictional ALEteam text"
+  },
+  {
+    "id": "demo-scan-4",
+    "documentId": "demo-doc-04",
+    "storageKey": "demo-doc-04.png",
+    "mimeType": "image/png",
+    "size": 120486,
+    "sha256": "4194ea25789e98f02204ffc3068ecb185a09ec2b22adb0c8e4774176f160256c",
+    "sourceTextSha256": "7bde56bbb628add310806083094ce382b6590cc3cb559f52a6780d622abfcb72",
+    "creator": "ALEteam",
+    "license": "CC0-1.0",
+    "historicalScan": false,
+    "provenance": "Raster rendering of original fictional ALEteam text"
+  },
+  {
+    "id": "demo-scan-5",
+    "documentId": "demo-doc-05",
+    "storageKey": "demo-doc-05.png",
+    "mimeType": "image/png",
+    "size": 122656,
+    "sha256": "0486bbadffd9110f9fe3b2f6ca61ac4f856c2f1902d040ad76058db07dec2693",
+    "sourceTextSha256": "bf940a5da4af67c0ed460ab041b644f325b8097261d49c0c3cc85763652b5bef",
+    "creator": "ALEteam",
+    "license": "CC0-1.0",
+    "historicalScan": false,
+    "provenance": "Raster rendering of original fictional ALEteam text"
+  }
+]

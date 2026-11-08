@@ -1,6 +1,10 @@
 // Kazakh UI dictionary (F12). Key — Russian source string. Draft translation: must be reviewed by a native speaker.
 // Check coverage: npx tsx scripts/i18n-keys.mjs --check
 export const kk: Record<string, string> = {
+  'Поиск по источникам': 'Дереккөздерден іздеу',
+  'LLM: выбор цитат': 'LLM: дәйексөздерді таңдау',
+  'Внешний сервис': 'Сыртқы сервис',
+  'Справки — источники помощника': 'Анықтамалар — көмекшінің дереккөздері',
   // Layout and navigation
   'Электронный архив': 'Электрондық мұрағат',
   'Электронный архив — на главную': 'Электрондық мұрағат — басты бетке',

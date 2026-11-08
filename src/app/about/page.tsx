@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Breadcrumbs } from '@/components/ui';
 import { getT } from '@/lib/i18n-server';
+import { guides } from '@/server/guides';
 
 export async function generateMetadata() { return { title: (await getT())('Об архиве и помощь') }; }
 
@@ -33,6 +34,12 @@ export default async function AboutPage() {
         <p>{t('Интерфейс доступен на русском и казахском языках. Архивные материалы показываются на языке оригинала и не переводятся автоматически.')}</p>
         <h3>{t('Демонстрационные материалы')}</h3>
         <p>{t('Записи с меткой ДЕМО вымышлены для проверки интерфейса и не являются архивными источниками.')}</p>
+      </section>
+      <section className="stack section" aria-labelledby="source-guides-title">
+        <h2 id="source-guides-title">{t('Справки — источники помощника')}</h2>
+        {guides.map(guide => <article key={guide.id} id={guide.id} lang="ru" className="card card-flat" style={{ scrollMarginTop: 'calc(var(--header-height, 64px) + 16px)' }}>
+          <h3>{guide.title}</h3><p>{guide.text}</p>
+        </article>)}
       </section>
     </div>
   );

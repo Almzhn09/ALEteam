@@ -1,4 +1,4 @@
-export const MODERATION_VERSION = 'ru-kk-rules-1.0.0';
+export const MODERATION_VERSION = 'ru-kk-rules-1.1.0';
 export type ModerationResult = {
   status: 'PUBLISHED' | 'REJECTED' | 'PENDING';
   reason: 'CLEAN' | 'PROFANITY' | 'REVIEW_REQUIRED';
@@ -38,7 +38,7 @@ export function moderateText(text: string): ModerationResult {
   const quoted = /[«»“”"]|<\/?[a-z][^>]*>|\[[^\]]*(?:цитат|дәйексөз)/iu.test(normalized);
   const baseForms = [normalized, normalized.replace(/[abcehkmoptxyi01346@$]/gu, c => visualMap[c] ?? c), transliterate(normalized), transliterate(normalized.replace(/[01346@$]/gu, c => visualMap[c] ?? c))];
   const forms = [...baseForms, ...baseForms.map(s => s.replace(/(\p{L})\1{1,}/gu, '$1'))];
-  let suspicious = /\p{L}[*#_@$]{1,}\p{L}/u.test(normalized);
+  let suspicious = /\p{L}[*#_@$]{1,}\p{L}|&(?:#\d{1,7}|#x[0-9a-f]{1,6}|[a-z]{2,16});/iu.test(normalized);
   for (const form of forms) {
     const words = form.match(/\p{L}+/gu) ?? [];
     for (const word of words) {
@@ -46,11 +46,20 @@ export function moderateText(text: string): ModerationResult {
       if (definite.some(pattern => pattern.test(word))) return quoted ? result('PENDING', 'REVIEW_REQUIRED') : result('REJECTED', 'PROFANITY');
       if (hiddenRoots.some(root => word.includes(root))) suspicious = true;
     }
-    // Join short runs (х.у.й, с у к а), without joining ordinary sentence words.
-    const separated = /(?:^|[^\p{L}\p{N}])(?:[\p{L}]{1,2}[\s._*#-]+){1,8}[\p{L}]{1,3}(?=$|[^\p{L}\p{N}])/gu;
-    for (const match of form.matchAll(separated)) {
-      const joined = match[0].replace(/[^\p{L}]/gu, '');
-      if (definite.some(pattern => pattern.test(joined))) return quoted ? result('PENDING', 'REVIEW_REQUIRED') : result('REJECTED', 'PROFANITY');
+    // Check every bounded suffix, so harmless short words before/after a masked word
+    // cannot consume a greedy match. Emoji and punctuation are also separators.
+    let run: string[] = []; let previousEnd = 0;
+    for (const match of form.matchAll(/\p{L}+/gu)) {
+      const separator = form.slice(previousEnd, match.index);
+      if (match[0].length > 3) { run = []; previousEnd = match.index + match[0].length; continue; }
+      if (!/^[\p{P}\p{S}\s]*$/u.test(separator)) run = [];
+      run.push(match[0]); run = run.slice(-12); previousEnd = match.index + match[0].length;
+      let joined = run[run.length - 1];
+      for (let i = run.length - 2; i >= 0 && joined.length <= 24; i--) {
+        joined = run[i] + joined;
+        if (safeWords.has(joined)) continue;
+        if (definite.some(pattern => pattern.test(joined))) return quoted ? result('PENDING', 'REVIEW_REQUIRED') : result('REJECTED', 'PROFANITY');
+      }
     }
   }
   if (quoted || suspicious) return result('PENDING', 'REVIEW_REQUIRED');

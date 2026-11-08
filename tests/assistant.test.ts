@@ -43,6 +43,8 @@ test('retrieval intent supports Russian, Kazakh, period and exact reference', ()
   assert.equal(searchIntent('Как найти материалы?').guide?.id, 'guide-search');
   assert.deepEqual(searchIntent('Документы музея 1910–1940').years, [1910, 1940]);
   assert.equal(searchIntent('Дело DEMO-Ф2-О1-Д1').reference, 'DEMO-Ф2-О1-Д1');
+  assert.equal(searchIntent('Темір жол туралы құжаттарды тап').query, 'станция');
+  assert.equal(searchIntent('Мұрағаттық шифр нені білдіреді?').guide?.id, 'guide-reference');
 });
 test('LLM mode does not silently pretend to run without credentials', async () => {
   await assert.rejects(answerFromSources('Библиотека', passages, { mode: 'llm', key: '', model: '' }), /CONFIGURATION/);

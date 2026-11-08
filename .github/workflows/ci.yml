@@ -38,3 +38,16 @@ jobs:
       - run: npm run evaluate:artur
         env:
           DATABASE_URL: ${{ env.TEST_DATABASE_URL }}
+      - name: Real browser flow and accessibility
+        shell: bash
+        run: |
+          browser_path="$(command -v google-chrome || command -v chromium)"
+          test -n "$browser_path"
+          CHROMIUM_PATH="$browser_path" npm run test:release
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: real-browser-report
+          path: |
+            .local/release/report.json
+            .local/release/screenshots

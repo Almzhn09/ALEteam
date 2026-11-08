@@ -13,7 +13,7 @@ const MAX = 1000;
 const STORE = 'aleteam-assistant-history-v1';
 type Message =
   | { role: 'user'; content: string }
-  | { role: 'assistant'; content: string; noAnswer: boolean; sources: AssistantAnswer['sources'] }
+  | { role: 'assistant'; content: string; noAnswer: boolean; sources: AssistantAnswer['sources']; mode?: AssistantAnswer['mode'] }
   | { role: 'error'; content: string; retry?: string };
 
 const examples = ['Есть ли материалы о библиотеке?', 'Что означает архивный шифр?', 'Найди документы о железной дороге'];
@@ -68,10 +68,10 @@ export function Assistant() {
     const abort = new AbortController(); controller.current = abort;
     try {
       const r = await Promise.race([
-        apiSend<AssistantAnswer>('/assistant', 'POST', { question: q, history }),
+        apiSend<AssistantAnswer>('/assistant', 'POST', { question: q, history }, {}, abort.signal),
         new Promise<never>((_, reject) => abort.signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')))),
       ]);
-      setMessages(m => [...m, { role: 'assistant', content: r.answer, noAnswer: r.noAnswer, sources: r.sources }]);
+      setMessages(m => [...m, { role: 'assistant', content: r.answer, noAnswer: r.noAnswer, sources: r.sources, mode: r.mode }]);
     } catch (error) {
       if ((error as Error)?.name === 'AbortError') setMessages(m => [...m, { role: 'error', content: t('Запрос отменён.'), retry: q }]);
       else setMessages(m => [...m, { role: 'error', content: errorMessage(error, t), retry: error instanceof ApiClientError && error.status !== 429 ? q : undefined }]);
@@ -101,7 +101,7 @@ export function Assistant() {
       {messages.length === 0 ? (
         <div className="panel">
           <p style={{ fontWeight: 600 }}>{t('Примеры вопросов')}</p>
-          <div className="row">
+          <div className="row chat-examples">
             {examples.map(x => <button key={x} type="button" className="btn btn-secondary btn-sm" onClick={() => void ask(t(x))}>{t(x)}</button>)}
           </div>
           <p className="small muted" style={{ margin: 'var(--space-3) 0 0' }}>{t('Не отправляйте персональные данные. Помощник может ошибаться: решения принимайте по самим документам.')}</p>
@@ -123,6 +123,7 @@ export function Assistant() {
                 {m.retry && <button type="button" className="btn btn-secondary btn-sm" onClick={() => void ask(m.retry!)}>{t('Повторить вопрос')}</button>}
               </Notice>
             ) : m.role === 'assistant' ? <>
+              <span className="badge badge-neutral" data-assistant-mode={m.mode ?? 'external'}>{m.mode === 'retrieval' ? t('Поиск по источникам') : m.mode === 'llm' ? t('LLM: выбор цитат') : t('Внешний сервис')}</span>
               {m.noAnswer && <strong className="notice-title">{t('В материалах архива ответа не найдено')}</strong>}
               {m.content}
               {m.sources.length > 0 && (
@@ -130,7 +131,7 @@ export function Assistant() {
                   <strong>{t('Источники:')}</strong>
                   <ul>
                     {m.sources.map(s => (
-                      <li key={s.id}><Link href={`/documents/${encodeURIComponent(s.id)}`}><Ru>{s.title}</Ru></Link> <DemoBadge show={s.isDemo} /></li>
+                      <li key={s.id}><Link href={s.kind === 'guide' ? `/about#${encodeURIComponent(s.id)}` : `/documents/${encodeURIComponent(s.id)}`}><Ru>{s.title}</Ru></Link> <DemoBadge show={s.isDemo} /></li>
                     ))}
                   </ul>
                 </div>

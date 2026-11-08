@@ -17,9 +17,9 @@ try {
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
     const health = await page.evaluate(async () => (await fetch('/api/health')).status);
     const guide = await page.evaluate(async () => (await fetch('/api/guides/guide-fund')).status);
-    const file = `.local/reports/screenshots/technical-${width}.png`;
+    const file = `.local/reports/screenshots/landing-${width}.png`;
     await page.screenshot({ path: file, fullPage: true });
-    results.push({ width, keyboardFocus, overflow, health, guide, pageErrors: errors, screenshot: file, target: 'technical landing only; final frontend absent' });
+    results.push({ width, keyboardFocus, overflow, health, guide, pageErrors: errors, screenshot: file, target: 'integrated public landing; full user flows are tested by test:release' });
     await page.close();
   }
 } finally { await browser.close(); }

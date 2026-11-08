@@ -1,9 +1,11 @@
-import { randomUUID } from 'node:crypto';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { randomUUID, createHash } from 'node:crypto';
+import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { hashPassword } from 'better-auth/crypto';
 import { db } from '../src/server/db';
 import corpus from '../data/demo-corpus.json';
+import scanManifest from '../data/scans/manifest.json';
+import { validateDemoCorpus } from '../src/server/demo-corpus';
 
 // Original synthetic backend fixtures, not imported government archive records.
 function demoPdf(index: number, body: string) {
@@ -31,6 +33,13 @@ async function seed() {
   const authorPassword = process.env.DEMO_AUTHOR_PASSWORD;
   const moderatorPassword = process.env.DEMO_MODERATOR_PASSWORD;
   if (!authorPassword || !moderatorPassword || Math.min(authorPassword.length, moderatorPassword.length) < 12) throw new Error('Demo passwords (12+ characters) must be supplied through environment.');
+  const validated = validateDemoCorpus(corpus, scanManifest);
+  // Verify every image before any DB writes, so bad assets cannot partially seed the corpus.
+  const scanBuffers = await Promise.all(validated.scans.map(async scan => {
+    const bytes = await readFile(path.resolve('data/scans', scan.storageKey));
+    if (bytes.length !== scan.size || createHash('sha256').update(bytes).digest('hex') !== scan.sha256) throw new Error('SCAN_FILE_INTEGRITY_MISMATCH');
+    return { scan, bytes };
+  }));
   for (const [id, name] of [['demo-fund-1', 'Демо: городская история'], ['demo-fund-2', 'Демо: культура и образование']]) {
     await db.fund.upsert({ where: { id }, create: { id, name, description: 'Вымышленный фонд для тестирования API.' }, update: {} });
   }
@@ -56,6 +65,14 @@ async function seed() {
       }, update: { size: data.byteLength } });
     }
   }
+  for (const { scan, bytes } of scanBuffers) {
+    await writeFile(path.join(root, scan.storageKey), bytes);
+    await db.archiveFile.upsert({ where: { id: scan.id }, create: {
+      id: scan.id, documentId: scan.documentId, storageKey: scan.storageKey, mimeType: scan.mimeType,
+      name: `Оригинальный демонстрационный лист ${scan.id.replace('demo-scan-', '')}.png`,
+      size: scan.size, downloadable: true, isPublic: true,
+    }, update: { size: scan.size } });
+  }
   for (const [id, name, email, role, password] of [
     ['demo-author', 'Автор демо', 'author@example.test', 'AUTHOR', authorPassword],
     ['demo-moderator', 'Модератор демо', 'moderator@example.test', 'MODERATOR', moderatorPassword],
@@ -69,6 +86,6 @@ async function seed() {
       } });
     }
   }
-  console.log('Seed ready: 20 synthetic documents, 5 demo PDFs, author and moderator. Credentials were not printed.');
+  console.log('Seed ready: 20 synthetic documents, 5 demo PDFs, 5 demo PNG sheets, author and moderator. Credentials were not printed.');
 }
 seed().finally(() => db.$disconnect());

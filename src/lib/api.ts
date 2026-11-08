@@ -51,8 +51,8 @@ export async function apiGet<T>(path: string, signal?: AbortSignal): Promise<T> 
   return parse<T>(await request(path, { method: 'GET', signal }));
 }
 
-export async function apiSend<T>(path: string, method: 'POST' | 'PATCH', body: unknown, headers: Record<string, string> = {}): Promise<T> {
-  return parse<T>(await request(path, { method, headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(body) }));
+export async function apiSend<T>(path: string, method: 'POST' | 'PATCH', body: unknown, headers: Record<string, string> = {}, signal?: AbortSignal): Promise<T> {
+  return parse<T>(await request(path, { method, headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(body), signal }));
 }
 
 export function fileUrl(id: string, download = false) {

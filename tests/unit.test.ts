@@ -36,10 +36,14 @@ test('invalid JSON and unexpected content type fail explicitly', async () => {
   await assert.rejects(readJson(new Request('http://localhost', { method: 'POST', body: '{}' })), (e: unknown) => e instanceof ApiError && e.status === 415);
   await assert.rejects(readJson(new Request('http://localhost', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{' })), (e: unknown) => e instanceof ApiError && e.status === 400);
 });
-test('explicit manual moderation mode always queues a comment', async () => {
+test('manual or unknown moderation configuration always queues a comment', async () => {
   delete process.env.MODERATION_SERVICE_URL;
-  process.env.MODERATION_MODE = 'manual';
-  try { assert.equal((await moderate('test')).status, 'PENDING'); }
+  try {
+    for (const mode of ['manual', 'invalid-configuration']) {
+      process.env.MODERATION_MODE = mode;
+      assert.equal((await moderate('test')).status, 'PENDING');
+    }
+  }
   finally { delete process.env.MODERATION_MODE; }
 });
 test('moderation rejects inconsistent publish decisions', () => {
