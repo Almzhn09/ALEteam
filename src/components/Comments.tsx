@@ -19,7 +19,9 @@ export function Comments({ documentId }: { documentId: string }) {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
-  const [own, setOwn] = useState<OwnComment[]>([]);
+  const [ownData, setOwn] = useState<{ ownerId?: string; items: OwnComment[] }>({ items: [] });
+  const own = ownData.ownerId === user?.id ? ownData.items : [];
+  const activeUser = useRef(user?.id); activeUser.current = user?.id;
 
   const load = useCallback(async (p: number) => {
     setLoading(true); setError(null);
@@ -32,13 +34,14 @@ export function Comments({ documentId }: { documentId: string }) {
 
   const loadOwn = useCallback(async () => {
     try {
-      const r = await apiGet<Page<OwnComment>>('/me/comments?pageSize=50');
-      setOwn(r.items.filter(c => c.documentId === documentId && c.status !== 'PUBLISHED'));
-    } catch { setOwn([]); }
-  }, [documentId]);
+      const r = await apiGet<Page<OwnComment> & { ownerId: string }>('/me/comments?pageSize=50');
+      if (r.ownerId !== activeUser.current) return;
+      setOwn({ ownerId: r.ownerId, items: r.items.filter(c => c.documentId === documentId && c.status !== 'PUBLISHED') });
+    } catch { setOwn({ items: [] }); }
+  }, [documentId, user?.id]);
 
   useEffect(() => { void load(1); }, [load]);
-  useEffect(() => { if (user) void loadOwn(); else setOwn([]); }, [user, loadOwn]);
+  useEffect(() => { if (user) void loadOwn(); else setOwn({ items: [] }); }, [user, loadOwn]);
 
   return (
     <section id="comments" aria-labelledby="comments-title" className="stack">
@@ -78,7 +81,7 @@ export function Comments({ documentId }: { documentId: string }) {
         : (
           <>
             <ul className="comment-list">
-              {list.map(c => <CommentItem key={c.id} comment={c} canReport={!!user} />)}
+              {list.map(c => <CommentItem key={c.id} comment={c} documentId={documentId} canReport={!!user} onCreated={() => { void loadOwn(); void load(1); }} />)}
             </ul>
             {error && <ErrorNotice error={error} onRetry={() => void load(page + 1)} title={t('Не удалось загрузить ещё')} />}
             {list.length < total && !error && (
@@ -92,7 +95,7 @@ export function Comments({ documentId }: { documentId: string }) {
   );
 }
 
-function CommentForm({ documentId, onCreated }: { documentId: string; onCreated(): void }) {
+function CommentForm({ documentId, parentId, onCreated }: { documentId: string; parentId?: string; onCreated(): void }) {
   const { t } = useI18n();
   const [body, setBody] = useState('');
   const [sending, setSending] = useState(false);
@@ -110,7 +113,7 @@ function CommentForm({ documentId, onCreated }: { documentId: string; onCreated(
     setSending(true); setResult(null);
     try {
       const { item } = await apiSend<{ item: CreatedComment }>(`/documents/${encodeURIComponent(documentId)}/comments`, 'POST',
-        { body: trimmed }, { 'Idempotency-Key': attempt.current.key });
+        { body: trimmed, ...(parentId ? { parentId } : {}) }, { 'Idempotency-Key': attempt.current.key });
       attempt.current = null;
       if (item.status === 'REJECTED') {
         setResult({ tone: 'error', title: t('Комментарий отклонён'), text: t(reasonText[item.reason] ?? reasonText.PROFANITY) });
@@ -134,7 +137,7 @@ function CommentForm({ documentId, onCreated }: { documentId: string; onCreated(
   return (
     <form className="card card-flat stack" onSubmit={submit} noValidate>
       <div className="field">
-        <label htmlFor={id}>{t('Ваш комментарий')}</label>
+        <label htmlFor={id}>{parentId ? t('Ваш ответ') : t('Ваш комментарий')}</label>
         <textarea id={id} className="textarea" value={body} onChange={e => setBody(e.target.value)} aria-invalid={over}
           aria-describedby={`${id}-counter`} rows={4} />
         <span id={`${id}-counter`} className="hint counter" data-over={over} aria-live={over ? 'polite' : 'off'}>
@@ -151,13 +154,14 @@ function CommentForm({ documentId, onCreated }: { documentId: string; onCreated(
   );
 }
 
-function CommentItem({ comment, canReport }: { comment: PublicComment; canReport: boolean }) {
+function CommentItem({ comment, documentId, canReport, onCreated }: { comment: PublicComment; documentId: string; canReport: boolean; onCreated(): void }) {
   const { t, formatDate } = useI18n();
   const dialog = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLButtonElement>(null);
   const [reason, setReason] = useState('');
   const [state, setState] = useState<'idle' | 'sending' | 'sent'>('idle');
   const [error, setError] = useState('');
+  const [reply, setReply] = useState(false);
   const id = useId();
   const valid = reason.trim().length >= 3 && reason.trim().length <= 500;
 
@@ -172,12 +176,15 @@ function CommentItem({ comment, canReport }: { comment: PublicComment; canReport
   }
 
   return (
-    <li className="comment">
+    <li className="comment" id={`comment-${comment.id}`}>
       <div className="comment-head">
         <strong>{comment.author.name}</strong>
         <time className="muted small" dateTime={comment.createdAt}>{formatDate(comment.createdAt)}</time>
       </div>
       <p className="pre-wrap">{comment.body}</p>
+      {comment.parentId && <p className="small muted">{t('Ответ на комментарий')} · <a href={`#comment-${comment.parentId}`}>{t('Перейти к исходному комментарию')}</a></p>}
+      {canReport && <button type="button" className="btn btn-ghost btn-sm" aria-expanded={reply} onClick={() => setReply(v => !v)}>{reply ? t('Отменить ответ') : t('Ответить')}</button>}
+      {canReport && reply && <CommentForm documentId={documentId} parentId={comment.id} onCreated={onCreated} />}
       {canReport && (state === 'sent'
         ? <p className="small muted" role="status" style={{ margin: 0 }}>{t('Жалоба отправлена модератору.')}</p>
         : <button ref={opener} type="button" className="btn btn-ghost btn-sm" onClick={() => { setError(''); dialog.current?.showModal(); }}>{t('Пожаловаться')}</button>)}

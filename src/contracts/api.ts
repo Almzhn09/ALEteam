@@ -19,13 +19,19 @@ export interface DocumentDetail extends DocumentSummary {
   fund: Fund; files: ArchiveFile[];
 }
 export interface CurrentUser { id: string; name: string; email: string; role: UserRole }
-export interface PublicComment { id: string; body: string; createdAt: string; author: { name: string } }
+export interface PublicComment { id: string; parentId?: string | null; body: string; createdAt: string; author: { name: string } }
 export interface OwnComment {
   id: string; documentId: string; body: string; status: CommentStatus; reason: string; createdAt: string;
 }
 export interface CreatedComment extends OwnComment {
-  authorId: string; moderationVersion: string; idempotencyKey: string; updatedAt: string;
+  authorId: string; parentId?: string | null; moderationVersion: string; idempotencyKey: string; updatedAt: string;
 }
+export type Favorite = Pick<DocumentSummary, 'id' | 'title' | 'reference' | 'year' | 'type' | 'isDemo'> & { savedAt: string };
+export interface NotificationItem {
+  id: string; kind: 'COMMENT_REPLY' | 'MODERATION_DECISION'; status: CommentStatus | null;
+  createdAt: string; readAt: string | null; commentId: string; documentId: string;
+}
+export interface NotificationSettings { notifyReplies: boolean; notifyModeration: boolean }
 export interface ModerationQueueItem extends CreatedComment {
   author: { id: string; name: string };
   reports: { id: string; reason: string; createdAt: string }[];

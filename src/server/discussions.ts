@@ -4,9 +4,10 @@ import { db } from './db';
 import { ApiError, idSchema, json, pageSchema, queryParams, rateLimit, readJson, requireUser } from './http';
 import { publicDocument } from './catalog';
 import { moderate } from './services';
+import { notifyDecision, notifyReply } from './notifications';
 
-export const commentBody = z.object({ body: z.string().trim().min(1).max(2000) }).strict();
-const publicSelect = { id: true, body: true, createdAt: true, author: { select: { name: true } } } satisfies Prisma.CommentSelect;
+export const commentBody = z.object({ body: z.string().trim().min(1).max(2000), parentId: idSchema.optional() }).strict();
+const publicSelect = { id: true, parentId: true, body: true, createdAt: true, author: { select: { name: true } } } satisfies Prisma.CommentSelect;
 export async function listComments(request: Request, documentId: string) {
   await publicDocument(documentId);
   const p = pageSchema.strict().parse(queryParams(request));
@@ -20,23 +21,28 @@ export async function listComments(request: Request, documentId: string) {
 export async function createComment(request: Request, documentId: string) {
   const user = await requireUser(request);
   await publicDocument(documentId);
-  const { body } = commentBody.parse(await readJson(request));
+  const { body, parentId } = commentBody.parse(await readJson(request));
   const idempotencyKey = z.uuid().parse(request.headers.get('idempotency-key'));
   const existing = await db.comment.findUnique({ where: { authorId_idempotencyKey: { authorId: user.id, idempotencyKey } } });
   if (existing) {
-    if (existing.body !== body || existing.documentId !== documentId) throw new ApiError(409, 'IDEMPOTENCY_CONFLICT', 'Ключ уже использован для другого запроса.');
+    if (existing.body !== body || existing.documentId !== documentId || (existing.parentId ?? undefined) !== parentId) throw new ApiError(409, 'IDEMPOTENCY_CONFLICT', 'Ключ уже использован для другого запроса.');
     return json({ item: existing });
   }
   await rateLimit(`comment:${user.id}`, 5, 60);
   const result = await moderate(body);
   try {
-    const item = await db.comment.create({ data: { documentId, authorId: user.id, body, idempotencyKey,
-      status: result.status, reason: result.reason, moderationVersion: result.version } });
+    const item = await db.$transaction(async tx => {
+      if (parentId && !await tx.comment.findFirst({ where: { id: parentId, documentId, status: 'PUBLISHED' }, select: { id: true } })) throw new ApiError(404, 'NOT_FOUND', 'Комментарий не найден.');
+      const created = await tx.comment.create({ data: { documentId, parentId, authorId: user.id, body, idempotencyKey,
+        status: result.status, reason: result.reason, moderationVersion: result.version } });
+      await notifyReply(tx, created);
+      return created;
+    });
     return json({ item }, 201);
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
       const item = await db.comment.findUniqueOrThrow({ where: { authorId_idempotencyKey: { authorId: user.id, idempotencyKey } } });
-      if (item.body !== body || item.documentId !== documentId) throw new ApiError(409, 'IDEMPOTENCY_CONFLICT', 'Ключ уже использован для другого запроса.');
+      if (item.body !== body || item.documentId !== documentId || (item.parentId ?? undefined) !== parentId) throw new ApiError(409, 'IDEMPOTENCY_CONFLICT', 'Ключ уже использован для другого запроса.');
       return json({ item });
     }
     throw error;
@@ -50,7 +56,7 @@ export async function ownComments(request: Request) {
     db.comment.findMany({ where, select: { id: true, documentId: true, body: true, status: true, reason: true, createdAt: true }, orderBy: [{ createdAt: 'desc' }, { id: 'asc' }], take: p.pageSize, skip: (p.page - 1) * p.pageSize }),
     db.comment.count({ where }),
   ], { isolationLevel: 'RepeatableRead' });
-  return json({ items, total, ...p });
+  return json({ items, total, ...p, ownerId: user.id });
 }
 export async function reportComment(request: Request, id: string) {
   idSchema.parse(id);
@@ -87,7 +93,9 @@ export async function decideComment(request: Request, id: string) {
     if (current.updatedAt.toISOString() !== p.expectedUpdatedAt) throw new ApiError(409, 'STALE_DECISION', 'Комментарий изменился. Обновите очередь.');
     const updated = await tx.comment.update({ where: { id }, data: { status: p.status, reason: 'MANUAL_DECISION',
       updatedAt: new Date(Math.max(Date.now(), current.updatedAt.getTime() + 1)) } });
-    await tx.moderationDecision.create({ data: { commentId: id, moderatorId: user.id, fromStatus: current.status, toStatus: p.status, reason: p.reason } });
+    const decision = await tx.moderationDecision.create({ data: { commentId: id, moderatorId: user.id, fromStatus: current.status, toStatus: p.status, reason: p.reason } });
+    await notifyDecision(tx, updated, decision.id);
+    await notifyReply(tx, updated);
     await tx.report.updateMany({ where: { commentId: id, resolvedAt: null }, data: { resolvedAt: new Date() } });
     return updated;
   });

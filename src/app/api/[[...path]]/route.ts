@@ -5,6 +5,10 @@ import { documentList, fileResponse, publicDocument } from '@/server/catalog';
 import { createComment, decideComment, decisionHistory, listComments, moderationQueue, ownComments, reportComment } from '@/server/discussions';
 import { assistant } from '@/server/assistant';
 import { getGuide, guides } from '@/server/guides';
+import { deleteFavorites, listFavorites, saveFavorites } from '@/server/personal';
+import { listNotifications, notificationSettings, readNotification } from '@/server/notifications';
+import { similarDocuments } from '@/server/similarity';
+import { recognizedText } from '@/server/ocr';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -40,16 +44,33 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
     if (route === 'funds' && method === 'GET') return json({ items: await db.fund.findMany({ where: { documents: { some: { isPublic: true } } }, orderBy: { id: 'asc' } }) });
     if (route === 'documents' && method === 'GET') return documentList(request);
     if (path[0] === 'documents' && path.length === 2 && method === 'GET') return json({ item: await publicDocument(path[1]) });
+    if (path[0] === 'documents' && path.length === 3 && path[2] === 'similar' && method === 'GET') return similarDocuments(path[1]);
     if (path[0] === 'documents' && path.length === 3 && path[2] === 'comments') {
       if (method === 'GET') return listComments(request, path[1]);
       if (method === 'POST') return createComment(request, path[1]);
     }
     if (path[0] === 'files' && path.length === 2 && method === 'GET') return fileResponse(request, path[1]);
+    if (path[0] === 'files' && path.length === 3 && path[2] === 'ocr' && method === 'GET') return recognizedText(request, path[1]);
     if (route === 'me' && method === 'GET') {
       const user = await requireUser(request);
       return json({ item: { id: user.id, name: user.name, email: user.email, role: user.role } });
     }
     if (route === 'me/comments' && method === 'GET') return ownComments(request);
+    if (route === 'me/favorites') {
+      if (method === 'GET') return listFavorites(request);
+      if (method === 'DELETE') return deleteFavorites(request);
+    }
+    if (route === 'me/favorites/import' && method === 'POST') return saveFavorites(request);
+    if (path[0] === 'me' && path[1] === 'favorites' && path.length === 3) {
+      if (method === 'PUT') return saveFavorites(request, path[2]);
+      if (method === 'DELETE') return deleteFavorites(request, path[2]);
+    }
+    if (route === 'me/notifications') {
+      if (method === 'GET') return listNotifications(request);
+      if (method === 'PATCH') return readNotification(request);
+    }
+    if (route === 'me/notification-settings' && ['GET', 'PATCH'].includes(method)) return notificationSettings(request);
+    if (path[0] === 'me' && path[1] === 'notifications' && path.length === 3 && method === 'PATCH') return readNotification(request, path[2]);
     if (path[0] === 'comments' && path.length === 3 && path[2] === 'reports' && method === 'POST') return reportComment(request, path[1]);
     if (route === 'moderation/comments' && method === 'GET') return moderationQueue(request);
     if (path[0] === 'moderation' && path[1] === 'comments') {

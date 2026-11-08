@@ -241,3 +241,106 @@ test('built-in Artur modules work through the real authenticated API without ext
     if (localApp.exitCode === null) { localApp.kill('SIGTERM'); await once(localApp, 'exit'); }
   }
 });
+
+test('account favorites are idempotent, paginated and isolated from guests and other users', async () => {
+  await db.rateLimit.deleteMany(); await db.apiRateLimit.deleteMany();
+  authorCookie = await login('author@example.test', authorPassword);
+  await db.favorite.deleteMany();
+  assert.equal((await call('/api/me/favorites')).status, 401);
+  const saved = await Promise.all(Array.from({ length: 3 }, () => call('/api/me/favorites/demo-doc-01', 'PUT', {}, authorCookie)));
+  assert.ok(saved.every(r => r.status === 200));
+  assert.equal(await db.favorite.count({ where: { userId: 'demo-author' } }), 1);
+  assert.equal((await (await call('/api/me/favorites', 'GET', undefined, moderatorCookie)).json()).total, 0);
+  assert.equal((await call('/api/me/favorites/import', 'POST', { documentIds: ['demo-doc-01', 'demo-doc-02', 'missing'] }, authorCookie)).status, 200);
+  const page = await (await call('/api/me/favorites?pageSize=1', 'GET', undefined, authorCookie)).json();
+  assert.equal(page.total, 2); assert.equal(page.items.length, 1); assert.ok(page.items[0].savedAt); assert.equal(page.items[0].userId, undefined);
+  assert.equal((await call('/api/me/favorites?userId=demo-moderator', 'GET', undefined, authorCookie)).status, 400);
+  assert.equal((await call('/api/me/favorites/import', 'POST', { userId: 'demo-moderator', documentIds: ['demo-doc-03'] }, authorCookie)).status, 400);
+  assert.equal((await call('/api/me/favorites/demo-doc-03', 'PUT', {}, authorCookie, { origin: 'https://attacker.example' })).status, 403);
+  await db.document.update({ where: { id: 'demo-doc-02' }, data: { isPublic: false } });
+  try {
+    assert.equal((await (await call('/api/me/favorites', 'GET', undefined, authorCookie)).json()).total, 1);
+    assert.equal((await call('/api/me/favorites/demo-doc-02', 'PUT', {}, moderatorCookie)).status, 404);
+    const imported = await (await call('/api/me/favorites/import', 'POST', { documentIds: ['demo-doc-02', 'missing'] }, moderatorCookie)).json(); assert.equal(imported.added, 0);
+  } finally { await db.document.update({ where: { id: 'demo-doc-02' }, data: { isPublic: true } }); }
+  await call('/api/me/favorites', 'DELETE', {}, moderatorCookie);
+  assert.equal(await db.favorite.count({ where: { userId: 'demo-author' } }), 2);
+  for (let i = 0; i < 2; i++) assert.equal((await call('/api/me/favorites/demo-doc-01', 'DELETE', {}, authorCookie)).status, 200);
+});
+
+test('reply and decision notifications honor preferences, ownership and current visibility', async () => {
+  await db.apiRateLimit.deleteMany(); await db.notification.deleteMany();
+  serviceMode = 'clean';
+  async function post(body: string, cookie: string, parentId?: string, key = randomUUID()) {
+    const response = await call('/api/documents/demo-doc-04/comments', 'POST', { body, ...(parentId ? { parentId } : {}) }, cookie, { 'idempotency-key': key });
+    assert.equal(response.status, 201); return (await response.json()).item;
+  }
+  const parent = await post('Вопрос о демонстрационном материале', authorCookie);
+  const key = randomUUID();
+  const reply = await post('Спасибо за вопрос, ответ в описании', moderatorCookie, parent.id, key);
+  const repeated = await call('/api/documents/demo-doc-04/comments', 'POST', { body: reply.body, parentId: parent.id }, moderatorCookie, { 'idempotency-key': key }); assert.equal(repeated.status, 200);
+  assert.equal((await call('/api/documents/demo-doc-04/comments', 'POST', { body: reply.body }, moderatorCookie, { 'idempotency-key': key })).status, 409);
+  const authorList = async () => (await call('/api/me/notifications', 'GET', undefined, authorCookie)).json();
+  let list = await authorList(); assert.equal(list.total, 1); assert.equal(list.unread, 1); assert.equal(list.items[0].kind, 'COMMENT_REPLY');
+  assert.equal(list.items[0].body, undefined); assert.equal(list.items[0].userId, undefined); assert.equal(list.items[0].documentId, 'demo-doc-04');
+  assert.equal((await call('/api/me/notifications')).status, 401);
+  assert.equal((await call(`/api/me/notifications/${list.items[0].id}`, 'PATCH', { read: true }, moderatorCookie)).status, 404);
+  assert.equal((await call('/api/me/notification-settings', 'PATCH', { notifyReplies: false, notifyModeration: true, userId: 'demo-moderator' }, authorCookie)).status, 400);
+  assert.equal((await call(`/api/me/notifications/${list.items[0].id}`, 'PATCH', { read: true }, authorCookie)).status, 200);
+  assert.equal((await authorList()).unread, 0);
+  await call('/api/me/notification-settings', 'PATCH', { notifyReplies: false, notifyModeration: true }, authorCookie);
+  await post('Второй ответ без уведомления', moderatorCookie, parent.id);
+  assert.equal((await authorList()).total, 1);
+  await call('/api/me/notification-settings', 'PATCH', { notifyReplies: true, notifyModeration: true }, authorCookie);
+  serviceMode = 'pending';
+  const pending = await post('Ответ с ручной проверкой', moderatorCookie, parent.id);
+  assert.equal((await authorList()).total, 1);
+  const decision = await call(`/api/moderation/comments/${pending.id}`, 'PATCH', { status: 'PUBLISHED', reason: 'Ответ проверен', expectedUpdatedAt: pending.updatedAt }, moderatorCookie);
+  assert.equal(decision.status, 200);
+  assert.equal((await authorList()).total, 2);
+  const moderatorList = await (await call('/api/me/notifications', 'GET', undefined, moderatorCookie)).json();
+  assert.equal(moderatorList.items[0].kind, 'MODERATION_DECISION');
+  assert.equal((await call(`/api/me/notifications/${moderatorList.items[0].id}`, 'PATCH', { read: true }, authorCookie)).status, 404);
+  await call('/api/me/notifications', 'PATCH', { read: true }, authorCookie);
+  assert.equal((await (await call('/api/me/notifications', 'GET', undefined, moderatorCookie)).json()).unread, 1);
+  await db.comment.update({ where: { id: reply.id }, data: { status: 'HIDDEN' } });
+  assert.equal((await authorList()).total, 1);
+  await db.comment.update({ where: { id: parent.id }, data: { status: 'HIDDEN' } });
+  assert.equal((await authorList()).total, 0);
+  await db.apiRateLimit.deleteMany();
+  assert.equal((await call('/api/documents/demo-doc-04/comments', 'POST', { body: 'Недоступный родитель', parentId: parent.id }, moderatorCookie, { 'idempotency-key': randomUUID() })).status, 404);
+  await db.comment.update({ where: { id: parent.id }, data: { status: 'PUBLISHED' } });
+  assert.equal((await call('/api/documents/demo-doc-03/comments', 'POST', { body: 'Чужой документ', parentId: parent.id }, moderatorCookie, { 'idempotency-key': randomUUID() })).status, 404);
+  await db.document.update({ where: { id: 'demo-doc-04' }, data: { isPublic: false } });
+  try { assert.equal((await authorList()).total, 0); }
+  finally { await db.document.update({ where: { id: 'demo-doc-04' }, data: { isPublic: true } }); }
+  await call('/api/me/notification-settings', 'PATCH', { notifyReplies: true, notifyModeration: false }, authorCookie);
+  const current = await db.comment.findUniqueOrThrow({ where: { id: parent.id } });
+  const count = await db.notification.count({ where: { userId: 'demo-author' } });
+  assert.equal((await call(`/api/moderation/comments/${parent.id}`, 'PATCH', { status: 'HIDDEN', reason: 'Проверка отключения', expectedUpdatedAt: current.updatedAt.toISOString() }, moderatorCookie)).status, 200);
+  assert.equal(await db.notification.count({ where: { userId: 'demo-author' } }), count);
+  await call('/api/me/notification-settings', 'PATCH', { notifyReplies: true, notifyModeration: true }, authorCookie);
+  serviceMode = 'pending';
+});
+test('similarity and OCR endpoints serve actual public evidence and omit inaccessible documents', async () => {
+  const similar = await (await call('/api/documents/demo-doc-01/similar')).json();
+  assert.equal(similar.method, 'tfidf-cosine-v1');
+  assert.ok(similar.items.some((item: { id: string }) => item.id === 'demo-doc-06'));
+  assert.ok(similar.items.every((item: { id: string }) => item.id !== 'demo-doc-01'));
+  const recognized = await call('/api/files/demo-scan-1/ocr'); assert.equal(recognized.status, 200);
+  const { item } = await recognized.json(); assert.equal(item.isOcr, true); assert.equal(item.corrected, false);
+  assert.ok(item.text.includes('библиотек')); assert.equal(item.sourceSha256.length, 64);
+  assert.equal((await call('/api/files/demo-file-1/ocr')).status, 404);
+  await db.document.update({ where: { id: 'demo-doc-06' }, data: { isPublic: false } });
+  try {
+    const filtered = await (await call('/api/documents/demo-doc-01/similar')).json();
+    assert.ok(!filtered.items.some((row: { id: string }) => row.id === 'demo-doc-06'));
+    assert.equal((await call('/api/documents/demo-doc-06/similar')).status, 404);
+  } finally { await db.document.update({ where: { id: 'demo-doc-06' }, data: { isPublic: true } }); }
+  await db.archiveFile.update({ where: { id: 'demo-scan-1' }, data: { isPublic: false } });
+  try { assert.equal((await call('/api/files/demo-scan-1/ocr')).status, 404); }
+  finally { await db.archiveFile.update({ where: { id: 'demo-scan-1' }, data: { isPublic: true } }); }
+  await db.document.update({ where: { id: 'demo-doc-01' }, data: { isPublic: false } });
+  try { assert.equal((await call('/api/files/demo-scan-1/ocr')).status, 404); }
+  finally { await db.document.update({ where: { id: 'demo-doc-01' }, data: { isPublic: true } }); }
+});

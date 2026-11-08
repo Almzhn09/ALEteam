@@ -13,17 +13,17 @@ export function FavoriteButton({ doc, small }: { doc: DocumentSummary; small?: b
   const [failed, setFailed] = useState(false);
   if (!favorites.hydrated) return null;
   const saved = favorites.has(doc.id);
-  function toggle() {
-    try { if (saved) favorites.remove(doc.id); else favorites.add(doc); setFailed(false); }
+  async function toggle() {
+    try { if (saved) await favorites.remove(doc.id); else await favorites.add(doc); setFailed(false); }
     catch { setFailed(true); }
   }
   return (
     <span className="fav-btn">
-      <button type="button" className={`btn ${saved ? 'btn-secondary' : 'btn-ghost'}${small ? ' btn-sm' : ''}`} aria-pressed={saved} onClick={toggle}
+      <button type="button" className={`btn ${saved ? 'btn-secondary' : 'btn-ghost'}${small ? ' btn-sm' : ''}`} aria-pressed={saved} onClick={toggle} disabled={favorites.busy || !!favorites.error}
         aria-label={`${saved ? t('Убрать из избранного') : t('Добавить в избранное')}: ${doc.title}`}>
         <span aria-hidden="true">{saved ? '★' : '☆'}</span> {saved ? t('В избранном') : t('В избранное')}
       </button>
-      {failed && <span className="field-error" role="alert"> {t('Хранилище браузера недоступно.')}</span>}
+      {failed && <span className="field-error" role="alert"> {t('Не удалось изменить избранное')}</span>}
     </span>
   );
 }

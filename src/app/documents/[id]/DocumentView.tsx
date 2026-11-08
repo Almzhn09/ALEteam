@@ -9,6 +9,7 @@ import { Breadcrumbs, DemoBadge, ErrorNotice, Loading, Notice, Ru } from '@/comp
 import { FavoriteButton } from '@/components/DocumentCard';
 import { ScanViewer } from '@/components/ScanViewer';
 import { Comments } from '@/components/Comments';
+import { RecognizedText, SimilarDocuments } from '@/components/DocumentDiscovery';
 
 const isImage = (mime: string) => mime === 'image/png' || mime === 'image/jpeg';
 
@@ -62,6 +63,8 @@ export function DocumentView({ id }: { id: string }) {
 
           {scans.length > 0 ? <ScanViewer files={scans} title={doc.title} />
             : <div className="panel muted small">{t('Для этого документа нет опубликованных изображений сканов.')}</div>}
+          {scans.filter(f => /^demo-scan-[1-5]$/.test(f.id)).map(f => <RecognizedText key={f.id} fileId={f.id} />)}
+          <SimilarDocuments documentId={doc.id} />
 
           {doc.files.length > 0 && (
             <section aria-labelledby="files-title">

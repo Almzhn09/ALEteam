@@ -30,6 +30,10 @@ model User {
   comments      Comment[]
   reports       Report[]
   decisions     ModerationDecision[]
+  favorites     Favorite[]
+  notifications Notification[]
+  notifyReplies Boolean @default(true)
+  notifyModeration Boolean @default(true)
 }
 model Session {
   id        String   @id
@@ -104,6 +108,7 @@ model Document {
   fund         Fund     @relation(fields: [fundId], references: [id])
   files        ArchiveFile[]
   comments     Comment[]
+  favorites    Favorite[]
   @@index([isPublic, year, id])
   @@index([fundId])
   @@index([type])
@@ -129,15 +134,47 @@ model Comment {
   reason            String
   moderationVersion String
   idempotencyKey    String
+  parentId          String?
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
   document          Document      @relation(fields: [documentId], references: [id])
   author            User          @relation(fields: [authorId], references: [id])
   reports           Report[]
   decisions         ModerationDecision[]
+  parent            Comment? @relation("Replies", fields: [parentId], references: [id])
+  replies           Comment[] @relation("Replies")
+  notifications     Notification[]
   @@unique([authorId, idempotencyKey])
   @@index([documentId, status, createdAt, id])
   @@index([status, createdAt, id])
+  @@index([parentId])
+}
+model Favorite {
+  userId     String
+  documentId String
+  createdAt  DateTime @default(now())
+  user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  @@id([userId, documentId])
+  @@index([userId, createdAt, documentId])
+}
+enum NotificationKind {
+  COMMENT_REPLY
+  MODERATION_DECISION
+}
+model Notification {
+  id        String @id @default(cuid())
+  userId    String
+  eventKey  String
+  kind      NotificationKind
+  commentId String
+  status    CommentStatus?
+  createdAt DateTime @default(now())
+  readAt    DateTime?
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  @@unique([userId, eventKey])
+  @@index([userId, createdAt, id])
 }
 model Report {
   id         String   @id @default(cuid())

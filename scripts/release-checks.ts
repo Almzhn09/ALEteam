@@ -70,6 +70,23 @@ try {
     assert.equal((await author.request.get(base + '/api/moderation/comments')).status(), 403);
     await author.goto(base + '/moderation'); await author.getByText('Нет доступа', { exact: true }).waitFor();
   });
+  await step('guest favorites transfer explicitly and synchronize across two browser sessions', async () => {
+    await author.goto(base + '/favorites');
+    await author.getByRole('button', { name: 'Перенести избранное этого браузера в мою учётную запись', exact: true }).click();
+    await author.locator('main a[href="/documents/demo-doc-01"]').waitFor();
+    const second = await browser!.newContext(); const device = await second.newPage();
+    await login(device, 'author@example.test', authorPassword, '/favorites');
+    await device.locator('main a[href="/documents/demo-doc-01"]').waitFor();
+    assert.deepEqual(await device.evaluate(() => JSON.parse(localStorage.getItem('aleteam-favorites-v1') ?? '[]')), []);
+    await second.close();
+  });
+  await step('document exposes actual OCR text and similar document links', async () => {
+    await author.goto(base + '/documents/demo-doc-01');
+    await author.locator('summary', { hasText: 'Распознанный текст (OCR)' }).click();
+    await author.locator('details').filter({ has: author.locator('summary', { hasText: 'Распознанный текст (OCR)' }) }).locator('p.pre-wrap').waitFor();
+    await author.locator('summary', { hasText: 'Похожие документы' }).click();
+    await author.locator('details a[href="/documents/demo-doc-06"]').waitFor();
+  });
   await step('assistant shows actual mode, document and guide links, and unknown-answer state', async () => {
     await author.goto(base + '/assistant');
     const ask = async (q: string, count: number) => {
@@ -123,9 +140,40 @@ try {
     await hidden.getByRole('button', { name: 'Сохранить решение', exact: true }).click(); await moderator.getByText(/Решение сохранено/).first().waitFor();
     const record = await db.comment.findFirstOrThrow({ where: { body: quoted } }); assert.equal(await db.moderationDecision.count({ where: { commentId: record.id } }), 3);
   });
+  await step('reply form creates a private notification, preferences persist and another account cannot read it', async () => {
+    await moderator.goto(base + '/documents/demo-doc-03');
+    const parent = moderator.locator('li.comment', { hasText: clean });
+    await parent.getByRole('button', { name: 'Ответить', exact: true }).click();
+    await parent.getByLabel('Ваш ответ', { exact: true }).fill('Спасибо! Ответ для проверки уведомлений.');
+    await parent.getByRole('button', { name: 'Отправить', exact: true }).click();
+    await parent.getByText('Комментарий опубликован', { exact: true }).waitFor();
+    await author.goto(base + '/me');
+    const messages = author.locator('section[aria-labelledby="notifications-title"]');
+    await messages.getByText('На ваш комментарий ответили.', { exact: true }).waitFor();
+    const notifications = await (await author.request.get(base + '/api/me/notifications')).json();
+    const reply = notifications.items.find((n: { kind: string }) => n.kind === 'COMMENT_REPLY'); assert.ok(reply);
+    const denied = await moderator.request.patch(base + '/api/me/notifications/' + reply.id, { headers: { Origin: base }, data: { read: true } }); assert.equal(denied.status(), 404);
+    await messages.getByLabel('Ответы на мои комментарии', { exact: true }).uncheck();
+    await author.waitForFunction(async () => (await (await fetch('/api/me/notification-settings')).json()).item.notifyReplies === false);
+    await author.reload();
+    await messages.getByLabel('Ответы на мои комментарии', { exact: true }).waitFor();
+    assert.equal(await messages.getByLabel('Ответы на мои комментарии', { exact: true }).isChecked(), false);
+    await messages.getByRole('button', { name: 'Отметить все прочитанными', exact: true }).click();
+    await author.waitForFunction(async () => (await (await fetch('/api/me/notifications')).json()).unread === 0);
+  });
+  await step('signing out in another tab immediately hides account favorites', async () => {
+    await author.goto(base + '/favorites');
+    await author.locator('main a[href="/documents/demo-doc-01"]').waitFor();
+    const tab = await authorContext.newPage();
+    await tab.goto(base + '/me');
+    await tab.getByRole('button', { name: 'Выйти', exact: true }).click();
+    await author.getByText('Здесь пока пусто', { exact: true }).waitFor();
+    assert.equal(await author.locator('main a[href="/documents/demo-doc-01"]').count(), 0);
+    await tab.close();
+  });
   const axe = await readFile('node_modules/axe-core/axe.min.js', 'utf8');
   await step('WCAG automated checks and responsive layout across RU/KK, light/dark and three widths', async () => {
-    const routes = ['/', '/catalog?q=библиотека', '/documents/demo-doc-01', '/favorites', '/assistant', '/about', '/timeline', '/moderation'];
+    const routes = ['/', '/catalog?q=библиотека', '/documents/demo-doc-01', '/favorites', '/assistant', '/about', '/timeline', '/moderation', '/me'];
     const variants = [
       { width: 360, lang: 'ru', scheme: 'light' }, { width: 768, lang: 'ru', scheme: 'light' }, { width: 1440, lang: 'ru', scheme: 'light' },
       { width: 1440, lang: 'ru', scheme: 'dark' }, { width: 360, lang: 'kk', scheme: 'light' }, { width: 768, lang: 'kk', scheme: 'dark' },
@@ -154,6 +202,7 @@ try {
     }
   });
   await step('keyboard skip link and logout revoke the actual browser session', async () => {
+    await login(author, 'author@example.test', authorPassword, '/');
     await author.goto(base); await author.keyboard.press('Tab'); assert.equal(await author.evaluate(() => document.activeElement?.tagName), 'A');
     await author.getByRole('button', { name: 'Выйти', exact: true }).click();
     await author.waitForFunction(async () => (await fetch('/api/me')).status === 401);

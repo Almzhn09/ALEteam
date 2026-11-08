@@ -4,6 +4,7 @@ import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { SessionProvider } from '@/lib/session';
+import { FavoritesProvider } from '@/lib/favorites';
 import { LangProvider } from '@/lib/lang';
 import { getLang } from '@/lib/i18n-server';
 import { translator } from '@/lib/i18n';
@@ -31,8 +32,10 @@ export default async function Layout({ children }: { children: ReactNode }) {
           <a className="skip-link" href="#main">{t('Перейти к содержимому')}</a>
           {MOCK_MODE && <div className="mock-banner" role="note">{t('Режим моков интерфейса: данные и ответы имитируются в браузере, это не интеграция с сервером.')}</div>}
           <SessionProvider>
+            <FavoritesProvider>
             <Header />
             <main id="main" tabIndex={-1}>{children}</main>
+            </FavoritesProvider>
           </SessionProvider>
           <Footer />
         </LangProvider>

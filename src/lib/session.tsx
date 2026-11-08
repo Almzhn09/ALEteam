@@ -1,5 +1,5 @@
 'use client';
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import type { CurrentUser } from '@/contracts/api';
 import { ApiClientError, apiGet, apiSend } from './api';
 
@@ -16,6 +16,7 @@ const SessionContext = createContext<SessionApi | null>(null);
 // UI hint only: every protected action is re-checked by the server.
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<SessionState>({ status: 'loading' });
+  const channel = useRef<BroadcastChannel | null>(null);
   const refresh = useCallback(async () => {
     try { setState({ status: 'user', user: (await apiGet<{ item: CurrentUser }>('/me')).item }); }
     catch (error) {
@@ -24,15 +25,26 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }
   }, []);
   useEffect(() => { void refresh(); }, [refresh]);
+  useEffect(() => {
+    const onFocus = () => { void refresh(); };
+    window.addEventListener('focus', onFocus);
+    if (typeof BroadcastChannel !== 'undefined') {
+      channel.current = new BroadcastChannel('aleteam-session');
+      channel.current.onmessage = () => { setState({ status: 'loading' }); void refresh(); };
+    }
+    return () => { window.removeEventListener('focus', onFocus); channel.current?.close(); channel.current = null; };
+  }, [refresh]);
   const signIn = useCallback(async (email: string, password: string) => {
     await apiSend('/auth/sign-in/email', 'POST', { email, password });
     const { item } = await apiGet<{ item: CurrentUser }>('/me');
     setState({ status: 'user', user: item });
+    channel.current?.postMessage('changed');
     return item;
   }, []);
   const signOut = useCallback(async () => {
     await apiSend('/auth/sign-out', 'POST', {});
     setState({ status: 'guest' });
+    channel.current?.postMessage('changed');
   }, []);
   const user = state.status === 'user' ? state.user : null;
   return <SessionContext value={{ state, user, refresh, signIn, signOut }}>{children}</SessionContext>;

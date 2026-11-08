@@ -4,14 +4,14 @@ import { useState } from 'react';
 import { useFavorites } from '@/lib/favorites';
 import { typeLabel } from '@/lib/labels';
 import { useI18n } from '@/lib/lang';
-import { Breadcrumbs, DemoBadge, Loading, Notice } from '@/components/ui';
+import { Breadcrumbs, DemoBadge, ErrorNotice, Loading, Notice } from '@/components/ui';
 
 export default function FavoritesPage() {
   const { t, formatDate } = useI18n();
   const favorites = useFavorites();
   const [failed, setFailed] = useState(false);
   const [confirmClear, setConfirmClear] = useState(false);
-  const run = (fn: () => void) => { try { fn(); setFailed(false); } catch { setFailed(true); } };
+  const run = async (fn: () => Promise<void>) => { try { await fn(); setFailed(false); } catch { setFailed(true); } };
 
   return (
     <div className="container page">
@@ -21,12 +21,14 @@ export default function FavoritesPage() {
         {favorites.items.length > 1 && (confirmClear
           ? <span className="row" role="group" aria-label={t('Подтверждение очистки')}>
               <span className="small">{t('Удалить все {n}?', { n: favorites.items.length })}</span>
-              <button type="button" className="btn btn-danger btn-sm" onClick={() => { run(favorites.clear); setConfirmClear(false); }}>{t('Да, очистить')}</button>
+              <button type="button" className="btn btn-danger btn-sm" disabled={favorites.busy} onClick={() => { void run(favorites.clear); setConfirmClear(false); }}>{t('Да, очистить')}</button>
               <button type="button" className="btn btn-secondary btn-sm" onClick={() => setConfirmClear(false)}>{t('Отмена')}</button>
             </span>
           : <button type="button" className="btn btn-ghost btn-sm" onClick={() => setConfirmClear(true)}>{t('Очистить список')}</button>)}
       </div>
-      <p className="lead">{t('Список хранится только в этом браузере и не синхронизируется между устройствами.')}</p>
+      <p className="lead">{favorites.server ? t('Избранное сохраняется в вашей учётной записи и доступно после входа на другом устройстве.') : t('Без входа список хранится только в этом браузере. Войдите, чтобы синхронизировать избранное.')}</p>
+      {favorites.server && favorites.guestCount > 0 && <button className="btn btn-secondary" disabled={favorites.busy} onClick={() => void run(favorites.importGuest)}>{t('Перенести избранное этого браузера в мою учётную запись')}</button>}
+      {!!favorites.error && <ErrorNotice error={favorites.error} onRetry={() => void favorites.refresh()} />}
 
       {!favorites.hydrated ? <Loading rows={2} label={t('Загрузка избранного')} />
         : !favorites.available ? (
@@ -51,12 +53,12 @@ export default function FavoritesPage() {
                   <h2 style={{ fontSize: '1.1rem', marginBottom: 'var(--space-1)' }}><Link href={`/documents/${encodeURIComponent(f.id)}`} lang="ru">{f.title}</Link></h2>
                   <p className="small muted" style={{ margin: 0 }}><span className="mono">{f.reference}</span> · {f.year} · {t('сохранено')} {formatDate(f.savedAt)}</p>
                 </div>
-                <button type="button" className="btn btn-secondary btn-sm" onClick={() => run(() => favorites.remove(f.id))} aria-label={`${t('Удалить из избранного')}: ${f.title}`}>{t('Удалить')}</button>
+                <button type="button" className="btn btn-secondary btn-sm" disabled={favorites.busy} onClick={() => void run(() => favorites.remove(f.id))} aria-label={`${t('Удалить из избранного')}: ${f.title}`}>{t('Удалить')}</button>
               </li>
             ))}
           </ul>
         )}
-      {failed && <div style={{ marginTop: 'var(--space-4)' }}><Notice tone="error" title={t('Не удалось изменить избранное')} live><p>{t('Хранилище браузера недоступно.')}</p></Notice></div>}
+      {failed && <div style={{ marginTop: 'var(--space-4)' }}><Notice tone="error" title={t('Не удалось изменить избранное')} live><p>{t('Проверьте соединение и повторите попытку.')}</p></Notice></div>}
     </div>
   );
 }

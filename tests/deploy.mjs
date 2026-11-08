@@ -27,8 +27,8 @@ const compose = (name, args) => docker([...prefix(name), ...args], environment(n
 const checks = [];
 let reservedVolume;
 async function check(name, work) { try { await work(); checks.push({ name, passed: true }); console.log(`PASS ${name}`); } catch (error) { checks.push({ name, passed: false, errorType: error.name }); throw error; } }
-async function login(origin) {
-  const response = await fetch(origin + '/api/auth/sign-in/email', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json' }, body: JSON.stringify({ email: 'author@example.test', password: config.DEMO_AUTHOR_PASSWORD }) });
+async function login(origin, moderator = false) {
+  const response = await fetch(origin + '/api/auth/sign-in/email', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json' }, body: JSON.stringify({ email: moderator ? 'moderator@example.test' : 'author@example.test', password: moderator ? config.DEMO_MODERATOR_PASSWORD : config.DEMO_AUTHOR_PASSWORD }) });
   assert.equal(response.status, 200); return response.headers.getSetCookie().map(c => c.split(';')[0]).join('; ');
 }
 async function waitHealthy(origin) {
@@ -57,11 +57,17 @@ try {
     const catalog = await (await fetch(config.BETTER_AUTH_URL + '/api/documents')).json(); assert.equal(catalog.total, 20);
     const role = compose(project, ['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT rolsuper FROM pg_roles WHERE rolname=current_user']); assert.equal(role, 'f');
   });
-  let commentId;
+  let commentId; let replyId;
   await check('standalone runtime serves a PNG and persists an authenticated comment', async () => {
     const origin = config.BETTER_AUTH_URL; const cookie = await login(origin);
     const response = await fetch(origin + '/api/documents/demo-doc-01/comments', { method: 'POST', headers: { Origin: origin, Cookie: cookie, 'Content-Type': 'application/json', 'Idempotency-Key': randomUUID() }, body: JSON.stringify({ body: `Проверка сохранности Docker ${run}` }) });
     assert.equal(response.status, 201); const item = (await response.json()).item; assert.equal(item.status, 'PUBLISHED'); commentId = item.id;
+    const change = async (path, method, body, session = cookie, extra = {}) => fetch(origin + path, { method, headers: { Origin: origin, Cookie: session, 'Content-Type': 'application/json', ...extra }, body: JSON.stringify(body) });
+    assert.equal((await change('/api/me/favorites/demo-doc-01', 'PUT', {})).status, 200);
+    const mod = await login(origin, true);
+    const reply = await change('/api/documents/demo-doc-01/comments', 'POST', { body: 'Ответ для проверки восстановления уведомлений', parentId: commentId }, mod, { 'Idempotency-Key': randomUUID() });
+    assert.equal(reply.status, 201); replyId = (await reply.json()).item.id;
+    assert.equal((await change('/api/me/notification-settings', 'PATCH', { notifyReplies: false, notifyModeration: true })).status, 200);
     const png = await fetch(origin + '/api/files/demo-scan-1'); assert.equal(png.status, 200);
     const expected = JSON.parse(await readFile('data/scans/manifest.json','utf8'))[0];
     assert.equal(createHash('sha256').update(Buffer.from(await png.arrayBuffer())).digest('hex'), expected.sha256);
@@ -97,6 +103,16 @@ try {
     const png = Buffer.from(await (await fetch(origin + '/api/files/demo-scan-1')).arrayBuffer());
     const expected = JSON.parse(await readFile('data/scans/manifest.json','utf8'))[0]; assert.equal(createHash('sha256').update(png).digest('hex'), expected.sha256);
     assert.equal(compose(restored,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "ArchiveFile"']), '10');
+  });
+  await check('favorites, notification preferences and reply events survive restart and restore', async () => {
+    for (const origin of [config.BETTER_AUTH_URL, restoreConfig.BETTER_AUTH_URL]) {
+      const cookie = await login(origin);
+      const get = async path => (await fetch(origin + path, { headers: { Cookie: cookie } })).json();
+      const favorites = await get('/api/me/favorites'); assert.equal(favorites.total, 1); assert.equal(favorites.items[0].id, 'demo-doc-01');
+      const preferences = await get('/api/me/notification-settings'); assert.equal(preferences.item.notifyReplies, false);
+      const notifications = await get('/api/me/notifications'); assert.equal(notifications.total, 1); assert.equal(notifications.items[0].commentId, replyId);
+      const ocr = await get('/api/files/demo-scan-1/ocr'); assert.equal(ocr.item.isOcr, true); assert.ok(ocr.item.text.length > 100);
+    }
   });
 } catch (error) {
   process.exitCode = 1;

@@ -51,7 +51,7 @@ export async function apiGet<T>(path: string, signal?: AbortSignal): Promise<T> 
   return parse<T>(await request(path, { method: 'GET', signal }));
 }
 
-export async function apiSend<T>(path: string, method: 'POST' | 'PATCH', body: unknown, headers: Record<string, string> = {}, signal?: AbortSignal): Promise<T> {
+export async function apiSend<T>(path: string, method: 'POST' | 'PATCH' | 'PUT' | 'DELETE', body: unknown, headers: Record<string, string> = {}, signal?: AbortSignal): Promise<T> {
   return parse<T>(await request(path, { method, headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(body), signal }));
 }
 

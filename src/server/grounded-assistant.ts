@@ -3,7 +3,7 @@ import type { Passage } from './knowledge';
 import { unsafeInstructions } from './knowledge';
 
 export interface GroundedAnswer { answer: string; sourceIds: string[]; noAnswer: boolean; mode: 'retrieval' | 'llm' }
-export function isKazakh(question: string) { return /[әғқңөұүһі]|рақмет|мектеп/iu.test(question); }
+export function isKazakh(question: string) { return /[әғқңөұүһі]|рақмет|мектеп|kitaphana|mektep|temir\s*zhol/iu.test(question); }
 export function noAnswer(question: string, mode: GroundedAnswer['mode'] = 'retrieval'): GroundedAnswer {
   return { answer: isKazakh(question) ? 'Қолжетімді дереккөздерден жауап табылмады. Каталогтағы іздеуді нақтылап көріңіз.' : 'В доступных источниках ответа нет. Уточните тему, период или архивный шифр в каталоге.', sourceIds: [], noAnswer: true, mode };
 }
