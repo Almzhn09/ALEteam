@@ -39,7 +39,8 @@
     "staff:bootstrap": "node --env-file-if-exists=.env --import tsx scripts/bootstrap-staff.ts",
     "test:cms": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/cms.integration.test.ts",
     "test:cms-assistant": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/cms-assistant.integration.test.ts",
-    "content:artur:export": "node --import tsx scripts/export-artur-drafts.ts"
+    "content:artur:export": "node --import tsx scripts/export-artur-drafts.ts",
+    "test:catalog": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/catalog.integration.test.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.10.1",

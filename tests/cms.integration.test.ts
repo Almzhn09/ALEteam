@@ -16,6 +16,9 @@ const branchOne='cms-branch-a',branchTwo='cms-branch-b';
 async function call(path:string,method='GET',body?:unknown,cookie?:string,extra:Record<string,string>={}){return fetch(origin+'/api'+path,{method,headers:{Origin:origin,...(body!==undefined?{'Content-Type':'application/json'}:{}),...(cookie?{Cookie:cookie}:{}),...extra},body:body===undefined?undefined:JSON.stringify(body)});}
 async function login(email:string){const r=await call('/auth/sign-in/email','POST',{email,password});assert.equal(r.status,200);return r.headers.getSetCookie().map(s=>s.split(';')[0]).join('; ');}
 async function clean(){
+ await db.document.deleteMany({where:{fund:{branchId:{not:null}}}});
+ await db.documentTranslation.deleteMany({where:{revisionId:{not:null}}});
+ await db.document.updateMany({where:{contentItemId:{not:null}},data:{contentItemId:null}});
  await db.editorialNotice.deleteMany();await db.publicationEvent.deleteMany();await db.contentRevision.deleteMany();await db.contentItem.deleteMany();await db.auditEvent.deleteMany();await db.staffAssignment.deleteMany();await db.staffRole.deleteMany({where:{id:{startsWith:'cms-'}}});
  await db.document.deleteMany({where:{fund:{branchId:{not:null}}}});await db.archivalCase.deleteMany();await db.inventory.deleteMany();await db.fund.deleteMany({where:{branchId:{not:null}}});await db.archiveBranch.deleteMany();
  await db.session.deleteMany();await db.account.deleteMany({where:{user:{email:{startsWith:'cms-'}}}});await db.user.deleteMany({where:{email:{startsWith:'cms-'}}});await db.apiRateLimit.deleteMany();await db.rateLimit.deleteMany();

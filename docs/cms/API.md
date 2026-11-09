@@ -1,5 +1,7 @@
 # API CMS для Алинура и Артура
 
+Продолжение: [редактирование, публикация и поиск каталога](../catalog/API.md).
+
 Все пути ниже начинаются с `/api`. Контракты для клиента: [`src/contracts/cms.ts`](../../src/contracts/cms.ts). Запросы идут на тот же origin с cookie Better Auth; изменения требуют `Content-Type: application/json` и точный Origin из BETTER_AUTH_URL. `fetch(..., {credentials:'same-origin'})`. Секреты в клиентский код не передаются.
 
 ## Доступ и форматы
@@ -94,6 +96,6 @@ POST /admin/catalog/inventories `{fundId,number:"0001",title}`.
 POST /admin/catalog/cases `{fundId,inventoryId,number:"0003",title}`.
 POST /admin/catalog/documents `{fundId,caseId,title,description,reference,year,type,rights,...}`.
 
-Дополнительные поля документа: yearTo, authorName, organization, locality, originalLanguage, leafCount, storageLocation, accessConditions, internalNotes, isDemo. type пока LETTER/PHOTO/MAP/REPORT. Все номера/шифры строковые. Новая карточка всегда закрыта, копия запрещена. Редактирование/удаление и публикация архивной карточки, перевод каталожных полей, категории/теги и расширенные поисковые фильтры — следующий этап TZ-B03/B04/B09. CMS-редакции относятся к информационным материалам и не публикуют каталог автоматически.
+Дополнительные поля документа: yearTo, authorName, organization, locality, originalLanguage, leafCount, storageLocation, accessConditions, internalNotes, isDemo. type пока LETTER/PHOTO/MAP/REPORT. Все номера/шифры строковые. Новая карточка всегда закрыта, копия запрещена. Второй этап добавил редактирование/корзину, согласование архивных карточек, категории/теги, RU/KK/EN тексты и расширенные фильтры: [актуальный контракт](../catalog/API.md). Для каталога используются отдельные строгие payload и внутренние ARCHIVE_DOCUMENT-редакции; общий POST информационной CMS их не создаёт.
 
 Публичный GET /documents/:id выдаёт только явную безопасную проекцию; internalNotes исключены. Открытые метаданные с allowDigitalCopy=false доступны, но files=[], прямой файл и OCR дают 404. Старые API и интерфейс продолжают работать. Новые CMS-материалы ещё не входят в корпус ИИ (TZ-A06).
