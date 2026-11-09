@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { db } from './db';
 import { getAuth } from './auth';
+import { Prisma } from '../generated/prisma/index.js';
 
 export class ApiError extends Error {
   constructor(public status: number, public code: string, message: string, public retryAfter?: number) { super(message); }
@@ -16,6 +17,11 @@ export async function handle(work: () => Promise<Response>) {
       return response;
     }
     if (error instanceof z.ZodError) return json({ error: { code: 'VALIDATION_ERROR', message: 'Проверьте параметры запроса.', fields: error.issues.map(i => ({ path: i.path.join('.'), code: i.code })) } }, 400);
+    if(error instanceof Prisma.PrismaClientKnownRequestError){
+      if(error.code==='P2002')return json({error:{code:'CONFLICT',message:'Такая запись уже существует.'}},409);
+      if(error.code==='P2025')return json({error:{code:'NOT_FOUND',message:'Запись не найдена.'}},404);
+      if(error.code==='P2003')return json({error:{code:'INVALID_RELATION',message:'Проверьте связанные записи.'}},409);
+    }
     // Never log bodies, cookies, SQL parameters, user content or credentials.
     console.error('archive_api_request_failed');
     return json({ error: { code: 'INTERNAL_ERROR', message: 'Не удалось выполнить запрос.' } }, 500);
@@ -49,6 +55,15 @@ export async function requireUser(request: Request, moderator = false) {
   // Read the current role from DB; revocation takes effect immediately.
   const user = await db.user.findUnique({ where: { id: session.user.id } });
   if (!user) throw new ApiError(401, 'AUTH_REQUIRED', 'Войдите в систему.');
+  if(!user.isActive){await db.session.deleteMany({where:{userId:user.id}});throw new ApiError(401,'AUTH_REQUIRED','Войдите в систему.');}
+  const staff=await db.staffAssignment.count({where:{userId:user.id}});
+  if(staff){
+    const value=Number(process.env.STAFF_IDLE_TIMEOUT_SECONDS??1800);
+    const seconds=Number.isInteger(value)&&value>=60&&value<=86400?value:1800;
+    const current=await db.session.findUnique({where:{id:session.session.id}});
+    if(!current||Date.now()-current.lastActivityAt.getTime()>seconds*1000){await db.session.deleteMany({where:{id:session.session.id}});throw new ApiError(401,'SESSION_IDLE','Сессия завершена из-за неактивности.');}
+    await db.session.updateMany({where:{id:current.id,lastActivityAt:{lt:new Date(Date.now()-30000)}},data:{lastActivityAt:new Date()}});
+  }
   if (moderator && user.role !== 'MODERATOR') throw new ApiError(403, 'FORBIDDEN', 'Требуется роль модератора.');
   return user;
 }

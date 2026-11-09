@@ -1,0 +1,135 @@
+{
+  "recordedAt": "2026-11-09T15:48:17.856652+00:00",
+  "scope": "Local CMS API foundation, production Next build and real PostgreSQL; no public deployment",
+  "tests": {
+    "unit": {
+      "passed": 210,
+      "failed": 0
+    },
+    "previousAPI": {
+      "passed": 21,
+      "failed": 0
+    },
+    "cmsAPI": {
+      "passed": 14,
+      "failed": 0
+    }
+  },
+  "browser": {
+    "checks": [
+      {
+        "name": "home search reaches real catalog and combined filters",
+        "passed": true
+      },
+      {
+        "name": "document renders real PNG, zoom, download policy and persisted favorites",
+        "passed": true
+      },
+      {
+        "name": "author signs in through the UI and cannot access moderation",
+        "passed": true
+      },
+      {
+        "name": "guest favorites transfer explicitly and synchronize across two browser sessions",
+        "passed": true
+      },
+      {
+        "name": "document exposes actual OCR text and similar document links",
+        "passed": true
+      },
+      {
+        "name": "assistant shows actual mode, document and guide links, and unknown-answer state",
+        "passed": true
+      },
+      {
+        "name": "comment UI publishes clean text, rejects a contextual Unicode bypass, and queues a quote",
+        "passed": true
+      },
+      {
+        "name": "moderator reviews the real pending comment through the UI",
+        "passed": true
+      },
+      {
+        "name": "report, hide and restore persist an auditable decision history",
+        "passed": true
+      },
+      {
+        "name": "reply form creates a private notification, preferences persist and another account cannot read it",
+        "passed": true
+      },
+      {
+        "name": "signing out in another tab immediately hides account favorites",
+        "passed": true
+      },
+      {
+        "name": "WCAG automated checks and responsive layout across RU/KK, light/dark and three widths",
+        "passed": true
+      },
+      {
+        "name": "keyboard skip link and logout revoke the actual browser session",
+        "passed": true
+      }
+    ],
+    "auditedScreens": 54,
+    "pageErrors": []
+  },
+  "docker": {
+    "testedAt": "2026-11-09T15:46:51.867Z",
+    "target": "isolated local Docker projects, not a public deployment",
+    "checks": [
+      {
+        "name": "runtime is non-root and both images exclude environment files",
+        "passed": true
+      },
+      {
+        "name": "fresh Compose stack initializes schema, original assets and two accounts",
+        "passed": true
+      },
+      {
+        "name": "standalone runtime serves a PNG and persists an authenticated comment",
+        "passed": true
+      },
+      {
+        "name": "CMS creates independent reviewed translations and archive hierarchy in Compose",
+        "passed": true
+      },
+      {
+        "name": "database and app restart preserve the marker comment and file volume",
+        "passed": true
+      },
+      {
+        "name": "backup includes private database and files with an integrity manifest",
+        "passed": true
+      },
+      {
+        "name": "same-project, corrupted-backup and occupied-volume restore fail before changing resources",
+        "passed": true
+      },
+      {
+        "name": "restore to a fresh project recovers the marker, users and exact file bytes",
+        "passed": true
+      },
+      {
+        "name": "CMS roles, hierarchy, translations, private history and notices survive backup and restore",
+        "passed": true
+      },
+      {
+        "name": "favorites, notification preferences and reply events survive restart and restore",
+        "passed": true
+      }
+    ],
+    "backupRetainedPrivately": true
+  },
+  "sourceSHA256": {
+    "prisma/schema.prisma": "05260f4be4625a6e6e1c7bd736f7bcffdf41f76d5a08558820f7d002dcf9dc26",
+    "prisma/migrations/202611090003_cms_foundation/migration.sql": "e86ce3844fc087d76882dac07d4f5c1a4318be11fa88d6f9f6d8a8c2ff4151cb",
+    "src/contracts/cms.ts": "106378c54fc992a41e931eb103efaa7e7cffa7a7aa37060aa5fbe283bffc9943",
+    "data/staff-role-presets.json": "31c1efb4bc929c4307c96f1c0db1ac60ff1ba234223e5102e7350f7146f67bd1"
+  },
+  "limitations": [
+    "Independent team review pending",
+    "No CMS frontend yet",
+    "Real archive content and policy not approved",
+    "No public HTTPS or remote CI execution verified"
+  ]
+}

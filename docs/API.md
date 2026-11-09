@@ -1,5 +1,7 @@
 # Контракт API v1 (для интеграции)
 
+Новые CMS-endpoints, роли и версии: [контракт от 9 ноября](cms/API.md). Прежние endpoints ниже сохраняются.
+
 Base path: `/api`. JSON UTF-8. Даты — ISO 8601 UTC. Не вставлять строки ответов через `innerHTML`; JSX выводит их как текст. Все ответы API имеют `Cache-Control: no-store`.
 
 На изменяющих запросах обязательны `Content-Type: application/json` и `Origin`, совпадающий с `BETTER_AUTH_URL`. В браузере использовать same-origin `fetch`; сессия — cookie, `credentials: 'same-origin'`. Публичный cross-origin API не включён.

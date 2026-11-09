@@ -1,0 +1,9 @@
+{
+ "SUPERADMIN":{"name":"Главный администратор","permissions":["staff.users.manage","staff.roles.manage","branches.manage","catalog.read","catalog.write","content.read","content.write","content.review","content.publish","audit.read","analytics.read","settings.manage"]},
+ "SITE_ADMIN":{"name":"Администратор сайта","permissions":["staff.users.manage","branches.manage","catalog.read","catalog.write","content.read","content.write","content.review","content.publish","audit.read","analytics.read","settings.manage"]},
+ "EDITOR":{"name":"Редактор","permissions":["content.read","content.write","content.review","content.publish","catalog.read"]},
+ "ARCHIVIST":{"name":"Сотрудник архива","permissions":["catalog.read","catalog.write","content.read","content.write"]},
+ "BRANCH_ADMIN":{"name":"Администратор филиала","permissions":["branches.manage","catalog.read","catalog.write","content.read","content.write"]},
+ "CONTENT_MODERATOR":{"name":"Модератор публикаций","permissions":["content.read","content.review"]},
+ "ANALYST":{"name":"Аналитик","permissions":["analytics.read"]}
+}
