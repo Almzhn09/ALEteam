@@ -37,6 +37,12 @@ jobs:
       - run: npm run build
       - run: npm run test:integration
       - run: npm run test:cms
+      - name: Published CMS sources in the assistant
+        shell: bash
+        run: |
+          browser_path="$(command -v google-chrome || command -v chromium)"
+          test -n "$browser_path"
+          CHROMIUM_PATH="$browser_path" npm run test:cms-assistant
       - run: npm run evaluate:artur
         env:
           DATABASE_URL: ${{ env.TEST_DATABASE_URL }}
@@ -62,6 +68,7 @@ jobs:
           path: |
             .local/release/report.json
             .local/release/screenshots
+            .local/cms-assistant
   deployment:
     runs-on: ubuntu-latest
     steps:

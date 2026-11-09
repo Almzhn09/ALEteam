@@ -2,7 +2,7 @@ import { Prisma } from '../generated/prisma/index.js';
 import { db } from './db';
 import { guides } from './guides';
 import { generateLocalQuery } from './local-model';
-export interface Passage { id: string; title: string; text: string; isDemo: boolean; kind: 'document' | 'guide' }
+export interface Passage { id: string; title: string; text: string; isDemo: boolean; kind: 'document' | 'guide' | 'cms' }
 const topics: [RegExp,string,string][] = [
   [/библиотек|кітапхана|kitaphana/iu, 'библиотека', 'библиотек'],
   [/школ|мектеп|mektep/iu, 'школа', 'школ'],
@@ -17,9 +17,9 @@ const expandedTopics: [RegExp,string,string][] = [
   [/площад|благоустрой|алаң|абаттандыр/iu, 'площадь', 'площад'],
   [/железн|дорог|станци|вокзал|транспорт|расписан|темір\s*жол|бекет|көлік|кесте|temir\s*zhol/iu, 'станция', 'железн'],
 ];
-export function unsafeInstructions(text: string) {
-  return /ignore[\s\S]{0,40}(?:instruction|previous)|игнориру[\s\S]{0,40}(?:инструкц|правил)|нұсқау[\s\S]{0,40}(?:елеме|ұмыт)|құпия[\s\S]{0,30}(?:көрсет|аш|бер)|system\s*prompt|системн\p{L}*\s+(?:промпт|инструкц)|api[_ -]?key|(?:покажи|раскрой|выведи)[\s\S]{0,30}(?:секрет|парол|токен)|<\/?(?:system|script)>/iu.test(text);
-}
+export { unsafeInstructions } from './assistant-safety';
+import { unsafeInstructions } from './assistant-safety';
+
 export function legacySearchIntent(question: string) {
   const topicInfo = topics.find(([pattern]) => pattern.test(question));
   const topic = topicInfo?.[1];
@@ -76,7 +76,7 @@ export async function retrievePassages(question: string, version: 'expanded' | '
   const titleTerms = intent.titleTerms.length ? intent.titleTerms : intent.titleTerm ? [intent.titleTerm] : [];
   const from = version === 'legacy' ? (intent.years.length ? Math.min(...intent.years) : undefined) : intent.yearFrom;
   const to = version === 'legacy' ? (intent.years.length ? Math.max(...intent.years) : undefined) : intent.yearTo;
-  const filter = Prisma.sql`d."isPublic" = true
+  const filter = Prisma.sql`d."isPublic" = true AND d."allowDigitalCopy" = true
     ${intent.reference ? Prisma.sql`AND lower(d.reference) = lower(${intent.reference})` : Prisma.sql`AND (${terms} ${titleTerms.length ? Prisma.sql`OR (${Prisma.join(titleTerms.map(term => Prisma.sql`d.title ILIKE ${`%${term}%`}`), ' OR ')})` : Prisma.empty})`}
     ${from !== undefined ? Prisma.sql`AND d.year >= ${from}` : Prisma.empty}
     ${to !== undefined ? Prisma.sql`AND d.year <= ${to}` : Prisma.empty}`;

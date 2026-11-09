@@ -10,7 +10,7 @@
     "build": "npm run db:generate && next build --webpack",
     "start": "node --use-env-proxy node_modules/next/dist/bin/next start --hostname 0.0.0.0",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests/unit.test.ts tests/moderation.test.ts tests/moderation-variants.test.ts tests/assistant.test.ts tests/corpus.test.ts tests/discovery.test.ts tests/local-model.test.ts tests/site-dialog.test.ts tests/artur-full-tz.test.ts tests/artur-training-candidate.test.ts tests/artur-search-periods.test.ts tests/artur-migration.test.ts tests/artur-migration-files.test.ts tests/artur-quality-model.test.ts tests/staff-policy.test.ts",
+    "test": "tsx --test tests/unit.test.ts tests/moderation.test.ts tests/moderation-variants.test.ts tests/assistant.test.ts tests/corpus.test.ts tests/discovery.test.ts tests/local-model.test.ts tests/site-dialog.test.ts tests/artur-full-tz.test.ts tests/artur-training-candidate.test.ts tests/artur-search-periods.test.ts tests/artur-migration.test.ts tests/artur-migration-files.test.ts tests/artur-quality-model.test.ts tests/staff-policy.test.ts tests/cms-grounding.test.ts tests/artur-content-drafts.test.ts tests/english-dialog.test.ts",
     "test:integration": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/integration.test.ts",
     "db:generate": "node --import tsx scripts/generate-client.ts",
     "db:migrate": "node --env-file-if-exists=.env --import tsx scripts/migrate.ts",
@@ -37,7 +37,9 @@
     "evaluate:full-tz": "node --import tsx scripts/evaluate-full-tz-model.ts",
     "audit:migration": "node --import tsx scripts/audit-artur-migration.ts",
     "staff:bootstrap": "node --env-file-if-exists=.env --import tsx scripts/bootstrap-staff.ts",
-    "test:cms": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/cms.integration.test.ts"
+    "test:cms": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/cms.integration.test.ts",
+    "test:cms-assistant": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/cms-assistant.integration.test.ts",
+    "content:artur:export": "node --import tsx scripts/export-artur-drafts.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.10.1",

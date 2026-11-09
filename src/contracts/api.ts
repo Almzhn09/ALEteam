@@ -39,8 +39,8 @@ export interface ModerationQueueItem extends CreatedComment {
 export interface ModerationInput {
   status: 'PUBLISHED' | 'REJECTED' | 'HIDDEN'; reason: string; expectedUpdatedAt: string;
 }
-export interface AssistantInput { question: string; history?: { role: 'user' | 'assistant'; content: string }[] }
+export interface AssistantInput { question: string; locale?: 'ru' | 'kk' | 'en'; history?: { role: 'user' | 'assistant'; content: string }[] }
 export interface AssistantAnswer {
   answer: string; noAnswer: boolean; mode: 'retrieval' | 'llm' | 'local-model' | 'external';
-  sources: { id: string; title: string; isDemo: boolean; kind: 'document' | 'guide'; href: string }[];
+  sources: { id: string; title: string; isDemo: boolean; kind: 'document' | 'guide' | 'cms'; locale?: 'ru' | 'kk' | 'en'; href: string }[];
 }

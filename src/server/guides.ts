@@ -1,3 +1,4 @@
+import {englishGuides,englishGuideTitles} from './english-guides';
 const originals = [
   { id: 'guide-fund', title: 'Справка ALEteam: архивный фонд', text: 'Архивный фонд — совокупность документов, связанных происхождением: например, деятельностью учреждения или человека. В каталоге ALEteam фонд используется как фильтр. Состав и названия настоящих фондов необходимо сверять с официальным архивом.' },
   { id: 'guide-reference', title: 'Справка ALEteam: архивный шифр', text: 'Архивный шифр помогает идентифицировать единицу хранения. Он может включать обозначения фонда, описи и дела. Для поиска скопируйте шифр из карточки в строку поиска. Шифры DEMO обозначают только вымышленные материалы проекта.' },
@@ -18,5 +19,5 @@ const kazakh: Record<string, string> = {
   'guide-comments': 'Пікір жіберу үшін жүйеге кіріңіз. Балағат пен қорлау серверде қабылданбайды; күмәнді хабарламалар мен дәйексөздер тексеруді күтеді. Пікір ұзындығы — 2000 таңбаға дейін. Жарияланған пікірге шағымдануға болады; модератор оны жасыра немесе қалпына келтіре алады.',
 };
 // Original project guides, CC0-1.0; Kazakh wording awaits native-speaker review.
-export const guides = originals.map(g => ({ ...g, text: g.text + (kazakh[g.id] ? `\nҚазақша: ${kazakh[g.id]}` : '') }));
+export const guides = originals.map(g => ({ ...g, titleEn:englishGuideTitles[g.id], text: g.text + (kazakh[g.id] ? `\nҚазақша: ${kazakh[g.id]}` : '') + (englishGuides[g.id] ? `\nEnglish: ${englishGuides[g.id]}` : '') }));
 export function getGuide(id: string) { return guides.find(g => g.id === id); }

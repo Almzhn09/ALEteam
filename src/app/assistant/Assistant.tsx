@@ -9,7 +9,10 @@ import { DemoBadge, Loading, Notice, Ru } from '@/components/ui';
 import { useI18n } from '@/lib/lang';
 import type { Translate } from '@/lib/i18n';
 
+import {assistantSourceLink} from '@/lib/assistant-source-link';
+
 const MAX = 1000;
+
 const STORE = 'aleteam-assistant-history-v1';
 type Message =
   | { role: 'user'; content: string }
@@ -36,7 +39,7 @@ function errorMessage(error: unknown, t: Translate): string {
 
 export function Assistant() {
   const { state, user } = useSession();
-  const { t } = useI18n();
+  const { t,lang } = useI18n();
   const params = useSearchParams();
   const [messages, setMessages] = useState<Message[]>([]);
   const [messageOwner, setMessageOwner] = useState<string | null>(null);
@@ -75,7 +78,7 @@ export function Assistant() {
     const abort = new AbortController(); controller.current = abort;
     try {
       const r = await Promise.race([
-        apiSend<AssistantAnswer>('/assistant', 'POST', { question: q, history }, {}, abort.signal),
+        apiSend<AssistantAnswer>('/assistant', 'POST', { question: q, history,locale:lang }, {}, abort.signal),
         new Promise<never>((_, reject) => abort.signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')))),
       ]);
       if (activeUser.current === owner) setMessages(m => [...m, { role: 'assistant', content: r.answer, noAnswer: r.noAnswer, sources: r.sources, mode: r.mode }]);
@@ -138,7 +141,7 @@ export function Assistant() {
                   <strong>{t('Источники:')}</strong>
                   <ul>
                     {m.sources.map(s => (
-                      <li key={s.id}><Link href={s.kind === 'guide' ? `/about#${encodeURIComponent(s.id)}` : `/documents/${encodeURIComponent(s.id)}`}><Ru>{s.title}</Ru></Link> <DemoBadge show={s.isDemo} /></li>
+                      <li key={s.id}>{s.kind === 'cms' ? <a href={assistantSourceLink(s)}><span lang={s.locale}>{s.title}</span></a> : <Link href={assistantSourceLink(s)}>{s.locale === 'en' ? <span lang="en">{s.title}</span> : <Ru>{s.title}</Ru>}</Link>} <DemoBadge show={s.isDemo} /></li>
                     ))}
                   </ul>
                 </div>

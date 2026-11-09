@@ -71,7 +71,7 @@ export async function answerSiteDialog(question:string, history:Turn[]=[]): Prom
  const guide=topicGuides[topic];
  if(guide) {
   const g=getGuide(guide)!;
-  const text=kk?(g.text.split('\nҚазақша: ')[1]??g.text.split('\n')[1]??g.text):g.text.split('\n')[0];
+  const text=kk?(g.text.split('\nҚазақша: ')[1]??g.text.split('\n')[1]??g.text).split('\nEnglish: ')[0]:g.text.split('\n')[0];
   return say(text,guide);
  }
  return answerFromSources(effectiveQuestion,await retrievePassages(effectiveQuestion,'local',carriedTopic),{mode:'local-model'});

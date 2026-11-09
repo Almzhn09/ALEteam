@@ -1,0 +1,271 @@
+{
+  "version": 1,
+  "draftsOnly": true,
+  "records": [
+    {
+      "externalId": "site-purpose",
+      "requiresReview": true,
+      "create": {
+        "slug": "artur-site-purpose",
+        "kind": "FAQ",
+        "isDemo": false,
+        "branchId": null,
+        "locale": "ru",
+        "payload": {
+          "title": "Назначение сайта",
+          "body": "Информационный прототип ALEteam: просмотр открытых материалов. Сайт не принимает официальные обращения, заявки и платежи.",
+          "rights": "CC0-1.0",
+          "sourceNote": "ALEteam (авторский текст); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+        }
+      },
+      "translations": [
+        {
+          "locale": "kk",
+          "payload": {
+            "title": "Сайттың мақсаты",
+            "body": "ALEteam ақпараттық прототипі: ашық материалдарды қарау. Сайт ресми өтініштерді, тапсырыстарды немесе төлемдерді қабылдамайды.",
+            "rights": "CC0-1.0",
+            "sourceNote": "ALEteam (авторский текст); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+          }
+        },
+        {
+          "locale": "en",
+          "payload": {
+            "title": "Site purpose",
+            "body": "ALEteam is an information prototype for browsing public materials. It does not accept official requests, orders or payments.",
+            "rights": "CC0-1.0",
+            "sourceNote": "ALEteam (авторский текст); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+          }
+        }
+      ]
+    },
+    {
+      "externalId": "demo-notice",
+      "requiresReview": true,
+      "create": {
+        "slug": "artur-demo-notice",
+        "kind": "FAQ",
+        "isDemo": true,
+        "branchId": null,
+        "locale": "ru",
+        "payload": {
+          "title": "О демонстрационных материалах",
+          "body": "Демонстрационные документы вымышлены и не являются подлинниками государственного архива.",
+          "rights": "CC0-1.0",
+          "sourceNote": "ALEteam (авторский текст); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+        }
+      },
+      "translations": [
+        {
+          "locale": "kk",
+          "payload": {
+            "title": "Демонстрациялық материалдар туралы",
+            "body": "Демонстрациялық құжаттар ойдан шығарылған және мемлекеттік мұрағаттың түпнұсқалары емес.",
+            "rights": "CC0-1.0",
+            "sourceNote": "ALEteam (авторский текст); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+          }
+        },
+        {
+          "locale": "en",
+          "payload": {
+            "title": "About demonstration materials",
+            "body": "Demonstration documents are fictional and are not originals from the state archive.",
+            "rights": "CC0-1.0",
+            "sourceNote": "ALEteam (авторский текст); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+          }
+        }
+      ]
+    },
+    {
+      "externalId": "archive-contact",
+      "requiresReview": true,
+      "create": {
+        "slug": "artur-archive-contact",
+        "kind": "FAQ",
+        "isDemo": false,
+        "branchId": null,
+        "locale": "ru",
+        "payload": {
+          "title": "Контакты архива: сведения для проверки",
+          "body": "На странице контактов указаны: Усть-Каменогорск, ул. Головкова, 26/1; приёмная +7 (7232) 25-59-76; arhiv-ukg@yandex.kz. Индекс требует уточнения.",
+          "rights": "Проверенные факты, авторский пересказ; права на внешние изображения не получены",
+          "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1330",
+          "sourceNote": "Госархив ВКО (факты); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+        }
+      },
+      "translations": [
+        {
+          "locale": "kk",
+          "payload": {
+            "title": "Мұрағат байланыстары: тексерілетін ақпарат",
+            "body": "Байланыс бетінде: Өскемен, Головков көшесі, 26/1; қабылдау бөлмесі +7 (7232) 25-59-76; arhiv-ukg@yandex.kz. Пошта индексін нақтылау қажет.",
+            "rights": "Проверенные факты, авторский пересказ; права на внешние изображения не получены",
+            "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1330",
+            "sourceNote": "Госархив ВКО (факты); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+          }
+        },
+        {
+          "locale": "en",
+          "payload": {
+            "title": "Archive contacts: facts for verification",
+            "body": "The contact page lists: Ust-Kamenogorsk, 26/1 Golovkov Street; reception +7 (7232) 25-59-76; arhiv-ukg@yandex.kz. The postal code needs confirmation.",
+            "rights": "Проверенные факты, авторский пересказ; права на внешние изображения не получены",
+            "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1330",
+            "sourceNote": "Госархив ВКО (факты); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+          }
+        }
+      ]
+    },
+    {
+      "externalId": "archive-hours",
+      "requiresReview": true,
+      "create": {
+        "slug": "artur-archive-hours",
+        "kind": "FAQ",
+        "isDemo": false,
+        "branchId": null,
+        "locale": "ru",
+        "payload": {
+          "title": "Часы работы: сведения для проверки",
+          "body": "По контактной странице: пн–пт 09:00–18:00; читальный зал 10:00–17:00. Уточните актуальность перед посещением.",
+          "rights": "Проверенные факты, авторский пересказ; права на внешние изображения не получены",
+          "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1330",
+          "sourceNote": "Госархив ВКО (факты); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+        }
+      },
+      "translations": [
+        {
+          "locale": "kk",
+          "payload": {
+            "title": "Жұмыс уақыты: тексерілетін ақпарат",
+            "body": "Байланыс беті бойынша: дүйсенбі–жұма 09:00–18:00; оқу залы 10:00–17:00. Барар алдында өзектілігін тексеріңіз.",
+            "rights": "Проверенные факты, авторский пересказ; права на внешние изображения не получены",
+            "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1330",
+            "sourceNote": "Госархив ВКО (факты); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+          }
+        },
+        {
+          "locale": "en",
+          "payload": {
+            "title": "Opening hours: facts for verification",
+            "body": "According to the contact page: Monday–Friday 09:00–18:00; reading room 10:00–17:00. Confirm current hours before visiting.",
+            "rights": "Проверенные факты, авторский пересказ; права на внешние изображения не получены",
+            "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1330",
+            "sourceNote": "Госархив ВКО (факты); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+          }
+        }
+      ]
+    },
+    {
+      "externalId": "source-check",
+      "requiresReview": true,
+      "create": {
+        "slug": "artur-source-check",
+        "kind": "FAQ",
+        "isDemo": false,
+        "branchId": null,
+        "locale": "ru",
+        "payload": {
+          "title": "Как проверять источники",
+          "body": "Проверьте название, архивный шифр, происхождение, права и пометку демоданных. Ответ помощника не заменяет проверку архивиста.",
+          "rights": "CC0-1.0",
+          "sourceNote": "ALEteam (авторский текст); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+        }
+      },
+      "translations": [
+        {
+          "locale": "kk",
+          "payload": {
+            "title": "Дереккөздерді қалай тексеруге болады",
+            "body": "Атауын, мұрағаттық шифрын, дереккөзін, құқықтарын және демо белгісін тексеріңіз. Көмекшінің жауабы мұрағатшының тексеруін алмастырмайды.",
+            "rights": "CC0-1.0",
+            "sourceNote": "ALEteam (авторский текст); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+          }
+        },
+        {
+          "locale": "en",
+          "payload": {
+            "title": "How to verify sources",
+            "body": "Check the title, archive reference, provenance, rights and demo label. An assistant response does not replace an archivist’s review.",
+            "rights": "CC0-1.0",
+            "sourceNote": "ALEteam (авторский текст); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+          }
+        }
+      ]
+    },
+    {
+      "externalId": "demo-collection",
+      "requiresReview": true,
+      "create": {
+        "slug": "artur-demo-collection",
+        "kind": "COLLECTION",
+        "isDemo": true,
+        "branchId": null,
+        "locale": "ru",
+        "payload": {
+          "title": "Демо-коллекция: учебные материалы",
+          "body": "Демо-коллекция «Учебные материалы»: только существующие собственные демодокументы. Историческая достоверность не заявляется.",
+          "rights": "CC0-1.0",
+          "sourceNote": "ALEteam (авторский текст); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+        }
+      },
+      "translations": [
+        {
+          "locale": "kk",
+          "payload": {
+            "title": "Демо-жинақ: оқу материалдары",
+            "body": "«Оқу материалдары» демо-жинағы: тек жобаның бар демонстрациялық құжаттары. Тарихи шынайылық мәлімделмейді.",
+            "rights": "CC0-1.0",
+            "sourceNote": "ALEteam (авторский текст); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+          }
+        },
+        {
+          "locale": "en",
+          "payload": {
+            "title": "Demo collection: learning materials",
+            "body": "Demo collection “Learning materials”: existing original project demo documents only. No historical authenticity is claimed.",
+            "rights": "CC0-1.0",
+            "sourceNote": "ALEteam (авторский текст); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+          }
+        }
+      ]
+    },
+    {
+      "externalId": "demo-exhibition",
+      "requiresReview": true,
+      "create": {
+        "slug": "artur-demo-exhibition",
+        "kind": "EXHIBITION",
+        "isDemo": true,
+        "branchId": null,
+        "locale": "ru",
+        "payload": {
+          "title": "Демо-выставка: как читать карточку",
+          "body": "Демо-выставка «Как читать карточку»: собственные листы показывают название, шифр и происхождение; не реконструкция исторического события.",
+          "rights": "CC0-1.0",
+          "sourceNote": "ALEteam (авторский текст); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+        }
+      },
+      "translations": [
+        {
+          "locale": "kk",
+          "payload": {
+            "title": "Демо-көрме: құжат карточкасын оқу",
+            "body": "«Құжат карточкасын қалай оқу керек» демо-көрмесі: жобаның парақтары атауын, шифрын және дереккөзін көрсетеді; тарихи оқиғаны қайта құру емес.",
+            "rights": "CC0-1.0",
+            "sourceNote": "ALEteam (авторский текст); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+          }
+        },
+        {
+          "locale": "en",
+          "payload": {
+            "title": "Demo exhibition: reading a document card",
+            "body": "Demo exhibition “Reading a document card”: original project sheets illustrate titles, references and provenance; this is not a reconstruction of a historical event.",
+            "rights": "CC0-1.0",
+            "sourceNote": "ALEteam (авторский текст); checked 2026-11-09; AI-assisted draft / Артур; draft requires independent language/rights review"
+          }
+        }
+      ]
+    }
+  ]
+}
