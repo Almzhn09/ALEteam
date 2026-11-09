@@ -1,0 +1,30 @@
+{
+  "results": [
+    {
+      "command": "npm run test:integration",
+      "exitCode": 0,
+      "log": "integration.log"
+    },
+    {
+      "command": "npm run test:release",
+      "exitCode": 0,
+      "log": "release.log"
+    }
+  ],
+  "dedicatedDatabase": true,
+  "containerRemoved": true,
+  "scope": "Existing RU/KK prototype, not full CMS specification",
+  "integrationTests": {
+    "passed": 21,
+    "failed": 0
+  },
+  "browserFlows": {
+    "passed": 13,
+    "failed": 0
+  },
+  "auditedScreens": 54,
+  "axeViolations": 0,
+  "postgresImage": "postgres:16.14-alpine",
+  "postgresDigest": "sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777",
+  "privateCredentialsRetained": false
+}
