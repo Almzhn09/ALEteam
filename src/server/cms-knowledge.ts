@@ -9,7 +9,7 @@ const stop=new Set('расскажи покажи найти найди како
 export function cmsQueryTerms(question:string){
  return [...new Set((question.toLowerCase().normalize('NFKC').match(/[\p{L}\p{N}]+/gu)??[]).filter(w=>w.length>=3&&!stop.has(w)).map(w=>w.length>6?w.slice(0,6):w))].slice(0,8);
 }
-const visibleItem:Prisma.ContentItemWhereInput={kind:{not:'SETTING'},OR:[{branchId:null},{branch:{isPublic:true}}]};
+const visibleItem:Prisma.ContentItemWhereInput={kind:{notIn:['SETTING','ARCHIVE_DOCUMENT']},OR:[{branchId:null},{branch:{isPublic:true}}]};
 function passage(row:{id:string;locale:string;payload:Prisma.JsonValue;reviewerId:string|null;authorId:string;updatedAt:Date;item:{slug:string;isDemo:boolean;kind:string}}):CmsPassage|undefined{
  if(!row.reviewerId||row.reviewerId===row.authorId)return undefined;
  const parsed=contentPayload.safeParse(row.payload);if(!parsed.success)return undefined;
@@ -30,7 +30,7 @@ export async function retrieveCmsPassages(question:string,locale:ContentLocale):
   SELECT r.id FROM "ContentRevision" r JOIN "ContentItem" i ON i.id=r."itemId"
   LEFT JOIN "ArchiveBranch" b ON b.id=i."branchId"
   WHERE r.status='PUBLISHED' AND r.locale=${locale} AND r."reviewerId" IS NOT NULL AND r."reviewerId"<>r."authorId"
-   AND i.kind<>'SETTING' AND (i."branchId" IS NULL OR b."isPublic"=true)
+   AND i.kind NOT IN ('SETTING','ARCHIVE_DOCUMENT') AND (i."branchId" IS NULL OR b."isPublic"=true)
    AND (${Prisma.join(matches,' AND ')})
   ORDER BY r."updatedAt" DESC,r.id ASC LIMIT 12`);
  if(!ids.length)return [];

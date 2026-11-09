@@ -9,6 +9,8 @@ import { answerSiteDialog } from './site-dialog';
 import {retrieveCmsPassages,revalidateCmsPassages,type CmsPassage} from './cms-knowledge';
 import {isKazakh} from './grounded-assistant';
 import {cmsAnswer,cmsQuestionContext} from './cms-grounding';
+import {semanticConversationPlan,requiresCatalogEvidence} from './semantic-catalog-plan';
+import {retrieveSemanticCatalog,revalidateCatalogSources,semanticCatalogAnswer,type CatalogPassage} from './semantic-catalog';
 import {englishSiteDialog} from './english-dialog';
 
 export const assistantInput = z.object({
@@ -25,29 +27,39 @@ export async function assistant(request: Request) {
   await rateLimit(`assistant:global-daily${local ? ':local' : ''}`, local ? 10000 : 100, 86400);
   let result: z.infer<typeof assistantOutput>;
   let cmsPassages:CmsPassage[]=[];
+  let catalogPassages:CatalogPassage[]=[];
+  const documentLocale=input.locale??'ru';
+  const plan=semanticConversationPlan(input.question,input.history,documentLocale,local);
   const locale=input.locale??(isKazakh(input.question)?'kk':'ru');
   try {
-    if(!process.env.ASSISTANT_SERVICE_URL)cmsPassages=await retrieveCmsPassages(cmsQuestionContext(input.question,input.history),locale);
+    if(!process.env.ASSISTANT_SERVICE_URL&&plan.handled&&requiresCatalogEvidence(plan,input.question))catalogPassages=await retrieveSemanticCatalog(plan);
+    if(!process.env.ASSISTANT_SERVICE_URL&&(!plan.handled||!requiresCatalogEvidence(plan,input.question)))cmsPassages=await retrieveCmsPassages(cmsQuestionContext(input.question,input.history),locale);
+    if(!process.env.ASSISTANT_SERVICE_URL&&plan.handled&&!requiresCatalogEvidence(plan,input.question)&&!cmsPassages.length)catalogPassages=await retrieveSemanticCatalog(plan);
     result = assistantOutput.parse(process.env.ASSISTANT_SERVICE_URL
       ? await serviceRequest(process.env.ASSISTANT_SERVICE_URL, process.env.ASSISTANT_SERVICE_TOKEN, { ...input, maxOutputTokens: 500 }, 15000)
       : cmsPassages.length ? cmsAnswer(cmsPassages,locale)
+      : plan.handled ? semanticCatalogAnswer(catalogPassages,plan,local)
       : locale==='en' ? (local?englishSiteDialog(input.question,input.history):cmsAnswer([],locale))
-      : local ? await answerSiteDialog(input.question, input.history)
-      : await answerFromSources(input.question, await retrievePassages(input.question, 'expanded')));
+      : local ? await answerSiteDialog(input.question, input.history,documentLocale)
+      : await answerFromSources(input.question, await retrievePassages(input.question, 'expanded',undefined,documentLocale)));
   } catch { unavailableAssistant(); }
   if ((!result.noAnswer && !result.sourceIds.length) || (result.noAnswer && result.sourceIds.length)) throw new ApiError(502, 'INVALID_ASSISTANT_RESPONSE', 'Ответ помощника не прошёл проверку источников.');
   const ids = [...new Set(result.sourceIds)];
+  const selectedCatalog=catalogPassages.filter(p=>ids.includes(p.id));
+  if(!await revalidateCatalogSources(selectedCatalog))throw new ApiError(503,'ASSISTANT_SOURCE_CHANGED','Публикация изменилась. Повторите вопрос.');
   const selectedCms=cmsPassages.filter(p=>ids.includes(p.id));
   if(!await revalidateCmsPassages(selectedCms,locale))throw new ApiError(503,'ASSISTANT_SOURCE_CHANGED','Публикация изменилась. Повторите вопрос.');
-  const documents = await db.document.findMany({ where: { id: { in: ids }, isPublic: true, allowDigitalCopy: true }, select: { id: true, title: true, isDemo: true } });
+  const documents = await db.document.findMany({ where: { id: { in: ids }, isPublic: true, deletedAt:null, allowDigitalCopy: true }, select: { id: true, title: true, isDemo: true,translations:{where:{locale:documentLocale},select:{title:true}} } });
   const sources = ids.map(id => {
+    const catalog=selectedCatalog.find(p=>p.id===id);
+    if(catalog)return {id:catalog.id,title:catalog.title,isDemo:catalog.isDemo,kind:'document',locale:catalog.locale,href:catalog.href,digitalCopyAllowed:catalog.digitalCopyAllowed};
     const cms=selectedCms.find(p=>p.id===id);
     if(cms)return {id:cms.id,title:cms.title,isDemo:cms.isDemo,kind:'cms',locale,href:cms.href};
     const guide = getGuide(id);
     if (guide) return { id, title: input.locale==='en'?guide.titleEn:guide.title, locale:input.locale==='en'?'en':undefined, isDemo: false, kind: 'guide', href: `/api/guides/${id}` };
     const document = documents.find(d => d.id === id);
-    return document ? { ...document, kind: 'document', href: `/api/documents/${id}` } : undefined;
+    return document&&document.translations.length ? {id:document.id,title:document.translations[0].title,isDemo:document.isDemo,locale:documentLocale,kind:'document',href:`/api/documents/${id}?locale=${documentLocale}`} : undefined;
   });
   if (sources.some(s => !s)) throw new ApiError(502, 'INVALID_ASSISTANT_RESPONSE', 'Ответ помощника содержит недоступный источник.');
-  return json({ answer: result.answer, noAnswer: result.noAnswer, mode: result.mode ?? 'external', sources });
+  return json({ answer: result.answer, noAnswer: result.noAnswer, mode: result.mode ?? 'external', sources,...(plan.handled&&!cmsPassages.length&&!process.env.ASSISTANT_SERVICE_URL?{catalogQuery:plan.filters}:{}) });
 }

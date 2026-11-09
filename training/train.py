@@ -51,6 +51,9 @@ external=json.loads((ROOT/'tests/fixtures/search-bilingual.json').read_text())['
 reserved={r['question'].strip().lower() for r in external}
 for case in json.loads((ROOT/'tests/fixtures/site-dialog.json').read_text()):
  reserved.update(q.strip().lower() for q in case['turns'])
+semantic_cases=ROOT/'tests/fixtures/semantic-catalog.json'
+if semantic_cases.exists():
+ reserved.update(row['question'].strip().lower() for row in json.loads(semantic_cases.read_text())['cases'])
 def norm(s): return ' '.join(s.lower().split())
 def features(s):
  if FULL_TZ:

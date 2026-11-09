@@ -1,3 +1,4 @@
+import type {ContentLocale} from '../contracts/cms';
 import { generateLocalQuery } from './local-model';
 import { getGuide } from './guides';
 import { retrievePassages, searchIntent, unsafeInstructions } from './knowledge';
@@ -42,9 +43,9 @@ function context(history: Turn[]) {
  }
  return focus;
 }
-export async function answerSiteDialog(question:string, history:Turn[]=[]): Promise<GroundedAnswer> {
+export async function answerSiteDialog(question:string, history:Turn[]=[],locale:ContentLocale='ru'): Promise<GroundedAnswer> {
  if(unsafeInstructions(question))return noAnswer(question,'local-model');
- if(searchIntent(question).reference)return answerFromSources(question,await retrievePassages(question,'local'),{mode:'local-model'});
+ if(searchIntent(question).reference)return answerFromSources(question,await retrievePassages(question,'local',undefined,locale),{mode:'local-model'});
  const prediction=generateLocalQuery(question);
  const act=prediction.complete&&prediction.confidence>=0.6?prediction.query:'';
  const prior=context(history);
@@ -74,5 +75,5 @@ export async function answerSiteDialog(question:string, history:Turn[]=[]): Prom
   const text=kk?(g.text.split('\nҚазақша: ')[1]??g.text.split('\n')[1]??g.text).split('\nEnglish: ')[0]:g.text.split('\n')[0];
   return say(text,guide);
  }
- return answerFromSources(effectiveQuestion,await retrievePassages(effectiveQuestion,'local',carriedTopic),{mode:'local-model'});
+ return answerFromSources(effectiveQuestion,await retrievePassages(effectiveQuestion,'local',carriedTopic,locale),{mode:'local-model'});
 }

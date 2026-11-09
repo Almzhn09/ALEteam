@@ -20,5 +20,5 @@ export function archiveSearchIntent(question: string) {
   else if (end !== undefined) yearFrom = end + 1;
   else if (years.length) { yearFrom = years[0]; yearTo = years[years.length - 1]; }
   if (!photo && !place && !years.length) clarification = 'Specify a document type, place or period';
-  return { type: photo ? 'PHOTO' : undefined, placeId: place, yearFrom, yearTo, clarification };
+  return { periodAmbiguous:Boolean(ambiguous), type: photo ? 'PHOTO' : undefined, placeId: place, yearFrom, yearTo, clarification };
 }

@@ -1,3 +1,5 @@
+import semanticDictionary from '../../data/artur/semantic-dictionary.json';
+import type {ContentLocale} from '../contracts/cms';
 import { Prisma } from '../generated/prisma/index.js';
 import { db } from './db';
 import { guides } from './guides';
@@ -67,21 +69,25 @@ export function localSearchIntent(question: string, contextTopic?: string) {
   const guide = accepted ? guides.find(g => g.id === guideIds[query]) : undefined;
   return { ...base, guide, query: queries[0] ?? '', titleTerm: undefined, titleTerms: queries.map(q => ({ 'библиотека':'библиотек', 'площадь':'площад', 'школа':'школ', 'музей':'музе', 'станция':'железн' }[q]!)), topicQueries: queries };
 }
-export async function retrievePassages(question: string, version: 'expanded' | 'legacy' | 'local' = 'expanded', contextTopic?: string): Promise<Passage[]> {
+export async function retrievePassages(question: string, version: 'expanded' | 'legacy' | 'local' = 'expanded', contextTopic?: string,locale:ContentLocale='ru'): Promise<Passage[]> {
   if (unsafeInstructions(question)) return [];
   const intent = version === 'legacy' ? { ...legacySearchIntent(question), topicQueries: [], titleTerms: [], yearFrom: undefined, yearTo: undefined } : version === 'local' ? localSearchIntent(question, contextTopic) : searchIntent(question);
   if (intent.guide) return [{ ...intent.guide, isDemo: false, kind: 'guide' }];
   if (!intent.query && !intent.reference) return [];
-  const terms = intent.topicQueries.length ? Prisma.join(intent.topicQueries.map(query => Prisma.sql`d."searchVector" @@ plainto_tsquery('russian', ${query})`), ' OR ') : Prisma.sql`d."searchVector" @@ plainto_tsquery('russian', ${intent.query})`;
-  const titleTerms = intent.titleTerms.length ? intent.titleTerms : intent.titleTerm ? [intent.titleTerm] : [];
+  const translateQuery=(value:string)=>semanticDictionary.topics.find(t=>t.label===value)?.query[locale]??value;
+  const vector=locale==='ru'?Prisma.sql`t."russianVector"`:Prisma.sql`t."searchVector"`;
+  const config=locale==='ru'?'russian':'simple';
+  const queries=intent.topicQueries.length?intent.topicQueries:[intent.query];
+  const terms=Prisma.join(queries.map(query=>Prisma.sql`${vector} @@ plainto_tsquery(${config}::regconfig, ${translateQuery(query)})`),' OR ');
+  const titleTerms=locale==='ru'?(intent.titleTerms.length?intent.titleTerms:intent.titleTerm?[intent.titleTerm]:[]):[];
   const from = version === 'legacy' ? (intent.years.length ? Math.min(...intent.years) : undefined) : intent.yearFrom;
   const to = version === 'legacy' ? (intent.years.length ? Math.max(...intent.years) : undefined) : intent.yearTo;
-  const filter = Prisma.sql`d."isPublic" = true AND d."allowDigitalCopy" = true
-    ${intent.reference ? Prisma.sql`AND lower(d.reference) = lower(${intent.reference})` : Prisma.sql`AND (${terms} ${titleTerms.length ? Prisma.sql`OR (${Prisma.join(titleTerms.map(term => Prisma.sql`d.title ILIKE ${`%${term}%`}`), ' OR ')})` : Prisma.empty})`}
+  const filter = Prisma.sql`d."isPublic" = true AND d."deletedAt" IS NULL AND d."allowDigitalCopy" = true AND t.locale=${locale}
+    ${intent.reference ? Prisma.sql`AND lower(d.reference) = lower(${intent.reference})` : Prisma.sql`AND (${terms} ${titleTerms.length ? Prisma.sql`OR (${Prisma.join(titleTerms.map(term => Prisma.sql`t.title ILIKE ${`%${term}%`}`), ' OR ')})` : Prisma.empty})`}
     ${from !== undefined ? Prisma.sql`AND d.year >= ${from}` : Prisma.empty}
     ${to !== undefined ? Prisma.sql`AND d.year <= ${to}` : Prisma.empty}`;
   const rows = await db.$queryRaw<{ id: string; title: string; description: string; isDemo: boolean }[]>(Prisma.sql`
-    SELECT d.id, d.title, d.description, d."isDemo" FROM "Document" d WHERE ${filter} ORDER BY d.year ASC, d.id ASC LIMIT 5`);
+    SELECT d.id, t.title, t.description, d."isDemo" FROM "Document" d JOIN "DocumentTranslation" t ON t."documentId"=d.id WHERE ${filter} ORDER BY d.year ASC, d.id ASC LIMIT 5`);
   // Retrieved text is evidence, never an instruction. Suspect source fragments are omitted.
   return rows.filter(r => !unsafeInstructions(r.description)).map(r => ({ id: r.id, title: r.title, text: r.description.slice(0, 4000), isDemo: r.isDemo, kind: 'document' }));
 }

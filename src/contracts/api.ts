@@ -39,6 +39,7 @@ export interface ModerationInput {
 }
 export interface AssistantInput { question: string; locale?: 'ru' | 'kk' | 'en'; history?: { role: 'user' | 'assistant'; content: string }[] }
 export interface AssistantAnswer {
+  catalogQuery?: CatalogFilters;
   answer: string; noAnswer: boolean; mode: 'retrieval' | 'llm' | 'local-model' | 'external';
-  sources: { id: string; title: string; isDemo: boolean; kind: 'document' | 'guide' | 'cms'; locale?: 'ru' | 'kk' | 'en'; href: string }[];
+  sources: { id: string; title: string; isDemo: boolean; kind: 'document' | 'guide' | 'cms'; locale?: 'ru' | 'kk' | 'en'; digitalCopyAllowed?: boolean; href: string }[];
 }

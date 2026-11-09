@@ -132,3 +132,8 @@ test('generic CMS wording does not hijack a specific catalog search',async()=>{
  const item=await create('Справкамаркер','ru','FAQ',null,{body:'В каталоге есть документы. Для поиска уточните год.'});await publish(item.revisions[0]);
  const result=await ask('Найди документы о библиотеке');assert.ok(result.sources.some((s:{kind:string})=>s.kind==='document'));assert.ok(result.sources.every((s:{kind:string})=>s.kind!=='cms'));
 });
+
+test('reviewed CMS facts take priority over a weak learned subject when no catalog filters were requested',async()=>{
+ const item=await create('Library hours','en','FAQ',null,{body:'DEMO: the library opens at 10. Original reviewed FAQ text.'});await publish(item.revisions[0]);
+ const r=await ask('Library hours','en');assert.equal(r.sources[0].kind,'cms');assert.ok(r.answer.includes('opens at 10'));assert.equal(r.catalogQuery,undefined);assert.equal(r.mode,'retrieval');
+});
