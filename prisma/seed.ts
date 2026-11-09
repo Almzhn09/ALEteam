@@ -49,13 +49,18 @@ async function seed() {
     const i = offset + 1; const id = record.id;
     const existing = await db.document.findUnique({ where: { id } });
     if (existing && !existing.isDemo) throw new Error('Refusing to overwrite a non-demo record.');
-    await db.document.upsert({ where: { id }, create: {
+    const document = await db.document.upsert({ where: { id }, create: {
       id, title: record.title, description: record.description,
       year: record.year, type: record.type, reference: record.reference,
       fundId: record.fundId, rights: 'Оригинальный вымышленный материал ALEteam, CC0-1.0. Не архивный источник.',
       isDemo: true, isPublic: true, allowDigitalCopy: true,
     }, update: existing?.description === 'Полностью вымышленная запись для разработки и проверки поиска. Не является историческим свидетельством.' && existing.title === record.title
       ? { description: record.description, rights: 'Оригинальный вымышленный материал ALEteam, CC0-1.0. Не архивный источник.' } : {} });
+    // Legacy demo projection only; never overwrite a managed CMS publication or recreate its withdrawn translation.
+    if (document.isPublic && !document.contentItemId) await db.documentTranslation.upsert({
+      where: {documentId_locale: {documentId: id, locale: 'ru'}},
+      create: {documentId: id, locale: 'ru', title: document.title, description: document.description, rights: document.rights}, update: {},
+    });
     if (i <= 5) {
       const data = demoPdf(i, record.description); const storageKey = `${id}.pdf`;
       await writeFile(path.join(root, storageKey), data);

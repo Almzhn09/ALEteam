@@ -103,6 +103,8 @@ model Fund {
   number String?
   branch ArchiveBranch? @relation(fields: [branchId], references: [id])
   inventories Inventory[]
+  updatedAt DateTime @updatedAt @default(now())
+  @@unique([branchId, number])
 }
 model Document {
   id           String   @id
@@ -117,6 +119,15 @@ model Document {
   isPublic     Boolean  @default(false)
   fundId       String
   caseId String?
+  updatedAt DateTime @updatedAt @default(now())
+  deletedAt DateTime?
+  contentItemId String? @unique
+  contentItem ContentItem? @relation(fields: [contentItemId], references: [id])
+  category String?
+  tags String[] @default([])
+  sourceNote String?
+  catalogVersion Int @default(0)
+  translations DocumentTranslation[]
   authorName String?
   organization String?
   locality String?
@@ -136,6 +147,8 @@ model Document {
   @@index([isPublic, year, id])
   @@index([fundId])
   @@index([type])
+  @@index([caseId])
+  @@index([originalLanguage])
 }
 model ArchiveFile {
   id           String   @id
@@ -238,6 +251,7 @@ model ArchiveBranch {
  content ContentItem[]
 }
 model Inventory {
+ updatedAt DateTime @updatedAt @default(now())
  id String @id
  fundId String
  number String
@@ -248,6 +262,7 @@ model Inventory {
  @@unique([fundId, number])
 }
 model ArchivalCase {
+ updatedAt DateTime @updatedAt @default(now())
  id String @id
  inventoryId String
  fundId String
@@ -291,6 +306,7 @@ model AuditEvent {
  @@index([createdAt, id])
 }
 enum ContentKind {
+ ARCHIVE_DOCUMENT
  PAGE
  FAQ
  NEWS
@@ -312,6 +328,7 @@ enum PublicationState {
  ARCHIVED
 }
 model ContentItem {
+ document Document?
  id String @id @default(cuid())
  slug String @unique
  kind ContentKind
@@ -322,6 +339,8 @@ model ContentItem {
  revisions ContentRevision[]
 }
 model ContentRevision {
+ catalogBaseVersion Int?
+ publishedDocumentTranslation DocumentTranslation?
  id String @id @default(cuid())
  itemId String
  locale String
@@ -363,4 +382,25 @@ model PublicationEvent {
  revision ContentRevision @relation(fields: [revisionId], references: [id])
  actor User @relation(fields: [actorId], references: [id])
  @@index([revisionId, createdAt])
+}
+
+model DocumentTranslation {
+ documentId String
+ locale String
+ title String
+ description String
+ rights String
+ authorName String?
+ organization String?
+ locality String?
+ storageLocation String?
+ accessConditions String?
+ category String?
+ tags String[] @default([])
+ sourceUrl String?
+ sourceNote String?
+ revisionId String? @unique
+ document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+ revision ContentRevision? @relation(fields: [revisionId], references: [id])
+ @@id([documentId, locale])
 }

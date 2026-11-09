@@ -35,7 +35,8 @@
     "evaluate:local": "node --env-file-if-exists=.env --import tsx scripts/evaluate-local-model.ts",
     "evaluate:dialog": "node --env-file-if-exists=.env --import tsx scripts/evaluate-site-dialog.ts",
     "staff:bootstrap": "node --env-file-if-exists=.env --import tsx scripts/bootstrap-staff.ts",
-    "test:cms": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/cms.integration.test.ts"
+    "test:cms": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/cms.integration.test.ts",
+    "test:catalog": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/catalog.integration.test.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.10.1",

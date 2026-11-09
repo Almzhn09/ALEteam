@@ -2,7 +2,8 @@ import { db } from '@/server/db';
 import { ApiError, handle, json, readJson, requireUser, sameOrigin, rateLimit } from '@/server/http';
 import { staffContext as staffMeGate, staffMe, staffRoles, staffUsers, assignments, auditList } from '@/server/staff';
 import { adminContent, newRevision, editRevision, transitionRevision, publicContent, editorialNotices, revisionEvents } from '@/server/cms';
-import { adminBranches, archiveRecords } from '@/server/archive-admin';
+import { adminBranches, archiveRecords, restoreDocument } from '@/server/archive-admin';
+import { newDocumentRevision } from '@/server/archive-revisions';
 import { getAuth } from '@/server/auth';
 import { documentList, fileResponse, publicDocument } from '@/server/catalog';
 import { createComment, decideComment, decisionHistory, listComments, moderationQueue, ownComments, reportComment } from '@/server/discussions';
@@ -62,6 +63,13 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
     if(route==='admin/branches'&&['GET','POST'].includes(method))return adminBranches(request);
     if(path[0]==='admin'&&path[1]==='branches'&&path.length===3&&method==='PATCH')return adminBranches(request,path[2]);
     if(path[0]==='admin'&&path[1]==='catalog'&&path.length===3&&['funds','inventories','cases','documents'].includes(path[2])&&['GET','POST'].includes(method))return archiveRecords(request,path[2]);
+    if(path[0]==='admin'&&path[1]==='catalog'&&['funds','inventories','cases','documents'].includes(path[2])){
+      if(path.length===4&&['GET','PATCH','DELETE'].includes(method))return archiveRecords(request,path[2],path[3]);
+      if(path[2]==='documents'&&path.length===5&&method==='POST'){
+        if(path[4]==='revisions')return newDocumentRevision(request,path[3]);
+        if(path[4]==='restore')return restoreDocument(request,path[3]);
+      }
+    }
     if(route==='admin/content'&&['GET','POST'].includes(method))return adminContent(request);
     if(path[0]==='admin'&&path[1]==='content'){
       if(path.length===3&&method==='GET')return adminContent(request,path[2]);
@@ -87,7 +95,7 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
     }
     if (route === 'funds' && method === 'GET') return json({ items: await db.fund.findMany({ where: { documents: { some: { isPublic: true } } }, orderBy: { id: 'asc' } }) });
     if (route === 'documents' && method === 'GET') return documentList(request);
-    if (path[0] === 'documents' && path.length === 2 && method === 'GET') return json({ item: await publicDocument(path[1]) });
+    if (path[0] === 'documents' && path.length === 2 && method === 'GET') return json({ item: await publicDocument(path[1],request) });
     if (path[0] === 'documents' && path.length === 3 && path[2] === 'similar' && method === 'GET') return similarDocuments(path[1]);
     if (path[0] === 'documents' && path.length === 3 && path[2] === 'comments') {
       if (method === 'GET') return listComments(request, path[1]);

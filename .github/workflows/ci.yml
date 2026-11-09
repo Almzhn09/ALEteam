@@ -37,6 +37,7 @@ jobs:
       - run: npm run build
       - run: npm run test:integration
       - run: npm run test:cms
+      - run: npm run test:catalog
       - run: npm run evaluate:artur
         env:
           DATABASE_URL: ${{ env.TEST_DATABASE_URL }}

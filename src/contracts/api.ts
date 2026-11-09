@@ -1,13 +1,11 @@
+import type { CatalogFilters } from './catalog';
 // Frontend-safe DTOs: do not import src/server modules into client components.
 export type DocumentType = 'LETTER' | 'PHOTO' | 'MAP' | 'REPORT';
 export type CommentStatus = 'PENDING' | 'PUBLISHED' | 'REJECTED' | 'HIDDEN';
 export type UserRole = 'AUTHOR' | 'MODERATOR';
 export interface Page<T> { items: T[]; page: number; pageSize: number; total: number }
 export interface ApiErrorBody { error: { code: string; message: string; fields?: { path: string; code: string }[] } }
-export interface CatalogQuery {
-  q?: string; fundId?: string; type?: DocumentType; yearFrom?: number; yearTo?: number;
-  sort?: 'year_asc' | 'year_desc' | 'title'; page?: number; pageSize?: number;
-}
+export interface CatalogQuery extends CatalogFilters {}
 export interface Fund { id: string; name: string; description: string }
 export interface DocumentSummary {
   id: string; title: string; description: string; reference: string;

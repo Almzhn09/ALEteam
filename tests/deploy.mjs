@@ -57,7 +57,7 @@ try {
     const catalog = await (await fetch(config.BETTER_AUTH_URL + '/api/documents')).json(); assert.equal(catalog.total, 20);
     const role = compose(project, ['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT rolsuper FROM pg_roles WHERE rolname=current_user']); assert.equal(role, 'f');
   });
-  let commentId; let replyId; let modCookie; let staffCookie; let cmsId; let cmsSlug; let fundId;
+  let commentId; let replyId; let modCookie; let staffCookie; let cmsId; let cmsSlug; let fundId; let catalogueId;
   await check('standalone runtime serves a PNG and persists an authenticated comment', async () => {
     const origin = config.BETTER_AUTH_URL; const cookie = await login(origin);
     const response = await fetch(origin + '/api/documents/demo-doc-01/comments', { method: 'POST', headers: { Origin: origin, Cookie: cookie, 'Content-Type': 'application/json', 'Idempotency-Key': randomUUID() }, body: JSON.stringify({ body: `Проверка сохранности Docker ${run}` }) });
@@ -88,13 +88,19 @@ try {
     const branch=await change('/admin/branches',{code:'docker-'+run,name:'Учебный филиал',isDemo:true});
     const fund=await change('/admin/catalog/funds',{branchId:branch.id,number:'0007',name:'Демо фонд',description:'Учебная иерархия'});fundId=fund.id;
     const inventory=await change('/admin/catalog/inventories',{fundId,number:'0001',title:'Учебная опись'});
-    await change('/admin/catalog/cases',{fundId,inventoryId:inventory.id,number:'0003',title:'Учебное дело'});
+    const archiveCase=await change('/admin/catalog/cases',{fundId,inventoryId:inventory.id,number:'0003',title:'Учебное дело'});
     const payload={title:'Демо CMS Docker',body:'Учебный материал для проверки восстановления.',rights:'ALEteam CC0-1.0',sourceNote:'Оригинальные учебные данные'};
     cmsSlug='docker-cms-'+run;
     const item=await change('/admin/content',{slug:cmsSlug,kind:'EXHIBITION',isDemo:true,locale:'ru',payload});cmsId=item.id;
     for(const locale of ['ru','en']){
       let revision=locale==='ru'?item.revisions[0]:await change(`/admin/content/${cmsId}/revisions`,{locale,payload:{...payload,title:'Demo CMS Docker'}});
       for(const status of ['IN_REVIEW','APPROVED','PUBLISHED'])revision=await change(`/admin/revisions/${revision.id}/transition`,{status,expectedUpdatedAt:revision.updatedAt,reason:'Учебная проверка Docker'},status==='APPROVED'?modCookie:staffCookie);
+    }
+    const catalogue=await change('/admin/catalog/documents',{fundId,caseId:archiveCase.id,reference:'DOCKER-'+run,year:1930,yearTo:1940,type:'PHOTO',originalLanguage:'kk',title:'Учебная карточка Docker',description:'Учебная проверка восстановления каталога',rights:'ALEteam CC0-1.0',sourceNote:'Авторские учебные данные',category:'Образование',tags:['Книги'],internalNotes:'PRIVATE_DOCKER_CATALOG_NOTE'});catalogueId=catalogue.id;
+    const detail=await(await fetch(origin+'/api/admin/catalog/documents/'+catalogueId,{headers:{Cookie:staffCookie}})).json();
+    for(const locale of ['ru','en']){
+      let revision=locale==='ru'?detail.item.contentItem.revisions[0]:await change('/admin/catalog/documents/'+catalogueId+'/revisions',{locale,payload:{title:'Docker catalogue EN',description:'Original demonstration catalogue text',rights:'ALEteam CC0-1.0',sourceNote:'Original demo'}});
+      for(const status of ['IN_REVIEW','APPROVED','PUBLISHED'])revision=await change(`/admin/revisions/${revision.id}/transition`,{status,expectedUpdatedAt:revision.updatedAt,reason:'Учебная проверка карточки'},status==='APPROVED'?modCookie:staffCookie);
     }
     // Only this isolated fixture database: keep existing login checks within their rate window.
     compose(project,['exec','-T','db','psql','-U','archive_app','-d','archive','-c','DELETE FROM "RateLimit"']);
@@ -141,6 +147,14 @@ try {
       const notices=await get('/admin/notices');assert.ok(notices.total>0);
       const inventory=await get('/admin/catalog/inventories?fundId='+fundId);assert.equal(inventory.items[0].number,'0001');
       const cases=await get('/admin/catalog/cases?fundId='+fundId);assert.equal(cases.items[0].number,'0003');
+    }
+  });
+  await check('catalog publication snapshots, translations and copy restrictions survive restore', async () => {
+    for(const origin of [config.BETTER_AUTH_URL,restoreConfig.BETTER_AUTH_URL]){
+      const ru=await(await fetch(origin+'/api/documents/'+catalogueId)).json();assert.equal(ru.item.title,'Учебная карточка Docker');assert.equal(ru.item.allowDigitalCopy,false);assert.deepEqual(ru.item.files,[]);assert.equal(ru.item.internalNotes,undefined);
+      const en=await(await fetch(origin+'/api/documents/'+catalogueId+'?locale=en')).json();assert.equal(en.item.title,'Docker catalogue EN');assert.deepEqual(en.item.availableLocales,['en','ru']);assert.equal(en.item.originalLanguage,'kk');
+      const found=await(await fetch(origin+'/api/documents?fundId='+fundId+'&fundNumber=0007&inventoryNumber=0001&caseNumber=0003&yearFrom=1935&yearTo=1936&category='+encodeURIComponent('Образование'))).json();assert.deepEqual(found.items.map(d=>d.id),[catalogueId]);
+      const detail=await(await fetch(origin+'/api/admin/catalog/documents/'+catalogueId,{headers:{Cookie:staffCookie}})).json();assert.equal(detail.item.contentItem.revisions.length,2);assert.equal(detail.item.internalNotes,'PRIVATE_DOCKER_CATALOG_NOTE');
     }
   });
   await check('favorites, notification preferences and reply events survive restart and restore', async () => {
