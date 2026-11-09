@@ -1,0 +1,74 @@
+{
+  "codeCommit": "1a36b704d98b81bf070667594a3891989d4cfc96",
+  "cmsFoundationCommit": "7cfed5cdb953d6bb59283245a435960a7a058190",
+  "recordedAt": "2026-11-09T16:35:01.676Z",
+  "database": "dedicated ephemeral archive_artur_test",
+  "unit": {
+    "passed": 267,
+    "failed": 0
+  },
+  "integration": {
+    "existingApi": {
+      "tests": 21,
+      "pass": 21,
+      "fail": 0
+    },
+    "cmsFoundation": {
+      "tests": 14,
+      "pass": 14,
+      "fail": 0
+    },
+    "cmsAssistant": {
+      "tests": 10,
+      "pass": 10,
+      "fail": 0
+    }
+  },
+  "browser": {
+    "passed": 13,
+    "total": 13,
+    "auditedScreens": 54,
+    "axeViolations": 0
+  },
+  "languageDraftsCreatedInTest": 21,
+  "runtimeCredentialFileRemoved": true,
+  "testContainerAndVolumeRemoved": true,
+  "commands": [
+    {
+      "command": "npm run test:integration",
+      "exitCode": 0,
+      "log": "test-integration.log"
+    },
+    {
+      "command": "npm run test:cms",
+      "exitCode": 0,
+      "log": "test-cms.log"
+    },
+    {
+      "command": "npm run test:cms-assistant",
+      "exitCode": 0,
+      "log": "test-cms-assistant.log"
+    },
+    {
+      "command": "npm run test:release",
+      "exitCode": 0,
+      "log": "test-release.log"
+    }
+  ],
+  "limitations": [
+    "Full CMS editor/public pages and English UI are not implemented in this branch.",
+    "No real archive export, approval of legal policy or independent native-speaker review.",
+    "English model routes only restricted site help; it is not a general-purpose LLM.",
+    "No public HTTPS or remote GitHub Actions execution claimed."
+  ],
+  "runtimeSha256": {
+    "src/server/assistant.ts": "5fc7885286956356da22a1a380ab370741bff58d03254e5129ad7d88bcbe06af",
+    "src/server/cms-knowledge.ts": "0ce55f961b3cf534e4ff53c7619d01fb7c833cf49b2dd7c08a7d69532b7f79fb",
+    "src/server/cms-grounding.ts": "d464670a5750f55904d82e92e553cfdc7535610dd06e3b992c08e0899bd83e1f",
+    "src/server/english-dialog.ts": "82391a4733b80a7db95373250bebc0e97dbbf4cc3d4ab31bf215badba050e721",
+    "src/server/english-guides.ts": "538ce4f8dfa3e9f4778f34742c6b8d589dd635f31dd8fde49f4889746d28c0ae",
+    "src/server/knowledge.ts": "ed19d6afcd392df1eaac24a6afb98d5598120ad62b6cdba29b3e6c29a5c22b7f",
+    "src/server/guides.ts": "e7630b75698961fd0dda5f1156e8068a0517b925a39a9fed5de7c11bba0590e6",
+    "src/app/assistant/Assistant.tsx": "95a525f7550885d051060b33cdcb6e0a3645cb0e684c7ca77854bcd02f624619"
+  }
+}
