@@ -16,7 +16,7 @@ const files = [];
 const STRING = String.raw`'((?:[^'\\]|\\.)*)'`;
 const callRe = new RegExp(String.raw`\bt\(\s*` + STRING, 'g');
 const fieldRe = new RegExp(String.raw`(?:label|title|text|hint|\d+|[A-Z_]+):\s*` + STRING, 'g');
-const apiErrorRe = new RegExp(String.raw`ApiError\(\d+, '[A-Z_]+', ` + STRING, 'g');
+const apiErrorRe = new RegExp(String.raw`ApiError\(\s*\d+\s*,\s*'[A-Z_]+'\s*,\s*` + STRING, 'g');
 
 const keys = new Set();
 const add = s => { if (/[а-яё]/i.test(s)) keys.add(s.replaceAll(String.raw`\'`, "'")); };

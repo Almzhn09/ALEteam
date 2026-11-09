@@ -30,6 +30,13 @@ model User {
   comments      Comment[]
   reports       Report[]
   decisions     ModerationDecision[]
+  isActive Boolean @default(true)
+  publicationEvents PublicationEvent[]
+  staffAssignments StaffAssignment[]
+  auditEvents AuditEvent[]
+  contentRevisions ContentRevision[] @relation("ContentAuthor")
+  reviewedRevisions ContentRevision[] @relation("ContentReviewer")
+  editorialNotices EditorialNotice[]
   favorites     Favorite[]
   notifications Notification[]
   notifyReplies Boolean @default(true)
@@ -38,6 +45,7 @@ model User {
 model Session {
   id        String   @id
   expiresAt DateTime
+  lastActivityAt DateTime @default(now())
   token     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -91,6 +99,10 @@ model Fund {
   name        String
   description String
   documents   Document[]
+  branchId String?
+  number String?
+  branch ArchiveBranch? @relation(fields: [branchId], references: [id])
+  inventories Inventory[]
 }
 model Document {
   id           String   @id
@@ -104,6 +116,18 @@ model Document {
   isDemo       Boolean  @default(true)
   isPublic     Boolean  @default(false)
   fundId       String
+  caseId String?
+  authorName String?
+  organization String?
+  locality String?
+  originalLanguage String?
+  leafCount Int?
+  yearTo Int?
+  storageLocation String?
+  accessConditions String?
+  internalNotes String?
+  allowDigitalCopy Boolean @default(false)
+  archivalCase ArchivalCase? @relation(fields: [caseId, fundId], references: [id, fundId])
   createdAt    DateTime @default(now())
   fund         Fund     @relation(fields: [fundId], references: [id])
   files        ArchiveFile[]
@@ -199,4 +223,144 @@ model ModerationDecision {
   comment     Comment       @relation(fields: [commentId], references: [id])
   moderator   User          @relation(fields: [moderatorId], references: [id])
   @@index([commentId, createdAt])
+}
+
+model ArchiveBranch {
+ id String @id
+ code String @unique
+ name String
+ isPublic Boolean @default(false)
+ isDemo Boolean @default(true)
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ funds Fund[]
+ staffAssignments StaffAssignment[]
+ content ContentItem[]
+}
+model Inventory {
+ id String @id
+ fundId String
+ number String
+ title String
+ fund Fund @relation(fields: [fundId], references: [id])
+ cases ArchivalCase[]
+ @@unique([id, fundId])
+ @@unique([fundId, number])
+}
+model ArchivalCase {
+ id String @id
+ inventoryId String
+ fundId String
+ number String
+ title String
+ inventory Inventory @relation(fields: [inventoryId, fundId], references: [id, fundId])
+ documents Document[]
+ @@unique([id, fundId])
+ @@unique([inventoryId, number])
+}
+model StaffRole {
+ id String @id
+ name String
+ permissions StaffPermission[]
+ assignments StaffAssignment[]
+}
+model StaffPermission {
+ roleId String
+ permission String
+ role StaffRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+ @@id([roleId, permission])
+}
+model StaffAssignment {
+ id String @id @default(cuid())
+ userId String
+ roleId String
+ branchId String?
+ scopeKey String
+ user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ role StaffRole @relation(fields: [roleId], references: [id])
+ branch ArchiveBranch? @relation(fields: [branchId], references: [id])
+ @@unique([userId, roleId, scopeKey])
+}
+model AuditEvent {
+ id String @id @default(cuid())
+ actorId String
+ action String
+ entityId String
+ createdAt DateTime @default(now())
+ actor User @relation(fields: [actorId], references: [id])
+ @@index([createdAt, id])
+}
+enum ContentKind {
+ PAGE
+ FAQ
+ NEWS
+ COLLECTION
+ PERSON
+ EVENT
+ MEMOIR
+ EXHIBITION
+ EXHIBIT
+ BRANCH_PROFILE
+ SETTING
+}
+enum PublicationState {
+ DRAFT
+ IN_REVIEW
+ CHANGES_REQUESTED
+ APPROVED
+ PUBLISHED
+ ARCHIVED
+}
+model ContentItem {
+ id String @id @default(cuid())
+ slug String @unique
+ kind ContentKind
+ branchId String?
+ isDemo Boolean @default(true)
+ createdAt DateTime @default(now())
+ branch ArchiveBranch? @relation(fields: [branchId], references: [id])
+ revisions ContentRevision[]
+}
+model ContentRevision {
+ id String @id @default(cuid())
+ itemId String
+ locale String
+ version Int
+ status PublicationState @default(DRAFT)
+ payload Json
+ events PublicationEvent[]
+ notices EditorialNotice[]
+ authorId String
+ reviewerId String?
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ item ContentItem @relation(fields: [itemId], references: [id])
+ author User @relation("ContentAuthor", fields: [authorId], references: [id])
+ reviewer User? @relation("ContentReviewer", fields: [reviewerId], references: [id])
+ @@unique([itemId, locale, version])
+ @@index([status, itemId, locale])
+}
+model EditorialNotice {
+ id String @id @default(cuid())
+ userId String
+ revisionId String
+ event String
+ readAt DateTime?
+ createdAt DateTime @default(now())
+ user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ revision ContentRevision @relation(fields: [revisionId], references: [id])
+ @@index([userId, createdAt])
+}
+
+model PublicationEvent {
+ id String @id @default(cuid())
+ revisionId String
+ actorId String
+ fromStatus PublicationState
+ toStatus PublicationState
+ reason String
+ createdAt DateTime @default(now())
+ revision ContentRevision @relation(fields: [revisionId], references: [id])
+ actor User @relation(fields: [actorId], references: [id])
+ @@index([revisionId, createdAt])
 }

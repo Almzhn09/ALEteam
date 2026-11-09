@@ -16,7 +16,7 @@ async function freePort() {
 const port = await freePort(); const restorePort = await freePort();
 const config = { DEPLOY_DOMAIN: '', DEPLOY_HTTP_PORT: String(port), BETTER_AUTH_URL: `http://localhost:${port}`,
   POSTGRES_ADMIN_PASSWORD: secret(), APP_DB_PASSWORD: secret(), BETTER_AUTH_SECRET: secret(), ALLOW_DEMO_SEED: '1',
-  DEMO_AUTHOR_PASSWORD: secret(), DEMO_MODERATOR_PASSWORD: secret(), MODERATION_MODE: 'local', ASSISTANT_MODE: 'retrieval', ARCHIVE_LLM_API_KEY: '', ARCHIVE_LLM_MODEL: '' };
+  DEMO_AUTHOR_PASSWORD: secret(), DEMO_MODERATOR_PASSWORD: secret(), STAFF_ADMIN_EMAIL: 'docker-staff@example.test', STAFF_ADMIN_NAME: 'Docker staff', STAFF_ADMIN_PASSWORD: secret(), MODERATION_MODE: 'local', ASSISTANT_MODE: 'retrieval', ARCHIVE_LLM_API_KEY: '', ARCHIVE_LLM_MODEL: '' };
 const restoreConfig = { ...config, DEPLOY_HTTP_PORT: String(restorePort), BETTER_AUTH_URL: `http://localhost:${restorePort}`, ALLOW_DEMO_SEED: '0' };
 const envFile = `${folder}/source.env`; const restoreEnvFile = `${folder}/restore.env`;
 const serialize = value => Object.entries(value).map(([k,v]) => `${k}=${v}`).join('\n') + '\n';
@@ -57,20 +57,47 @@ try {
     const catalog = await (await fetch(config.BETTER_AUTH_URL + '/api/documents')).json(); assert.equal(catalog.total, 20);
     const role = compose(project, ['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT rolsuper FROM pg_roles WHERE rolname=current_user']); assert.equal(role, 'f');
   });
-  let commentId; let replyId;
+  let commentId; let replyId; let modCookie; let staffCookie; let cmsId; let cmsSlug; let fundId;
   await check('standalone runtime serves a PNG and persists an authenticated comment', async () => {
     const origin = config.BETTER_AUTH_URL; const cookie = await login(origin);
     const response = await fetch(origin + '/api/documents/demo-doc-01/comments', { method: 'POST', headers: { Origin: origin, Cookie: cookie, 'Content-Type': 'application/json', 'Idempotency-Key': randomUUID() }, body: JSON.stringify({ body: `Проверка сохранности Docker ${run}` }) });
     assert.equal(response.status, 201); const item = (await response.json()).item; assert.equal(item.status, 'PUBLISHED'); commentId = item.id;
     const change = async (path, method, body, session = cookie, extra = {}) => fetch(origin + path, { method, headers: { Origin: origin, Cookie: session, 'Content-Type': 'application/json', ...extra }, body: JSON.stringify(body) });
     assert.equal((await change('/api/me/favorites/demo-doc-01', 'PUT', {})).status, 200);
-    const mod = await login(origin, true);
+    const mod = await login(origin, true); modCookie = mod;
     const reply = await change('/api/documents/demo-doc-01/comments', 'POST', { body: 'Ответ для проверки восстановления уведомлений', parentId: commentId }, mod, { 'Idempotency-Key': randomUUID() });
     assert.equal(reply.status, 201); replyId = (await reply.json()).item.id;
     assert.equal((await change('/api/me/notification-settings', 'PATCH', { notifyReplies: false, notifyModeration: true })).status, 200);
     const png = await fetch(origin + '/api/files/demo-scan-1'); assert.equal(png.status, 200);
     const expected = JSON.parse(await readFile('data/scans/manifest.json','utf8'))[0];
     assert.equal(createHash('sha256').update(Buffer.from(await png.arrayBuffer())).digest('hex'), expected.sha256);
+  });
+  await check('CMS creates independent reviewed translations and archive hierarchy in Compose', async () => {
+    compose(project, ['run','--rm','--no-deps','-e','STAFF_ADMIN_EMAIL','-e','STAFF_ADMIN_NAME','-e','STAFF_ADMIN_PASSWORD','setup','node','--import','tsx','scripts/bootstrap-staff.ts']);
+    const origin = config.BETTER_AUTH_URL;
+    // The synchronous tools container can outlive HTTP keep-alive sockets. Resume with a safe GET.
+    await waitHealthy(origin);
+    const logged = await fetch(origin + '/api/auth/sign-in/email', {method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify({email:config.STAFF_ADMIN_EMAIL,password:config.STAFF_ADMIN_PASSWORD})});
+    assert.equal(logged.status, 200); staffCookie=logged.headers.getSetCookie().map(s=>s.split(';')[0]).join('; ');
+    const change = async (path, body, cookie=staffCookie) => {
+      const response=await fetch(origin+'/api'+path,{method:'POST',headers:{Origin:origin,Cookie:cookie,'Content-Type':'application/json'},body:JSON.stringify(body)});
+      assert.ok(response.ok, `${path}: ${response.status}`);return (await response.json()).item;
+    };
+    const moderator=await(await fetch(origin+'/api/me',{headers:{Cookie:modCookie}})).json();
+    await change('/admin/assignments',{userId:moderator.item.id,roleId:'EDITOR',branchId:null});
+    const branch=await change('/admin/branches',{code:'docker-'+run,name:'Учебный филиал',isDemo:true});
+    const fund=await change('/admin/catalog/funds',{branchId:branch.id,number:'0007',name:'Демо фонд',description:'Учебная иерархия'});fundId=fund.id;
+    const inventory=await change('/admin/catalog/inventories',{fundId,number:'0001',title:'Учебная опись'});
+    await change('/admin/catalog/cases',{fundId,inventoryId:inventory.id,number:'0003',title:'Учебное дело'});
+    const payload={title:'Демо CMS Docker',body:'Учебный материал для проверки восстановления.',rights:'ALEteam CC0-1.0',sourceNote:'Оригинальные учебные данные'};
+    cmsSlug='docker-cms-'+run;
+    const item=await change('/admin/content',{slug:cmsSlug,kind:'EXHIBITION',isDemo:true,locale:'ru',payload});cmsId=item.id;
+    for(const locale of ['ru','en']){
+      let revision=locale==='ru'?item.revisions[0]:await change(`/admin/content/${cmsId}/revisions`,{locale,payload:{...payload,title:'Demo CMS Docker'}});
+      for(const status of ['IN_REVIEW','APPROVED','PUBLISHED'])revision=await change(`/admin/revisions/${revision.id}/transition`,{status,expectedUpdatedAt:revision.updatedAt,reason:'Учебная проверка Docker'},status==='APPROVED'?modCookie:staffCookie);
+    }
+    // Only this isolated fixture database: keep existing login checks within their rate window.
+    compose(project,['exec','-T','db','psql','-U','archive_app','-d','archive','-c','DELETE FROM "RateLimit"']);
   });
   await check('database and app restart preserve the marker comment and file volume', async () => {
     compose(project, ['restart','db','app']); compose(project, ['up','-d','--wait','--no-build','app']);
@@ -104,6 +131,18 @@ try {
     const expected = JSON.parse(await readFile('data/scans/manifest.json','utf8'))[0]; assert.equal(createHash('sha256').update(png).digest('hex'), expected.sha256);
     assert.equal(compose(restored,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "ArchiveFile"']), '10');
   });
+  await check('CMS roles, hierarchy, translations, private history and notices survive backup and restore', async () => {
+    for(const origin of [config.BETTER_AUTH_URL,restoreConfig.BETTER_AUTH_URL]){
+      const get=async path=>{const response=await fetch(origin+'/api'+path,{headers:{Cookie:staffCookie}});assert.equal(response.status,200);return response.json();};
+      const roles=await get('/admin/roles');assert.equal(roles.items.length,7);
+      const ru=await get('/content/'+cmsSlug);const en=await get('/content/'+cmsSlug+'?locale=en');assert.equal(ru.item.id,cmsId);assert.equal(en.item.payload.title,'Demo CMS Docker');assert.deepEqual(en.item.availableLocales,['en','ru']);
+      const content=await get('/admin/content/'+cmsId);assert.equal(content.items[0].revisions.length,2);
+      const history=await get('/admin/revisions/'+content.items[0].revisions[0].id+'/events');assert.equal(history.total,3);
+      const notices=await get('/admin/notices');assert.ok(notices.total>0);
+      const inventory=await get('/admin/catalog/inventories?fundId='+fundId);assert.equal(inventory.items[0].number,'0001');
+      const cases=await get('/admin/catalog/cases?fundId='+fundId);assert.equal(cases.items[0].number,'0003');
+    }
+  });
   await check('favorites, notification preferences and reply events survive restart and restore', async () => {
     for (const origin of [config.BETTER_AUTH_URL, restoreConfig.BETTER_AUTH_URL]) {
       const cookie = await login(origin);
@@ -116,7 +155,8 @@ try {
   });
 } catch (error) {
   process.exitCode = 1;
-  let diagnostic = String(error.stderr ?? error.message);
+  let diagnostic = String(error.stderr ?? error.stack ?? error.message);
+  if(error.cause)diagnostic += '\nCause: ' + String(error.cause.code ?? error.cause.name);
   try { diagnostic += '\n' + compose(project, ['logs','--no-color','--tail','80']); } catch { /* retain available evidence */ }
   for (const [name,value] of Object.entries(config)) if (/PASSWORD|SECRET|KEY/.test(name) && value) diagnostic = diagnostic.replaceAll(value, '[REDACTED]');
   await writeFile(`${folder}/failure.log`, diagnostic, { mode: 0o600 });

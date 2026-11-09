@@ -53,7 +53,7 @@ async function seed() {
       id, title: record.title, description: record.description,
       year: record.year, type: record.type, reference: record.reference,
       fundId: record.fundId, rights: 'Оригинальный вымышленный материал ALEteam, CC0-1.0. Не архивный источник.',
-      isDemo: true, isPublic: true,
+      isDemo: true, isPublic: true, allowDigitalCopy: true,
     }, update: existing?.description === 'Полностью вымышленная запись для разработки и проверки поиска. Не является историческим свидетельством.' && existing.title === record.title
       ? { description: record.description, rights: 'Оригинальный вымышленный материал ALEteam, CC0-1.0. Не архивный источник.' } : {} });
     if (i <= 5) {

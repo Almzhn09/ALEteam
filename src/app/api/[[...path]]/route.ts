@@ -1,5 +1,8 @@
 import { db } from '@/server/db';
-import { ApiError, handle, json, readJson, requireUser, sameOrigin } from '@/server/http';
+import { ApiError, handle, json, readJson, requireUser, sameOrigin, rateLimit } from '@/server/http';
+import { staffContext as staffMeGate, staffMe, staffRoles, staffUsers, assignments, auditList } from '@/server/staff';
+import { adminContent, newRevision, editRevision, transitionRevision, publicContent, editorialNotices, revisionEvents } from '@/server/cms';
+import { adminBranches, archiveRecords } from '@/server/archive-admin';
 import { getAuth } from '@/server/auth';
 import { documentList, fileResponse, publicDocument } from '@/server/catalog';
 import { createComment, decideComment, decisionHistory, listComments, moderationQueue, ownComments, reportComment } from '@/server/discussions';
@@ -24,13 +27,54 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
       if (method === 'POST') {
         sameOrigin(request);
         const body = await readJson(request, 4096);
+        if(route==='auth/sign-in/email'){
+          await rateLimit('auth-login-gate',30,60);
+          const email=(body as {email?:unknown})?.email;
+          if(typeof email==='string'){
+            const candidate=await db.user.findUnique({where:{email:email.toLowerCase()}});
+            if(candidate&&!candidate.isActive)throw new ApiError(401,'INVALID_CREDENTIALS','Неверные учётные данные.');
+          }
+        }
         request = new Request(request.url, { method, headers: request.headers, body: JSON.stringify(body) });
       }
+      if(route==='auth/get-session'){
+        const session=await getAuth().api.getSession({headers:request.headers,query:{disableCookieCache:true}});
+        if(session){try{await requireUser(request);}catch(e){if(e instanceof ApiError&&e.status===401)return json(null);throw e;}}
+      }
       const response = await getAuth().handler(request);
+      if(route==='auth/sign-in/email'&&response.ok){
+        const session=await response.clone().json().catch(()=>null);
+        const userId=session?.user?.id;
+        if(typeof userId==='string'&&await db.staffAssignment.count({where:{userId}}))await db.auditEvent.create({data:{actorId:userId,action:'STAFF_SIGNIN',entityId:userId}});
+      }
       response.headers.set('Cache-Control', 'no-store');
       return response;
     }
     if (method !== 'GET') sameOrigin(request);
+    if(path[0]==='admin')await staffMeGate(request);
+    if(route==='admin/me'&&method==='GET')return staffMe(request);
+    if(route==='admin/roles'&&['GET','PUT'].includes(method))return staffRoles(request);
+    if(route==='admin/users'&&['GET','POST'].includes(method))return staffUsers(request);
+    if(path[0]==='admin'&&path[1]==='users'&&path.length===3&&method==='PATCH')return staffUsers(request,path[2]);
+    if(route==='admin/assignments'&&['POST','DELETE'].includes(method))return assignments(request);
+    if(route==='admin/audit'&&method==='GET')return auditList(request);
+    if(route==='admin/notices'&&method==='GET')return editorialNotices(request);
+    if(route==='admin/branches'&&['GET','POST'].includes(method))return adminBranches(request);
+    if(path[0]==='admin'&&path[1]==='branches'&&path.length===3&&method==='PATCH')return adminBranches(request,path[2]);
+    if(path[0]==='admin'&&path[1]==='catalog'&&path.length===3&&['funds','inventories','cases','documents'].includes(path[2])&&['GET','POST'].includes(method))return archiveRecords(request,path[2]);
+    if(route==='admin/content'&&['GET','POST'].includes(method))return adminContent(request);
+    if(path[0]==='admin'&&path[1]==='content'){
+      if(path.length===3&&method==='GET')return adminContent(request,path[2]);
+      if(path.length===4&&path[3]==='revisions'&&method==='POST')return newRevision(request,path[2]);
+    }
+    if(path[0]==='admin'&&path[1]==='revisions'){
+      if(path.length===3&&method==='PATCH')return editRevision(request,path[2]);
+      if(path.length===4&&path[3]==='transition'&&method==='POST')return transitionRevision(request,path[2]);
+      if(path.length===4&&path[3]==='events'&&method==='GET')return revisionEvents(request,path[2]);
+    }
+    if(route==='branches'&&method==='GET'){const url=new URL(request.url);if(url.searchParams.has('kind'))throw new ApiError(400,'VALIDATION_ERROR','Параметр kind не поддерживается.');url.searchParams.set('kind','BRANCH_PROFILE');return publicContent(new Request(url,{headers:request.headers}));}
+    if(route==='content'&&method==='GET')return publicContent(request);
+    if(path[0]==='content'&&path.length===2&&method==='GET')return publicContent(request,path[1]);
     if (route === 'guides' && method === 'GET') return json({ items: guides });
     if (path[0] === 'guides' && path.length === 2 && method === 'GET') {
       const item = getGuide(path[1]);

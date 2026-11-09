@@ -30,8 +30,11 @@ export async function documentList(request: Request) {
 }
 export async function publicDocument(id: string) {
   idSchema.parse(id);
-  const document = await db.document.findFirst({ where: { id, isPublic: true }, include: {
-    fund: true, files: { where: { isPublic: true }, select: { id: true, name: true, mimeType: true, size: true, downloadable: true } },
+  const document = await db.document.findFirst({ where: { id, isPublic: true }, select: {
+    id:true,title:true,description:true,reference:true,year:true,yearTo:true,type:true,sourceUrl:true,rights:true,isDemo:true,isPublic:true,fundId:true,createdAt:true,
+    authorName:true,organization:true,locality:true,originalLanguage:true,leafCount:true,storageLocation:true,accessConditions:true,allowDigitalCopy:true,
+    archivalCase:{select:{id:true,number:true,title:true,inventory:{select:{id:true,number:true,title:true}}}},
+    fund: {select:{id:true,name:true,description:true,branchId:true,number:true}}, files: { where: { isPublic: true, document:{allowDigitalCopy:true} }, select: { id: true, name: true, mimeType: true, size: true, downloadable: true } },
   } });
   if (!document) throw new ApiError(404, 'NOT_FOUND', 'Документ не найден.');
   return document;
@@ -39,7 +42,7 @@ export async function publicDocument(id: string) {
 export async function fileResponse(request: Request, id: string) {
   idSchema.parse(id);
   const params = z.object({ download: z.enum(['1']).optional() }).strict().parse(queryParams(request));
-  const file = await db.archiveFile.findFirst({ where: { id, isPublic: true, document: { isPublic: true } } });
+  const file = await db.archiveFile.findFirst({ where: { id, isPublic: true, document: { isPublic: true, allowDigitalCopy:true } } });
   if (!file || (params.download && !file.downloadable)) throw new ApiError(404, 'NOT_FOUND', 'Файл не найден.');
   const allowed = ['application/pdf', 'image/png', 'image/jpeg'];
   if (!allowed.includes(file.mimeType) || file.size > 20 * 1024 * 1024) throw new ApiError(404, 'NOT_FOUND', 'Файл не найден.');
