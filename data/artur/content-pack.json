@@ -1,0 +1,260 @@
+{
+  "version": 1,
+  "scope": "Drafts only; not automatically published",
+  "records": [
+    {
+      "id": "site-purpose",
+      "kind": "guide",
+      "isDemo": false,
+      "sourceUrl": null,
+      "checkedAt": "2026-11-09",
+      "owner": "ALEteam (авторский текст)",
+      "rights": "CC0-1.0",
+      "publicationAllowed": false,
+      "reviewOwner": null,
+      "translations": {
+        "ru": {
+          "text": "Информационный прототип ALEteam: просмотр открытых материалов. Сайт не принимает официальные обращения, заявки и платежи.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        },
+        "kk": {
+          "text": "ALEteam ақпараттық прототипі: ашық материалдарды қарау. Сайт ресми өтініштерді, тапсырыстарды немесе төлемдерді қабылдамайды.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        },
+        "en": {
+          "text": "ALEteam is an information prototype for browsing public materials. It does not accept official requests, orders or payments.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        }
+      }
+    },
+    {
+      "id": "demo-notice",
+      "kind": "guide",
+      "isDemo": true,
+      "sourceUrl": null,
+      "checkedAt": "2026-11-09",
+      "owner": "ALEteam (авторский текст)",
+      "rights": "CC0-1.0",
+      "publicationAllowed": false,
+      "reviewOwner": null,
+      "translations": {
+        "ru": {
+          "text": "Демонстрационные документы вымышлены и не являются подлинниками государственного архива.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        },
+        "kk": {
+          "text": "Демонстрациялық құжаттар ойдан шығарылған және мемлекеттік мұрағаттың түпнұсқалары емес.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        },
+        "en": {
+          "text": "Demonstration documents are fictional and are not originals from the state archive.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        }
+      }
+    },
+    {
+      "id": "archive-contact",
+      "kind": "branch",
+      "isDemo": false,
+      "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1330",
+      "checkedAt": "2026-11-09",
+      "owner": "Госархив ВКО (факты)",
+      "rights": "Проверенные факты, авторский пересказ; права на внешние изображения не получены",
+      "publicationAllowed": false,
+      "reviewOwner": null,
+      "translations": {
+        "ru": {
+          "text": "На странице контактов указаны: Усть-Каменогорск, ул. Головкова, 26/1; приёмная +7 (7232) 25-59-76; arhiv-ukg@yandex.kz. Индекс требует уточнения.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        },
+        "kk": {
+          "text": "Байланыс бетінде: Өскемен, Головков көшесі, 26/1; қабылдау бөлмесі +7 (7232) 25-59-76; arhiv-ukg@yandex.kz. Пошта индексін нақтылау қажет.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        },
+        "en": {
+          "text": "The contact page lists: Ust-Kamenogorsk, 26/1 Golovkov Street; reception +7 (7232) 25-59-76; arhiv-ukg@yandex.kz. The postal code needs confirmation.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        }
+      }
+    },
+    {
+      "id": "archive-hours",
+      "kind": "branch",
+      "isDemo": false,
+      "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1330",
+      "checkedAt": "2026-11-09",
+      "owner": "Госархив ВКО (факты)",
+      "rights": "Проверенные факты, авторский пересказ; права на внешние изображения не получены",
+      "publicationAllowed": false,
+      "reviewOwner": null,
+      "translations": {
+        "ru": {
+          "text": "По контактной странице: пн–пт 09:00–18:00; читальный зал 10:00–17:00. Уточните актуальность перед посещением.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        },
+        "kk": {
+          "text": "Байланыс беті бойынша: дүйсенбі–жұма 09:00–18:00; оқу залы 10:00–17:00. Барар алдында өзектілігін тексеріңіз.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        },
+        "en": {
+          "text": "According to the contact page: Monday–Friday 09:00–18:00; reading room 10:00–17:00. Confirm current hours before visiting.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        }
+      }
+    },
+    {
+      "id": "source-check",
+      "kind": "guide",
+      "isDemo": false,
+      "sourceUrl": null,
+      "checkedAt": "2026-11-09",
+      "owner": "ALEteam (авторский текст)",
+      "rights": "CC0-1.0",
+      "publicationAllowed": false,
+      "reviewOwner": null,
+      "translations": {
+        "ru": {
+          "text": "Проверьте название, архивный шифр, происхождение, права и пометку демоданных. Ответ помощника не заменяет проверку архивиста.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        },
+        "kk": {
+          "text": "Атауын, мұрағаттық шифрын, дереккөзін, құқықтарын және демо белгісін тексеріңіз. Көмекшінің жауабы мұрағатшының тексеруін алмастырмайды.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        },
+        "en": {
+          "text": "Check the title, archive reference, provenance, rights and demo label. An assistant response does not replace an archivist’s review.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        }
+      }
+    },
+    {
+      "id": "demo-collection",
+      "kind": "collection",
+      "isDemo": true,
+      "sourceUrl": null,
+      "checkedAt": "2026-11-09",
+      "owner": "ALEteam (авторский текст)",
+      "rights": "CC0-1.0",
+      "publicationAllowed": false,
+      "reviewOwner": null,
+      "translations": {
+        "ru": {
+          "text": "Демо-коллекция «Учебные материалы»: только существующие собственные демодокументы. Историческая достоверность не заявляется.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        },
+        "kk": {
+          "text": "«Оқу материалдары» демо-жинағы: тек жобаның бар демонстрациялық құжаттары. Тарихи шынайылық мәлімделмейді.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        },
+        "en": {
+          "text": "Demo collection “Learning materials”: existing original project demo documents only. No historical authenticity is claimed.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        }
+      }
+    },
+    {
+      "id": "demo-exhibition",
+      "kind": "exhibition",
+      "isDemo": true,
+      "sourceUrl": null,
+      "checkedAt": "2026-11-09",
+      "owner": "ALEteam (авторский текст)",
+      "rights": "CC0-1.0",
+      "publicationAllowed": false,
+      "reviewOwner": null,
+      "translations": {
+        "ru": {
+          "text": "Демо-выставка «Как читать карточку»: собственные листы показывают название, шифр и происхождение; не реконструкция исторического события.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        },
+        "kk": {
+          "text": "«Құжат карточкасын қалай оқу керек» демо-көрмесі: жобаның парақтары атауын, шифрын және дереккөзін көрсетеді; тарихи оқиғаны қайта құру емес.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        },
+        "en": {
+          "text": "Demo exhibition “Reading a document card”: original project sheets illustrate titles, references and provenance; this is not a reconstruction of a historical event.",
+          "status": "DRAFT",
+          "translator": "AI-assisted draft / Артур",
+          "reviewer": null
+        }
+      }
+    }
+  ],
+  "missing": [
+    {
+      "id": "official-brand",
+      "reason": "Нет утверждённого трёхъязычного названия/логотипа и прав",
+      "publicationAllowed": false
+    },
+    {
+      "id": "branches",
+      "reason": "Нет подтверждённых координат, графиков и контактов всех филиалов",
+      "publicationAllowed": false
+    },
+    {
+      "id": "legal",
+      "reason": "Нет действующих утверждённых политик, норм и сроков хранения",
+      "publicationAllowed": false
+    },
+    {
+      "id": "reports",
+      "reason": "Нет разрешённого экспорта отчётов и переводов",
+      "publicationAllowed": false
+    },
+    {
+      "id": "social",
+      "reason": "Нет подтверждённых официальных соцссылок",
+      "publicationAllowed": false
+    },
+    {
+      "id": "news",
+      "reason": "Нет разрешённого для переноса текста/изображений новостей и переводов",
+      "publicationAllowed": false
+    },
+    {
+      "id": "history",
+      "reason": "Нет утверждённых биографий и геоданных с правами",
+      "publicationAllowed": false
+    }
+  ]
+}

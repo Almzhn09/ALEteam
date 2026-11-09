@@ -1,0 +1,817 @@
+{"question": "Подбери сведения: библиотека", "target": "библиотека", "group": "validation"}
+{"question": "библиотека жөнінде ақпарат", "target": "библиотека", "group": "validation"}
+{"question": "I would like information about библиотека", "target": "библиотека", "group": "validation"}
+{"question": "Подбери сведения: библиотеки", "target": "библиотека", "group": "validation"}
+{"question": "библиотеки жөнінде ақпарат", "target": "библиотека", "group": "validation"}
+{"question": "I would like information about библиотеки", "target": "библиотека", "group": "validation"}
+{"question": "Подбери сведения: библиотеке", "target": "библиотека", "group": "validation"}
+{"question": "библиотеке жөнінде ақпарат", "target": "библиотека", "group": "validation"}
+{"question": "I would like information about библиотеке", "target": "библиотека", "group": "validation"}
+{"question": "Подбери сведения: читальный зал", "target": "библиотека", "group": "validation"}
+{"question": "читальный зал жөнінде ақпарат", "target": "библиотека", "group": "validation"}
+{"question": "I would like information about читальный зал", "target": "библиотека", "group": "validation"}
+{"question": "Подбери сведения: читатели", "target": "библиотека", "group": "validation"}
+{"question": "читатели жөнінде ақпарат", "target": "библиотека", "group": "validation"}
+{"question": "I would like information about читатели", "target": "библиотека", "group": "validation"}
+{"question": "Подбери сведения: кітапхана", "target": "библиотека", "group": "validation"}
+{"question": "кітапхана жөнінде ақпарат", "target": "библиотека", "group": "validation"}
+{"question": "I would like information about кітапхана", "target": "библиотека", "group": "validation"}
+{"question": "Подбери сведения: оқырмандар", "target": "библиотека", "group": "validation"}
+{"question": "оқырмандар жөнінде ақпарат", "target": "библиотека", "group": "validation"}
+{"question": "I would like information about оқырмандар", "target": "библиотека", "group": "validation"}
+{"question": "Подбери сведения: kitaphana", "target": "библиотека", "group": "validation"}
+{"question": "kitaphana жөнінде ақпарат", "target": "библиотека", "group": "validation"}
+{"question": "I would like information about kitaphana", "target": "библиотека", "group": "validation"}
+{"question": "Подбери сведения: library", "target": "библиотека", "group": "validation"}
+{"question": "library жөнінде ақпарат", "target": "библиотека", "group": "validation"}
+{"question": "I would like information about library", "target": "библиотека", "group": "validation"}
+{"question": "Подбери сведения: reading room", "target": "библиотека", "group": "validation"}
+{"question": "reading room жөнінде ақпарат", "target": "библиотека", "group": "validation"}
+{"question": "I would like information about reading room", "target": "библиотека", "group": "validation"}
+{"question": "Подбери сведения: library readers", "target": "библиотека", "group": "validation"}
+{"question": "library readers жөнінде ақпарат", "target": "библиотека", "group": "validation"}
+{"question": "I would like information about library readers", "target": "библиотека", "group": "validation"}
+{"question": "Подбери сведения: площадь", "target": "площадь", "group": "validation"}
+{"question": "площадь жөнінде ақпарат", "target": "площадь", "group": "validation"}
+{"question": "I would like information about площадь", "target": "площадь", "group": "validation"}
+{"question": "Подбери сведения: площади", "target": "площадь", "group": "validation"}
+{"question": "площади жөнінде ақпарат", "target": "площадь", "group": "validation"}
+{"question": "I would like information about площади", "target": "площадь", "group": "validation"}
+{"question": "Подбери сведения: городская площадь", "target": "площадь", "group": "validation"}
+{"question": "городская площадь жөнінде ақпарат", "target": "площадь", "group": "validation"}
+{"question": "I would like information about городская площадь", "target": "площадь", "group": "validation"}
+{"question": "Подбери сведения: благоустройство", "target": "площадь", "group": "validation"}
+{"question": "благоустройство жөнінде ақпарат", "target": "площадь", "group": "validation"}
+{"question": "I would like information about благоустройство", "target": "площадь", "group": "validation"}
+{"question": "Подбери сведения: алаң", "target": "площадь", "group": "validation"}
+{"question": "алаң жөнінде ақпарат", "target": "площадь", "group": "validation"}
+{"question": "I would like information about алаң", "target": "площадь", "group": "validation"}
+{"question": "Подбери сведения: абаттандыру", "target": "площадь", "group": "validation"}
+{"question": "абаттандыру жөнінде ақпарат", "target": "площадь", "group": "validation"}
+{"question": "I would like information about абаттандыру", "target": "площадь", "group": "validation"}
+{"question": "Подбери сведения: city square", "target": "площадь", "group": "validation"}
+{"question": "city square жөнінде ақпарат", "target": "площадь", "group": "validation"}
+{"question": "I would like information about city square", "target": "площадь", "group": "validation"}
+{"question": "Подбери сведения: urban square", "target": "площадь", "group": "validation"}
+{"question": "urban square жөнінде ақпарат", "target": "площадь", "group": "validation"}
+{"question": "I would like information about urban square", "target": "площадь", "group": "validation"}
+{"question": "Подбери сведения: школа", "target": "школа", "group": "validation"}
+{"question": "школа жөнінде ақпарат", "target": "школа", "group": "validation"}
+{"question": "I would like information about школа", "target": "школа", "group": "validation"}
+{"question": "Подбери сведения: школы", "target": "школа", "group": "validation"}
+{"question": "школы жөнінде ақпарат", "target": "школа", "group": "validation"}
+{"question": "I would like information about школы", "target": "школа", "group": "validation"}
+{"question": "Подбери сведения: школе", "target": "школа", "group": "validation"}
+{"question": "школе жөнінде ақпарат", "target": "школа", "group": "validation"}
+{"question": "I would like information about школе", "target": "школа", "group": "validation"}
+{"question": "Подбери сведения: ученики", "target": "школа", "group": "validation"}
+{"question": "ученики жөнінде ақпарат", "target": "школа", "group": "validation"}
+{"question": "I would like information about ученики", "target": "школа", "group": "validation"}
+{"question": "Подбери сведения: учебный класс", "target": "школа", "group": "validation"}
+{"question": "учебный класс жөнінде ақпарат", "target": "школа", "group": "validation"}
+{"question": "I would like information about учебный класс", "target": "школа", "group": "validation"}
+{"question": "Подбери сведения: мектеп", "target": "школа", "group": "validation"}
+{"question": "мектеп жөнінде ақпарат", "target": "школа", "group": "validation"}
+{"question": "I would like information about мектеп", "target": "школа", "group": "validation"}
+{"question": "Подбери сведения: оқушылар", "target": "школа", "group": "validation"}
+{"question": "оқушылар жөнінде ақпарат", "target": "школа", "group": "validation"}
+{"question": "I would like information about оқушылар", "target": "школа", "group": "validation"}
+{"question": "Подбери сведения: сынып", "target": "школа", "group": "validation"}
+{"question": "сынып жөнінде ақпарат", "target": "школа", "group": "validation"}
+{"question": "I would like information about сынып", "target": "школа", "group": "validation"}
+{"question": "Подбери сведения: mektep", "target": "школа", "group": "validation"}
+{"question": "mektep жөнінде ақпарат", "target": "школа", "group": "validation"}
+{"question": "I would like information about mektep", "target": "школа", "group": "validation"}
+{"question": "Подбери сведения: school", "target": "школа", "group": "validation"}
+{"question": "school жөнінде ақпарат", "target": "школа", "group": "validation"}
+{"question": "I would like information about school", "target": "школа", "group": "validation"}
+{"question": "Подбери сведения: classroom", "target": "школа", "group": "validation"}
+{"question": "classroom жөнінде ақпарат", "target": "школа", "group": "validation"}
+{"question": "I would like information about classroom", "target": "школа", "group": "validation"}
+{"question": "Подбери сведения: pupils", "target": "школа", "group": "validation"}
+{"question": "pupils жөнінде ақпарат", "target": "школа", "group": "validation"}
+{"question": "I would like information about pupils", "target": "школа", "group": "validation"}
+{"question": "Подбери сведения: музей", "target": "музей", "group": "validation"}
+{"question": "музей жөнінде ақпарат", "target": "музей", "group": "validation"}
+{"question": "I would like information about музей", "target": "музей", "group": "validation"}
+{"question": "Подбери сведения: музея", "target": "музей", "group": "validation"}
+{"question": "музея жөнінде ақпарат", "target": "музей", "group": "validation"}
+{"question": "I would like information about музея", "target": "музей", "group": "validation"}
+{"question": "Подбери сведения: музее", "target": "музей", "group": "validation"}
+{"question": "музее жөнінде ақпарат", "target": "музей", "group": "validation"}
+{"question": "I would like information about музее", "target": "музей", "group": "validation"}
+{"question": "Подбери сведения: выставка", "target": "музей", "group": "validation"}
+{"question": "выставка жөнінде ақпарат", "target": "музей", "group": "validation"}
+{"question": "I would like information about выставка", "target": "музей", "group": "validation"}
+{"question": "Подбери сведения: экспонаты", "target": "музей", "group": "validation"}
+{"question": "экспонаты жөнінде ақпарат", "target": "музей", "group": "validation"}
+{"question": "I would like information about экспонаты", "target": "музей", "group": "validation"}
+{"question": "Подбери сведения: мұражай", "target": "музей", "group": "validation"}
+{"question": "мұражай жөнінде ақпарат", "target": "музей", "group": "validation"}
+{"question": "I would like information about мұражай", "target": "музей", "group": "validation"}
+{"question": "Подбери сведения: көрме", "target": "музей", "group": "validation"}
+{"question": "көрме жөнінде ақпарат", "target": "музей", "group": "validation"}
+{"question": "I would like information about көрме", "target": "музей", "group": "validation"}
+{"question": "Подбери сведения: жәдігер", "target": "музей", "group": "validation"}
+{"question": "жәдігер жөнінде ақпарат", "target": "музей", "group": "validation"}
+{"question": "I would like information about жәдігер", "target": "музей", "group": "validation"}
+{"question": "Подбери сведения: museum", "target": "музей", "group": "validation"}
+{"question": "museum жөнінде ақпарат", "target": "музей", "group": "validation"}
+{"question": "I would like information about museum", "target": "музей", "group": "validation"}
+{"question": "Подбери сведения: museum exhibits", "target": "музей", "group": "validation"}
+{"question": "museum exhibits жөнінде ақпарат", "target": "музей", "group": "validation"}
+{"question": "I would like information about museum exhibits", "target": "музей", "group": "validation"}
+{"question": "Подбери сведения: железная дорога", "target": "станция", "group": "validation"}
+{"question": "железная дорога жөнінде ақпарат", "target": "станция", "group": "validation"}
+{"question": "I would like information about железная дорога", "target": "станция", "group": "validation"}
+{"question": "Подбери сведения: железной дороге", "target": "станция", "group": "validation"}
+{"question": "железной дороге жөнінде ақпарат", "target": "станция", "group": "validation"}
+{"question": "I would like information about железной дороге", "target": "станция", "group": "validation"}
+{"question": "Подбери сведения: станция", "target": "станция", "group": "validation"}
+{"question": "станция жөнінде ақпарат", "target": "станция", "group": "validation"}
+{"question": "I would like information about станция", "target": "станция", "group": "validation"}
+{"question": "Подбери сведения: расписание", "target": "станция", "group": "validation"}
+{"question": "расписание жөнінде ақпарат", "target": "станция", "group": "validation"}
+{"question": "I would like information about расписание", "target": "станция", "group": "validation"}
+{"question": "Подбери сведения: вокзал", "target": "станция", "group": "validation"}
+{"question": "вокзал жөнінде ақпарат", "target": "станция", "group": "validation"}
+{"question": "I would like information about вокзал", "target": "станция", "group": "validation"}
+{"question": "Подбери сведения: транспорт", "target": "станция", "group": "validation"}
+{"question": "транспорт жөнінде ақпарат", "target": "станция", "group": "validation"}
+{"question": "I would like information about транспорт", "target": "станция", "group": "validation"}
+{"question": "Подбери сведения: темір жол", "target": "станция", "group": "validation"}
+{"question": "темір жол жөнінде ақпарат", "target": "станция", "group": "validation"}
+{"question": "I would like information about темір жол", "target": "станция", "group": "validation"}
+{"question": "Подбери сведения: бекет", "target": "станция", "group": "validation"}
+{"question": "бекет жөнінде ақпарат", "target": "станция", "group": "validation"}
+{"question": "I would like information about бекет", "target": "станция", "group": "validation"}
+{"question": "Подбери сведения: көлік", "target": "станция", "group": "validation"}
+{"question": "көлік жөнінде ақпарат", "target": "станция", "group": "validation"}
+{"question": "I would like information about көлік", "target": "станция", "group": "validation"}
+{"question": "Подбери сведения: temir zhol", "target": "станция", "group": "validation"}
+{"question": "temir zhol жөнінде ақпарат", "target": "станция", "group": "validation"}
+{"question": "I would like information about temir zhol", "target": "станция", "group": "validation"}
+{"question": "Подбери сведения: railway station", "target": "станция", "group": "validation"}
+{"question": "railway station жөнінде ақпарат", "target": "станция", "group": "validation"}
+{"question": "I would like information about railway station", "target": "станция", "group": "validation"}
+{"question": "Подбери сведения: railroad", "target": "станция", "group": "validation"}
+{"question": "railroad жөнінде ақпарат", "target": "станция", "group": "validation"}
+{"question": "I would like information about railroad", "target": "станция", "group": "validation"}
+{"question": "Подбери сведения: train timetable", "target": "станция", "group": "validation"}
+{"question": "train timetable жөнінде ақпарат", "target": "станция", "group": "validation"}
+{"question": "I would like information about train timetable", "target": "станция", "group": "validation"}
+{"question": "Подбери сведения: архивный фонд", "target": "архивный фонд", "group": "validation"}
+{"question": "архивный фонд жөнінде ақпарат", "target": "архивный фонд", "group": "validation"}
+{"question": "I would like information about архивный фонд", "target": "архивный фонд", "group": "validation"}
+{"question": "Подбери сведения: архивного фонда", "target": "архивный фонд", "group": "validation"}
+{"question": "архивного фонда жөнінде ақпарат", "target": "архивный фонд", "group": "validation"}
+{"question": "I would like information about архивного фонда", "target": "архивный фонд", "group": "validation"}
+{"question": "Подбери сведения: фонд", "target": "архивный фонд", "group": "validation"}
+{"question": "фонд жөнінде ақпарат", "target": "архивный фонд", "group": "validation"}
+{"question": "I would like information about фонд", "target": "архивный фонд", "group": "validation"}
+{"question": "Подбери сведения: мұрағат қоры", "target": "архивный фонд", "group": "validation"}
+{"question": "мұрағат қоры жөнінде ақпарат", "target": "архивный фонд", "group": "validation"}
+{"question": "I would like information about мұрағат қоры", "target": "архивный фонд", "group": "validation"}
+{"question": "Подбери сведения: мұрағаттық қор", "target": "архивный фонд", "group": "validation"}
+{"question": "мұрағаттық қор жөнінде ақпарат", "target": "архивный фонд", "group": "validation"}
+{"question": "I would like information about мұрағаттық қор", "target": "архивный фонд", "group": "validation"}
+{"question": "Подбери сведения: қор", "target": "архивный фонд", "group": "validation"}
+{"question": "қор жөнінде ақпарат", "target": "архивный фонд", "group": "validation"}
+{"question": "I would like information about қор", "target": "архивный фонд", "group": "validation"}
+{"question": "Подбери сведения: archival fonds", "target": "архивный фонд", "group": "validation"}
+{"question": "archival fonds жөнінде ақпарат", "target": "архивный фонд", "group": "validation"}
+{"question": "I would like information about archival fonds", "target": "архивный фонд", "group": "validation"}
+{"question": "Подбери сведения: archive collection definition", "target": "архивный фонд", "group": "validation"}
+{"question": "archive collection definition жөнінде ақпарат", "target": "архивный фонд", "group": "validation"}
+{"question": "I would like information about archive collection definition", "target": "архивный фонд", "group": "validation"}
+{"question": "Подбери сведения: архивный шифр", "target": "архивный шифр", "group": "validation"}
+{"question": "архивный шифр жөнінде ақпарат", "target": "архивный шифр", "group": "validation"}
+{"question": "I would like information about архивный шифр", "target": "архивный шифр", "group": "validation"}
+{"question": "Подбери сведения: шифр", "target": "архивный шифр", "group": "validation"}
+{"question": "шифр жөнінде ақпарат", "target": "архивный шифр", "group": "validation"}
+{"question": "I would like information about шифр", "target": "архивный шифр", "group": "validation"}
+{"question": "Подбери сведения: опись", "target": "архивный шифр", "group": "validation"}
+{"question": "опись жөнінде ақпарат", "target": "архивный шифр", "group": "validation"}
+{"question": "I would like information about опись", "target": "архивный шифр", "group": "validation"}
+{"question": "Подбери сведения: мұрағаттық шифр", "target": "архивный шифр", "group": "validation"}
+{"question": "мұрағаттық шифр жөнінде ақпарат", "target": "архивный шифр", "group": "validation"}
+{"question": "I would like information about мұрағаттық шифр", "target": "архивный шифр", "group": "validation"}
+{"question": "Подбери сведения: тізімдеме", "target": "архивный шифр", "group": "validation"}
+{"question": "тізімдеме жөнінде ақпарат", "target": "архивный шифр", "group": "validation"}
+{"question": "I would like information about тізімдеме", "target": "архивный шифр", "group": "validation"}
+{"question": "Подбери сведения: archive reference", "target": "архивный шифр", "group": "validation"}
+{"question": "archive reference жөнінде ақпарат", "target": "архивный шифр", "group": "validation"}
+{"question": "I would like information about archive reference", "target": "архивный шифр", "group": "validation"}
+{"question": "Подбери сведения: inventory number", "target": "архивный шифр", "group": "validation"}
+{"question": "inventory number жөнінде ақпарат", "target": "архивный шифр", "group": "validation"}
+{"question": "I would like information about inventory number", "target": "архивный шифр", "group": "validation"}
+{"question": "Подбери сведения: каталог", "target": "поиск документов", "group": "validation"}
+{"question": "каталог жөнінде ақпарат", "target": "поиск документов", "group": "validation"}
+{"question": "I would like information about каталог", "target": "поиск документов", "group": "validation"}
+{"question": "Подбери сведения: каталоге", "target": "поиск документов", "group": "validation"}
+{"question": "каталоге жөнінде ақпарат", "target": "поиск документов", "group": "validation"}
+{"question": "I would like information about каталоге", "target": "поиск документов", "group": "validation"}
+{"question": "Подбери сведения: каталог документов", "target": "поиск документов", "group": "validation"}
+{"question": "каталог документов жөнінде ақпарат", "target": "поиск документов", "group": "validation"}
+{"question": "I would like information about каталог документов", "target": "поиск документов", "group": "validation"}
+{"question": "Подбери сведения: құжаттар каталогы", "target": "поиск документов", "group": "validation"}
+{"question": "құжаттар каталогы жөнінде ақпарат", "target": "поиск документов", "group": "validation"}
+{"question": "I would like information about құжаттар каталогы", "target": "поиск документов", "group": "validation"}
+{"question": "Подбери сведения: поиск документов", "target": "поиск документов", "group": "validation"}
+{"question": "поиск документов жөнінде ақпарат", "target": "поиск документов", "group": "validation"}
+{"question": "I would like information about поиск документов", "target": "поиск документов", "group": "validation"}
+{"question": "Подбери сведения: искать документы", "target": "поиск документов", "group": "validation"}
+{"question": "искать документы жөнінде ақпарат", "target": "поиск документов", "group": "validation"}
+{"question": "I would like information about искать документы", "target": "поиск документов", "group": "validation"}
+{"question": "Подбери сведения: найти документы", "target": "поиск документов", "group": "validation"}
+{"question": "найти документы жөнінде ақпарат", "target": "поиск документов", "group": "validation"}
+{"question": "I would like information about найти документы", "target": "поиск документов", "group": "validation"}
+{"question": "Подбери сведения: найти материалы", "target": "поиск документов", "group": "validation"}
+{"question": "найти материалы жөнінде ақпарат", "target": "поиск документов", "group": "validation"}
+{"question": "I would like information about найти материалы", "target": "поиск документов", "group": "validation"}
+{"question": "Подбери сведения: құжаттарды іздеу", "target": "поиск документов", "group": "validation"}
+{"question": "құжаттарды іздеу жөнінде ақпарат", "target": "поиск документов", "group": "validation"}
+{"question": "I would like information about құжаттарды іздеу", "target": "поиск документов", "group": "validation"}
+{"question": "Подбери сведения: құжатты табу", "target": "поиск документов", "group": "validation"}
+{"question": "құжатты табу жөнінде ақпарат", "target": "поиск документов", "group": "validation"}
+{"question": "I would like information about құжатты табу", "target": "поиск документов", "group": "validation"}
+{"question": "Подбери сведения: document search", "target": "поиск документов", "group": "validation"}
+{"question": "document search жөнінде ақпарат", "target": "поиск документов", "group": "validation"}
+{"question": "I would like information about document search", "target": "поиск документов", "group": "validation"}
+{"question": "Подбери сведения: catalogue", "target": "поиск документов", "group": "validation"}
+{"question": "catalogue жөнінде ақпарат", "target": "поиск документов", "group": "validation"}
+{"question": "I would like information about catalogue", "target": "поиск документов", "group": "validation"}
+{"question": "Подбери сведения: document catalog", "target": "поиск документов", "group": "validation"}
+{"question": "document catalog жөнінде ақпарат", "target": "поиск документов", "group": "validation"}
+{"question": "I would like information about document catalog", "target": "поиск документов", "group": "validation"}
+{"question": "Подбери сведения: комментарии", "target": "правила комментариев", "group": "validation"}
+{"question": "комментарии жөнінде ақпарат", "target": "правила комментариев", "group": "validation"}
+{"question": "I would like information about комментарии", "target": "правила комментариев", "group": "validation"}
+{"question": "Подбери сведения: комментариях", "target": "правила комментариев", "group": "validation"}
+{"question": "комментариях жөнінде ақпарат", "target": "правила комментариев", "group": "validation"}
+{"question": "I would like information about комментариях", "target": "правила комментариев", "group": "validation"}
+{"question": "Подбери сведения: правила комментариев", "target": "правила комментариев", "group": "validation"}
+{"question": "правила комментариев жөнінде ақпарат", "target": "правила комментариев", "group": "validation"}
+{"question": "I would like information about правила комментариев", "target": "правила комментариев", "group": "validation"}
+{"question": "Подбери сведения: нельзя материться", "target": "правила комментариев", "group": "validation"}
+{"question": "нельзя материться жөнінде ақпарат", "target": "правила комментариев", "group": "validation"}
+{"question": "I would like information about нельзя материться", "target": "правила комментариев", "group": "validation"}
+{"question": "Подбери сведения: пікір", "target": "правила комментариев", "group": "validation"}
+{"question": "пікір жөнінде ақпарат", "target": "правила комментариев", "group": "validation"}
+{"question": "I would like information about пікір", "target": "правила комментариев", "group": "validation"}
+{"question": "Подбери сведения: пікірлер", "target": "правила комментариев", "group": "validation"}
+{"question": "пікірлер жөнінде ақпарат", "target": "правила комментариев", "group": "validation"}
+{"question": "I would like information about пікірлер", "target": "правила комментариев", "group": "validation"}
+{"question": "Подбери сведения: пікір ережелері", "target": "правила комментариев", "group": "validation"}
+{"question": "пікір ережелері жөнінде ақпарат", "target": "правила комментариев", "group": "validation"}
+{"question": "I would like information about пікір ережелері", "target": "правила комментариев", "group": "validation"}
+{"question": "Подбери сведения: comment rules", "target": "правила комментариев", "group": "validation"}
+{"question": "comment rules жөнінде ақпарат", "target": "правила комментариев", "group": "validation"}
+{"question": "I would like information about comment rules", "target": "правила комментариев", "group": "validation"}
+{"question": "Подбери сведения: comment moderation", "target": "правила комментариев", "group": "validation"}
+{"question": "comment moderation жөнінде ақпарат", "target": "правила комментариев", "group": "validation"}
+{"question": "I would like information about comment moderation", "target": "правила комментариев", "group": "validation"}
+{"question": "Подбери сведения: избранное", "target": "избранное", "group": "validation"}
+{"question": "избранное жөнінде ақпарат", "target": "избранное", "group": "validation"}
+{"question": "I would like information about избранное", "target": "избранное", "group": "validation"}
+{"question": "Подбери сведения: избранного", "target": "избранное", "group": "validation"}
+{"question": "избранного жөнінде ақпарат", "target": "избранное", "group": "validation"}
+{"question": "I would like information about избранного", "target": "избранное", "group": "validation"}
+{"question": "Подбери сведения: синхронизировать избранное", "target": "избранное", "group": "validation"}
+{"question": "синхронизировать избранное жөнінде ақпарат", "target": "избранное", "group": "validation"}
+{"question": "I would like information about синхронизировать избранное", "target": "избранное", "group": "validation"}
+{"question": "Подбери сведения: таңдаулылар", "target": "избранное", "group": "validation"}
+{"question": "таңдаулылар жөнінде ақпарат", "target": "избранное", "group": "validation"}
+{"question": "I would like information about таңдаулылар", "target": "избранное", "group": "validation"}
+{"question": "Подбери сведения: таңдаулыларды сақтау", "target": "избранное", "group": "validation"}
+{"question": "таңдаулыларды сақтау жөнінде ақпарат", "target": "избранное", "group": "validation"}
+{"question": "I would like information about таңдаулыларды сақтау", "target": "избранное", "group": "validation"}
+{"question": "Подбери сведения: favorites", "target": "избранное", "group": "validation"}
+{"question": "favorites жөнінде ақпарат", "target": "избранное", "group": "validation"}
+{"question": "I would like information about favorites", "target": "избранное", "group": "validation"}
+{"question": "Подбери сведения: saved documents", "target": "избранное", "group": "validation"}
+{"question": "saved documents жөнінде ақпарат", "target": "избранное", "group": "validation"}
+{"question": "I would like information about saved documents", "target": "избранное", "group": "validation"}
+{"question": "Подбери сведения: уведомления", "target": "уведомления", "group": "validation"}
+{"question": "уведомления жөнінде ақпарат", "target": "уведомления", "group": "validation"}
+{"question": "I would like information about уведомления", "target": "уведомления", "group": "validation"}
+{"question": "Подбери сведения: уведомлений", "target": "уведомления", "group": "validation"}
+{"question": "уведомлений жөнінде ақпарат", "target": "уведомления", "group": "validation"}
+{"question": "I would like information about уведомлений", "target": "уведомления", "group": "validation"}
+{"question": "Подбери сведения: отключить уведомления", "target": "уведомления", "group": "validation"}
+{"question": "отключить уведомления жөнінде ақпарат", "target": "уведомления", "group": "validation"}
+{"question": "I would like information about отключить уведомления", "target": "уведомления", "group": "validation"}
+{"question": "Подбери сведения: хабарландырулар", "target": "уведомления", "group": "validation"}
+{"question": "хабарландырулар жөнінде ақпарат", "target": "уведомления", "group": "validation"}
+{"question": "I would like information about хабарландырулар", "target": "уведомления", "group": "validation"}
+{"question": "Подбери сведения: хабарландыруларды өшіру", "target": "уведомления", "group": "validation"}
+{"question": "хабарландыруларды өшіру жөнінде ақпарат", "target": "уведомления", "group": "validation"}
+{"question": "I would like information about хабарландыруларды өшіру", "target": "уведомления", "group": "validation"}
+{"question": "Подбери сведения: notifications", "target": "уведомления", "group": "validation"}
+{"question": "notifications жөнінде ақпарат", "target": "уведомления", "group": "validation"}
+{"question": "I would like information about notifications", "target": "уведомления", "group": "validation"}
+{"question": "Подбери сведения: disable notifications", "target": "уведомления", "group": "validation"}
+{"question": "disable notifications жөнінде ақпарат", "target": "уведомления", "group": "validation"}
+{"question": "I would like information about disable notifications", "target": "уведомления", "group": "validation"}
+{"question": "Подбери сведения: OCR", "target": "распознавание текста", "group": "validation"}
+{"question": "OCR жөнінде ақпарат", "target": "распознавание текста", "group": "validation"}
+{"question": "I would like information about OCR", "target": "распознавание текста", "group": "validation"}
+{"question": "Подбери сведения: распознавание", "target": "распознавание текста", "group": "validation"}
+{"question": "распознавание жөнінде ақпарат", "target": "распознавание текста", "group": "validation"}
+{"question": "I would like information about распознавание", "target": "распознавание текста", "group": "validation"}
+{"question": "Подбери сведения: распознавания", "target": "распознавание текста", "group": "validation"}
+{"question": "распознавания жөнінде ақпарат", "target": "распознавание текста", "group": "validation"}
+{"question": "I would like information about распознавания", "target": "распознавание текста", "group": "validation"}
+{"question": "Подбери сведения: распознанный текст", "target": "распознавание текста", "group": "validation"}
+{"question": "распознанный текст жөнінде ақпарат", "target": "распознавание текста", "group": "validation"}
+{"question": "I would like information about распознанный текст", "target": "распознавание текста", "group": "validation"}
+{"question": "Подбери сведения: танылған мәтін", "target": "распознавание текста", "group": "validation"}
+{"question": "танылған мәтін жөнінде ақпарат", "target": "распознавание текста", "group": "validation"}
+{"question": "I would like information about танылған мәтін", "target": "распознавание текста", "group": "validation"}
+{"question": "Подбери сведения: мәтінді тану", "target": "распознавание текста", "group": "validation"}
+{"question": "мәтінді тану жөнінде ақпарат", "target": "распознавание текста", "group": "validation"}
+{"question": "I would like information about мәтінді тану", "target": "распознавание текста", "group": "validation"}
+{"question": "Подбери сведения: text recognition", "target": "распознавание текста", "group": "validation"}
+{"question": "text recognition жөнінде ақпарат", "target": "распознавание текста", "group": "validation"}
+{"question": "I would like information about text recognition", "target": "распознавание текста", "group": "validation"}
+{"question": "Подбери сведения: recognized text", "target": "распознавание текста", "group": "validation"}
+{"question": "recognized text жөнінде ақпарат", "target": "распознавание текста", "group": "validation"}
+{"question": "I would like information about recognized text", "target": "распознавание текста", "group": "validation"}
+{"question": "Подбери сведения: источники", "target": "проверка источников", "group": "validation"}
+{"question": "источники жөнінде ақпарат", "target": "проверка источников", "group": "validation"}
+{"question": "I would like information about источники", "target": "проверка источников", "group": "validation"}
+{"question": "Подбери сведения: источников", "target": "проверка источников", "group": "validation"}
+{"question": "источников жөнінде ақпарат", "target": "проверка источников", "group": "validation"}
+{"question": "I would like information about источников", "target": "проверка источников", "group": "validation"}
+{"question": "Подбери сведения: проверить источники", "target": "проверка источников", "group": "validation"}
+{"question": "проверить источники жөнінде ақпарат", "target": "проверка источников", "group": "validation"}
+{"question": "I would like information about проверить источники", "target": "проверка источников", "group": "validation"}
+{"question": "Подбери сведения: дереккөздер", "target": "проверка источников", "group": "validation"}
+{"question": "дереккөздер жөнінде ақпарат", "target": "проверка источников", "group": "validation"}
+{"question": "I would like information about дереккөздер", "target": "проверка источников", "group": "validation"}
+{"question": "Подбери сведения: дереккөздерді тексеру", "target": "проверка источников", "group": "validation"}
+{"question": "дереккөздерді тексеру жөнінде ақпарат", "target": "проверка источников", "group": "validation"}
+{"question": "I would like information about дереккөздерді тексеру", "target": "проверка источников", "group": "validation"}
+{"question": "Подбери сведения: source verification", "target": "проверка источников", "group": "validation"}
+{"question": "source verification жөнінде ақпарат", "target": "проверка источников", "group": "validation"}
+{"question": "I would like information about source verification", "target": "проверка источников", "group": "validation"}
+{"question": "Подбери сведения: check sources", "target": "проверка источников", "group": "validation"}
+{"question": "check sources жөнінде ақпарат", "target": "проверка источников", "group": "validation"}
+{"question": "I would like information about check sources", "target": "проверка источников", "group": "validation"}
+{"question": "Подбери сведения: привет", "target": "приветствие", "group": "validation"}
+{"question": "привет жөнінде ақпарат", "target": "приветствие", "group": "validation"}
+{"question": "I would like information about привет", "target": "приветствие", "group": "validation"}
+{"question": "Подбери сведения: здравствуй", "target": "приветствие", "group": "validation"}
+{"question": "здравствуй жөнінде ақпарат", "target": "приветствие", "group": "validation"}
+{"question": "I would like information about здравствуй", "target": "приветствие", "group": "validation"}
+{"question": "Подбери сведения: здравствуйте", "target": "приветствие", "group": "validation"}
+{"question": "здравствуйте жөнінде ақпарат", "target": "приветствие", "group": "validation"}
+{"question": "I would like information about здравствуйте", "target": "приветствие", "group": "validation"}
+{"question": "Подбери сведения: добрый день", "target": "приветствие", "group": "validation"}
+{"question": "добрый день жөнінде ақпарат", "target": "приветствие", "group": "validation"}
+{"question": "I would like information about добрый день", "target": "приветствие", "group": "validation"}
+{"question": "Подбери сведения: приветик", "target": "приветствие", "group": "validation"}
+{"question": "приветик жөнінде ақпарат", "target": "приветствие", "group": "validation"}
+{"question": "I would like information about приветик", "target": "приветствие", "group": "validation"}
+{"question": "Подбери сведения: сәлем", "target": "приветствие", "group": "validation"}
+{"question": "сәлем жөнінде ақпарат", "target": "приветствие", "group": "validation"}
+{"question": "I would like information about сәлем", "target": "приветствие", "group": "validation"}
+{"question": "Подбери сведения: сәлеметсіз бе", "target": "приветствие", "group": "validation"}
+{"question": "сәлеметсіз бе жөнінде ақпарат", "target": "приветствие", "group": "validation"}
+{"question": "I would like information about сәлеметсіз бе", "target": "приветствие", "group": "validation"}
+{"question": "Подбери сведения: қайырлы күн", "target": "приветствие", "group": "validation"}
+{"question": "қайырлы күн жөнінде ақпарат", "target": "приветствие", "group": "validation"}
+{"question": "I would like information about қайырлы күн", "target": "приветствие", "group": "validation"}
+{"question": "Подбери сведения: hello", "target": "приветствие", "group": "validation"}
+{"question": "hello жөнінде ақпарат", "target": "приветствие", "group": "validation"}
+{"question": "I would like information about hello", "target": "приветствие", "group": "validation"}
+{"question": "Подбери сведения: hi there", "target": "приветствие", "group": "validation"}
+{"question": "hi there жөнінде ақпарат", "target": "приветствие", "group": "validation"}
+{"question": "I would like information about hi there", "target": "приветствие", "group": "validation"}
+{"question": "Подбери сведения: good morning", "target": "приветствие", "group": "validation"}
+{"question": "good morning жөнінде ақпарат", "target": "приветствие", "group": "validation"}
+{"question": "I would like information about good morning", "target": "приветствие", "group": "validation"}
+{"question": "Подбери сведения: спасибо", "target": "благодарность", "group": "validation"}
+{"question": "спасибо жөнінде ақпарат", "target": "благодарность", "group": "validation"}
+{"question": "I would like information about спасибо", "target": "благодарность", "group": "validation"}
+{"question": "Подбери сведения: благодарю", "target": "благодарность", "group": "validation"}
+{"question": "благодарю жөнінде ақпарат", "target": "благодарность", "group": "validation"}
+{"question": "I would like information about благодарю", "target": "благодарность", "group": "validation"}
+{"question": "Подбери сведения: спасибо большое", "target": "благодарность", "group": "validation"}
+{"question": "спасибо большое жөнінде ақпарат", "target": "благодарность", "group": "validation"}
+{"question": "I would like information about спасибо большое", "target": "благодарность", "group": "validation"}
+{"question": "Подбери сведения: понятно спасибо", "target": "благодарность", "group": "validation"}
+{"question": "понятно спасибо жөнінде ақпарат", "target": "благодарность", "group": "validation"}
+{"question": "I would like information about понятно спасибо", "target": "благодарность", "group": "validation"}
+{"question": "Подбери сведения: рақмет", "target": "благодарность", "group": "validation"}
+{"question": "рақмет жөнінде ақпарат", "target": "благодарность", "group": "validation"}
+{"question": "I would like information about рақмет", "target": "благодарность", "group": "validation"}
+{"question": "Подбери сведения: рахмет", "target": "благодарность", "group": "validation"}
+{"question": "рахмет жөнінде ақпарат", "target": "благодарность", "group": "validation"}
+{"question": "I would like information about рахмет", "target": "благодарность", "group": "validation"}
+{"question": "Подбери сведения: көп рақмет", "target": "благодарность", "group": "validation"}
+{"question": "көп рақмет жөнінде ақпарат", "target": "благодарность", "group": "validation"}
+{"question": "I would like information about көп рақмет", "target": "благодарность", "group": "validation"}
+{"question": "Подбери сведения: thanks", "target": "благодарность", "group": "validation"}
+{"question": "thanks жөнінде ақпарат", "target": "благодарность", "group": "validation"}
+{"question": "I would like information about thanks", "target": "благодарность", "group": "validation"}
+{"question": "Подбери сведения: thank you", "target": "благодарность", "group": "validation"}
+{"question": "thank you жөнінде ақпарат", "target": "благодарность", "group": "validation"}
+{"question": "I would like information about thank you", "target": "благодарность", "group": "validation"}
+{"question": "Подбери сведения: кто ты", "target": "помощь по сайту", "group": "validation"}
+{"question": "кто ты жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about кто ты", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: кто вы", "target": "помощь по сайту", "group": "validation"}
+{"question": "кто вы жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about кто вы", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: как тебя зовут", "target": "помощь по сайту", "group": "validation"}
+{"question": "как тебя зовут жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about как тебя зовут", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: ты кто", "target": "помощь по сайту", "group": "validation"}
+{"question": "ты кто жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about ты кто", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: сен кімсің", "target": "помощь по сайту", "group": "validation"}
+{"question": "сен кімсің жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about сен кімсің", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: помоги", "target": "помощь по сайту", "group": "validation"}
+{"question": "помоги жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about помоги", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: что ты умеешь", "target": "помощь по сайту", "group": "validation"}
+{"question": "что ты умеешь жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about что ты умеешь", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: чем можешь помочь", "target": "помощь по сайту", "group": "validation"}
+{"question": "чем можешь помочь жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about чем можешь помочь", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: как пользоваться сайтом", "target": "помощь по сайту", "group": "validation"}
+{"question": "как пользоваться сайтом жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about как пользоваться сайтом", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: расскажи о сайте", "target": "помощь по сайту", "group": "validation"}
+{"question": "расскажи о сайте жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about расскажи о сайте", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: что здесь можно делать", "target": "помощь по сайту", "group": "validation"}
+{"question": "что здесь можно делать жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about что здесь можно делать", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: помощь по сайту", "target": "помощь по сайту", "group": "validation"}
+{"question": "помощь по сайту жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about помощь по сайту", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: сайт туралы", "target": "помощь по сайту", "group": "validation"}
+{"question": "сайт туралы жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about сайт туралы", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: сен не істей аласың", "target": "помощь по сайту", "group": "validation"}
+{"question": "сен не істей аласың жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about сен не істей аласың", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: көмектес", "target": "помощь по сайту", "group": "validation"}
+{"question": "көмектес жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about көмектес", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: site help", "target": "помощь по сайту", "group": "validation"}
+{"question": "site help жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about site help", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: what can you do", "target": "помощь по сайту", "group": "validation"}
+{"question": "what can you do жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about what can you do", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: who are you", "target": "помощь по сайту", "group": "validation"}
+{"question": "who are you жөнінде ақпарат", "target": "помощь по сайту", "group": "validation"}
+{"question": "I would like information about who are you", "target": "помощь по сайту", "group": "validation"}
+{"question": "Подбери сведения: вход", "target": "вход на сайт", "group": "validation"}
+{"question": "вход жөнінде ақпарат", "target": "вход на сайт", "group": "validation"}
+{"question": "I would like information about вход", "target": "вход на сайт", "group": "validation"}
+{"question": "Подбери сведения: войти в аккаунт", "target": "вход на сайт", "group": "validation"}
+{"question": "войти в аккаунт жөнінде ақпарат", "target": "вход на сайт", "group": "validation"}
+{"question": "I would like information about войти в аккаунт", "target": "вход на сайт", "group": "validation"}
+{"question": "Подбери сведения: как войти", "target": "вход на сайт", "group": "validation"}
+{"question": "как войти жөнінде ақпарат", "target": "вход на сайт", "group": "validation"}
+{"question": "I would like information about как войти", "target": "вход на сайт", "group": "validation"}
+{"question": "Подбери сведения: авторизация", "target": "вход на сайт", "group": "validation"}
+{"question": "авторизация жөнінде ақпарат", "target": "вход на сайт", "group": "validation"}
+{"question": "I would like information about авторизация", "target": "вход на сайт", "group": "validation"}
+{"question": "Подбери сведения: войти на сайт", "target": "вход на сайт", "group": "validation"}
+{"question": "войти на сайт жөнінде ақпарат", "target": "вход на сайт", "group": "validation"}
+{"question": "I would like information about войти на сайт", "target": "вход на сайт", "group": "validation"}
+{"question": "Подбери сведения: жүйеге кіру", "target": "вход на сайт", "group": "validation"}
+{"question": "жүйеге кіру жөнінде ақпарат", "target": "вход на сайт", "group": "validation"}
+{"question": "I would like information about жүйеге кіру", "target": "вход на сайт", "group": "validation"}
+{"question": "Подбери сведения: қалай кіру", "target": "вход на сайт", "group": "validation"}
+{"question": "қалай кіру жөнінде ақпарат", "target": "вход на сайт", "group": "validation"}
+{"question": "I would like information about қалай кіру", "target": "вход на сайт", "group": "validation"}
+{"question": "Подбери сведения: sign in", "target": "вход на сайт", "group": "validation"}
+{"question": "sign in жөнінде ақпарат", "target": "вход на сайт", "group": "validation"}
+{"question": "I would like information about sign in", "target": "вход на сайт", "group": "validation"}
+{"question": "Подбери сведения: log in to my account", "target": "вход на сайт", "group": "validation"}
+{"question": "log in to my account жөнінде ақпарат", "target": "вход на сайт", "group": "validation"}
+{"question": "I would like information about log in to my account", "target": "вход на сайт", "group": "validation"}
+{"question": "Подбери сведения: скачать файл", "target": "скачивание файлов", "group": "validation"}
+{"question": "скачать файл жөнінде ақпарат", "target": "скачивание файлов", "group": "validation"}
+{"question": "I would like information about скачать файл", "target": "скачивание файлов", "group": "validation"}
+{"question": "Подбери сведения: скачивание", "target": "скачивание файлов", "group": "validation"}
+{"question": "скачивание жөнінде ақпарат", "target": "скачивание файлов", "group": "validation"}
+{"question": "I would like information about скачивание", "target": "скачивание файлов", "group": "validation"}
+{"question": "Подбери сведения: скачать документ", "target": "скачивание файлов", "group": "validation"}
+{"question": "скачать документ жөнінде ақпарат", "target": "скачивание файлов", "group": "validation"}
+{"question": "I would like information about скачать документ", "target": "скачивание файлов", "group": "validation"}
+{"question": "Подбери сведения: можно скачать", "target": "скачивание файлов", "group": "validation"}
+{"question": "можно скачать жөнінде ақпарат", "target": "скачивание файлов", "group": "validation"}
+{"question": "I would like information about можно скачать", "target": "скачивание файлов", "group": "validation"}
+{"question": "Подбери сведения: жүктеп алу", "target": "скачивание файлов", "group": "validation"}
+{"question": "жүктеп алу жөнінде ақпарат", "target": "скачивание файлов", "group": "validation"}
+{"question": "I would like information about жүктеп алу", "target": "скачивание файлов", "group": "validation"}
+{"question": "Подбери сведения: файлды жүктеу", "target": "скачивание файлов", "group": "validation"}
+{"question": "файлды жүктеу жөнінде ақпарат", "target": "скачивание файлов", "group": "validation"}
+{"question": "I would like information about файлды жүктеу", "target": "скачивание файлов", "group": "validation"}
+{"question": "Подбери сведения: download a file", "target": "скачивание файлов", "group": "validation"}
+{"question": "download a file жөнінде ақпарат", "target": "скачивание файлов", "group": "validation"}
+{"question": "I would like information about download a file", "target": "скачивание файлов", "group": "validation"}
+{"question": "Подбери сведения: download a document", "target": "скачивание файлов", "group": "validation"}
+{"question": "download a document жөнінде ақпарат", "target": "скачивание файлов", "group": "validation"}
+{"question": "I would like information about download a document", "target": "скачивание файлов", "group": "validation"}
+{"question": "Подбери сведения: а как", "target": "уточнение способа", "group": "validation"}
+{"question": "а как жөнінде ақпарат", "target": "уточнение способа", "group": "validation"}
+{"question": "I would like information about а как", "target": "уточнение способа", "group": "validation"}
+{"question": "Подбери сведения: как это сделать", "target": "уточнение способа", "group": "validation"}
+{"question": "как это сделать жөнінде ақпарат", "target": "уточнение способа", "group": "validation"}
+{"question": "I would like information about как это сделать", "target": "уточнение способа", "group": "validation"}
+{"question": "Подбери сведения: как мне это сделать", "target": "уточнение способа", "group": "validation"}
+{"question": "как мне это сделать жөнінде ақпарат", "target": "уточнение способа", "group": "validation"}
+{"question": "I would like information about как мне это сделать", "target": "уточнение способа", "group": "validation"}
+{"question": "Подбери сведения: как этим воспользоваться", "target": "уточнение способа", "group": "validation"}
+{"question": "как этим воспользоваться жөнінде ақпарат", "target": "уточнение способа", "group": "validation"}
+{"question": "I would like information about как этим воспользоваться", "target": "уточнение способа", "group": "validation"}
+{"question": "Подбери сведения: что нажать", "target": "уточнение способа", "group": "validation"}
+{"question": "что нажать жөнінде ақпарат", "target": "уточнение способа", "group": "validation"}
+{"question": "I would like information about что нажать", "target": "уточнение способа", "group": "validation"}
+{"question": "Подбери сведения: покажи шаги", "target": "уточнение способа", "group": "validation"}
+{"question": "покажи шаги жөнінде ақпарат", "target": "уточнение способа", "group": "validation"}
+{"question": "I would like information about покажи шаги", "target": "уточнение способа", "group": "validation"}
+{"question": "Подбери сведения: оны қалай жасауға болады", "target": "уточнение способа", "group": "validation"}
+{"question": "оны қалай жасауға болады жөнінде ақпарат", "target": "уточнение способа", "group": "validation"}
+{"question": "I would like information about оны қалай жасауға болады", "target": "уточнение способа", "group": "validation"}
+{"question": "Подбери сведения: қалай жасауға болады", "target": "уточнение способа", "group": "validation"}
+{"question": "қалай жасауға болады жөнінде ақпарат", "target": "уточнение способа", "group": "validation"}
+{"question": "I would like information about қалай жасауға болады", "target": "уточнение способа", "group": "validation"}
+{"question": "Подбери сведения: қалай істеймін", "target": "уточнение способа", "group": "validation"}
+{"question": "қалай істеймін жөнінде ақпарат", "target": "уточнение способа", "group": "validation"}
+{"question": "I would like information about қалай істеймін", "target": "уточнение способа", "group": "validation"}
+{"question": "Подбери сведения: how can I do that", "target": "уточнение способа", "group": "validation"}
+{"question": "how can I do that жөнінде ақпарат", "target": "уточнение способа", "group": "validation"}
+{"question": "I would like information about how can I do that", "target": "уточнение способа", "group": "validation"}
+{"question": "Подбери сведения: what should I click", "target": "уточнение способа", "group": "validation"}
+{"question": "what should I click жөнінде ақпарат", "target": "уточнение способа", "group": "validation"}
+{"question": "I would like information about what should I click", "target": "уточнение способа", "group": "validation"}
+{"question": "Подбери сведения: а где", "target": "уточнение места", "group": "validation"}
+{"question": "а где жөнінде ақпарат", "target": "уточнение места", "group": "validation"}
+{"question": "I would like information about а где", "target": "уточнение места", "group": "validation"}
+{"question": "Подбери сведения: где это", "target": "уточнение места", "group": "validation"}
+{"question": "где это жөнінде ақпарат", "target": "уточнение места", "group": "validation"}
+{"question": "I would like information about где это", "target": "уточнение места", "group": "validation"}
+{"question": "Подбери сведения: где это находится", "target": "уточнение места", "group": "validation"}
+{"question": "где это находится жөнінде ақпарат", "target": "уточнение места", "group": "validation"}
+{"question": "I would like information about где это находится", "target": "уточнение места", "group": "validation"}
+{"question": "Подбери сведения: где его найти", "target": "уточнение места", "group": "validation"}
+{"question": "где его найти жөнінде ақпарат", "target": "уточнение места", "group": "validation"}
+{"question": "I would like information about где его найти", "target": "уточнение места", "group": "validation"}
+{"question": "Подбери сведения: в каком разделе", "target": "уточнение места", "group": "validation"}
+{"question": "в каком разделе жөнінде ақпарат", "target": "уточнение места", "group": "validation"}
+{"question": "I would like information about в каком разделе", "target": "уточнение места", "group": "validation"}
+{"question": "Подбери сведения: куда перейти", "target": "уточнение места", "group": "validation"}
+{"question": "куда перейти жөнінде ақпарат", "target": "уточнение места", "group": "validation"}
+{"question": "I would like information about куда перейти", "target": "уточнение места", "group": "validation"}
+{"question": "Подбери сведения: қайда", "target": "уточнение места", "group": "validation"}
+{"question": "қайда жөнінде ақпарат", "target": "уточнение места", "group": "validation"}
+{"question": "I would like information about қайда", "target": "уточнение места", "group": "validation"}
+{"question": "Подбери сведения: қай жерден табамын", "target": "уточнение места", "group": "validation"}
+{"question": "қай жерден табамын жөнінде ақпарат", "target": "уточнение места", "group": "validation"}
+{"question": "I would like information about қай жерден табамын", "target": "уточнение места", "group": "validation"}
+{"question": "Подбери сведения: ол қайда", "target": "уточнение места", "group": "validation"}
+{"question": "ол қайда жөнінде ақпарат", "target": "уточнение места", "group": "validation"}
+{"question": "I would like information about ол қайда", "target": "уточнение места", "group": "validation"}
+{"question": "Подбери сведения: where is it", "target": "уточнение места", "group": "validation"}
+{"question": "where is it жөнінде ақпарат", "target": "уточнение места", "group": "validation"}
+{"question": "I would like information about where is it", "target": "уточнение места", "group": "validation"}
+{"question": "Подбери сведения: where can I find it", "target": "уточнение места", "group": "validation"}
+{"question": "where can I find it жөнінде ақпарат", "target": "уточнение места", "group": "validation"}
+{"question": "I would like information about where can I find it", "target": "уточнение места", "group": "validation"}
+{"question": "Подбери сведения: а почему", "target": "уточнение причины", "group": "validation"}
+{"question": "а почему жөнінде ақпарат", "target": "уточнение причины", "group": "validation"}
+{"question": "I would like information about а почему", "target": "уточнение причины", "group": "validation"}
+{"question": "Подбери сведения: почему так", "target": "уточнение причины", "group": "validation"}
+{"question": "почему так жөнінде ақпарат", "target": "уточнение причины", "group": "validation"}
+{"question": "I would like information about почему так", "target": "уточнение причины", "group": "validation"}
+{"question": "Подбери сведения: зачем это", "target": "уточнение причины", "group": "validation"}
+{"question": "зачем это жөнінде ақпарат", "target": "уточнение причины", "group": "validation"}
+{"question": "I would like information about зачем это", "target": "уточнение причины", "group": "validation"}
+{"question": "Подбери сведения: почему это нужно", "target": "уточнение причины", "group": "validation"}
+{"question": "почему это нужно жөнінде ақпарат", "target": "уточнение причины", "group": "validation"}
+{"question": "I would like information about почему это нужно", "target": "уточнение причины", "group": "validation"}
+{"question": "Подбери сведения: неге", "target": "уточнение причины", "group": "validation"}
+{"question": "неге жөнінде ақпарат", "target": "уточнение причины", "group": "validation"}
+{"question": "I would like information about неге", "target": "уточнение причины", "group": "validation"}
+{"question": "Подбери сведения: неге олай", "target": "уточнение причины", "group": "validation"}
+{"question": "неге олай жөнінде ақпарат", "target": "уточнение причины", "group": "validation"}
+{"question": "I would like information about неге олай", "target": "уточнение причины", "group": "validation"}
+{"question": "Подбери сведения: why is that", "target": "уточнение причины", "group": "validation"}
+{"question": "why is that жөнінде ақпарат", "target": "уточнение причины", "group": "validation"}
+{"question": "I would like information about why is that", "target": "уточнение причины", "group": "validation"}
+{"question": "Подбери сведения: why do I need this", "target": "уточнение причины", "group": "validation"}
+{"question": "why do I need this жөнінде ақпарат", "target": "уточнение причины", "group": "validation"}
+{"question": "I would like information about why do I need this", "target": "уточнение причины", "group": "validation"}
+{"question": "Подбери сведения: объясни подробнее", "target": "повтор объяснения", "group": "validation"}
+{"question": "объясни подробнее жөнінде ақпарат", "target": "повтор объяснения", "group": "validation"}
+{"question": "I would like information about объясни подробнее", "target": "повтор объяснения", "group": "validation"}
+{"question": "Подбери сведения: расскажи подробнее", "target": "повтор объяснения", "group": "validation"}
+{"question": "расскажи подробнее жөнінде ақпарат", "target": "повтор объяснения", "group": "validation"}
+{"question": "I would like information about расскажи подробнее", "target": "повтор объяснения", "group": "validation"}
+{"question": "Подбери сведения: можно попроще", "target": "повтор объяснения", "group": "validation"}
+{"question": "можно попроще жөнінде ақпарат", "target": "повтор объяснения", "group": "validation"}
+{"question": "I would like information about можно попроще", "target": "повтор объяснения", "group": "validation"}
+{"question": "Подбери сведения: не понял", "target": "повтор объяснения", "group": "validation"}
+{"question": "не понял жөнінде ақпарат", "target": "повтор объяснения", "group": "validation"}
+{"question": "I would like information about не понял", "target": "повтор объяснения", "group": "validation"}
+{"question": "Подбери сведения: объясни проще", "target": "повтор объяснения", "group": "validation"}
+{"question": "объясни проще жөнінде ақпарат", "target": "повтор объяснения", "group": "validation"}
+{"question": "I would like information about объясни проще", "target": "повтор объяснения", "group": "validation"}
+{"question": "Подбери сведения: толығырақ", "target": "повтор объяснения", "group": "validation"}
+{"question": "толығырақ жөнінде ақпарат", "target": "повтор объяснения", "group": "validation"}
+{"question": "I would like information about толығырақ", "target": "повтор объяснения", "group": "validation"}
+{"question": "Подбери сведения: түсінбедім", "target": "повтор объяснения", "group": "validation"}
+{"question": "түсінбедім жөнінде ақпарат", "target": "повтор объяснения", "group": "validation"}
+{"question": "I would like information about түсінбедім", "target": "повтор объяснения", "group": "validation"}
+{"question": "Подбери сведения: қарапайым түсіндір", "target": "повтор объяснения", "group": "validation"}
+{"question": "қарапайым түсіндір жөнінде ақпарат", "target": "повтор объяснения", "group": "validation"}
+{"question": "I would like information about қарапайым түсіндір", "target": "повтор объяснения", "group": "validation"}
+{"question": "Подбери сведения: explain more", "target": "повтор объяснения", "group": "validation"}
+{"question": "explain more жөнінде ақпарат", "target": "повтор объяснения", "group": "validation"}
+{"question": "I would like information about explain more", "target": "повтор объяснения", "group": "validation"}
+{"question": "Подбери сведения: I do not understand", "target": "повтор объяснения", "group": "validation"}
+{"question": "I do not understand жөнінде ақпарат", "target": "повтор объяснения", "group": "validation"}
+{"question": "I would like information about I do not understand", "target": "повтор объяснения", "group": "validation"}
+{"question": "Подбери сведения: а за 1930 год", "target": "уточнение периода", "group": "validation"}
+{"question": "а за 1930 год жөнінде ақпарат", "target": "уточнение периода", "group": "validation"}
+{"question": "I would like information about а за 1930 год", "target": "уточнение периода", "group": "validation"}
+{"question": "Подбери сведения: а в 1905", "target": "уточнение периода", "group": "validation"}
+{"question": "а в 1905 жөнінде ақпарат", "target": "уточнение периода", "group": "validation"}
+{"question": "I would like information about а в 1905", "target": "уточнение периода", "group": "validation"}
+{"question": "Подбери сведения: за 1965", "target": "уточнение периода", "group": "validation"}
+{"question": "за 1965 жөнінде ақпарат", "target": "уточнение периода", "group": "validation"}
+{"question": "I would like information about за 1965", "target": "уточнение периода", "group": "validation"}
+{"question": "Подбери сведения: а до 1940", "target": "уточнение периода", "group": "validation"}
+{"question": "а до 1940 жөнінде ақпарат", "target": "уточнение периода", "group": "validation"}
+{"question": "I would like information about а до 1940", "target": "уточнение периода", "group": "validation"}
+{"question": "Подбери сведения: а после 1970", "target": "уточнение периода", "group": "validation"}
+{"question": "а после 1970 жөнінде ақпарат", "target": "уточнение периода", "group": "validation"}
+{"question": "I would like information about а после 1970", "target": "уточнение периода", "group": "validation"}
+{"question": "Подбери сведения: ал 1930 жылы", "target": "уточнение периода", "group": "validation"}
+{"question": "ал 1930 жылы жөнінде ақпарат", "target": "уточнение периода", "group": "validation"}
+{"question": "I would like information about ал 1930 жылы", "target": "уточнение периода", "group": "validation"}
+{"question": "Подбери сведения: 1965 жылға дейін", "target": "уточнение периода", "group": "validation"}
+{"question": "1965 жылға дейін жөнінде ақпарат", "target": "уточнение периода", "group": "validation"}
+{"question": "I would like information about 1965 жылға дейін", "target": "уточнение периода", "group": "validation"}
+{"question": "Подбери сведения: and before 1940", "target": "уточнение периода", "group": "validation"}
+{"question": "and before 1940 жөнінде ақпарат", "target": "уточнение периода", "group": "validation"}
+{"question": "I would like information about and before 1940", "target": "уточнение периода", "group": "validation"}
+{"question": "Подбери сведения: and for 1965", "target": "уточнение периода", "group": "validation"}
+{"question": "and for 1965 жөнінде ақпарат", "target": "уточнение периода", "group": "validation"}
+{"question": "I would like information about and for 1965", "target": "уточнение периода", "group": "validation"}
+{"question": "Подбери сведения: да", "target": "подтверждение", "group": "validation"}
+{"question": "да жөнінде ақпарат", "target": "подтверждение", "group": "validation"}
+{"question": "I would like information about да", "target": "подтверждение", "group": "validation"}
+{"question": "Подбери сведения: давай", "target": "подтверждение", "group": "validation"}
+{"question": "давай жөнінде ақпарат", "target": "подтверждение", "group": "validation"}
+{"question": "I would like information about давай", "target": "подтверждение", "group": "validation"}
+{"question": "Подбери сведения: хорошо", "target": "подтверждение", "group": "validation"}
+{"question": "хорошо жөнінде ақпарат", "target": "подтверждение", "group": "validation"}
+{"question": "I would like information about хорошо", "target": "подтверждение", "group": "validation"}
+{"question": "Подбери сведения: ладно", "target": "подтверждение", "group": "validation"}
+{"question": "ладно жөнінде ақпарат", "target": "подтверждение", "group": "validation"}
+{"question": "I would like information about ладно", "target": "подтверждение", "group": "validation"}
+{"question": "Подбери сведения: продолжай", "target": "подтверждение", "group": "validation"}
+{"question": "продолжай жөнінде ақпарат", "target": "подтверждение", "group": "validation"}
+{"question": "I would like information about продолжай", "target": "подтверждение", "group": "validation"}
+{"question": "Подбери сведения: иә", "target": "подтверждение", "group": "validation"}
+{"question": "иә жөнінде ақпарат", "target": "подтверждение", "group": "validation"}
+{"question": "I would like information about иә", "target": "подтверждение", "group": "validation"}
+{"question": "Подбери сведения: жарайды", "target": "подтверждение", "group": "validation"}
+{"question": "жарайды жөнінде ақпарат", "target": "подтверждение", "group": "validation"}
+{"question": "I would like information about жарайды", "target": "подтверждение", "group": "validation"}
+{"question": "Подбери сведения: yes please", "target": "подтверждение", "group": "validation"}
+{"question": "yes please жөнінде ақпарат", "target": "подтверждение", "group": "validation"}
+{"question": "I would like information about yes please", "target": "подтверждение", "group": "validation"}
+{"question": "Подбери сведения: okay continue", "target": "подтверждение", "group": "validation"}
+{"question": "okay continue жөнінде ақпарат", "target": "подтверждение", "group": "validation"}
+{"question": "I would like information about okay continue", "target": "подтверждение", "group": "validation"}
+{"question": "Подбери сведения: филиалы архива", "target": "филиалы архива", "group": "validation"}
+{"question": "филиалы архива жөнінде ақпарат", "target": "филиалы архива", "group": "validation"}
+{"question": "I would like information about филиалы архива", "target": "филиалы архива", "group": "validation"}
+{"question": "Подбери сведения: мұрағат филиалдары", "target": "филиалы архива", "group": "validation"}
+{"question": "мұрағат филиалдары жөнінде ақпарат", "target": "филиалы архива", "group": "validation"}
+{"question": "I would like information about мұрағат филиалдары", "target": "филиалы архива", "group": "validation"}
+{"question": "Подбери сведения: archive branches", "target": "филиалы архива", "group": "validation"}
+{"question": "archive branches жөнінде ақпарат", "target": "филиалы архива", "group": "validation"}
+{"question": "I would like information about archive branches", "target": "филиалы архива", "group": "validation"}
+{"question": "Подбери сведения: branch contacts", "target": "филиалы архива", "group": "validation"}
+{"question": "branch contacts жөнінде ақпарат", "target": "филиалы архива", "group": "validation"}
+{"question": "I would like information about branch contacts", "target": "филиалы архива", "group": "validation"}
+{"question": "Подбери сведения: цифровая выставка", "target": "цифровые выставки", "group": "validation"}
+{"question": "цифровая выставка жөнінде ақпарат", "target": "цифровые выставки", "group": "validation"}
+{"question": "I would like information about цифровая выставка", "target": "цифровые выставки", "group": "validation"}
+{"question": "Подбери сведения: цифрлық көрме", "target": "цифровые выставки", "group": "validation"}
+{"question": "цифрлық көрме жөнінде ақпарат", "target": "цифровые выставки", "group": "validation"}
+{"question": "I would like information about цифрлық көрме", "target": "цифровые выставки", "group": "validation"}
+{"question": "Подбери сведения: digital exhibition", "target": "цифровые выставки", "group": "validation"}
+{"question": "digital exhibition жөнінде ақпарат", "target": "цифровые выставки", "group": "validation"}
+{"question": "I would like information about digital exhibition", "target": "цифровые выставки", "group": "validation"}
+{"question": "Подбери сведения: online exhibition", "target": "цифровые выставки", "group": "validation"}
+{"question": "online exhibition жөнінде ақпарат", "target": "цифровые выставки", "group": "validation"}
+{"question": "I would like information about online exhibition", "target": "цифровые выставки", "group": "validation"}
+{"question": "Подбери сведения: новости архива", "target": "новости архива", "group": "validation"}
+{"question": "новости архива жөнінде ақпарат", "target": "новости архива", "group": "validation"}
+{"question": "I would like information about новости архива", "target": "новости архива", "group": "validation"}
+{"question": "Подбери сведения: мұрағат жаңалықтары", "target": "новости архива", "group": "validation"}
+{"question": "мұрағат жаңалықтары жөнінде ақпарат", "target": "новости архива", "group": "validation"}
+{"question": "I would like information about мұрағат жаңалықтары", "target": "новости архива", "group": "validation"}
+{"question": "Подбери сведения: archive news", "target": "новости архива", "group": "validation"}
+{"question": "archive news жөнінде ақпарат", "target": "новости архива", "group": "validation"}
+{"question": "I would like information about archive news", "target": "новости архива", "group": "validation"}
+{"question": "Подбери сведения: latest news", "target": "новости архива", "group": "validation"}
+{"question": "latest news жөнінде ақпарат", "target": "новости архива", "group": "validation"}
+{"question": "I would like information about latest news", "target": "новости архива", "group": "validation"}
+{"question": "Подбери сведения: согласование публикации", "target": "редакционная проверка", "group": "validation"}
+{"question": "согласование публикации жөнінде ақпарат", "target": "редакционная проверка", "group": "validation"}
+{"question": "I would like information about согласование публикации", "target": "редакционная проверка", "group": "validation"}
+{"question": "Подбери сведения: жарияланымды тексеру", "target": "редакционная проверка", "group": "validation"}
+{"question": "жарияланымды тексеру жөнінде ақпарат", "target": "редакционная проверка", "group": "validation"}
+{"question": "I would like information about жарияланымды тексеру", "target": "редакционная проверка", "group": "validation"}
+{"question": "Подбери сведения: editorial review", "target": "редакционная проверка", "group": "validation"}
+{"question": "editorial review жөнінде ақпарат", "target": "редакционная проверка", "group": "validation"}
+{"question": "I would like information about editorial review", "target": "редакционная проверка", "group": "validation"}
+{"question": "Подбери сведения: publication approval", "target": "редакционная проверка", "group": "validation"}
+{"question": "publication approval жөнінде ақпарат", "target": "редакционная проверка", "group": "validation"}
+{"question": "I would like information about publication approval", "target": "редакционная проверка", "group": "validation"}
+{"question": "Подбери сведения: космонавты на Марсе", "target": "нет ответа", "group": "validation"}
+{"question": "космонавты на Марсе жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about космонавты на Марсе", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: космонавтов", "target": "нет ответа", "group": "validation"}
+{"question": "космонавтов жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about космонавтов", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: космос", "target": "нет ответа", "group": "validation"}
+{"question": "космос жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about космос", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: Марс", "target": "нет ответа", "group": "validation"}
+{"question": "Марс жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about Марс", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: на Марсе", "target": "нет ответа", "group": "validation"}
+{"question": "на Марсе жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about на Марсе", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: планета Марс", "target": "нет ответа", "group": "validation"}
+{"question": "планета Марс жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about планета Марс", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: свидетельство Иванова", "target": "нет ответа", "group": "validation"}
+{"question": "свидетельство Иванова жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about свидетельство Иванова", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: зарплата", "target": "нет ответа", "group": "validation"}
+{"question": "зарплата жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about зарплата", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: погода", "target": "нет ответа", "group": "validation"}
+{"question": "погода жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about погода", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: футбол", "target": "нет ответа", "group": "validation"}
+{"question": "футбол жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about футбол", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: рецепт супа", "target": "нет ответа", "group": "validation"}
+{"question": "рецепт супа жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about рецепт супа", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: несуществующий материал", "target": "нет ответа", "group": "validation"}
+{"question": "несуществующий материал жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about несуществующий материал", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: ғарышкерлер", "target": "нет ответа", "group": "validation"}
+{"question": "ғарышкерлер жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about ғарышкерлер", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: ауа райы", "target": "нет ответа", "group": "validation"}
+{"question": "ауа райы жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about ауа райы", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: туу туралы куәлік", "target": "нет ответа", "group": "validation"}
+{"question": "туу туралы куәлік жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about туу туралы куәлік", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: билет на самолет", "target": "нет ответа", "group": "validation"}
+{"question": "билет на самолет жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about билет на самолет", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: Mars colony", "target": "нет ответа", "group": "validation"}
+{"question": "Mars colony жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about Mars colony", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: weather forecast", "target": "нет ответа", "group": "validation"}
+{"question": "weather forecast жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about weather forecast", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: buy tickets", "target": "нет ответа", "group": "validation"}
+{"question": "buy tickets жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about buy tickets", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: my private salary", "target": "нет ответа", "group": "validation"}
+{"question": "my private salary жөнінде ақпарат", "target": "нет ответа", "group": "validation"}
+{"question": "I would like information about my private salary", "target": "нет ответа", "group": "validation"}
+{"question": "Подбери сведения: библиотека и площадь", "target": "библиотека ; площадь", "group": "validation"}
+{"question": "Подбери сведения: библиотека и школа", "target": "библиотека ; школа", "group": "validation"}
+{"question": "Подбери сведения: библиотека и музей", "target": "библиотека ; музей", "group": "validation"}
+{"question": "Подбери сведения: библиотека и железная дорога", "target": "библиотека ; станция", "group": "validation"}
+{"question": "Подбери сведения: площадь и школа", "target": "площадь ; школа", "group": "validation"}
+{"question": "Подбери сведения: площадь и музей", "target": "площадь ; музей", "group": "validation"}
+{"question": "Подбери сведения: площадь и железная дорога", "target": "площадь ; станция", "group": "validation"}
+{"question": "Подбери сведения: школа и музей", "target": "школа ; музей", "group": "validation"}
+{"question": "Подбери сведения: школа и железная дорога", "target": "школа ; станция", "group": "validation"}
+{"question": "Подбери сведения: музей и железная дорога", "target": "музей ; станция", "group": "validation"}

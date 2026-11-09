@@ -1,0 +1,150 @@
+[
+  {
+    "label": "Архив опросов",
+    "path": "/ru/Interview/Result"
+  },
+  {
+    "label": "Цифровая летопись ВКО",
+    "path": "/ru/Page/Index/42426"
+  },
+  {
+    "label": "Базы данных",
+    "path": "/ru/Page/Index/1350"
+  },
+  {
+    "label": "Гостевая книга",
+    "path": "/ru/GuestBook"
+  },
+  {
+    "label": "Байланыс ақпарат",
+    "path": "/ru/Page/Index/1330"
+  },
+  {
+    "label": "Архив тарихы",
+    "path": "/ru/Page/Index/1332"
+  },
+  {
+    "label": "Қорлардың сипаттамасы",
+    "path": "/ru/Page/Index/1340"
+  },
+  {
+    "label": "Құрылым, функциялар",
+    "path": "/ru/Page/Index/1336"
+  },
+  {
+    "label": "Архив жұмысы",
+    "path": "/ru/Page/Index/1342"
+  },
+  {
+    "label": "Оқырман залы",
+    "path": "/ru/Page/Index/1338"
+  },
+  {
+    "label": "Дня пожилого человека",
+    "path": "/ru/Page/Index/52814"
+  },
+  {
+    "label": "«День открытых дверей»",
+    "path": "/ru/Page/Index/52813"
+  },
+  {
+    "label": "«Архив и будущее поколение»",
+    "path": "/ru/Page/Index/52812"
+  },
+  {
+    "label": "Экспозиционно-тематическая выставка",
+    "path": "/ru/Page/Index/52811"
+  },
+  {
+    "label": "Фестиваль «Золотой Тургусун»",
+    "path": "/ru/Page/Index/52795"
+  },
+  {
+    "label": "«QAZAQSHA QUIZ» «Қазақшаңыз қалай, мемлекеттік қызметші?»",
+    "path": "/ru/Page/Index/52794"
+  },
+  {
+    "label": "Архив новостей",
+    "path": "/ru/Page/ListNewsArchive"
+  },
+  {
+    "label": "ҚР Мемлекеттік Рәміздері",
+    "path": "/ru/Page/Index/42569"
+  },
+  {
+    "label": "Заңнамалық және нормативтік актілер",
+    "path": "/ru/NamedContent?type=Law"
+  },
+  {
+    "label": "Ғылыми-әдістемелік базасы",
+    "path": "/ru/NamedContent?type=Method"
+  },
+  {
+    "label": "Ақылы қызметтер",
+    "path": "/ru/Page/Index/52679"
+  },
+  {
+    "label": "Мемлекеттік қызмет көрсету",
+    "path": "/ru/Page/Index/22187"
+  },
+  {
+    "label": "Азаматтарды жеке мәселелері бойынша қабылдау КЕСТЕСІ",
+    "path": "/ru/Page/Index/52762"
+  },
+  {
+    "label": "Сыбайлас жемқорлыққа қарсы күрес",
+    "path": "/ru/Page/Index/32297"
+  },
+  {
+    "label": "Көру қабілеті нашар адамдарға арналған экранды оқу жүйесі",
+    "path": "/ru/Page/Index/52697"
+  },
+  {
+    "label": "Құжаттар",
+    "path": "/ru/Page/Index/52670"
+  },
+  {
+    "label": "Баяндамалар, ақпараттар",
+    "path": "/ru/Page/Index/1588"
+  },
+  {
+    "label": "Көсем Сөз",
+    "path": "/ru/Page/Index/1348"
+  },
+  {
+    "label": "Сөз сөйлеулер",
+    "path": "/ru/Page/Index/1749"
+  },
+  {
+    "label": "Құжаттар Жинағы",
+    "path": "/ru/NamedContent?type=Document"
+  },
+  {
+    "label": "Жеке қорлар",
+    "path": "/ru/Page/Index/1352"
+  },
+  {
+    "label": "Өлке Тарихы",
+    "path": "/ru/Page/Index/1354"
+  },
+  {
+    "label": "Фотогалереясы",
+    "path": "/ru/SiteGallery"
+  },
+  {
+    "label": "Метрические книги",
+    "path": "/ru/Page/Index/1926"
+  },
+  {
+    "label": "Календарь памятных дат",
+    "path": "/ru/Page/Index/1362"
+  },
+  {
+    "label": "Выставки",
+    "path": "/ru/Page/Index/1376"
+  },
+  {
+    "label": "Объявления",
+    "path": "/ru/Page/Index/1479"
+  }
+]

@@ -14,8 +14,12 @@ export function questionFeatures(question: string) {
   const norm = Math.sqrt(v.reduce((sum, x) => sum + x * x, 0)) || 1;
   return v.map(x => x / norm);
 }
-export function generateLocalQuery(question: string) {
-  const w = model.weights;
+// Optional artifact lets offline evaluation compare a candidate without replacing production weights.
+export function generateLocalQuery(question: string, artifact = model) {
+  const w = artifact.weights;
+  if ('featureVersion' in artifact && artifact.featureVersion === 'english-scaffold-v1') {
+    question = question.replace(/\b(?:i|you|me|my|would|like|information|about|could|please|tell|explain|for|help|find)\b/giu, ' ');
+  }
   let hidden = linear(w['encoder.weight'], w['encoder.bias'], questionFeatures(question)).map(Math.tanh);
   let token = 0; let confidence = 1; const words: string[] = [];
   for (let step = 0; step < 10; step++) {
@@ -27,7 +31,7 @@ export function generateLocalQuery(question: string) {
     const denominator = logits.reduce((sum,x) => sum + Math.exp(x - logits[token]), 0);
     confidence = Math.min(confidence, 1 / denominator);
     if (token === 1) return { query: words.join(' '), confidence, complete: true };
-    words.push(model.vocab[token]);
+    words.push(artifact.vocab[token]);
   }
   return { query: '', confidence: 0, complete: false };
 }

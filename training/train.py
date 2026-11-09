@@ -1,8 +1,12 @@
 """ALEteam query seq2seq: random initialization, no pretrained weights/tokenizer."""
-import json, math, random, hashlib, time, pathlib, sys
+import json, math, random, hashlib, time, pathlib, sys, os, re
 import torch
 from torch import nn
 ROOT=pathlib.Path(__file__).resolve().parents[1]
+FULL_TZ=os.environ.get('ARCHIVE_TRAIN_FULL_TZ')=='1'
+OUTPUT=ROOT/'training/full-tz' if FULL_TZ else ROOT/'training'
+OUTPUT.mkdir(parents=True,exist_ok=True)
+(OUTPUT/'data').mkdir(exist_ok=True)
 torch.set_num_threads(2); torch.manual_seed(2026); random.seed(2026)
 classes=[
 ('библиотека',['библиотека','библиотеки','библиотеке','читальный зал','читатели','кітапхана','оқырмандар','kitaphana']),
@@ -34,12 +38,23 @@ wrappers={
  'train':['Найди {}','Покажи {}','{} туралы мәлімет керек','Есть ли материалы: {}?','Что означает {}?','{} құжаттары бар ма?','{}','Где посмотреть {}','Как работает {}','Информация о {}'],
  'validation':['Подбери сведения: {}','{} жөнінде ақпарат'],
  'test':['Меня интересует {}','{} бойынша көмек керек']}
+if FULL_TZ:
+ additions=json.loads((ROOT/'training/full-tz/extra-classes.json').read_text())
+ for label,aliases in additions:
+  existing=next((row for row in classes if row[0]==label),None)
+  if existing: existing[1].extend(aliases)
+  else: classes.insert(-1,(label,aliases))
+ wrappers['train'].extend(['Tell me about {}','Help me find {}','How can I use {}'])
+ wrappers['validation'].append('I would like information about {}')
+ wrappers['test'].append('Could you explain {} for me?')
 external=json.loads((ROOT/'tests/fixtures/search-bilingual.json').read_text())['cases']
 reserved={r['question'].strip().lower() for r in external}
 for case in json.loads((ROOT/'tests/fixtures/site-dialog.json').read_text()):
  reserved.update(q.strip().lower() for q in case['turns'])
 def norm(s): return ' '.join(s.lower().split())
 def features(s):
+ if FULL_TZ:
+  s=re.sub(r'\b(?:i|you|me|my|would|like|information|about|could|please|tell|explain|for|help|find)\b',' ',s,flags=re.I)
  s=' '+norm(s)+' '; v=[0.0]*1024
  for n in range(2,6):
   for i in range(len(s)-n+1):
@@ -113,7 +128,8 @@ for epoch in range(1,121):
 model.load_state_dict(best_state)
 weights={k:v.tolist() for k,v in model.state_dict().items()}
 artifact={'version':1,'architecture':'hashed-character-encoder-autoregressive-rnn','seed':2026,'inputSize':1024,'hiddenSize':96,'vocab':vocab,'weights':weights,'pretrained':False}
-model_dir=ROOT/'training/models';model_dir.mkdir(exist_ok=True)
+if FULL_TZ: artifact['featureVersion']='english-scaffold-v1'
+model_dir=OUTPUT/'models';model_dir.mkdir(exist_ok=True)
 encoded=json.dumps(artifact,separators=(',',':')).encode();(model_dir/'query-model.json').write_bytes(encoded)
 report={'seed':2026,'torch':torch.__version__,'device':'cpu','pretrained':False,'parameters':sum(p.numel() for p in model.parameters()),'seconds':time.time()-start,'initialWeightsSha256':initial,'artifactSha256':hashlib.sha256(encoded).hexdigest(),'history':history,'evaluation':{}}
 for split,rows in splits.items():
@@ -121,8 +137,8 @@ for split,rows in splits.items():
  for r in rows:
   actual,confidence=decode(model,r['question']);results.append(dict(r,prediction=actual,confidence=confidence,passed=actual==r['target']))
  report['evaluation'][split]={'total':len(rows),'passed':sum(r['passed'] for r in results),'cases':results}
- (ROOT/f'training/data/router-{split}.jsonl').write_text(''.join(json.dumps(r,ensure_ascii=False)+'\n' for r in rows))
-report['datasetSha256']={split:hashlib.sha256((ROOT/f'training/data/router-{split}.jsonl').read_bytes()).hexdigest() for split in splits}
+ (OUTPUT/f'data/router-{split}.jsonl').write_text(''.join(json.dumps(r,ensure_ascii=False)+'\n' for r in rows))
+report['datasetSha256']={split:hashlib.sha256((OUTPUT/f'data/router-{split}.jsonl').read_bytes()).hexdigest() for split in splits}
 report['externalPredictions']=[dict(r,prediction=decode(model,r['question'])[0],confidence=decode(model,r['question'])[1]) for r in external]
-(ROOT/'training/report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+(OUTPUT/'report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 print(json.dumps({k:{a:b for a,b in v.items() if a!='cases'} for k,v in report['evaluation'].items()}),flush=True)
