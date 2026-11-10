@@ -58,7 +58,7 @@ try {
     const role = compose(project, ['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT rolsuper FROM pg_roles WHERE rolname=current_user']); assert.equal(role, 'f');
   });
   let commentId; let replyId; let modCookie; let staffCookie; let cmsId; let cmsSlug; let fundId; let catalogueId; let branchId;
-  let uploadFileId; let quarantinedId; let importId; let importDigest; let importedIds; let uploadedSha256;
+  let uploadFileId; let quarantinedId; let importId; let importDigest; let importedIds; let uploadedSha256; let discoveryBatchId; let discoveryPlaceId; let discoveryHistoryId;
   await check('standalone runtime serves a PNG and persists an authenticated comment', async () => {
     const origin = config.BETTER_AUTH_URL; const cookie = await login(origin);
     const response = await fetch(origin + '/api/documents/demo-doc-01/comments', { method: 'POST', headers: { Origin: origin, Cookie: cookie, 'Content-Type': 'application/json', 'Idempotency-Key': randomUUID() }, body: JSON.stringify({ body: `Проверка сохранности Docker ${run}` }) });
@@ -130,6 +130,23 @@ try {
     batch=await post('/admin/imports/'+batch.id+'/commit',{expectedUpdatedAt:batch.updatedAt,digest:batch.digest});importId=batch.id;importedIds=batch.createdDocuments.map(d=>d.id);assert.equal(importedIds.length,2);
     assert.equal((await fetch(origin+'/api/files/upload-'+quarantinedId)).status,404);
     for(const id of importedIds)assert.equal((await fetch(origin+'/api/documents/'+id)).status,404);
+  });
+  await check('standalone creates source-bound drafts and independently reviewed synthetic history',async()=>{
+    const origin=config.BETTER_AUTH_URL;
+    const post=async(route,body,cookie=staffCookie,status=200)=>{
+      const r=await fetch(origin+'/api'+route,{method:'POST',headers:{Origin:origin,Cookie:cookie,'Content-Type':'application/json'},body:JSON.stringify(body)});assert.equal(r.status,status,route);return(await r.json()).item;
+    };
+    let batch=await post('/admin/source-drafts',{package:'archive-20261110',mode:'cms',mappings:[{sourceKey:'history-1',slug:'docker-source-draft-'+run}]},staffCookie,201);discoveryBatchId=batch.id;
+    batch=await post('/admin/source-drafts/'+batch.id+'/commit',{});assert.equal(batch.status,'COMMITTED');
+    assert.equal((await fetch(origin+'/api/content/docker-source-draft-'+run)).status,404,'real source stays DRAFT');
+    const source=(await(await fetch(origin+'/api/discovery/materials/cms/'+cmsId+'?locale=ru')).json()).source;assert.equal(source.isDemo,true);
+    let place=await post('/admin/discovery/facts',{kind:'PLACE',data:{labels:{ru:{title:'ДЕМО Docker место',body:'Synthetic backup fixture, not an official historical claim.'}},coordinates:null},sources:[source]},staffCookie,201);
+    const self=await fetch(origin+'/api/admin/discovery/facts/'+place.id+'/verify',{method:'POST',headers:{Origin:origin,Cookie:staffCookie,'Content-Type':'application/json'},body:JSON.stringify({expectedUpdatedAt:place.updatedAt})});assert.equal(self.status,403);
+    place=await post('/admin/discovery/facts/'+place.id+'/verify',{expectedUpdatedAt:place.updatedAt},modCookie);discoveryPlaceId=place.id;
+    let history=await post('/admin/discovery/facts',{kind:'HISTORY',parentId:place.id,data:{labels:{ru:{title:'ДЕМО Docker событие'}},date:{datePrecision:'year',dateParts:{year:1791}},materials:[{kind:'document',id:catalogueId}],certainty:'source_assertion'},sources:[source]},staffCookie,201);
+    history=await post('/admin/discovery/facts/'+history.id+'/verify',{expectedUpdatedAt:history.updatedAt},modCookie);discoveryHistoryId=history.id;
+    const result=await(await fetch(origin+'/api/places/'+place.id+'/history')).json();assert.equal(result.items[0].dateParts.year,1791);
+    assert.equal((await(await fetch(origin+'/api/documents/'+catalogueId+'/related')).json()).engine,'artur');
   });
   await check('compiled standalone assistant retains chained date bounds and refuses contradictions',async()=>{
     const origin=config.BETTER_AUTH_URL,cookie=await login(origin);
@@ -203,6 +220,14 @@ try {
       assert.deepEqual(exported.materialized.map(row=>row.sourceId).sort(),['000009','000010']);assert.deepEqual(exported.materialized.map(row=>row.document.fund.number).sort(),['0107','0108']);
       for(const row of exported.materialized){assert.equal(row.document.isPublic,false);assert.ok(row.document.contentItem.revisions.every(r=>r.status==='DRAFT'));}
       for(const id of importedIds)assert.equal((await fetch(origin+'/api/documents/'+id)).status,404);
+    }
+  });
+  await check('source-draft provenance and reviewed discovery history survive exact restore',async()=>{
+    for(const origin of [config.BETTER_AUTH_URL,restoreConfig.BETTER_AUTH_URL]){
+      const batch=await fetch(origin+'/api/admin/source-drafts/'+discoveryBatchId,{headers:{Cookie:staffCookie}});assert.equal(batch.status,200);assert.equal((await batch.json()).item.status,'COMMITTED');
+      assert.equal((await fetch(origin+'/api/content/docker-source-draft-'+run)).status,404);
+      const history=await(await fetch(origin+'/api/places/'+discoveryPlaceId+'/history?locale=en')).json();assert.equal(history.items[0].id,discoveryHistoryId);assert.equal(history.items[0].dateParts.year,1791);assert.equal(history.items[0].dateParts.month,undefined);assert.equal(history.items[0].translationStatus,'original');assert.ok(history.items[0].sources.every(s=>s.isDemo));
+      assert.equal((await(await fetch(origin+'/api/documents/'+catalogueId+'/related')).json()).engine,'artur');
     }
   });
   await check('favorites, notification preferences and reply events survive restart and restore', async () => {

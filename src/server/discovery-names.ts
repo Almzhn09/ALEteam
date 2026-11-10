@@ -1,4 +1,5 @@
 import {liveFacts,localLabel} from './discovery-facts';
+import {arturDiscoveryEngines} from './artur-discovery/transport';
 import {boundedPage} from './discovery-utils';
 import {json,queryParams} from './http';
 import {z} from 'zod';
@@ -20,7 +21,10 @@ export async function expandCatalogNames(input:{q?:string;locality?:string;place
  const aliases=await checkedAliases(locale),needle=normalize(input.locality??input.q??'');
  const found=aliases.filter(g=>input.placeId?g.entityId===input.placeId:normalize(g.canonicalName)===needle||g.aliases.some(a=>normalize(a.name)===needle));
  if(found.length!==1)return {...empty,entityIds:found.map(g=>g.entityId),clarificationRequired:found.length>1||!!input.placeId};
- const group=found[0];const applicable=group.aliases.filter(a=>(input.yearFrom===undefined||a.validTo===undefined||a.validTo>=input.yearFrom)&&(input.yearTo===undefined||a.validFrom===undefined||a.validFrom<=input.yearTo));
+ const group=found[0];
+ const interpretation=arturDiscoveryEngines.expandNames({query:input.locality??input.q??group.canonicalName,aliases:[group],yearFrom:input.yearFrom,yearTo:input.yearTo,placeId:input.placeId},{locale,now:new Date().toISOString()});
+ if(interpretation.clarificationRequired)return {...empty,entityIds:interpretation.entityIds,clarificationRequired:true,sources:interpretation.sources};
+ const applicable=group.aliases.filter(a=>(input.yearFrom===undefined||a.validTo===undefined||a.validTo>=input.yearFrom)&&(input.yearTo===undefined||a.validFrom===undefined||a.validFrom<=input.yearTo));
  const variants=mode==='literal'?[group.canonicalName]:[...new Set([group.canonicalName,...applicable.map(a=>a.name)])].slice(0,8);
  let allowedDocumentIds:string[]|undefined;
  if(input.placeId){const curated=await liveFacts('EDITORIAL'),history=await liveFacts('HISTORY');allowedDocumentIds=[...new Set([...curated.flatMap(r=>{const d=r.data as {placeId?:string;material:{kind:string;id:string}};return d.placeId===input.placeId&&d.material.kind==='document'?[d.material.id]:[];}),...history.filter(r=>r.parentId===input.placeId).flatMap(r=>(r.data as {materials:{kind:string;id:string}[]}).materials.filter(k=>k.kind==='document').map(k=>k.id))])];}

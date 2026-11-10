@@ -120,7 +120,8 @@ test('COL-B04 chronology preserves partial dates, locale fallback, cursor scope 
  // Re-publish a distinct source version and explicitly re-verify facts against it; stable place ID is preserved.
  const next=(await ok('/admin/content/'+sourceItem.id+'/revisions','POST',{locale:'ru',payload:demoPayload},writer,201)).item;await publish(next);evidenceSource=(await ok('/discovery/materials/cms/'+sourceItem.id)).source;
  for(const old of (await db.discoveryFact.findMany({where:{status:'VERIFIED'},orderBy:{id:'asc'}})).sort((a,b)=>Number(b.kind==='PLACE')-Number(a.kind==='PLACE'))){
-  let row=(await ok('/admin/discovery/facts/'+old.id+'/revise','POST',{expectedUpdatedAt:old.updatedAt.toISOString()},writer)).item;
+  const fresh=await db.discoveryFact.findUniqueOrThrow({where:{id:old.id}});
+  let row=fresh.status==='DRAFT'?{...fresh,updatedAt:fresh.updatedAt.toISOString()}:(await ok('/admin/discovery/facts/'+old.id+'/revise','POST',{expectedUpdatedAt:fresh.updatedAt.toISOString()},writer)).item;
   row=(await ok('/admin/discovery/facts/'+row.id,'PATCH',{expectedUpdatedAt:row.updatedAt,sources:[evidenceSource]},writer)).item;
   await ok('/admin/discovery/facts/'+row.id+'/verify','POST',{expectedUpdatedAt:row.updatedAt},reviewer);
  }
@@ -140,4 +141,31 @@ test('COL-B04 related sources distinguish verified links and text similarity wit
  assert.equal((await call('/documents/'+graphDocumentId+'/related')).status,404);
  assert.equal((await call('/discovery/materials/document/'+otherDoc.item.id)).status,404);
  await db.archiveBranch.update({where:{id:'discovery-other'},data:{isPublic:true}});
+});
+
+test('COL-A07: revising a place invalidates child reviews until each child is independently rechecked',async()=>{
+ let place=await fact('PLACE',{labels:{ru:{title:'ДЕМО Версионный город'}},coordinates:null});
+ const child=await fact('HISTORY',{labels:{ru:{title:'ДЕМО событие версии'}},date:{datePrecision:'year',dateParts:{year:1791}},materials:[],certainty:'source_assertion'},place.id);
+ assert.equal((await ok('/places/'+place.id+'/history')).items.length,1);
+ place=(await ok('/admin/discovery/facts/'+place.id+'/revise','POST',{expectedUpdatedAt:place.updatedAt},writer)).item;
+ const invalidated=await db.discoveryFact.findUniqueOrThrow({where:{id:child.id}});assert.equal(invalidated.status,'DRAFT');assert.equal(invalidated.reviewerId,null);
+ place=(await ok('/admin/discovery/facts/'+place.id,'PATCH',{expectedUpdatedAt:place.updatedAt,data:{labels:{ru:{title:'ДЕМО Версионный город, новая редакция'}},coordinates:null}},writer)).item;
+ place=(await ok('/admin/discovery/facts/'+place.id+'/verify','POST',{expectedUpdatedAt:place.updatedAt},reviewer)).item;
+ assert.deepEqual((await ok('/places/'+place.id+'/history')).items,[]);
+ await ok('/admin/discovery/facts/'+child.id+'/verify','POST',{expectedUpdatedAt:invalidated.updatedAt.toISOString()},reviewer);
+ assert.equal((await ok('/places/'+place.id+'/history')).items.length,1);
+});
+test('COL-A07: database rejects verified fact status without independent authorship',async()=>{
+ const c=(await ok('/admin/discovery/facts','POST',{kind:'PLACE',data:{labels:{ru:{title:'ДЕМО Без проверки'}},coordinates:null},sources:[evidenceSource]},writer,201)).item;
+ await assert.rejects(db.discoveryFact.update({where:{id:c.id},data:{status:'VERIFIED',reviewerId:null}}),/check constraint/);
+ assert.ok((await ok('/places')).items.every((p:{id:string})=>p.id!==c.id));
+ const author=await db.discoveryFact.findUniqueOrThrow({where:{id:c.id}});await assert.rejects(db.discoveryFact.update({where:{id:c.id},data:{status:'VERIFIED',reviewerId:author.authorId}}),/check constraint/);
+ assert.equal((await call('/places/'+c.id+'/history')).status,404);
+});
+
+test('COL-A02: live catalog asks which Altay is intended and accepts an explicit verified place selection',async()=>{
+ const place=await fact('PLACE',{labels:{ru:{title:'Алтай',body:'ДЕМО проверка неоднозначного названия, не официальная историческая публикация.'}},coordinates:null});
+ await fact('ALIAS',{name:'Зыряновск',locale:'ru'},place.id);
+ const ambiguous=await ok('/documents?nameMode=expanded&locality='+encodeURIComponent('Алтай'));assert.equal(ambiguous.nameExpansion.clarificationRequired,true);assert.equal(ambiguous.total,0);
+ const selected=await ok('/documents?nameMode=expanded&placeId='+place.id);assert.equal(selected.nameExpansion.clarificationRequired,false);assert.equal(selected.total,0);
 });

@@ -27,10 +27,10 @@ function ranked(result:EngineRankedItem[],lookup:Map<string,CandidateSnapshot>){
 });}
 function aliases(input:AliasRef[]):AliasEntity[]{return input.map(a=>{
  const names=a.aliases.filter(n=>n.status==='VERIFIED'&&n.sources.length>0);
- return {id:a.entityId,name:{ru:a.canonicalName,kk:a.canonicalName,en:a.canonicalName},aliases:names.map(n=>{
+ return {id:a.entityId,name:{ru:a.canonicalName,kk:a.canonicalName,en:a.canonicalName},aliases:[...names.map(n=>{
   const project=discoveryPlaces.flatMap(e=>e.aliases).find(x=>x.name.toLowerCase()===n.name.toLowerCase());
   return {name:n.name,locale:n.locale,forms:project?.forms??[],historical:false,transliteration:project?.transliteration??false};
- }),ambiguousNames:[...(a.ambiguity?[a.canonicalName]:[]),...names.filter(n=>discoveryPlaces.some(p=>p.ambiguousNames.includes(n.name))).map(n=>n.name)],evidence:names.flatMap(n=>n.sources.map(s=>({sourceId:s.id})))};
+ }),...(!names.some(n=>n.name.toLowerCase()===a.canonicalName.toLowerCase())?[{name:a.canonicalName,locale:'ru' as const,forms:[],historical:false,transliteration:false}]:[])],ambiguousNames:[...(a.ambiguity||discoveryPlaces.some(p=>p.ambiguousNames.includes(a.canonicalName))?[a.canonicalName]:[]),...names.filter(n=>discoveryPlaces.some(p=>p.ambiguousNames.includes(n.name))).map(n=>n.name)],evidence:names.flatMap(n=>n.sources.map(s=>({sourceId:s.id})))};
 });}
 export const arturDiscoveryEngines:DiscoveryEngines={
  expandNames(input,context){

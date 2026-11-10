@@ -30,16 +30,17 @@ const shapes={
 };
 export type FactKind=keyof typeof shapes;
 export function parseFact<K extends FactKind>(kind:K,data:unknown):z.output<(typeof shapes)[K]>{return shapes[kind].parse(data) as z.output<(typeof shapes)[K]>;}
+function independent(row:{authorId:string;reviewerId:string|null}){return Boolean(row.authorId&&row.reviewerId&&row.reviewerId!==row.authorId);}
 export async function liveFacts(kind:FactKind){
  const rows=await db.discoveryFact.findMany({where:{kind,status:'VERIFIED',...publicBranchScope},orderBy:{id:'asc'},take:201});
  if(rows.length>200)throw new ApiError(503,'DISCOVERY_CORPUS_LIMIT','Сервис временно недоступен.');
  const result=[];const cache=new Map<string,Awaited<ReturnType<typeof resolveEvidence>>>();
  async function evidenceFor(value:unknown){const key=digest(value);if(!cache.has(key))cache.set(key,await resolveEvidence(value));return cache.get(key);}
- for(const row of rows){if(!shapes[kind].safeParse(row.data).success)continue;const refs=await evidenceFor(row.sources);if(!refs)continue;
-  if(row.parentId){const parent=await db.discoveryFact.findFirst({where:{id:row.parentId,kind:'PLACE',status:'VERIFIED',...publicBranchScope}});if(!parent||!await evidenceFor(parent.sources))continue;}
+ for(const row of rows){if(!independent(row)||!shapes[kind].safeParse(row.data).success)continue;const refs=await evidenceFor(row.sources);if(!refs)continue;
+  if(row.parentId){const parent=await db.discoveryFact.findFirst({where:{id:row.parentId,kind:'PLACE',status:'VERIFIED',...publicBranchScope}});if(!parent||!independent(parent)||!await evidenceFor(parent.sources))continue;}
   if(kind==='EDITORIAL'){
    const data=row.data as {topicId?:string;placeId?:string};let valid=true;
-   for(const [type,id] of [['TOPIC',data.topicId],['PLACE',data.placeId]])if(id){const target=await db.discoveryFact.findFirst({where:{id,kind:type,status:'VERIFIED',...publicBranchScope}});if(!target||!await evidenceFor(target.sources)){valid=false;break;}}
+   for(const [type,id] of [['TOPIC',data.topicId],['PLACE',data.placeId]])if(id){const target=await db.discoveryFact.findFirst({where:{id,kind:type,status:'VERIFIED',...publicBranchScope}});if(!target||!independent(target)||!await evidenceFor(target.sources)){valid=false;break;}}
    if(!valid)continue;
   }
   result.push({...row,evidence:refs});
@@ -51,13 +52,13 @@ async function validateFact(kind:FactKind,data:unknown,parentId:string|null,clie
  const parsed=parseFact(kind,data);
  if(['ALIAS','HISTORY'].includes(kind)){
   const parent=parentId?await client!.discoveryFact.findFirst({where:{id:parentId,kind:'PLACE',status:'VERIFIED',...publicBranchScope}}):null;
-  if(!parent||!await resolveEvidence(parent.sources,client))conflict('PLACE_UNAVAILABLE');
+  if(!parent||!independent(parent)||!await resolveEvidence(parent.sources,client))conflict('PLACE_UNAVAILABLE');
  }
  const keys=kind==='HISTORY'?(parsed as z.infer<typeof shapes.HISTORY>).materials:kind==='LINK'?[(parsed as z.infer<typeof shapes.LINK>).from,(parsed as z.infer<typeof shapes.LINK>).to]:kind==='EDITORIAL'?[(parsed as z.infer<typeof shapes.EDITORIAL>).material]:[];
  for(const key of keys)if(!await resolveMaterial(key,'ru',true,client))conflict('MATERIAL_UNAVAILABLE');
  if(kind==='EDITORIAL'){
   const d=parsed as {topicId?:string;placeId?:string};
-  for(const [type,id] of [['TOPIC',d.topicId],['PLACE',d.placeId]])if(id){const target=await client!.discoveryFact.findFirst({where:{id,kind:type,status:'VERIFIED',...publicBranchScope}});if(!target||!await resolveEvidence(target.sources,client))conflict('SOURCE_CHANGED');}
+  for(const [type,id] of [['TOPIC',d.topicId],['PLACE',d.placeId]])if(id){const target=await client!.discoveryFact.findFirst({where:{id,kind:type,status:'VERIFIED',...publicBranchScope}});if(!target||!independent(target)||!await resolveEvidence(target.sources,client))conflict('SOURCE_CHANGED');}
  }
  if(kind==='LINK'&&JSON.stringify(keys[0])===JSON.stringify(keys[1]))throw new ApiError(400,'SELF_REFERENCE','Материал не может ссылаться на себя.');
  return parsed;
@@ -97,7 +98,13 @@ export async function adminFacts(request:Request,id?:string,action?:string){
    if(!await resolveEvidence(row.sources,tx))conflict('SOURCE_CHANGED');
    await validateFact(row.kind as FactKind,row.data,row.parentId,tx);
   }else if(!['withdraw','revise'].includes(action??''))unavailable();
+  if(action==='revise'&&['PLACE','TOPIC'].includes(row.kind)){
+   // A reviewed child belongs to the reviewed parent meaning, not merely its reusable opaque ID.
+   const dependents=await tx.discoveryFact.findMany({where:{status:'VERIFIED',OR:[{parentId:id},...(row.kind==='PLACE'?[{kind:'EDITORIAL',data:{path:['placeId'],equals:id}}]:[{kind:'EDITORIAL',data:{path:['topicId'],equals:id}}])]},select:{id:true,updatedAt:true}});
+   for(const child of dependents)await tx.discoveryFact.update({where:{id:child.id},data:{status:'DRAFT',reviewerId:null,updatedAt:new Date(Math.max(Date.now(),child.updatedAt.getTime()+1))}});
+   if(dependents.length)await audit(tx,c.user.id,'DISCOVERY_DEPENDENTS_INVALIDATED',id!);
+  }
   const item=await tx.discoveryFact.update({where:{id},data:{status:action==='verify'?'VERIFIED':action==='revise'?'DRAFT':'WITHDRAWN',...(action==='verify'?{reviewerId:c.user.id}:action==='revise'?{reviewerId:null,authorId:c.user.id}:{}),updatedAt:new Date(Math.max(Date.now(),row.updatedAt.getTime()+1))}});
-  await audit(tx,c.user.id,action==='verify'?'DISCOVERY_FACT_VERIFIED':'DISCOVERY_FACT_WITHDRAWN',id!);return item;
+  await audit(tx,c.user.id,action==='verify'?'DISCOVERY_FACT_VERIFIED':action==='revise'?'DISCOVERY_FACT_REVISED':'DISCOVERY_FACT_WITHDRAWN',id!);return item;
  });return json({item});
 }
