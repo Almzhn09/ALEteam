@@ -52,7 +52,7 @@ export function rankRecommendations(input:readonly EngineMaterial[],locale:Engin
  // Personal blocks contain genuine matches only; if no matches, disclose the editorial fallback.
  if(mode!=='editorial'&&candidates.some(c=>c.score>0))candidates=candidates.filter(c=>c.score>0);
  else return {mode:'editorial' as const,items:all.sort((a,b)=>(a.editorialRank??1000000)-(b.editorialRank??1000000)||compareIds(a.id,b.id)).slice(0,limit).map(m=>output(m,'editorial',0))};
- return {mode:mode as 'interests'|'history',items:candidates.sort((a,b)=>b.score-a.score||(a.m.editorialRank??1000000)-(b.m.editorialRank??1000000)||compareIds(a.m.id,b.m.id)).slice(0,limit).map(c=>output(c.m,c.code as ReasonCode,c.score))};
+ return {mode:(candidates.some(c=>c.code==='interests')?'interests':'history') as 'interests'|'history',items:candidates.sort((a,b)=>b.score-a.score||(a.m.editorialRank??1000000)-(b.m.editorialRank??1000000)||compareIds(a.m.id,b.m.id)).slice(0,limit).map(c=>output(c.m,c.code as ReasonCode,c.score))};
 }
 const aggregateSchema=z.object({status:z.literal('measured'),from:z.iso.datetime(),to:z.iso.datetime(),views:z.array(z.object({id:z.string().max(120),count:z.number().int().min(0).max(1000000000)}).strict()).max(2000)}).strict();
 export function rankPopular(input:readonly EngineMaterial[],locale:EngineLocale,aggregate:unknown,limit=3){

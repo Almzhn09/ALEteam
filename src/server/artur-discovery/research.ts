@@ -3,10 +3,11 @@ import type {EngineLocale} from './types';
 export interface ResearchStep {id:string;kind:'clarify'|'search'|'read'|'follow_sources';title:string;description:string}
 export interface ResearchAction {type:'catalogSearch';label:string;query:CatalogFilters}
 export interface ResearchGuidance {mode:'guided-research';automatic:true;steps:ResearchStep[];actions:ResearchAction[];limitations:string[]}
-const goal=/(?<!\p{L})(?:исслед\p{L}*|хочу\s+(?:узнать|изучить|найти)|помоги\p{L}*\s+(?:изучить|исследовать|найти)|истори[яю]\s+(?:мо\p{L}*|сво\p{L}*)|research\p{L}*|i\s+(?:want|would like)\s+to\s+(?:learn|study|research)|зертте\p{L}*|тарихын\s+білгім)(?!\p{L})/iu;
+const goal=/(?<!\p{L})(?:исслед\p{L}*|хочу\s+(?:узнать|изучить|найти)|помоги\p{L}*\s+(?:изучить|исследовать|найти)|истори[яю]\s+(?:мо\p{L}*|сво\p{L}*)|research\p{L}*|i\s+(?:want|would like)\s+to\s+(?:learn|study|research)|зертте\p{L}*|тарихын\s+білгім)(?![\p{L}\p{N}_-])/iu;
 export function researchQuestion(question:string){return question.length<=1000&&goal.test(question);}
 export function stripResearchFraming(question:string){
- return question.replace(/(?<!\p{L})(?:хочу|узнать|изучить|изучаю|исследовать|исследую|исследование|помоги|помогите|историю|история|истории|моей|моего|мою|своей|своего|свою|i|want|would|like|to|learn|study|research|researching|studying|the|history|of|my|мен|білгім|келеді|зерттегім|зерттеу|тарихын|тарихы)(?!\p{L})/giu,' ').replace(/\s+/gu,' ').trim();
+ const clean=(text:string)=>text.replace(/(?<!\p{L})(?:хочу|узнать|изучить|изучаю|исследовать|исследую|исследование|помоги|помогите|историю|история|истории|моей|моего|мою|своей|своего|свою|i|want|would|like|to|learn|study|research|researching|studying|the|history|of|my|мен|менің|өзімнің|білгім|келеді|зерттегім|зерттеу|тарихын|тарихы)(?!\p{L})/giu,' ').replace(/\s+/gu,' ').trim();
+ return question.split(/(«[^»]*»|"[^"]*"|“[^”]*”)/u).map(part=>/^[«"“]/u.test(part)?part:clean(part)).join(' ').replace(/\s+/gu,' ').trim();
 }
 const copy={
  ru:{clarify:['Уточните объект и период','Назовите место, учреждение или человека и примерные годы. Если место неоднозначно, выберите нужное.'],search:['Начните с открытого каталога','Проверьте современные и старые названия, затем сузьте период и тип материала.'],read:['Сравните описание с источником','Откройте доступную карточку и разрешённую копию. Учитывайте качество OCR и точность дат.'],follow:['Проверьте связанные источники','Сопоставьте материалы и их происхождение. Шаг исследования — рекомендация, а не доказательство найденного факта.'],action:'Открыть поиск с этими фильтрами',limit:'Маршрут составлен автоматически. Наличие документов устанавливается только по фактической выдаче и источникам.'},

@@ -36,7 +36,7 @@
     },
     {
       "label": "школа",
-      "pattern": "школ[\\p{L}]*|ученик[\\p{L}]*|мектеп[\\p{L}]*|оқушы[\\p{L}]*|schools?|pupils?|classrooms?",
+      "pattern": "школ[\\p{L}]*|ученик[\\p{L}]*|мекте[пб][\\p{L}]*|оқушы[\\p{L}]*|schools?|pupils?|classrooms?",
       "query": {
         "ru": "школа",
         "kk": "мектеп",

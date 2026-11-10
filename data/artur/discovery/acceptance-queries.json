@@ -1,0 +1,272 @@
+{
+  "version": 1,
+  "scope": "Author-curated source-inspired holdout for query planning, not independent neural accuracy or public-corpus recall",
+  "cases": [
+    {
+      "id": "H01",
+      "locale": "ru",
+      "question": "Найдите фотографии Лениногорска за 1941 год",
+      "expected": {
+        "type": "PHOTO",
+        "yearFrom": 1941,
+        "yearTo": 1941,
+        "q": null
+      },
+      "place": "ridder"
+    },
+    {
+      "id": "H02",
+      "locale": "en",
+      "question": "Show photos of Ridder before 1786",
+      "expected": {
+        "type": "PHOTO",
+        "yearTo": 1785,
+        "yearFrom": null,
+        "q": null
+      },
+      "place": "ridder"
+    },
+    {
+      "id": "H03",
+      "locale": "kk",
+      "question": "Лениногорск 1941 жылғы фотосуреттері",
+      "expected": {
+        "type": "PHOTO",
+        "yearFrom": 1941,
+        "yearTo": 1941,
+        "q": null
+      },
+      "place": "ridder"
+    },
+    {
+      "id": "H04",
+      "locale": "ru",
+      "question": "Документы Зыряновска за 1791 год",
+      "expected": {
+        "yearFrom": 1791,
+        "yearTo": 1791,
+        "q": null
+      },
+      "place": "altay-city"
+    },
+    {
+      "id": "H05",
+      "locale": "en",
+      "question": "Documents of Altay city before 1800",
+      "expected": {
+        "yearTo": 1799,
+        "yearFrom": null,
+        "q": null
+      },
+      "place": "altay-city"
+    },
+    {
+      "id": "H06",
+      "locale": "kk",
+      "question": "Алтай қаласының 1791 жылғы құжаттары",
+      "expected": {
+        "yearFrom": 1791,
+        "yearTo": 1791,
+        "q": null
+      },
+      "place": "altay-city"
+    },
+    {
+      "id": "H07",
+      "locale": "kk",
+      "question": "Зырян 1791 жылғы құжаттар",
+      "expected": {
+        "yearFrom": 1791,
+        "yearTo": 1791,
+        "q": null
+      },
+      "place": "altay-city"
+    },
+    {
+      "id": "H08",
+      "locale": "ru",
+      "question": "Документы Усть-Каменогорска за 1720 год",
+      "expected": {
+        "yearFrom": 1720,
+        "yearTo": 1720,
+        "q": null
+      },
+      "place": "ust-kamenogorsk"
+    },
+    {
+      "id": "H09",
+      "locale": "en",
+      "question": "Public documents of Oskemen in 1720",
+      "expected": {
+        "yearFrom": 1720,
+        "yearTo": 1720,
+        "q": null
+      },
+      "place": "ust-kamenogorsk"
+    },
+    {
+      "id": "H10",
+      "locale": "kk",
+      "question": "Өскемен 1720 жылғы құжаттары",
+      "expected": {
+        "yearFrom": 1720,
+        "yearTo": 1720,
+        "q": null
+      },
+      "place": "ust-kamenogorsk"
+    },
+    {
+      "id": "H11",
+      "locale": "ru",
+      "question": "Фото Алтая 1961",
+      "clarification": "place"
+    },
+    {
+      "id": "H12",
+      "locale": "en",
+      "question": "Photos of Altay in 1791",
+      "clarification": "place"
+    },
+    {
+      "id": "H13",
+      "locale": "ru",
+      "question": "Фото Риддера и Зыряновска за 1941 год",
+      "clarification": "place"
+    },
+    {
+      "id": "H14",
+      "locale": "ru",
+      "question": "фонд «Р-1 ч.с.» опись «0002» дело «0017/А»",
+      "expected": {
+        "fundNumber": "Р-1 ч.с.",
+        "inventoryNumber": "0002",
+        "caseNumber": "0017/А",
+        "yearFrom": null,
+        "q": null
+      }
+    },
+    {
+      "id": "H15",
+      "locale": "en",
+      "question": "I want to study reference MY-001",
+      "expected": {
+        "reference": "MY-001",
+        "yearFrom": null,
+        "q": null
+      }
+    },
+    {
+      "id": "H16",
+      "locale": "ru",
+      "question": "Хочу изучить фонд «ИСТОРИЯ-001» опись «MY-002»",
+      "expected": {
+        "fundNumber": "ИСТОРИЯ-001",
+        "inventoryNumber": "MY-002",
+        "yearFrom": null,
+        "q": null
+      }
+    },
+    {
+      "id": "H17",
+      "locale": "ru",
+      "question": "фонд Р-1 ч.с. документы 1926",
+      "expected": {
+        "fundNumber": "Р-1 ч.с.",
+        "yearFrom": 1926,
+        "yearTo": 1926,
+        "q": null
+      }
+    },
+    {
+      "id": "H18",
+      "locale": "ru",
+      "question": "Фотографии Риддера после 2100",
+      "clarification": "period"
+    },
+    {
+      "id": "H19",
+      "locale": "en",
+      "question": "Photos in the 2100s",
+      "clarification": "period"
+    },
+    {
+      "id": "H20",
+      "locale": "ru",
+      "question": "Хочу узнать",
+      "clarification": "subject"
+    },
+    {
+      "id": "H21",
+      "locale": "ru",
+      "question": "Хочу узнать историю моей школы в городе Риддер после 1940",
+      "expected": {
+        "q": "школа",
+        "yearFrom": 1941
+      },
+      "place": "ridder"
+    },
+    {
+      "id": "H22",
+      "locale": "kk",
+      "question": "Менің мектебімнің тарихын білгім келеді Өскемен 1791 жылғы",
+      "expected": {
+        "q": "мектеп",
+        "yearFrom": 1791
+      },
+      "place": "ust-kamenogorsk"
+    },
+    {
+      "id": "H23",
+      "locale": "ru",
+      "question": "Фото Неведомограда 1791",
+      "expected": {
+        "q": "неведомограда",
+        "yearFrom": 1791,
+        "locality": null
+      }
+    },
+    {
+      "id": "H24",
+      "locale": "ru",
+      "question": "Фотографии Лениногорска 1780-х годов",
+      "expected": {
+        "yearFrom": 1780,
+        "yearTo": 1789,
+        "q": null
+      },
+      "place": "ridder"
+    },
+    {
+      "id": "H25",
+      "locale": "ru",
+      "question": "после 1940",
+      "history": [
+        {
+          "role": "user",
+          "content": "Фото Алтая"
+        }
+      ],
+      "clarification": "place"
+    },
+    {
+      "id": "H26",
+      "locale": "ru",
+      "question": "до 1961",
+      "history": [
+        {
+          "role": "user",
+          "content": "Фото Риддера 1941"
+        },
+        {
+          "role": "user",
+          "content": "после 1940"
+        }
+      ],
+      "expected": {
+        "yearFrom": 1941,
+        "yearTo": 1960
+      },
+      "place": "ridder"
+    }
+  ]
+}

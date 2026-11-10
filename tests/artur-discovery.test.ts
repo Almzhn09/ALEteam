@@ -161,3 +161,46 @@ test('fund history mapping preserves all source rows and does not invent invento
  assert.deepEqual(pack.datasets.map((d:{records:unknown[]})=>d.records.length),[1552,153]);
  for(const d of pack.datasets){const keys=new Set();for(const r of d.records){assert.equal(r.status,'DRAFT');assert.equal(r.publicationAllowed,false);assert.equal(typeof r.number,'string');assert.ok(!keys.has(r.number));keys.add(r.number);assert.ok(r.names.length>0);assert.deepEqual(r.inventoryIds,[]);assert.deepEqual(r.caseIds,[]);assert.deepEqual(r.documentIds,[]);assert.equal(r.branchId,null);}}
 });
+
+test('explanation chooses a concrete source action before generic boilerplate without inventing prose',()=>{
+ const input=snapshot({fragments:[{id:'f',quality:'verified',text:'Общие сведения приведены в настоящем документе. Организация сообщает информацию для ознакомления. Создан филиал архива в1963 году. Переименовано учреждение по указанному в источнике решению.'}]});
+ const r=explainFragments(input,'ru');assert.match(r.citations[0].quote,/Создан филиал/);assert.ok(r.terms.some(t=>t.term.startsWith('Переимен')));
+ assert.ok(explainFragments(input,'en').limitations.some(s=>s.includes('original source language')));
+});
+
+test('source dates1720/1786/1791 become year filters and accounting numbers stay separate',()=>{
+ for(const year of [1720,1786,1791]){const p=semanticCatalogPlan('Документы города Риддер '+year,'ru');assert.equal(p.filters.yearFrom,year);assert.equal(p.filters.yearTo,year);assert.equal(p.filters.q,undefined);}
+ const p=semanticCatalogPlan('Фото Лениногорска 1780-х','ru');assert.equal(p.filters.yearFrom,1780);assert.equal(p.filters.yearTo,1789);
+ const number=semanticCatalogPlan('фонд1786 опись0002 дело0017','ru');assert.equal(number.filters.yearFrom,undefined);
+ assert.equal(semanticCatalogPlan('Р-1786','ru').filters.yearFrom,undefined);
+ for(const q of ['Фото после2100','Фото1800–2200','Photos in the2100s'])assert.equal(semanticCatalogPlan(q.replace(/([а-яa-z])(\d)/giu,'$1 $2'),'ru').clarification,'period');
+});
+
+test('actual fund spelling qualifiers and quoted accounting references survive extraction exactly',()=>{
+ const p=semanticCatalogPlan('фонд «Р-1 ч.с.» опись "００１" дело «0017/А»','ru');assert.equal(p.filters.fundNumber,'Р-1 ч.с.');assert.equal(p.filters.inventoryNumber,'００１');assert.equal(p.filters.caseNumber,'0017/А');assert.equal(p.filters.yearFrom,undefined);
+ const q=semanticCatalogPlan('фонд Р-1 ч.с. 1791','ru');assert.equal(q.filters.fundNumber,'Р-1 ч.с.');assert.equal(q.filters.yearFrom,1791);assert.equal(q.filters.q,undefined);
+ const ref=semanticCatalogPlan('шифр «Р-1 ч.с./001»','ru');assert.equal(ref.filters.reference,'Р-1 ч.с./001');assert.equal(ref.filters.q,undefined);
+});
+
+test('common recommendation adapter uses history only after both explicit switches; precise history reason',()=>{
+ const a=candidate('a'),b=candidate('b');a.placeIds=[];b.placeIds=[];
+ const on=arturDiscoveryEngines.rankRecommendations({candidates:[a,b],topicIds:[],personalizationEnabled:true,historyEnabled:true,viewedKeys:[a.material],limit:3},context);assert.equal(on[0].reason,'history');assert.equal(on[0].key.id,'b');
+ const off=arturDiscoveryEngines.rankRecommendations({candidates:[a,b],topicIds:['education'],personalizationEnabled:false,historyEnabled:true,viewedKeys:[a.material],limit:3},context);assert.ok(off.every(x=>x.reason==='editorial'));
+ const fallback=rankRecommendations([base('a'),base('b')],'ru',{personalizationEnabled:true,historyEnabled:true,topicIds:['photos'],viewedIds:['a']});assert.equal(fallback.mode,'history');
+});
+test('reviewed person/event metadata travels through the common candidate contract without inventing entities',()=>{
+ const a=candidate('a'),b=candidate('b');a.eventIds=['event1'];b.eventIds=['event1'];
+ assert.equal(arturDiscoveryEngines.rankRelated({target:a,candidates:[b],limit:5},context)[0].reason,'same_event');
+});
+
+test('research framing cannot rewrite quoted or bare accounting reference words',()=>{
+ const a=semanticCatalogPlan('Хочу изучить фонд «ИСТОРИЯ-001» опись "MY-002"','ru');assert.equal(a.filters.fundNumber,'ИСТОРИЯ-001');assert.equal(a.filters.inventoryNumber,'MY-002');
+ assert.equal(semanticCatalogPlan('I want to study reference MY-001','en').filters.reference,'MY-001');
+ const k=semanticCatalogPlan('Менің мектебімнің тарихын білгім келеді Өскемен1791 жылғы'.replace('Өскемен1791','Өскемен 1791'),'kk');assert.equal(k.filters.q,'мектеп');assert.equal(k.filters.yearFrom,1791);
+});
+
+test('database alias groups cannot silently resolve ambiguous Altay without an explicit city selection',()=>{
+ const source=candidate('source').source,aliases=[{entityId:'altay-db',canonicalName:'Алтай',ambiguity:false,aliases:[{name:'Алтай',locale:'ru' as const,status:'VERIFIED' as const,sources:[source]},{name:'Зыряновск',locale:'ru' as const,status:'VERIFIED' as const,sources:[source]}]}];
+ const r=arturDiscoveryEngines.expandNames({query:'Алтай',aliases},context);assert.equal(r.clarificationRequired,true);assert.deepEqual(r.variants,[]);
+ assert.equal(arturDiscoveryEngines.expandNames({query:'Алтай',aliases,placeId:'altay-db'},context).applied,true);
+});

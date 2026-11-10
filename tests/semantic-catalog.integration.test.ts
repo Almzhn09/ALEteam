@@ -195,3 +195,7 @@ test('COL-A02: ambiguous place and missing research subject return clarification
  const answer=await ok('/assistant','POST',{question:'после 1940',locale:'ru',history:[{role:'user',content:'Фото Алтая'}]},readers.ru);
  assert.equal(answer.noAnswer,true);assert.equal(answer.catalogQuery,undefined);assert.match(answer.answer,/Уточните место/);
 });
+
+test('COL-A02: pre1800 source dates are real filters, not text tokens or fabricated evidence',async()=>{
+ const r=await ok('/assistant','POST',{question:'Документы Усть-Каменогорска1720'.replace('1720',' 1720'),locale:'ru'},readers.ru);assert.equal(r.noAnswer,true);assert.deepEqual(r.sources,[]);assert.equal(r.catalogQuery.yearFrom,1720);assert.equal(r.catalogQuery.yearTo,1720);assert.equal(r.catalogQuery.q,undefined);
+});

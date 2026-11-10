@@ -18,24 +18,34 @@ const typePatterns:[RegExp,'PHOTO'|'MAP'|'LETTER'|'REPORT'][]=[
  [/(?<!\p{L})(?:письм\p{L}*|хат(?:тар\p{L}*)?|letters?)(?!\p{L})/giu,'LETTER'],
  [/(?<!\p{L})(?:отч[её]т\p{L}*|есеп(?:тер\p{L}*)?|reports?)(?!\p{L})/giu,'REPORT'],
 ];
-const fillers=new Set('найди найти найдите покажи покажите документы документ документов материал материалы что такое где когда какой какие как расскажи о об для мне за в на по до после с про пожалуйста есть ли год году года годов годы город города архивный архивтік archive from in the of a an to between before after through please show find need want what where when which how about are is can you do documents document materials records record photos year years city town маған туралы керек бар ма құжат құжаттар құжаттарды құжаттары мәлімет ақпарат қала қаласының жылы жылға жылдан жыл жылдар дейін кейін ізде іздеп көрсет табу ал а and'.split(' '));
+const fillers=new Set('найди найти найдите покажи покажите документы документ документов материал материалы что такое где когда какой какие как расскажи о об для мне за в на по до после с про пожалуйста есть ли год году года годов годы город города архивный архивтік archive from in the of a an to between before after through please show find need want what where when which how about are is can you do documents document materials records record photos year years city town маған туралы керек бар ма құжат құжаттар құжаттарды құжаттары мәлімет ақпарат қала қаласының жылы жылғы жылға жылдан жыл жылдар жылдардағы жылдары дейін кейін ізде іздеп көрсет табу ал а and'.split(' '));
 const explicitCatalog=/(?<!\p{L})(?:документ\p{L}*|материал\p{L}*|құжат\p{L}*|documents?|records?|materials?)(?!\p{L})/iu;
-function stripPeriods(value:string){return value.replace(/(?<!\d)((?:18|19|20)\d)0\s*(?:[-–]?\s*(?:х|е)(?:\s+год\p{L}*)?|s|жылдар\p{L}*)(?!\d)/giu,' ').replace(/(?<!\d)(?:18|19|20)\d{2}(?!\d)/gu,' ');}
+function stripPeriods(value:string){return value.replace(/(?<![\p{L}\p{N}])(?<!\p{L}[-/])([12]\d{2})0\s*(?:[-–]?\s*(?:х|е)(?:\s+год\p{L}*)?|s|жылдар\p{L}*)(?!\d)/giu,' ').replace(/(?<![\p{L}\p{N}])(?<!\p{L}[-/])[12]\d{3}(?!\d)/gu,' ');}
 export function semanticCatalogPlan(question:string,locale:ContentLocale,useModel=false):SemanticPlan{
  if(question.length>4000)throw Error('Invalid question');
  const empty:SemanticPlan={handled:false,locale,filters:{locale,sort:'year_asc',pageSize:5},localityVariants:[],method:'rules',periodOnly:false};
  if(unsafeInstructions(question))return {...empty,handled:true,clarification:'unsafe'};
- let text=researchQuestion(question)?stripResearchFraming(question):question;const filters:CatalogFilters={...empty.filters};
+ let text=question;const filters:CatalogFilters={...empty.filters};
+ const quotedReference=text.match(/(?<!\p{L})(?:шифр|reference|ref)\s*[:№]?\s*(?:«([^»\r\n]{1,120})»|"([^"\r\n]{1,120})")/iu);
+ const quotedReferenceValue=quotedReference?.[1]??quotedReference?.[2];
  const labelled=text.match(/(?<!\p{L})(?:шифр|reference|ref)(?:\s*[:№]\s*|\s+)([\p{L}\p{N}][\p{L}\p{N}./_-]{0,119})(?![\p{L}\p{N}./_-])/iu);
- const reference=labelled&&/\p{N}/u.test(labelled[1])?labelled[1]:text.match(/(?<![\p{L}\p{N}])DEMO-[\p{L}\p{N}_/-]{1,100}(?![\p{L}\p{N}_/-])/iu)?.[0];
- if(reference){filters.reference=reference;text=text.replace(labelled?.[1]===reference?labelled[0]:reference,' ');}
+ const reference=quotedReferenceValue&&/\p{N}/u.test(quotedReferenceValue)?quotedReferenceValue:labelled&&/\p{N}/u.test(labelled[1])?labelled[1]:text.match(/(?<![\p{L}\p{N}])DEMO-[\p{L}\p{N}_/-]{1,100}(?![\p{L}\p{N}_/-])/iu)?.[0];
+ if(reference){filters.reference=reference;text=text.replace(quotedReferenceValue===reference?quotedReference![0]:labelled?.[1]===reference?labelled[0]:reference,' ');}
  for(const [key,pattern] of [
   ['fundNumber',/(?<!\p{L})(?:фонд\p{L}*|fonds?|funds?|қор\p{L}*)\s+(?:№\s*)?([\p{L}\p{N}][\p{L}\p{N}./_-]{0,79})(?![\p{L}\p{N}./_-])/iu],
   ['inventoryNumber',/(?<!\p{L})(?:опись|описи|inventory|тізімдеме\p{L}*)\s+(?:№\s*)?([\p{L}\p{N}][\p{L}\p{N}./_-]{0,79})(?![\p{L}\p{N}./_-])/iu],
   ['caseNumber',/(?<!\p{L})(?:дело|дела|case|іс)\s+(?:№\s*)?([\p{L}\p{N}][\p{L}\p{N}./_-]{0,79})(?![\p{L}\p{N}./_-])/iu],
- ] as const){const match=text.match(pattern);if(match&&/\p{N}/u.test(match[1])){filters[key]=match[1];text=text.replace(match[0],' ');}}
+ ] as const){
+  const label=key==='fundNumber'?'фонд\\p{L}*|fonds?|funds?|қор\\p{L}*':key==='inventoryNumber'?'опись|описи|inventory|тізімдеме\\p{L}*':'дело|дела|case|іс';
+  const quoted=text.match(new RegExp(`(?<!\\p{L})(?:${label})\\s+(?:№\\s*)?(?:«([^»\\r\\n]{1,80})»|"([^"\\r\\n]{1,80})")`,'iu'));
+  const literal=quoted?.[1]??quoted?.[2];
+  const match=text.match(pattern);if(literal&&/\p{N}/u.test(literal)){filters[key]=literal;text=text.replace(quoted![0],' ');}
+  else if(match&&/\p{N}/u.test(match[1])){const suffix=text.slice(match.index!+match[0].length).match(/^\s+ч\.\s*с\./iu);filters[key]=match[1]+(suffix?suffix[0]:'');text=text.replace(match[0]+(suffix?suffix[0]:''),' ');}
+ }
+ if(researchQuestion(question))text=stripResearchFraming(text);
+ text=text.replace(/(?<!\p{L})(?:public|open|published)\s+(?=documents?|records?|materials?)/giu,'').replace(/(?<!\p{L})(?:открыт\p{L}*|публичн\p{L}*|опубликованн\p{L}*)\s+(?=документ\p{L}*|материал\p{L}*)/giu,'').replace(/(?<!\p{L})ашық\s+(?=құжат\p{L}*|материал\p{L}*)/giu,'');
  text=text.normalize('NFKC');
- const temporal=archiveSearchIntent(text);const hasPeriod=/(?<!\d)(?:18|19|20)\d{2}(?!\d)/u.test(text);
+ const temporal=archiveSearchIntent(text);const hasPeriod=/(?<![\p{L}\p{N}])(?<!\p{L}[-/])[12]\d{3}(?!\d)/u.test(text);
  if(temporal.yearFrom!==undefined)filters.yearFrom=temporal.yearFrom;
  if(temporal.yearTo!==undefined)filters.yearTo=temporal.yearTo;
  const detectedTypes=new Set<string>();
