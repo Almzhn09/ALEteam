@@ -13,6 +13,7 @@ export type PublicationState = typeof publicationStates[number];
 export type StaffGrant = { permission: string; branchId: string | null };
 export type StaffMe = { item: { id: string; name: string; grants: StaffGrant[] } };
 export interface ContentPayload {
+  navigation?: {key:string;label:string;href?:string;material?:{kind:'document'|'cms';id:string};zone?:'header'|'footer'|'home';children?:{key:string;label:string;href?:string;material?:{kind:'document'|'cms';id:string};zone?:'header'|'footer'|'home'}[]}[];
   title: string;
   /** Plain text. Render as text, never dangerouslySetInnerHTML. */
   body: string;

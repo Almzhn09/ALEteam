@@ -176,3 +176,48 @@ test('COL-B05 subscriptions baseline/idempotency/worker retry and owner revocati
  await ok('/me/topic-subscriptions/'+sub.id,'DELETE',{},guest);await ok('/me/topic-subscriptions/'+sub.id,'DELETE',{},guest);
  assert.equal((await ok('/me/topic-subscriptions','GET',undefined,guest)).items.length,0);
 });
+
+test('N-B06 measurements distinguish unavailable from zero and prevent implicit collection',async()=>{
+ const report=await ok('/admin/discovery/measurements','GET',undefined,admin);assert.equal(report.status,'unavailable');assert.equal(report.collectionEnabled,false);
+ assert.equal((await call('/admin/discovery/measurements','GET',undefined,guest)).status,403);
+ assert.equal((await call('/admin/discovery/measurements','POST',{approved:true,periodFrom:'2026-01-01T00:00:00.000Z',periodTo:'2026-02-01T00:00:00.000Z',sourceNote:'Synthetic'},admin)).status,503);
+});
+
+test('N-B05 navigation is a reviewed localized CMS draft; links revoke and unsafe URLs/categories are validated',async()=>{
+ const input={locale:'ru',branchId:null,title:'ДЕМО навигация',body:'Синтетическая конфигурация навигации.',rights:'ALEteam CC0-1.0',sourceNote:'Synthetic test',navigation:[{key:'home',label:'Главная',href:'/'},{key:'archive',label:'Архив',children:[{key:'document',label:'Учебный документ',material:{kind:'document',id:graphDocumentId}}]}]};
+ const draft=await ok('/admin/navigation','POST',input,writer,201);assert.equal((await ok('/navigation')).status,'unavailable');await publish(draft.item.revisions[0]);
+ const nav=await ok('/navigation?locale=en');assert.equal(nav.translationStatus,'original');assert.equal(nav.items.length,2);assert.equal(nav.items[1].children.length,1);
+ await db.archiveBranch.update({where:{id:'discovery-other'},data:{isPublic:false}});
+ assert.equal((await ok('/navigation')).items.length,1);const publicPage=await ok('/content/navigation-global');assert.equal(publicPage.item.payload.navigation.length,1);
+ await db.archiveBranch.update({where:{id:'discovery-other'},data:{isPublic:true}});
+ assert.equal((await call('/admin/navigation','POST',{...input,navigation:[{key:'bad',label:'bad',href:'javascript:alert(1)'}]},writer)).status,400);
+ assert.equal((await call('/admin/navigation','POST',{...input,navigation:[{key:'bad',label:'bad',href:'//evil.example'}]},writer)).status,400);
+ const page=await ok('/admin/content','POST',{slug:'discovery-news',kind:'NEWS',locale:'ru',payload:{...demoPayload,category:'DEMO',date:'2026-01-20'}},writer,201);await publish(page.item.revisions[0]);
+ assert.equal((await ok('/content?kind=NEWS&category=DEMO&dateFrom=2026-01-01&dateTo=2026-01-31')).total,1);
+ assert.equal((await ok('/content?kind=NEWS&category=OTHER')).total,0);
+ assert.equal((await call('/content?dateFrom=2026-02-01&dateTo=2026-01-01')).status,400);
+});
+
+test('N-B06 approved aggregate import preserves zero, suppresses small groups and enforces branch analytics scope',async()=>{
+ const enabledOrigin='http://localhost:3118';const enabled=spawn(process.execPath,['node_modules/next/dist/bin/next','start','--port','3118'],{env:{...env,BETTER_AUTH_URL:enabledOrigin,DISCOVERY_AGGREGATES_ENABLED:'1'},stdio:'ignore'});
+ async function api(path:string,method='GET',body?:unknown,cookie=admin){const r=await fetch(enabledOrigin+'/api'+path,{method,headers:{Origin:enabledOrigin,Cookie:cookie,...(body!==undefined?{'Content-Type':'application/json'}:{})},body:body===undefined?undefined:JSON.stringify(body)});return {status:r.status,body:await r.json()};}
+ try{
+  let ready=false;for(let i=0;i<100;i++){try{if((await fetch(enabledOrigin+'/api/health')).ok){ready=true;break;}}catch{}await delay(100);}assert.ok(ready);
+  const input={approved:true,periodFrom:'2026-01-01T00:00:00.000Z',periodTo:'2026-02-01T00:00:00.000Z',sourceNote:'Synthetic approved integration aggregate; not real visits',site:[{metric:'views',branchId:'discovery-other',count:0},{metric:'errors',branchId:'discovery-other',count:2}],materials:[{kind:'document',id:graphDocumentId,locale:'ru',count:0}]};
+  assert.equal((await api('/admin/discovery/measurements','POST',input)).status,200);
+  assert.equal((await api('/admin/discovery/measurements','POST',input)).status,200);
+  const report=await api('/admin/discovery/measurements');assert.equal(report.body.status,'measured');assert.equal(report.body.items.length,2);
+  assert.equal(report.body.items.find((r:{metric:string})=>r.metric==='views').count,0);assert.equal(report.body.items.find((r:{metric:string})=>r.metric==='errors').count,null);
+  const popular=await api('/discovery/home');assert.equal(popular.body.popular.status,'measured');assert.deepEqual(popular.body.popular.items,[]);
+  await ok('/admin/roles','PUT',{id:'discovery-analytics',name:'Synthetic branch analytics',permissions:['analytics.read']},admin);
+  await ok('/admin/assignments','POST',{userId:'discovery-other',roleId:'discovery-analytics',branchId:'discovery-other'},admin);
+  const scoped=await api('/admin/discovery/measurements?branchId=discovery-other','GET',undefined,other);assert.equal(scoped.status,200);assert.equal(scoped.body.items.length,2);
+  assert.equal((await api('/admin/discovery/measurements?branchId=discovery-text-branch','GET',undefined,other)).status,403);
+  assert.equal((await api('/admin/discovery/measurements','POST',{...input,email:'private@example.test'})).status,400);
+  assert.equal((await api('/discovery/events','POST',{type:'view',id:graphDocumentId})).status,503);
+  assert.equal((await api('/admin/discovery/measurements','DELETE',{approved:true,periodFrom:input.periodFrom,periodTo:input.periodTo,sourceNote:'Withdraw synthetic approval'})).status,200);assert.equal((await api('/discovery/home')).body.popular.status,'unavailable');
+ }finally{
+  if(enabled.exitCode===null){enabled.kill('SIGTERM');await once(enabled,'exit');}
+  await db.staffAssignment.deleteMany({where:{roleId:'discovery-analytics'}});await db.staffRole.deleteMany({where:{id:'discovery-analytics'}});
+ }
+});
