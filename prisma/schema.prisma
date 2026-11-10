@@ -554,6 +554,7 @@ model TopicSubscription {
  notices TopicNotice[]
  @@unique([userId,fingerprint])
  @@index([active,baseline])
+ @@index([active,cursor,updatedAt,id])
 }
 model MaterialPublication {
  sequence BigInt @id @default(autoincrement())
@@ -635,4 +636,5 @@ model FileImportPreview {
  createdAt DateTime @default(now())
  branch ArchiveBranch @relation(fields:[branchId],references:[id])
  @@index([branchId,createdAt,id])
+ @@index([authorId,createdAt])
 }

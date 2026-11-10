@@ -49,7 +49,8 @@
     "test:imports": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/catalog-imports.integration.test.ts",
     "test:discovery": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/discovery.integration.test.ts",
     "discovery:deliver": "node --env-file-if-exists=.env --import tsx scripts/deliver-topic-notices.ts",
-    "uploads:inspect": "node --env-file-if-exists=.env --import tsx scripts/process-upload-inspections.ts"
+    "uploads:inspect": "node --env-file-if-exists=.env --import tsx scripts/process-upload-inspections.ts",
+    "archive:jobs": "node --env-file-if-exists=.env --import tsx scripts/watch-archive-jobs.ts"
   },
   "dependencies": {
     "@e965/xlsx": "0.20.3",

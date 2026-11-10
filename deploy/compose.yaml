@@ -47,6 +47,7 @@ services:
       FILE_STORAGE_ROOT: /data/files
       MODERATION_MODE: ${MODERATION_MODE:-local}
       ASSISTANT_MODE: ${ASSISTANT_MODE:-local-model}
+      DISCOVERY_AGGREGATES_ENABLED: ${DISCOVERY_AGGREGATES_ENABLED:-0}
       STAFF_IDLE_TIMEOUT_SECONDS: ${STAFF_IDLE_TIMEOUT_SECONDS:-1800}
       ARCHIVE_LLM_API_KEY: ${ARCHIVE_LLM_API_KEY:-}
       ARCHIVE_LLM_MODEL: ${ARCHIVE_LLM_MODEL:-}
@@ -59,6 +60,24 @@ services:
         condition: service_healthy
       setup:
         condition: service_completed_successfully
+    restart: unless-stopped
+  jobs:
+    profiles: [workers]
+    image: ${TOOLS_IMAGE:-aleteam-tools:local}
+    pull_policy: never
+    command: [node, --import, tsx, scripts/watch-archive-jobs.ts]
+    environment:
+      DATABASE_URL: postgresql://archive_app:${APP_DB_PASSWORD}@db:5432/archive
+      FILE_STORAGE_ROOT: /data/files
+    volumes:
+      - archive_files:/data/files
+    depends_on:
+      setup:
+        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+    mem_limit: 512m
+    cpus: 1
     restart: unless-stopped
   https:
     image: caddy:2-alpine@sha256:78bd35025c7ba85961dd149ae670315129954e77abe2383ac47c89106b35ade9

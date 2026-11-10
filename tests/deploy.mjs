@@ -24,7 +24,7 @@ await writeFile(envFile, serialize(config), { mode: 0o600 }); await writeFile(re
 const prefix = name => ['compose', '--env-file', name === project ? envFile : restoreEnvFile, '-f', 'deploy/compose.yaml', '--project-name', name];
 const environment = name => ({ ...process.env, ...(name === project ? config : restoreConfig) });
 const compose = (name, args) => docker([...prefix(name), ...args], environment(name));
-const checks = [];
+const checks = [];const measurements=[];
 let reservedVolume;
 async function check(name, work) { try { await work(); checks.push({ name, passed: true }); console.log(`PASS ${name}`); } catch (error) { checks.push({ name, passed: false, errorType: error.name }); throw error; } }
 async function login(origin, moderator = false) {
@@ -58,6 +58,7 @@ try {
     const role = compose(project, ['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT rolsuper FROM pg_roles WHERE rolname=current_user']); assert.equal(role, 'f');
   });
   let commentId; let replyId; let modCookie; let staffCookie; let cmsId; let cmsSlug; let fundId; let catalogueId; let branchId;
+  let discoverySubId;let filePreviewId;let sourceDraftId;let previewFileId;let discoveryTopicId;
   let uploadFileId; let quarantinedId; let importId; let importDigest; let importedIds; let uploadedSha256;
   await check('standalone runtime serves a PNG and persists an authenticated comment', async () => {
     const origin = config.BETTER_AUTH_URL; const cookie = await login(origin);
@@ -122,7 +123,7 @@ try {
     };
     let row=await receive('Docker-published.png');assert.equal(row.state,'QUARANTINED');
     row=await post('/admin/uploads/'+row.id+'/review',{expectedUpdatedAt:row.updatedAt,decision:'APPROVE',rightsConfirmed:true,reason:'Original Docker byte fixture'},modCookie);
-    row=await post('/admin/uploads/'+row.id+'/publish',{expectedUpdatedAt:row.updatedAt,downloadable:true});uploadFileId=row.fileId;
+    row=await post('/admin/uploads/'+row.id+'/publish',{expectedUpdatedAt:row.updatedAt,downloadable:true});uploadFileId=row.fileId;previewFileId='preview-'+row.id;assert.equal(row.inspection.fullFormatParsing,true);assert.equal((await fetch(origin+'/api/files/'+previewFileId)).status,200);
     const privateRow=await receive('Docker-quarantine.png');quarantinedId=privateRow.id;assert.equal(privateRow.state,'QUARANTINED');
     const manifest=JSON.parse(await readFile('data/artur/import-fixture.json','utf8'));manifest.branchId=branchId;manifest.sourceNamespace='docker-source-'+run;
     manifest.funds[0].number='0107';manifest.funds[1].number='0108';for(const document of manifest.documents)document.metadata.reference='DEMO-DOCKER-'+run+'-'+document.sourceId;
@@ -130,6 +131,36 @@ try {
     batch=await post('/admin/imports/'+batch.id+'/commit',{expectedUpdatedAt:batch.updatedAt,digest:batch.digest});importId=batch.id;importedIds=batch.createdDocuments.map(d=>d.id);assert.equal(importedIds.length,2);
     assert.equal((await fetch(origin+'/api/files/upload-'+quarantinedId)).status,404);
     for(const id of importedIds)assert.equal((await fetch(origin+'/api/documents/'+id)).status,404);
+  });
+  await check('new source, spreadsheet and discovery records are private and persist before backup',async()=>{
+    const origin=config.BETTER_AUTH_URL,cookie=await login(origin);
+    const api=async(route,method='GET',body,c=staffCookie)=>{const response=await fetch(origin+'/api'+route,{method,headers:{Origin:origin,Cookie:c,...(body!==undefined?{'Content-Type':'application/json'}:{})},body:body===undefined?undefined:JSON.stringify(body)});assert.ok(response.ok,route+': '+response.status);return response.json();};
+    const source=(await api('/discovery/materials/cms/'+cmsId)).source;
+    const topic=(await api('/admin/discovery/facts','POST',{kind:'TOPIC',sources:[source],data:{labels:{ru:{title:'ДЕМО тема Docker'}}}})).item;discoveryTopicId=topic.id;
+    await api('/admin/discovery/facts/'+topic.id+'/verify','POST',{expectedUpdatedAt:topic.updatedAt},modCookie);
+    await api('/me/interests','PUT',{topicIds:[topic.id],personalizationEnabled:true,historyEnabled:false},cookie);
+    const sub=await api('/me/topic-subscriptions','POST',{locale:'ru',filters:{q:'Учебная карточка Docker'}},cookie);discoverySubId=sub.item.id;
+    const draft=await api('/admin/source-drafts','POST',{package:'archive-20261110',mode:'cms',mappings:[{sourceKey:'contacts',slug:'docker-source-contacts-'+run}]});sourceDraftId=draft.item.id;
+    await api('/admin/source-drafts/'+sourceDraftId+'/commit','POST',{});
+    const csv=Buffer.from('number,name\n0007-а,ДЕМО фонд\n');
+    const preview=await api('/admin/file-previews','POST',{branchId,sourceNamespace:'docker-fund-preview',format:'csv',base64:csv.toString('base64'),mapping:{sheet:'Sheet1',startRow:2,mode:'funds',columns:{number:{column:1},name:{column:2}},defaults:{}}});filePreviewId=preview.item.id;assert.equal(preview.item.result.mappedRows[0].values.number,'0007-а');
+    assert.equal((await fetch(origin+'/api/admin/file-previews/'+filePreviewId)).status,401);
+    const result=compose(project,['run','--rm','--no-deps','setup','node','--import','tsx','scripts/process-upload-inspections.ts']);assert.ok(result.includes('"passed":1'));
+    const repeated=compose(project,['run','--rm','--no-deps','setup','node','--import','tsx','scripts/process-upload-inspections.ts']);assert.ok(repeated.includes('"processed":0'));
+    await waitHealthy(origin);
+    const privateJob=(await api('/admin/uploads/'+quarantinedId+'/inspection')).item;assert.equal(privateJob.state,'PASSED');assert.equal((await fetch(origin+'/api/files/upload-'+quarantinedId)).status,404);
+  });
+  await check('optional workers profile runs bounded batches and stops without changing public visibility',async()=>{
+    compose(project,['--profile','workers','up','-d','--wait','jobs']);
+    let observed=false;for(let i=0;i<50;i++){if(compose(project,['logs','--no-color','jobs']).includes('"inspected":')){observed=true;break;}await delay(200);}assert.ok(observed);
+    compose(project,['stop','jobs']);assert.equal((await fetch(config.BETTER_AUTH_URL+'/api/files/upload-'+quarantinedId)).status,404);
+  });
+  await check('search and real PNG preview timing is recorded on the declared synthetic corpus',async()=>{
+    const origin=config.BETTER_AUTH_URL,catalog=await(await fetch(origin+'/api/documents')).json();
+    for(const [name,route]of [['catalog_search','/api/documents?q='+encodeURIComponent('Учебная')],['png_preview','/api/files/'+previewFileId]]){
+      const times=[];for(let i=0;i<12;i++){const start=performance.now();const response=await fetch(origin+route);assert.equal(response.status,200);await response.arrayBuffer();times.push(performance.now()-start);}times.sort((a,b)=>a-b);
+      measurements.push({name,requests:times.length,p50Ms:Math.round(times[5]*100)/100,p95Ms:Math.round(times[11]*100)/100,publicDocuments:catalog.total,corpus:'synthetic seeded demo plus this isolated workflow; not S09 funds',runtime:'Node 24 Linux Docker local loopback; sequential requests; includes full response bytes',browser:'Node fetch; Lighthouse not measured'});
+    }
   });
   await check('compiled standalone assistant retains chained date bounds and refuses contradictions',async()=>{
     const origin=config.BETTER_AUTH_URL,cookie=await login(origin);
@@ -169,7 +200,7 @@ try {
     const comments = await (await fetch(origin + '/api/documents/demo-doc-01/comments')).json(); assert.ok(comments.items.some(c => c.id === commentId));
     const png = Buffer.from(await (await fetch(origin + '/api/files/demo-scan-1')).arrayBuffer());
     const expected = JSON.parse(await readFile('data/scans/manifest.json','utf8'))[0]; assert.equal(createHash('sha256').update(png).digest('hex'), expected.sha256);
-    assert.equal(compose(restored,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "ArchiveFile"']), '11');
+    assert.equal(compose(restored,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "ArchiveFile"']), '12');
   });
   await check('CMS roles, hierarchy, translations, private history and notices survive backup and restore', async () => {
     for(const origin of [config.BETTER_AUTH_URL,restoreConfig.BETTER_AUTH_URL]){
@@ -205,6 +236,21 @@ try {
       for(const id of importedIds)assert.equal((await fetch(origin+'/api/documents/'+id)).status,404);
     }
   });
+  await check('new discovery baselines, source bindings, original spreadsheet bytes and parsed previews survive restore',async()=>{
+    for(const name of [project,restored]){
+      const origin=name===project?config.BETTER_AUTH_URL:restoreConfig.BETTER_AUTH_URL,cookie=await login(origin);
+      const get=async(route,c=staffCookie)=>{const r=await fetch(origin+'/api'+route,{headers:{Cookie:c}});assert.equal(r.status,200);return r.json();};
+      const subs=await get('/me/topic-subscriptions',cookie);assert.ok(subs.items.some(s=>s.id===discoverySubId));assert.equal((await get('/me/topic-notifications',cookie)).items.length,0);
+      assert.equal((await get('/me/interests',cookie)).item.topicIds[0],discoveryTopicId);
+      assert.equal((await get('/admin/source-drafts/'+sourceDraftId)).item.status,'COMMITTED');
+      assert.equal((await get('/admin/file-previews/'+filePreviewId)).item.result.mappedRows[0].values.number,'0007-а');
+      assert.equal(compose(name,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "SourceDraftBinding"']),'1');
+      const bytes=await readFile('data/scans/demo-doc-01.png');const preview=await fetch(origin+'/api/files/'+previewFileId);assert.equal(preview.status,200);assert.equal(preview.headers.get('content-type'),'image/png');
+      assert.equal(compose(name,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc',`SELECT count(*) FROM "UploadInspectionJob" WHERE state='PASSED'`]),'2');
+      const bundled=compose(name,['exec','-T','app','node','-e',`const fs=require('node:fs'),c=require('node:crypto');console.log(c.createHash('sha256').update(fs.readFileSync('/data/files/source-bundles/archive-20261110/manifest.json')).digest('hex'))`]);assert.equal(bundled,createHash('sha256').update(await readFile('sources/archive-20261110/manifest.json')).digest('hex'));
+      const storedHash=compose(name,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT "sourceHash" FROM "FileImportPreview"']);assert.equal(storedHash,createHash('sha256').update(Buffer.from('number,name\n0007-а,ДЕМО фонд\n')).digest('hex'));
+    }
+  });
   await check('favorites, notification preferences and reply events survive restart and restore', async () => {
     for (const origin of [config.BETTER_AUTH_URL, restoreConfig.BETTER_AUTH_URL]) {
       const cookie = await login(origin);
@@ -230,6 +276,6 @@ finally {
   }
   if (reservedVolume) docker(['volume','rm',reservedVolume]);
   await unlink(envFile).catch(()=>{});await unlink(restoreEnvFile).catch(()=>{});
-  await writeFile('.local/deploy-validation.json', JSON.stringify({ testedAt: new Date().toISOString(), target: 'isolated local Docker projects, not a public deployment', checks, backupRetainedPrivately: true, temporaryEnvFilesRemoved:true }, null, 2) + '\n');
+  await writeFile('.local/deploy-validation.json', JSON.stringify({ testedAt: new Date().toISOString(), target: 'isolated local Docker projects, not a public deployment', checks, measurements, backupRetainedPrivately: true, temporaryEnvFilesRemoved:true }, null, 2) + '\n');
   console.log(`Deployment checks: ${checks.filter(c => c.passed).length}/${checks.length}`);
 }

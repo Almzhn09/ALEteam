@@ -75,6 +75,8 @@ jobs:
           browser_path="$(command -v google-chrome || command -v chromium)"
           test -n "$browser_path"
           CHROMIUM_PATH="$browser_path" npm run test:release
+      - name: Discovery transport, subscriptions, source and spreadsheet adapters
+        run: npm run test:discovery
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -87,6 +89,7 @@ jobs:
             .local/assistant-quality
             .local/uploads
             .local/imports
+            .local/discovery
   deployment:
     runs-on: ubuntu-latest
     steps:
