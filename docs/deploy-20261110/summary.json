@@ -1,0 +1,34 @@
+{
+  "appCodeCommit": "28a0a19e7835444f383caf334afac9e453f61305",
+  "images": {
+    "aleteam:local": "sha256:c7c05345c5b85201b40959add6222bfa4d06d9d2403e772899721126b3026146",
+    "aleteam-tools:local": "sha256:9e0b72502dabf66d1482380b794d9d1f824ab440d2df2c4324be1a04e9617cc3"
+  },
+  "cleanup": {
+    "ale-deploy-mwahtvrn": {
+      "containers": 0,
+      "volumes": 0
+    },
+    "ale-deploy-mwahtvrn-restore": {
+      "containers": 0,
+      "volumes": 0
+    }
+  },
+  "temporaryEnvRemoved": true,
+  "initScriptMode": "0o644",
+  "defaultImageNamesVerified": true,
+  "recordedAt": "2026-11-10T09:43:09.216632+00:00",
+  "checksPassed": 14,
+  "checksTotal": 14,
+  "runtimeBuildExitCode": 0,
+  "toolsBuildExitCode": 0,
+  "deploymentTestExitCode": 0,
+  "tlsVerification": "enabled; platform CA mounted only for the npm build layer",
+  "testScriptSha256": "ccc421d22f6d3562802bfb9eb0763bc62833966444ae5013be5c96a5967cc506",
+  "environmentCorrection": "Public non-secret deploy/db-init.sh restored as mode 0600; changed to 0644 before retrying fresh isolated projects. Private env and backup permissions unchanged.",
+  "limitations": [
+    "Local Docker test, not public deployment or real production load.",
+    "Original synthetic uploads and metadata; no archive/legal/native-language/team acceptance.",
+    "Backup remains private outside Git; only sanitized reports committed."
+  ]
+}

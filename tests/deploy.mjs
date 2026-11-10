@@ -1,6 +1,6 @@
 import { execFileSync, spawnSync } from 'node:child_process';
 import { randomBytes, randomUUID, createHash } from 'node:crypto';
-import { mkdir, writeFile, readFile, cp, appendFile } from 'node:fs/promises';
+import { mkdir, writeFile, readFile, cp, appendFile, unlink } from 'node:fs/promises';
 import { createServer } from 'node:net';
 import { setTimeout as delay } from 'node:timers/promises';
 import assert from 'node:assert/strict';
@@ -57,7 +57,8 @@ try {
     const catalog = await (await fetch(config.BETTER_AUTH_URL + '/api/documents')).json(); assert.equal(catalog.total, 20);
     const role = compose(project, ['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT rolsuper FROM pg_roles WHERE rolname=current_user']); assert.equal(role, 'f');
   });
-  let commentId; let replyId; let modCookie; let staffCookie; let cmsId; let cmsSlug; let fundId; let catalogueId;
+  let commentId; let replyId; let modCookie; let staffCookie; let cmsId; let cmsSlug; let fundId; let catalogueId; let branchId;
+  let uploadFileId; let quarantinedId; let importId; let importDigest; let importedIds; let uploadedSha256;
   await check('standalone runtime serves a PNG and persists an authenticated comment', async () => {
     const origin = config.BETTER_AUTH_URL; const cookie = await login(origin);
     const response = await fetch(origin + '/api/documents/demo-doc-01/comments', { method: 'POST', headers: { Origin: origin, Cookie: cookie, 'Content-Type': 'application/json', 'Idempotency-Key': randomUUID() }, body: JSON.stringify({ body: `Проверка сохранности Docker ${run}` }) });
@@ -79,13 +80,15 @@ try {
     await waitHealthy(origin);
     const logged = await fetch(origin + '/api/auth/sign-in/email', {method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify({email:config.STAFF_ADMIN_EMAIL,password:config.STAFF_ADMIN_PASSWORD})});
     assert.equal(logged.status, 200); staffCookie=logged.headers.getSetCookie().map(s=>s.split(';')[0]).join('; ');
-    const change = async (path, body, cookie=staffCookie) => {
-      const response=await fetch(origin+'/api'+path,{method:'POST',headers:{Origin:origin,Cookie:cookie,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const change = async (path, body, cookie=staffCookie, method='POST') => {
+      const response=await fetch(origin+'/api'+path,{method,headers:{Origin:origin,Cookie:cookie,'Content-Type':'application/json'},body:JSON.stringify(body)});
       assert.ok(response.ok, `${path}: ${response.status}`);return (await response.json()).item;
     };
     const moderator=await(await fetch(origin+'/api/me',{headers:{Cookie:modCookie}})).json();
     await change('/admin/assignments',{userId:moderator.item.id,roleId:'EDITOR',branchId:null});
     const branch=await change('/admin/branches',{code:'docker-'+run,name:'Учебный филиал',isDemo:true});
+    branchId=branch.id;
+    await change('/admin/branches/'+branch.id,{code:branch.code,name:branch.name,isDemo:true,isPublic:true,expectedUpdatedAt:branch.updatedAt},staffCookie,'PATCH');
     const fund=await change('/admin/catalog/funds',{branchId:branch.id,number:'0007',name:'Демо фонд',description:'Учебная иерархия'});fundId=fund.id;
     const inventory=await change('/admin/catalog/inventories',{fundId,number:'0001',title:'Учебная опись'});
     const archiveCase=await change('/admin/catalog/cases',{fundId,inventoryId:inventory.id,number:'0003',title:'Учебное дело'});
@@ -104,6 +107,37 @@ try {
     }
     // Only this isolated fixture database: keep existing login checks within their rate window.
     compose(project,['exec','-T','db','psql','-U','archive_app','-d','archive','-c','DELETE FROM "RateLimit"']);
+  });
+  await check('standalone stages private bytes, independently publishes a file and commits metadata drafts', async () => {
+    const origin=config.BETTER_AUTH_URL;
+    const post=async(route,body,cookie=staffCookie)=>{
+      const r=await fetch(origin+'/api'+route,{method:'POST',headers:{Origin:origin,Cookie:cookie,'Content-Type':'application/json'},body:JSON.stringify(body)});
+      assert.equal(r.status,route==='/admin/uploads'||route==='/admin/imports'?201:200,route);return(await r.json()).item;
+    };
+    const bytes=await readFile('data/scans/demo-doc-01.png');uploadedSha256=createHash('sha256').update(bytes).digest('hex');
+    const receive=async name=>{
+      const row=await post('/admin/uploads',{documentId:'demo-doc-01',originalName:name,mimeType:'image/png',expectedBytes:bytes.length,expectedSha256:uploadedSha256,rights:'ALEteam CC0-1.0',sourceNote:'Original synthetic Docker fixture'});
+      const r=await fetch(origin+'/api/admin/uploads/'+row.id+'/content',{method:'PUT',headers:{Origin:origin,Cookie:staffCookie,'Content-Type':'image/png','If-Match':'"'+row.updatedAt+'"'},body:new Uint8Array(bytes)});
+      assert.equal(r.status,200);return(await r.json()).item;
+    };
+    let row=await receive('Docker-published.png');assert.equal(row.state,'QUARANTINED');
+    row=await post('/admin/uploads/'+row.id+'/review',{expectedUpdatedAt:row.updatedAt,decision:'APPROVE',rightsConfirmed:true,reason:'Original Docker byte fixture'},modCookie);
+    row=await post('/admin/uploads/'+row.id+'/publish',{expectedUpdatedAt:row.updatedAt,downloadable:true});uploadFileId=row.fileId;
+    const privateRow=await receive('Docker-quarantine.png');quarantinedId=privateRow.id;assert.equal(privateRow.state,'QUARANTINED');
+    const manifest=JSON.parse(await readFile('data/artur/import-fixture.json','utf8'));manifest.branchId=branchId;manifest.sourceNamespace='docker-source-'+run;
+    manifest.funds[0].number='0107';manifest.funds[1].number='0108';for(const document of manifest.documents)document.metadata.reference='DEMO-DOCKER-'+run+'-'+document.sourceId;
+    let batch=await post('/admin/imports',manifest);assert.equal(batch.state,'READY');importDigest=batch.digest;
+    batch=await post('/admin/imports/'+batch.id+'/commit',{expectedUpdatedAt:batch.updatedAt,digest:batch.digest});importId=batch.id;importedIds=batch.createdDocuments.map(d=>d.id);assert.equal(importedIds.length,2);
+    assert.equal((await fetch(origin+'/api/files/upload-'+quarantinedId)).status,404);
+    for(const id of importedIds)assert.equal((await fetch(origin+'/api/documents/'+id)).status,404);
+  });
+  await check('compiled standalone assistant retains chained date bounds and refuses contradictions',async()=>{
+    const origin=config.BETTER_AUTH_URL,cookie=await login(origin);
+    const history=[{role:'user',content:'photos in the 1930s'},{role:'user',content:'and after 1930'}];
+    const ask=async question=>{const r=await fetch(origin+'/api/assistant',{method:'POST',headers:{Origin:origin,Cookie:cookie,'Content-Type':'application/json'},body:JSON.stringify({question,locale:'ru',history})});assert.equal(r.status,200);return r.json();};
+    const result=await ask('and before 1940');assert.equal(result.catalogQuery.yearFrom,1931);assert.equal(result.catalogQuery.yearTo,1939);assert.deepEqual(result.sources.map(s=>s.id),[catalogueId]);
+    assert.ok(!result.answer.includes('Учебная проверка восстановления каталога'));
+    const invalid=await ask('and before 1920');assert.equal(invalid.noAnswer,true);assert.deepEqual(invalid.sources,[]);assert.equal(invalid.catalogQuery,undefined);
   });
   await check('database and app restart preserve the marker comment and file volume', async () => {
     compose(project, ['restart','db','app']); compose(project, ['up','-d','--wait','--no-build','app']);
@@ -135,7 +169,7 @@ try {
     const comments = await (await fetch(origin + '/api/documents/demo-doc-01/comments')).json(); assert.ok(comments.items.some(c => c.id === commentId));
     const png = Buffer.from(await (await fetch(origin + '/api/files/demo-scan-1')).arrayBuffer());
     const expected = JSON.parse(await readFile('data/scans/manifest.json','utf8'))[0]; assert.equal(createHash('sha256').update(png).digest('hex'), expected.sha256);
-    assert.equal(compose(restored,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "ArchiveFile"']), '10');
+    assert.equal(compose(restored,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "ArchiveFile"']), '11');
   });
   await check('CMS roles, hierarchy, translations, private history and notices survive backup and restore', async () => {
     for(const origin of [config.BETTER_AUTH_URL,restoreConfig.BETTER_AUTH_URL]){
@@ -155,6 +189,20 @@ try {
       const en=await(await fetch(origin+'/api/documents/'+catalogueId+'?locale=en')).json();assert.equal(en.item.title,'Docker catalogue EN');assert.deepEqual(en.item.availableLocales,['en','ru']);assert.equal(en.item.originalLanguage,'kk');
       const found=await(await fetch(origin+'/api/documents?fundId='+fundId+'&fundNumber=0007&inventoryNumber=0001&caseNumber=0003&yearFrom=1935&yearTo=1936&category='+encodeURIComponent('Образование'))).json();assert.deepEqual(found.items.map(d=>d.id),[catalogueId]);
       const detail=await(await fetch(origin+'/api/admin/catalog/documents/'+catalogueId,{headers:{Cookie:staffCookie}})).json();assert.equal(detail.item.contentItem.revisions.length,2);assert.equal(detail.item.internalNotes,'PRIVATE_DOCKER_CATALOG_NOTE');
+    }
+  });
+  await check('published and quarantined upload bytes plus import provenance survive restore exactly',async()=>{
+    for(const origin of [config.BETTER_AUTH_URL,restoreConfig.BETTER_AUTH_URL]){
+      const publicFile=await fetch(origin+'/api/files/'+uploadFileId+'?download=1');assert.equal(publicFile.status,200);assert.equal(createHash('sha256').update(Buffer.from(await publicFile.arrayBuffer())).digest('hex'),uploadedSha256);
+      const get=async route=>{const r=await fetch(origin+'/api'+route,{headers:{Cookie:staffCookie}});assert.equal(r.status,200);return r;};
+      const privateRow=(await(await get('/admin/uploads/'+quarantinedId)).json()).item;assert.equal(privateRow.state,'QUARANTINED');assert.equal(privateRow.actualSha256,uploadedSha256);
+      const privateBytes=await get('/admin/uploads/'+quarantinedId+'/content');assert.equal(createHash('sha256').update(Buffer.from(await privateBytes.arrayBuffer())).digest('hex'),uploadedSha256);
+      assert.equal((await fetch(origin+'/api/files/upload-'+quarantinedId)).status,404);
+      const batch=(await(await get('/admin/imports/'+importId)).json()).item;assert.equal(batch.state,'COMMITTED');assert.equal(batch.digest,importDigest);assert.equal(batch.createdDocuments.length,2);
+      const exported=await(await get('/admin/imports/'+importId+'/export')).json();assert.equal(exported.currentValidation.valid,true);assert.equal(exported.currentValidation.counts.unchanged,2);
+      assert.deepEqual(exported.materialized.map(row=>row.sourceId).sort(),['000009','000010']);assert.deepEqual(exported.materialized.map(row=>row.document.fund.number).sort(),['0107','0108']);
+      for(const row of exported.materialized){assert.equal(row.document.isPublic,false);assert.ok(row.document.contentItem.revisions.every(r=>r.status==='DRAFT'));}
+      for(const id of importedIds)assert.equal((await fetch(origin+'/api/documents/'+id)).status,404);
     }
   });
   await check('favorites, notification preferences and reply events survive restart and restore', async () => {
@@ -181,6 +229,7 @@ finally {
     try { compose(name, ['down','--volumes','--remove-orphans']); } catch { /* only this test run's unique projects are eligible for cleanup */ }
   }
   if (reservedVolume) docker(['volume','rm',reservedVolume]);
-  await writeFile('.local/deploy-validation.json', JSON.stringify({ testedAt: new Date().toISOString(), target: 'isolated local Docker projects, not a public deployment', checks, backupRetainedPrivately: true }, null, 2) + '\n');
+  await unlink(envFile).catch(()=>{});await unlink(restoreEnvFile).catch(()=>{});
+  await writeFile('.local/deploy-validation.json', JSON.stringify({ testedAt: new Date().toISOString(), target: 'isolated local Docker projects, not a public deployment', checks, backupRetainedPrivately: true, temporaryEnvFilesRemoved:true }, null, 2) + '\n');
   console.log(`Deployment checks: ${checks.filter(c => c.passed).length}/${checks.length}`);
 }

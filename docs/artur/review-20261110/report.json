@@ -1,6 +1,6 @@
 {
-  "capturedAt": "2026-11-10T07:59:01.615Z",
-  "codeCommit": "14b6fb7d23e851c92be391efd54e6a00bdfdfedf",
+  "capturedAt": "2026-11-10T09:42:48.484Z",
+  "codeCommit": "28a0a19e7835444f383caf334afac9e453f61305",
   "target": "Local production Next.js build, real dedicated PostgreSQL, real Chromium; no mock API",
   "syntheticData": true,
   "screenshots": [
@@ -44,7 +44,7 @@
   "sourceSha256": {
     "src/app/page.tsx": "605f0d9e09fcd5681333354f36021c06fba6e11f7ddea35d595718645f87aeaa",
     "src/app/assistant/Assistant.tsx": "4efbf5f5ccf3abdb2a85ac38265895b41072914126d78388e29c7d58c1833d7b",
-    "src/server/assistant.ts": "2af4d7ae36ea0530db01bebe6a5d4783500638fb197c991b913fc0cfb3f9163f",
+    "src/server/assistant.ts": "69e8705df71a48d96e87c6f85cac083c58892704569f704bb61603a6b86178e6",
     "src/server/corpus-health.ts": "543ed0fb2ec8d676d98a9c7869a26c1eef505486a763d123e031824adc6a4f40"
   },
   "limitations": [
