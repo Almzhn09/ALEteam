@@ -10,7 +10,7 @@
     "build": "npm run db:generate && next build --webpack",
     "start": "node --use-env-proxy node_modules/next/dist/bin/next start --hostname 0.0.0.0",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests/unit.test.ts tests/moderation.test.ts tests/moderation-variants.test.ts tests/assistant.test.ts tests/corpus.test.ts tests/discovery.test.ts tests/local-model.test.ts tests/site-dialog.test.ts tests/artur-full-tz.test.ts tests/artur-training-candidate.test.ts tests/artur-search-periods.test.ts tests/artur-migration.test.ts tests/artur-migration-files.test.ts tests/artur-quality-model.test.ts tests/staff-policy.test.ts tests/cms-grounding.test.ts tests/artur-content-drafts.test.ts tests/english-dialog.test.ts tests/semantic-catalog-plan.test.ts tests/assistant-quality.test.ts tests/upload-storage.test.ts",
+    "test": "tsx --test tests/unit.test.ts tests/moderation.test.ts tests/moderation-variants.test.ts tests/assistant.test.ts tests/corpus.test.ts tests/discovery.test.ts tests/local-model.test.ts tests/site-dialog.test.ts tests/artur-full-tz.test.ts tests/artur-training-candidate.test.ts tests/artur-search-periods.test.ts tests/artur-migration.test.ts tests/artur-migration-files.test.ts tests/artur-quality-model.test.ts tests/staff-policy.test.ts tests/cms-grounding.test.ts tests/artur-content-drafts.test.ts tests/english-dialog.test.ts tests/semantic-catalog-plan.test.ts tests/assistant-quality.test.ts tests/upload-storage.test.ts tests/catalog-import-schema.test.ts",
     "test:integration": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/integration.test.ts",
     "db:generate": "node --import tsx scripts/generate-client.ts",
     "db:migrate": "node --env-file-if-exists=.env --import tsx scripts/migrate.ts",
@@ -45,7 +45,8 @@
     "evaluate:semantic": "node --import tsx scripts/report-semantic-quality.ts",
     "report:quality": "node --import tsx scripts/report-assistant-quality.ts",
     "capture:review": "node --env-file-if-exists=.env --import tsx scripts/capture-review.ts",
-    "test:uploads": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/uploads.integration.test.ts"
+    "test:uploads": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/uploads.integration.test.ts",
+    "test:imports": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/catalog-imports.integration.test.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.10.1",

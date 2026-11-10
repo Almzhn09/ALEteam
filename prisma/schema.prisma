@@ -43,6 +43,7 @@ model User {
   notifyModeration Boolean @default(true)
   uploads ArchiveUpload[] @relation("UploadCreator")
   reviewedUploads ArchiveUpload[] @relation("UploadReviewer")
+  importBatches CatalogImport[]
 }
 model Session {
   id        String   @id
@@ -147,6 +148,7 @@ model Document {
   comments     Comment[]
   favorites    Favorite[]
   uploads ArchiveUpload[]
+  importSource CatalogImportSource?
   @@index([isPublic, year, id])
   @@index([fundId])
   @@index([type])
@@ -253,6 +255,7 @@ model ArchiveBranch {
  funds Fund[]
  staffAssignments StaffAssignment[]
  content ContentItem[]
+ importBatches CatalogImport[]
 }
 model Inventory {
  updatedAt DateTime @updatedAt @default(now())
@@ -437,4 +440,35 @@ model ArchiveUpload {
  file ArchiveFile? @relation(fields: [fileId], references: [id], onDelete: Restrict)
  @@index([documentId, createdAt])
  @@index([uploaderId, state])
+}
+
+model CatalogImport {
+ id String @id
+ branchId String
+ sourceNamespace String
+ authorId String
+ manifest Json
+ digest String
+ state String
+ report Json
+ createdDocuments Json
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ branch ArchiveBranch @relation(fields: [branchId], references: [id])
+ author User @relation(fields: [authorId], references: [id])
+ sources CatalogImportSource[]
+ @@unique([id, branchId, sourceNamespace])
+ @@index([branchId, createdAt])
+}
+model CatalogImportSource {
+ branchId String
+ sourceNamespace String
+ sourceId String
+ batchId String
+ documentId String @unique
+ contentHash String
+ createdAt DateTime @default(now())
+ batch CatalogImport @relation(fields: [batchId, branchId, sourceNamespace], references: [id, branchId, sourceNamespace])
+ document Document @relation(fields: [documentId], references: [id])
+ @@id([branchId, sourceNamespace, sourceId])
 }

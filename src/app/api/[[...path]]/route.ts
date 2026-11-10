@@ -11,6 +11,7 @@ import { assistant } from '@/server/assistant';
 import { assistantQuality } from '@/server/corpus-health';
 import {publicBranchScope, publicDocumentWhere} from '@/server/public-visibility';
 import {uploads, uploadContent, uploadRetry, reviewUpload, publishUpload} from '@/server/uploads';
+import {catalogImports, importAction, exportImport} from '@/server/catalog-imports';
 import { getGuide, guides } from '@/server/guides';
 import { deleteFavorites, listFavorites, saveFavorites } from '@/server/personal';
 import { listNotifications, notificationSettings, readNotification } from '@/server/notifications';
@@ -59,6 +60,12 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
     if(route==='admin/me'&&method==='GET')return staffMe(request);
     if(route==='admin/assistant/quality'&&method==='GET')return assistantQuality(request);
     if(route==='admin/uploads'&&['GET','POST'].includes(method))return uploads(request);
+    if(route==='admin/imports'&&['GET','POST'].includes(method))return catalogImports(request);
+    if(path[0]==='admin'&&path[1]==='imports'){
+      if(path.length===3&&method==='GET')return catalogImports(request,path[2]);
+      if(path.length===4&&path[3]==='export'&&method==='GET')return exportImport(request,path[2]);
+      if(path.length===4&&['validate','commit','rollback','cancel'].includes(path[3])&&method==='POST')return importAction(request,path[2],path[3]);
+    }
     if(path[0]==='admin'&&path[1]==='uploads'&&path.length===3&&method==='GET')return uploads(request,path[2]);
     if(path[0]==='admin'&&path[1]==='uploads'&&path.length===4){
       if(path[3]==='content'&&['GET','PUT'].includes(method))return uploadContent(request,path[2]);
