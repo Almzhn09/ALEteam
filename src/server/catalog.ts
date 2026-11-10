@@ -6,6 +6,7 @@ import { db } from './db';
 import { ApiError, idSchema, json, pageSchema, queryParams } from './http';
 import { archiveLocale } from './archive-schema';
 import {publicDocumentWhere, publicDocumentSql} from './public-visibility';
+import {createHash} from 'node:crypto';
 
 const filterText = z.string().trim().min(1).max(200);
 export const catalogSchema = pageSchema.extend({
@@ -77,7 +78,8 @@ export async function publicDocument(id: string, request?: Request) {
 export async function fileResponse(request: Request, id: string) {
   idSchema.parse(id);
   const params = z.object({ download: z.enum(['1']).optional() }).strict().parse(queryParams(request));
-  const file = await db.archiveFile.findFirst({ where: { id, isPublic: true, document: { ...publicDocumentWhere, allowDigitalCopy:true } } });
+  const file = await db.archiveFile.findFirst({ where: { id, isPublic: true, document: { ...publicDocumentWhere, allowDigitalCopy:true } },
+    include: {upload: {select: {state: true, expectedBytes: true, expectedSha256: true, rightsConfirmed: true, uploaderId: true, reviewerId: true}}} });
   if (!file || (params.download && !file.downloadable)) throw new ApiError(404, 'NOT_FOUND', 'Файл не найден.');
   const allowed = ['application/pdf', 'image/png', 'image/jpeg'];
   if (!allowed.includes(file.mimeType) || file.size > 20 * 1024 * 1024) throw new ApiError(404, 'NOT_FOUND', 'Файл не найден.');
@@ -95,6 +97,9 @@ export async function fileResponse(request: Request, id: string) {
       : file.mimeType === 'image/png' ? data.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10]))
       : data[0] === 255 && data[1] === 216 && data[2] === 255;
     if (!valid) throw new ApiError(404, 'NOT_FOUND', 'Файл не найден.');
+    if (file.upload && (file.upload.state !== 'PUBLISHED' || !file.upload.rightsConfirmed || !file.upload.reviewerId
+      || file.upload.reviewerId === file.upload.uploaderId || file.upload.expectedBytes !== data.length
+      || createHash('sha256').update(data).digest('hex') !== file.upload.expectedSha256)) throw new ApiError(404, 'NOT_FOUND', 'Файл не найден.');
     return new Response(new Uint8Array(data), { headers: {
       'Content-Type': file.mimeType, 'Content-Length': String(data.byteLength),
       'Content-Disposition': `${params.download ? 'attachment' : 'inline'}; filename="archive-${file.id}.${file.mimeType === 'application/pdf' ? 'pdf' : file.mimeType === 'image/png' ? 'png' : 'jpg'}"`,

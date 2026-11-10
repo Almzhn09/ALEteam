@@ -42,6 +42,7 @@ jobs:
       - run: npm run test:integration
       - run: npm run test:cms
       - run: npm run test:catalog
+      - run: npm run test:uploads
       - name: Published CMS sources in the assistant
         shell: bash
         run: |
@@ -83,6 +84,7 @@ jobs:
             .local/cms-assistant
             .local/semantic-catalog
             .local/assistant-quality
+            .local/uploads
   deployment:
     runs-on: ubuntu-latest
     steps:

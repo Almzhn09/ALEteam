@@ -10,6 +10,7 @@ import { createComment, decideComment, decisionHistory, listComments, moderation
 import { assistant } from '@/server/assistant';
 import { assistantQuality } from '@/server/corpus-health';
 import {publicBranchScope, publicDocumentWhere} from '@/server/public-visibility';
+import {uploads, uploadContent, uploadRetry, reviewUpload, publishUpload} from '@/server/uploads';
 import { getGuide, guides } from '@/server/guides';
 import { deleteFavorites, listFavorites, saveFavorites } from '@/server/personal';
 import { listNotifications, notificationSettings, readNotification } from '@/server/notifications';
@@ -57,6 +58,14 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
     if(path[0]==='admin')await staffMeGate(request);
     if(route==='admin/me'&&method==='GET')return staffMe(request);
     if(route==='admin/assistant/quality'&&method==='GET')return assistantQuality(request);
+    if(route==='admin/uploads'&&['GET','POST'].includes(method))return uploads(request);
+    if(path[0]==='admin'&&path[1]==='uploads'&&path.length===3&&method==='GET')return uploads(request,path[2]);
+    if(path[0]==='admin'&&path[1]==='uploads'&&path.length===4){
+      if(path[3]==='content'&&['GET','PUT'].includes(method))return uploadContent(request,path[2]);
+      if(path[3]==='retry'&&method==='POST')return uploadRetry(request,path[2]);
+      if(path[3]==='review'&&method==='POST')return reviewUpload(request,path[2]);
+      if(path[3]==='publish'&&method==='POST')return publishUpload(request,path[2]);
+    }
     if(route==='admin/roles'&&['GET','PUT'].includes(method))return staffRoles(request);
     if(route==='admin/users'&&['GET','POST'].includes(method))return staffUsers(request);
     if(path[0]==='admin'&&path[1]==='users'&&path.length===3&&method==='PATCH')return staffUsers(request,path[2]);

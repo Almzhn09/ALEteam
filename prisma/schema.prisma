@@ -41,6 +41,8 @@ model User {
   notifications Notification[]
   notifyReplies Boolean @default(true)
   notifyModeration Boolean @default(true)
+  uploads ArchiveUpload[] @relation("UploadCreator")
+  reviewedUploads ArchiveUpload[] @relation("UploadReviewer")
 }
 model Session {
   id        String   @id
@@ -144,6 +146,7 @@ model Document {
   files        ArchiveFile[]
   comments     Comment[]
   favorites    Favorite[]
+  uploads ArchiveUpload[]
   @@index([isPublic, year, id])
   @@index([fundId])
   @@index([type])
@@ -160,6 +163,7 @@ model ArchiveFile {
   downloadable Boolean  @default(false)
   isPublic     Boolean  @default(false)
   document     Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  upload ArchiveUpload?
   @@index([documentId])
 }
 model Comment {
@@ -403,4 +407,34 @@ model DocumentTranslation {
  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
  revision ContentRevision? @relation(fields: [revisionId], references: [id])
  @@id([documentId, locale])
+}
+
+model ArchiveUpload {
+ id String @id
+ documentId String
+ uploaderId String
+ reviewerId String?
+ fileId String? @unique
+ originalName String
+ mimeType String
+ expectedBytes Int
+ expectedSha256 String
+ actualBytes Int?
+ actualSha256 String?
+ rights String
+ sourceNote String
+ state String @default("AWAITING_CONTENT")
+ storageKey String? @unique
+ receiveToken String?
+ failureCode String?
+ reviewReason String?
+ rightsConfirmed Boolean @default(false)
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ document Document @relation(fields: [documentId], references: [id])
+ uploader User @relation("UploadCreator", fields: [uploaderId], references: [id])
+ reviewer User? @relation("UploadReviewer", fields: [reviewerId], references: [id])
+ file ArchiveFile? @relation(fields: [fileId], references: [id], onDelete: Restrict)
+ @@index([documentId, createdAt])
+ @@index([uploaderId, state])
 }
