@@ -30,7 +30,9 @@ export function rankRelated(targetId:string,input:readonly EngineMaterial[],loca
   const priority=['event','person','place','fund'] as const;const strongest=priority.find(k=>common.some(f=>f.kind===k));
   if(strongest){const f=common.find(f=>f.kind===strongest)!;const b=baseFacts.find(b=>b.kind===strongest&&b.id===f.id)!;
    const refs=[...new Set([...f.sourceIds,...b.sourceIds])].map(id=>all.find(s=>s.id===id)!);
-   return output(m,('same_'+strongest) as ReasonCode,10-priority.indexOf(strongest),refs);
+   const otherWords=words(m.title+(m.textAllowed?' '+m.description:''));const overlap=[...baseWords].filter(w=>otherWords.has(w)).length;
+   const lexical=overlap/Math.max(1,Math.sqrt(baseWords.size*otherWords.size));
+   return output(m,('same_'+strongest) as ReasonCode,10-priority.indexOf(strongest)+lexical*.1,refs);
   }
   const other=words(m.title+(m.textAllowed?' '+m.description:''));const overlap=[...baseWords].filter(w=>other.has(w)).length;const score=overlap/Math.max(1,Math.sqrt(baseWords.size*other.size));
   return overlap>=2&&score>=.15?output(m,'text_similarity',score,[target,m]):null;
@@ -40,9 +42,10 @@ const profileSchema=z.object({personalizationEnabled:z.boolean(),historyEnabled:
 export type RecommendationProfile=z.infer<typeof profileSchema>;
 export function rankRecommendations(input:readonly EngineMaterial[],locale:EngineLocale,profile:RecommendationProfile,limit=3){
  boundedLimit(limit);const p=profileSchema.parse(profile);const all=active(input,locale);
- const selected=p.personalizationEnabled?new Set(p.topicIds.filter(t=>knownTopics.has(t))):new Set<string>();
+ const allowedTopics=new Set([...knownTopics,...all.flatMap(m=>m.topicIds)]);
+ const selected=p.personalizationEnabled?new Set(p.topicIds.filter(t=>allowedTopics.has(t))):new Set<string>();
  const viewed=p.personalizationEnabled&&p.historyEnabled?all.filter(m=>p.viewedIds.includes(m.id)):[];
- const historyTopics=new Set(viewed.flatMap(m=>m.topicIds).filter(t=>knownTopics.has(t)));
+ const historyTopics=new Set(viewed.flatMap(m=>m.topicIds).filter(t=>allowedTopics.has(t)));
  const mode=selected.size?'interests':historyTopics.size?'history':'editorial';
  let candidates=all.map(m=>{
   const interest=[...new Set(m.topicIds)].filter(t=>selected.has(t)).length;const history=[...new Set(m.topicIds)].filter(t=>historyTopics.has(t)).length;

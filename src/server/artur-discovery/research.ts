@@ -22,6 +22,6 @@ export function planResearch(question:string,locale:EngineLocale,plan:{filters:C
  const filters=plan.filters;const meaningful=Boolean(filters.q||filters.locality||filters.reference||filters.fundNumber||filters.inventoryNumber||filters.caseNumber||filters.type||filters.yearFrom!==undefined||filters.yearTo!==undefined);
  // The query is created by the trusted planner; do not reuse arbitrary client URLs/objects.
  const query:CatalogFilters={locale:filters.locale??locale,sort:'year_asc',pageSize:5};
- for(const key of ['q','locality','reference','fundId','branchId','inventoryId','caseId','fundNumber','inventoryNumber','caseNumber','author','organization','originalLanguage','category','tag','type','yearFrom','yearTo'] as const){const v=filters[key];if(v!==undefined)Object.assign(query,{[key]:v});}
+ for(const key of ['q','locality','reference','fundId','branchId','inventoryId','caseId','fundNumber','inventoryNumber','caseNumber','author','organization','originalLanguage','category','tag','type','yearFrom','yearTo','nameMode','placeId'] as const){const v=filters[key];if(v!==undefined)Object.assign(query,{[key]:v});}
  return {mode:'guided-research',automatic:true,steps,actions:meaningful&&plan.handled&&!plan.clarification?[{type:'catalogSearch',label:c.action,query}]:[],limitations:[c.limit]};
 }

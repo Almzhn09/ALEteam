@@ -135,7 +135,7 @@ test('COL-B02 ambiguous names require clarification; place ID needs confirmed ma
 test('COL-B04 related sources distinguish verified links and text similarity without leaking a hidden branch',async()=>{
  const otherDoc=await createDemoDocument('ДЕМО связанный материал');
  await fact('LINK',{from:{kind:'document',id:graphDocumentId},to:{kind:'document',id:otherDoc.item.id},reason:'same_event'});
- const related=await ok('/documents/'+graphDocumentId+'/related');const linked=related.items.find((r:{id:string})=>r.id===otherDoc.item.id);assert.equal(linked.reason.code,'same_event');assert.ok(linked.reason.evidence.length);
+ const related=await ok('/documents/'+graphDocumentId+'/related');assert.equal(related.engine,'artur');const linked=related.items.find((r:{id:string})=>r.id===otherDoc.item.id);assert.equal(linked.reason.code,'same_event');assert.ok(linked.reason.evidence.length);
  await db.archiveBranch.update({where:{id:'discovery-other'},data:{isPublic:false}});
  assert.equal((await call('/documents/'+graphDocumentId+'/related')).status,404);
  assert.equal((await call('/discovery/materials/document/'+otherDoc.item.id)).status,404);

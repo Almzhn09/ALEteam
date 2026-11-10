@@ -38,7 +38,7 @@ export async function resolveEvidence(refs:unknown,client:ReadClient=db):Promise
  return result;
 }
 export function reasonText(code:ReasonCode,locale:ContentLocale){
- const values:Record<ReasonCode,readonly string[]>={editorial:['Редакционная подборка','Редакторлық таңдау','Editorial selection'],chosen_topic:['Выбранная тема','Таңдалған тақырып','Chosen topic'],same_place:['То же место','Сол орын','Same place'],same_person:['Тот же человек','Сол тұлға','Same person'],same_event:['То же событие','Сол оқиға','Same event'],same_fund:['Тот же фонд','Сол қор','Same fund'],text_similarity:['Сходство опубликованного текста','Жарияланған мәтіннің ұқсастығы','Published text similarity']};
+ const values:Record<ReasonCode,readonly string[]>={editorial:['Редакционная подборка','Редакторлық таңдау','Editorial selection'],chosen_topic:['Выбранная тема','Таңдалған тақырып','Chosen topic'],history:['По разрешённой истории просмотров','Рұқсат етілген қарау тарихы бойынша','Based on permitted viewing history'],same_place:['То же место','Сол орын','Same place'],same_person:['Тот же человек','Сол тұлға','Same person'],same_event:['То же событие','Сол оқиға','Same event'],same_fund:['Тот же фонд','Сол қор','Same fund'],text_similarity:['Сходство опубликованного текста','Жарияланған мәтіннің ұқсастығы','Published text similarity']};
  return values[code][locale==='ru'?0:locale==='kk'?1:2];
 }
 export function materialWithReason(snapshot:ResolvedMaterial,code:ReasonCode,evidence:SourceRef[],locale:ContentLocale){return {...snapshot.material,reason:{code,text:reasonText(code,locale),evidence}};}

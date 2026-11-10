@@ -1,11 +1,11 @@
-import {rankSimilar} from './similarity';
+import {arturDiscoveryEngines} from './artur-discovery/transport';
 import {db} from './db';
 import {publicDocumentWhere} from './public-visibility';
 import {z} from 'zod';
 import {boundedPage,decodeCursor,encodeCursor,unavailable} from './discovery-utils';
 import {liveFacts,localLabel,parseFact} from './discovery-facts';
-import {resolveMaterial,materialWithReason} from './discovery-materials';
-import {json,queryParams,idSchema} from './http';
+import {resolveMaterial,resolveEvidence,materialWithReason} from './discovery-materials';
+import {json,queryParams,idSchema,ApiError} from './http';
 import type {ContentLocale} from '../contracts/cms';
 import type {PlaceRef,HistoryEntry,MaterialKey,HistoricalDate} from '../contracts/discovery';
 export function dateBounds(date:HistoricalDate):[number|undefined,number|undefined]{return date.datePrecision==='range'?[date.yearFrom,date.yearTo]:date.dateParts?[date.dateParts.year,date.dateParts.year]:[undefined,undefined];}
@@ -49,14 +49,21 @@ export async function related(request:Request,id:string){
   const to=data.from.kind==='document'&&data.from.id===id?data.to:data.to.kind==='document'&&data.to.id===id?data.from:null;
   if(!to||keys.has(to.kind+':'+to.id))continue;
   const material=await resolveMaterial(to,p.locale);if(!material)continue;
-  keys.add(to.kind+':'+to.id);items.push(materialWithReason(material,data.reason,row.evidence,p.locale));
+  const evidence=await resolveEvidence(row.evidence);if(!evidence)continue;
+  keys.add(to.kind+':'+to.id);items.push(materialWithReason(material,data.reason,evidence,p.locale));
   if(items.length>=p.limit)break;
  }
- const curatedCount=items.length;
  if(items.length<p.limit){
   const candidates=[];for(const row of await db.document.findMany({where:{...publicDocumentWhere,id:{not:id}},select:{id:true},orderBy:{id:'asc'},take:100})){const material=await resolveMaterial({kind:'document',id:row.id},p.locale);if(material&&!keys.has('document:'+row.id))candidates.push(material);}
-  const rankInput=(s:typeof target)=>({id:s!.material.id,title:s!.material.title,description:s!.text,fundId:s!.fundId??'',type:''});
-  for(const match of rankSimilar(rankInput(target),candidates.map(rankInput),p.limit-items.length)){const candidate=candidates.find(r=>r.material.id===match.id)!;items.push(materialWithReason(candidate,'text_similarity',[target.source,candidate.source],p.locale));}
+  const ranked=arturDiscoveryEngines.rankRelated({target,candidates,limit:p.limit-items.length},{locale:p.locale,now:new Date().toISOString()});
+  for(const match of ranked){
+   const candidate=candidates.find(r=>r.material.kind===match.key.kind&&r.material.id===match.key.id);if(!candidate)throw new ApiError(502,'INVALID_ENGINE_RESPONSE','Сервис временно недоступен.');
+   const current=await resolveMaterial(match.key,candidate.source.locale,false);if(!current||current.source.revision!==candidate.source.revision)continue;
+   const evidence=await resolveEvidence(match.evidence);if(!evidence)continue;
+   items.push(materialWithReason(current,match.reason,evidence,p.locale));
+  }
  }
- return json({items,method:items.length>curatedCount?(curatedCount?'mixed':'text_similarity'):'curated',locale:p.locale,engine:'baseline',candidateLimit:100});
+ const currentTarget=await resolveMaterial({kind:'document',id},target.source.locale,false);if(!currentTarget)unavailable();if(currentTarget.source.revision!==target.source.revision)throw new ApiError(409,'SOURCE_CHANGED','Данные изменились. Обновите страницу и повторите.');
+ const textual=items.filter(i=>i.reason.code==='text_similarity').length;
+ return json({items,method:textual?(textual===items.length?'text_similarity':'mixed'):'curated',locale:p.locale,engine:'artur',candidateLimit:100});
 }

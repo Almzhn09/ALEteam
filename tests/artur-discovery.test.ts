@@ -14,6 +14,8 @@ import referenceDrafts from '../data/artur/discovery/reference-page-drafts.json'
 import publicationPlan from '../data/artur/discovery/publication-plan.json';
 import cmsDrafts from '../data/archive-20261110/cms-draft-requests.json';
 import {branchContactExcerpt} from '../src/server/artur-discovery/branch-contact';
+import {prepareDiscoveryFacts,type PublishedSourceBinding} from '../src/server/artur-discovery/publication';
+import {parseFact} from '../src/server/discovery-facts';
 import {arturDiscoveryEngines} from '../src/server/artur-discovery/transport';
 import type {CandidateSnapshot,SourceRef} from '../src/contracts/discovery';
 const base=(id:string,patch:Partial<EngineMaterial>={}):EngineMaterial=>({id,kind:'document',locale:'ru',revision:'rev-1',title:'Школа города Риддер',description:'Фотографии школы и школьной библиотеки',href:'/documents/'+id,publication:'published',metadataAllowed:true,branchVisible:true,deleted:false,textAllowed:true,topicIds:['education'],facts:[],isDemo:true,...patch});
@@ -203,4 +205,22 @@ test('database alias groups cannot silently resolve ambiguous Altay without an e
  const source=candidate('source').source,aliases=[{entityId:'altay-db',canonicalName:'Алтай',ambiguity:false,aliases:[{name:'Алтай',locale:'ru' as const,status:'VERIFIED' as const,sources:[source]},{name:'Зыряновск',locale:'ru' as const,status:'VERIFIED' as const,sources:[source]}]}];
  const r=arturDiscoveryEngines.expandNames({query:'Алтай',aliases},context);assert.equal(r.clarificationRequired,true);assert.deepEqual(r.variants,[]);
  assert.equal(arturDiscoveryEngines.expandNames({query:'Алтай',aliases,placeId:'altay-db'},context).applied,true);
+});
+
+test('real fact preparer fails closed without published mappings and outputs only valid DRAFT bodies',()=>{
+ assert.equal(prepareDiscoveryFacts([]).ready.length,0);
+ const bindings:PublishedSourceBinding[]=cmsDrafts.records.map(r=>({sourceKey:r.sourceKey,locale:r.request.locale as 'ru'|'kk',body:r.request.payload.body,source:{kind:'cms',id:'src-'+r.sourceKey,locale:r.request.locale as 'ru'|'kk',revision:'a'.repeat(64),href:'/api/content/source?locale='+r.request.locale,title:r.request.payload.title}}));
+ const first=prepareDiscoveryFacts(bindings);assert.equal(first.ready.length,3);assert.ok(first.ready.every(r=>r.request.kind==='PLACE'));
+ const parents=Object.fromEntries(first.ready.map(r=>[r.draftKey,{id:'db-'+r.draftKey,name:(r.request.data as {labels:{ru:{title:string}}}).labels.ru.title}]));
+ const all=prepareDiscoveryFacts(bindings,parents);assert.equal(all.ready.length,26);assert.deepEqual(all.blocked,[]);
+ for(const r of all.ready){assert.equal(r.requiresReview,true);assert.equal('status' in r.request,false);parseFact(r.request.kind,r.request.data);assert.ok(r.request.sources.every(s=>s.revision==='a'.repeat(64)));}
+ const changed=structuredClone(bindings);changed.find(b=>b.sourceKey==='history-2')!.body='Changed source without original assertions';assert.ok(prepareDiscoveryFacts(changed,parents).blocked.some(b=>b.reason==='source_quote_changed'));
+ const wrong=structuredClone(parents);wrong['place-ridder'].name='Wrong city';assert.ok(prepareDiscoveryFacts(bindings,wrong).blocked.some(b=>b.reason==='parent_label_mismatch'));
+ assert.throws(()=>prepareDiscoveryFacts([...bindings,bindings[0]]),/DUPLICATE_SOURCE_BINDING/);
+});
+
+test('published opaque database topic IDs work without substituting project slugs',()=>{
+ const topic='cm-live-topic-id',all=[base('a',{topicIds:[topic]}),base('b',{topicIds:['photos']})];
+ const r=rankRecommendations(all,'ru',{personalizationEnabled:true,historyEnabled:false,topicIds:[topic],viewedIds:[]});assert.equal(r.mode,'interests');assert.deepEqual(r.items.map(i=>i.id),['a']);
+ const dto=candidate('a');dto.topicIds=[topic];assert.equal(arturDiscoveryEngines.rankRecommendations({candidates:[dto],topicIds:[topic],personalizationEnabled:true,limit:3},context)[0].reason,'chosen_topic');
 });
