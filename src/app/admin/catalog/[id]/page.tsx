@@ -9,6 +9,7 @@ import { DemoBadge, ErrorNotice, Loading, Notice } from '@/components/ui';
 import { FormError, useStaff } from '../../AdminShell';
 import { RevisionWorkflow, StateBadge } from '../../editorial';
 import { DocumentFields, emptyDoc, formFrom, metadataPayload, textPayload } from '../DocumentForm';
+import { UploadList } from '../Uploads';
 
 interface Revision { id: string; locale: ContentLocale; status: PublicationState; payload: Record<string, unknown>; updatedAt: string }
 interface Doc { id: string; title: string; reference: string; isPublic: boolean; isDemo: boolean; deletedAt: string | null; updatedAt: string; internalNotes: string | null; fundId: string; allowDigitalCopy: boolean; fund: { branchId: string | null }; contentItem: { revisions: Revision[] } | null }
@@ -86,6 +87,10 @@ export default function DocumentEditor({ params }: { params: Promise<{ id: strin
       {saved && <Notice tone="success" live><p>{saved}</p></Notice>}
       {(editable || canStartNew) && <div><button type="submit" className="btn btn-primary" disabled={busy}>{busy ? t('Сохранение…') : editable ? t('Сохранить') : t('Создать новую редакцию')}</button></div>}
     </form>
+    <section className="stack" aria-labelledby="uploads-title">
+      <h2 id="uploads-title">{t('Файлы цифровой копии')}</h2>
+      <UploadList documentId={doc.id} branchId={branch} writable={writable} />
+    </section>
     {can('catalog.write') && <section className="card card-flat stack" aria-label={t('Служебные действия')}>
       <div className="field"><label htmlFor="doc-notes">{t('Служебная заметка (не публикуется)')}</label><input id="doc-notes" className="input" value={notes} onChange={e => setNotes(e.target.value)} disabled={!!doc.deletedAt} /></div>
       <div className="row">

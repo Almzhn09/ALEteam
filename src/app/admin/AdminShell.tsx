@@ -17,6 +17,8 @@ const sections = [
   { href: '/admin/content', label: 'Материалы', any: ['content.read'] },
   { href: '/admin/queue', label: 'Очередь согласования', any: ['content.review', 'content.publish'] },
   { href: '/admin/catalog', label: 'Каталог', any: ['catalog.read'] },
+  { href: '/admin/uploads', label: 'Файлы цифровых копий', any: ['catalog.read'] },
+  { href: '/admin/imports', label: 'Импорт каталога', any: ['catalog.read'] },
   { href: '/admin/branches', label: 'Филиалы', any: ['branches.manage'] },
   { href: '/admin/users', label: 'Сотрудники', any: ['staff.users.manage'] },
   { href: '/admin/roles', label: 'Роли и права', any: ['staff.roles.manage'] },

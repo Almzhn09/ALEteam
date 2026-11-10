@@ -55,6 +55,11 @@ export async function apiSend<T>(path: string, method: 'POST' | 'PATCH' | 'PUT' 
   return parse<T>(await request(path, { method, headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(body), signal }));
 }
 
+// Raw bytes (file uploads): the body is sent as-is with the declared type, never JSON-encoded.
+export async function apiPutBytes<T>(path: string, body: Blob, headers: Record<string, string>, signal?: AbortSignal): Promise<T> {
+  return parse<T>(await request(path, { method: 'PUT', headers, body, signal }));
+}
+
 export function fileUrl(id: string, download = false) {
   if (MOCK_MODE) return mockFileUrl(id);
   return `/api/files/${encodeURIComponent(id)}${download ? '?download=1' : ''}`;
