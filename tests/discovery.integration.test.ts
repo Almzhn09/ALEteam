@@ -1,7 +1,8 @@
 import {before,after,test} from 'node:test';
 import assert from 'node:assert/strict';
 import {randomBytes,randomUUID} from 'node:crypto';
-import {execFileSync,spawn,type ChildProcess} from 'node:child_process';
+import {execFileSync,execFile,spawn,type ChildProcess} from 'node:child_process';
+import {promisify} from 'node:util';
 import {readFileSync} from 'node:fs';
 import {once} from 'node:events';
 import {mkdir,writeFile} from 'node:fs/promises';
@@ -14,6 +15,7 @@ const {db}=await import('../src/server/db');
 const origin='http://localhost:3117',password=randomBytes(32).toString('hex');
 const env={...process.env,DATABASE_URL:url,BETTER_AUTH_URL:origin,BETTER_AUTH_SECRET:randomBytes(32).toString('hex'),ALLOW_DEMO_SEED:'1',DEMO_AUTHOR_PASSWORD:password,DEMO_MODERATOR_PASSWORD:password,ASSISTANT_MODE:'retrieval'};
 const apiSamples:{request:string;response:unknown}[]=[];
+const execute=promisify(execFile);
 let app:ChildProcess;let admin:string,writer:string,reviewer:string,guest:string,other:string;
 async function reset(){
  const names=[...readFileSync('prisma/schema.prisma','utf8').matchAll(/^model ([A-Za-z0-9_]+) \{/gm)].map(m=>m[1]).filter(n=>!['StaffRole','StaffPermission'].includes(n));
@@ -199,13 +201,13 @@ test('COL-B05 subscriptions baseline/idempotency/worker retry and owner revocati
  const duplicate=(await ok('/me/topic-subscriptions','POST',filter,guest)).item;assert.equal(duplicate.id,sub.id);
  assert.equal((await ok('/me/topic-notifications','GET',undefined,guest)).items.length,0);
  const next=await createDemoDocument('FOLLOW_TOPIC_MARKER new');
- execFileSync(process.execPath,['--import','tsx','scripts/deliver-topic-notices.ts'],{env,stdio:'pipe'});
+ await execute(process.execPath,['--import','tsx','scripts/deliver-topic-notices.ts'],{env});
  const first=await ok('/me/topic-notifications','GET',undefined,guest);assert.equal(first.items.length,1);assert.equal(first.items[0].material.id,next.item.id);assert.notEqual(first.items[0].material.id,initial.item.id);
- execFileSync(process.execPath,['--import','tsx','scripts/deliver-topic-notices.ts'],{env,stdio:'pipe'});
+ await execute(process.execPath,['--import','tsx','scripts/deliver-topic-notices.ts'],{env});
  assert.equal((await ok('/me/topic-notifications','GET',undefined,guest)).items.length,1);
  const languageView=await ok('/me/topic-notifications?locale=en','GET',undefined,guest);assert.equal(languageView.items[0].material.translationStatus,'original');
  const newRevision=(await ok('/admin/catalog/documents/'+next.item.id+'/revisions','POST',{locale:'ru',payload:{...next.revision.payload,title:'FOLLOW_TOPIC_MARKER revised'}},writer,201)).item;
- next.revision=await publish(newRevision);execFileSync(process.execPath,['--import','tsx','scripts/deliver-topic-notices.ts'],{env,stdio:'pipe'});
+ next.revision=await publish(newRevision);await execute(process.execPath,['--import','tsx','scripts/deliver-topic-notices.ts'],{env});
  assert.equal((await ok('/me/topic-notifications','GET',undefined,guest)).items.length,1);
  assert.equal((await ok('/me/topic-notifications','GET',undefined,other)).items.length,0);
  assert.equal((await call('/me/topic-subscriptions/'+sub.id,'DELETE',{},other)).status,404);
