@@ -1,0 +1,26 @@
+{
+  "results": [
+    {
+      "command": "npm run test:discovery",
+      "exitCode": 0,
+      "log": "test-discovery.log"
+    },
+    {
+      "command": "npm run test:semantic",
+      "exitCode": 0,
+      "log": "test-semantic.log"
+    },
+    {
+      "command": "npm run test:cms-assistant",
+      "exitCode": 0,
+      "log": "test-cms-assistant.log"
+    },
+    {
+      "command": "npm run test:release",
+      "exitCode": 0,
+      "log": "test-release.log"
+    }
+  ],
+  "dedicatedDatabase": true,
+  "containerRemoved": true
+}

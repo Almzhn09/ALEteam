@@ -14,6 +14,7 @@ import {retrieveSemanticCatalog,revalidateCatalogSources,semanticCatalogAnswer,t
 import {englishSiteDialog} from './english-dialog';
 import {publicDocumentWhere} from './public-visibility';
 import {planResearch} from './artur-discovery/research';
+import type {NameExpansion as TransportNameExpansion,ResearchStep,ResearchAction} from '../contracts/discovery';
 
 export const assistantInput = z.object({
   locale: z.enum(['ru','kk','en']).optional(),
@@ -64,5 +65,8 @@ export async function assistant(request: Request) {
   });
   if (sources.some(s => !s)) throw new ApiError(502, 'INVALID_ASSISTANT_RESPONSE', 'Ответ помощника содержит недоступный источник.');
   const research=!process.env.ASSISTANT_SERVICE_URL?planResearch(input.question,locale,plan):undefined;
-  return json({...(research?{researchSteps:research.steps,actions:research.actions,researchLimitations:research.limitations}:{}),...(plan.nameExpansion?{nameExpansion:plan.nameExpansion}:{}), answer: result.answer, noAnswer: result.noAnswer, mode: result.mode ?? 'external', sources,...(plan.handled&&!plan.clarification&&!cmsPassages.length&&!process.env.ASSISTANT_SERVICE_URL?{catalogQuery:plan.filters}:{}) });
+  const researchActions:ResearchAction[]=research?.actions.map(a=>({type:'catalogSearch',filters:a.query}))??[];
+  const researchSteps:ResearchStep[]=research?.steps.map(s=>({id:s.id,text:s.title+'. '+s.description,status:'suggested',sources:[],...(s.kind==='search'&&researchActions[0]?{action:researchActions[0]}:{})}))??[];
+  const expansion:TransportNameExpansion|undefined=plan.nameExpansion?{mode:'expanded',applied:plan.nameExpansion.status==='resolved',variants:plan.nameExpansion.variants,entityIds:[],clarificationRequired:plan.nameExpansion.status==='ambiguous',sources:[]}:undefined;
+  return json({...(research?{researchSteps,actions:researchActions,researchLimitations:research.limitations}:{}),...(expansion?{nameExpansion:expansion,nameExpansionProvenance:{kind:'project_dictionary',sourceIds:[...new Set(plan.nameExpansion!.matches.flatMap(m=>m.sourceIds))]}}:{}), answer: result.answer, noAnswer: result.noAnswer, mode: result.mode ?? 'external', sources,...(plan.handled&&!plan.clarification&&!cmsPassages.length&&!process.env.ASSISTANT_SERVICE_URL?{catalogQuery:plan.filters}:{}) });
 }

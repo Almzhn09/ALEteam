@@ -4,7 +4,7 @@ import type {EngineLocale} from './types';
 const alias=z.object({name:z.string().min(1).max(100),locale:z.enum(['ru','kk','en']),forms:z.array(z.string().min(1).max(100)).max(12),historical:z.boolean(),transliteration:z.boolean()});
 const entity=z.object({id:z.string().regex(/^[a-z0-9-]+$/),name:z.object({ru:z.string(),kk:z.string(),en:z.string()}),aliases:z.array(alias).max(20),ambiguousNames:z.array(z.string()).max(15),evidence:z.array(z.object({sourceId:z.string(),path:z.string(),sha256:z.string().length(64),line:z.number().int().positive(),quote:z.string()})).min(1)});
 export const discoveryPlaces=z.array(entity).max(100).parse(pack.records);
-export type AliasEntity=z.infer<typeof entity>;
+export type AliasEntity=Omit<z.infer<typeof entity>,'evidence'>&{evidence:{sourceId:string}[]};
 export interface NameExpansion {status:'none'|'resolved'|'ambiguous'|'literal';entityIds:string[];matches:{entityId:string;input:string;canonicalName:string;transliteration:boolean;sourceIds:string[]}[];variants:string[];normalizedQuestion:string}
 const norm=(s:string)=>s.normalize('NFKC').toLowerCase().replace(/[‐‑‒–—]/gu,'-');
 const escape=(s:string)=>s.replace(/[.*+?^${}()|[\]\\]/gu,'\\$&');

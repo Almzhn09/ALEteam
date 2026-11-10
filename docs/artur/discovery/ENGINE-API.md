@@ -33,8 +33,8 @@ Readable snapshot: `source` (id/kind/locale/revision/title/href), publication/me
 
 `/api/assistant` совместимо добавляет:
 
-- `nameExpansion?` — применённые варианты/неоднозначность; project transliterations помечены.
-- `researchSteps?`, `actions?`, `researchLimitations?` — только исследовательским вопросам и локальному режиму. `actions:[{type:catalogSearch,label,query:CatalogFilters}]`. Они создаются серверным planner, не берутся из URL/текста модели.
+- `nameExpansion?` — общий transport NameExpansion: применённые варианты/неоднозначность. Для внутреннего project dictionary entityIds/sources пусты (не вымышленные DB UUID); `nameExpansionProvenance` даёт source-file IDs. Проверенные DB aliases через адаптер сохраняют реальные entityIds/SourceRef.
+- `researchSteps?`, `actions?`, `researchLimitations?` — только исследовательским вопросам и локальному режиму. `actions:[{type:catalogSearch,filters:CatalogFilters}]`; steps соответствуют общим ResearchStep (text/status/sources/action). Они создаются серверным planner, не берутся из URL/текста модели.
 - Прежние answer/noAnswer/mode/sources/catalogQuery сохранены. Нет исполняемого catalogQuery/action при ambiguity. No-answer не получает вымышленные источники; исследовательские шаги остаются рекомендациями.
 
 Алинур: текущий опубликованный UI ещё не отображает эти новые поля. Добавить клиентские DTO по COL-B01/F02 и отрисовку с отступами; старый интерфейс продолжает работать. Не считать добавленный JSON уже готовым экраном.
@@ -44,3 +44,9 @@ Readable snapshot: `source` (id/kind/locale/revision/title/href), publication/me
 `data/artur/discovery/`: places (3), place-events (9), topics (7), issues (8), help-copy RU/KK/EN, fund-history drafts и mapping report. Все исторические тексты/переводы и fund groups — **DRAFT**, не автоматическая публикация. Статус source_checked означает сверку утверждения с переданным источником, не независимую приёмку архивом. EN формы имён — проектные транслитерации, не утверждённые официальные названия.
 
 Сборка source packs: `python scripts/prepare-artur-discovery.py`, `python scripts/map-artur-funds.py`, `python scripts/prepare-artur-help.py`. Runtime не требует Python. Unit: `node --import tsx --test tests/artur-discovery.test.ts` (включён также в npm test). Реальные HTTP: `npm run build`, затем `npm run test:semantic` с отдельной TEST_DATABASE_URL, как в текущих инструкциях. Full acceptance новых UI/subscriptions/transport ждёт COL-B/F — эти endpoint движком не имитируются.
+
+## Подключение опубликованного COL-B01
+
+Контракт/миграция/адаптер источников Алимжана (`8539ad2`, `4ca9c56`) интегрированы в рабочую ветку. **Статический объект `arturDiscoveryEngines:DiscoveryEngines` экспортируется из `src/server/artur-discovery/transport.ts`**: транспорт регистрирует именно его. Он адаптирует CandidateSnapshot/AuthorizedText и новые общие ResearchStep/ResearchAction; direct engine functions выше остаются внутренним API. Нет новой копии ORM/миграций.
+
+Транспортный CandidateSnapshot — уже разрешённый материал с текущим SourceRef и текстом. Для fallback к оригиналу адаптер использует locale контекста только для меток, а фактические contentLocale/SourceRef возвращает исходными. Doc/CMS ключи квалифицированы раздельно, разные ревизии не смешиваются. Для фактических placeIds/fundId требуется серверное подтверждение метаданных. AuthorizedText с unreviewed/low OCR возвращает low_quality; исходный OCR не помечается verified. Native text и reviewed OCR проходят проверку читаемости/цитат. SourceRef.fragment.start/end — UTF-16 смещения **внутри fragment.text**, не координаты страницы или байты исходного PDF.

@@ -9,6 +9,13 @@ import {planResearch} from '../src/server/artur-discovery/research';
 import {semanticCatalogPlan,semanticConversationPlan} from '../src/server/semantic-catalog-plan';
 import type {EngineMaterial} from '../src/server/artur-discovery/types';
 import events from '../data/artur/discovery/place-events.json';
+import {contentPayload} from '../src/server/cms';
+import referenceDrafts from '../data/artur/discovery/reference-page-drafts.json';
+import publicationPlan from '../data/artur/discovery/publication-plan.json';
+import cmsDrafts from '../data/archive-20261110/cms-draft-requests.json';
+import {branchContactExcerpt} from '../src/server/artur-discovery/branch-contact';
+import {arturDiscoveryEngines} from '../src/server/artur-discovery/transport';
+import type {CandidateSnapshot,SourceRef} from '../src/contracts/discovery';
 const base=(id:string,patch:Partial<EngineMaterial>={}):EngineMaterial=>({id,kind:'document',locale:'ru',revision:'rev-1',title:'Школа города Риддер',description:'Фотографии школы и школьной библиотеки',href:'/documents/'+id,publication:'published',metadataAllowed:true,branchVisible:true,deleted:false,textAllowed:true,topicIds:['education'],facts:[],isDemo:true,...patch});
 const editorial={personalizationEnabled:false,historyEnabled:false,topicIds:[],viewedIds:[]};
 const snapshot=(patch:Partial<ReadableSnapshot>={}):ReadableSnapshot=>({source:{id:'doc-1',kind:'document',locale:'ru',revision:'r1',title:'Учёт документов',href:'/documents/doc-1'},publication:'published',metadataAllowed:true,digitalCopyAllowed:true,branchVisible:true,deleted:false,fragments:[{id:'p1',text:'Архивный фонд содержит документы учреждения. Опись помогает найти нужное дело. Архивный шифр Р-001/02 нужно сохранять точно.',page:1,quality:'verified'}],...patch});
@@ -100,4 +107,57 @@ test('research stays inside the existing assistant and offers only executable tr
 test('duplicate published snapshots cannot choose an arbitrary revision or inflate a recommendation',()=>{
  assert.throws(()=>rankRecommendations([base('a'),base('a',{revision:'other'})],'ru',editorial),/DUPLICATE_MATERIAL_SNAPSHOT/);
  assert.throws(()=>rankRelated('a',[base('a'),base('a')],'ru'),/DUPLICATE_MATERIAL_SNAPSHOT/);
+});
+
+const context={locale:'en' as const,now:'2026-11-10T00:00:00Z'};
+function candidate(id:string):CandidateSnapshot{
+ const source:SourceRef={id,kind:'document',locale:'ru',revision:'r1',href:'/documents/'+id,title:'Архивный фонд школы'};
+ return {source,material:{id,kind:'document',href:source.href,title:source.title,contentLocale:'ru',availableLocales:['ru'],translationStatus:'original',isDemo:true,reason:{code:'editorial',text:'test',evidence:[]}},text:'Архивный фонд школы и школьной библиотеки.',topicIds:['education'],placeIds:['ridder'],fundId:'fund-1'};
+}
+test('COL-B01 adapter returns only real transport keys and preserves original-language evidence',()=>{
+ const target=candidate('a'),other=candidate('b');other.source.fragment={id:'part',page:1};
+ const r=arturDiscoveryEngines.rankRelated({target,candidates:[other],limit:5},context);assert.deepEqual(r[0].key,{kind:'document',id:'b'});assert.equal(r[0].reason,'same_place');assert.ok(r[0].evidence.every(s=>s.locale==='ru'));assert.equal(r[0].evidence[0].id,'b');
+ const chosen=arturDiscoveryEngines.rankRecommendations({candidates:[target,other],topicIds:['education'],personalizationEnabled:true,limit:3},context);assert.equal(chosen[0].reason,'chosen_topic');
+ assert.throws(()=>arturDiscoveryEngines.rankRelated({target,candidates:[{...other,source:{...other.source,id:'a'}}],limit:5},context),/SOURCE_IDENTITY_MISMATCH/);
+});
+test('COL-B01 adapter keeps document and CMS namespaces separate even for identical IDs',()=>{
+ const a=candidate('same'),b=candidate('same');b.material.kind='cms';b.source.kind='cms';b.source.href='/api/content/same?locale=ru';b.material.href=b.source.href;
+ const r=arturDiscoveryEngines.rankRecommendations({candidates:[a,b],topicIds:[],personalizationEnabled:false,limit:5},context);assert.equal(r.length,2);assert.deepEqual(new Set(r.map(x=>x.key.kind)),new Set(['cms','document']));
+});
+test('COL-B01 alias expansion uses only supplied verified aliases and returns their actual SourceRefs',()=>{
+ const s=candidate('alias-source').source;
+ const r=arturDiscoveryEngines.expandNames({query:'Photo Leninogorsk',aliases:[{entityId:'place-db-id',canonicalName:'Ridder',ambiguity:false,aliases:[{name:'Ridder',locale:'en',status:'VERIFIED',sources:[s]},{name:'Leninogorsk',locale:'en',status:'VERIFIED',sources:[s]}]}]},context);
+ assert.equal(r.applied,true);assert.deepEqual(r.entityIds,['place-db-id']);assert.deepEqual(r.sources,[s]);assert.ok(r.variants.includes('Ridder'));
+ const unknown=arturDiscoveryEngines.expandNames({query:'Зыряновск',aliases:[]},context);assert.equal(unknown.applied,false);assert.deepEqual(unknown.entityIds,[]);
+});
+test('COL-B01 AuthorizedText is explained locally and unreviewed OCR is never upgraded to reviewed',()=>{
+ const source=candidate('text').source;source.fragment={id:'origin'};
+ const input={source,fingerprint:'f'.repeat(64),sourceSha256:'a'.repeat(64),textSha256:'b'.repeat(64),fragments:[{id:'part',text:'Архивный фонд содержит документы учреждения.',page:2}],ocr:{used:false,quality:'unreviewed' as const}};
+ const r=arturDiscoveryEngines.explainFragments(input,context);assert.equal(r.status,'ready');assert.equal(r.mode,'extractive');assert.equal(r.sourceRevision,'r1');assert.equal(r.citations[0].source.locale,'ru');assert.equal(r.citations[0].source.fragment?.page,2);assert.equal(r.terms[0].fragmentIds[0],'part');
+ assert.equal(arturDiscoveryEngines.explainFragments({...input,ocr:{used:true,quality:'unreviewed'}},context).status,'low_quality');
+});
+test('COL-B01 research action uses shared filters field and suggested steps never claim evidence',()=>{
+ const r=arturDiscoveryEngines.planResearch({question:'I want to study schools in Ridder in 1960',sources:[],filters:{locale:'en',q:'school'}},context);
+ assert.ok(r.steps.length);assert.ok(r.steps.every(s=>s.status==='suggested'&&s.sources.length===0));assert.equal(r.actions[0].type,'catalogSearch');assert.ok('filters' in r.actions[0]);
+});
+
+test('published branch source does not imply all contact details were verified',()=>{
+ const r=branchContactExcerpt({address:'улица1',email:'person@akimvko.qov.kz',contactReview:{address:'verified',email:'needs_confirmation'}},'ru').join('\n');
+ assert.match(r,/не подтверждена/);assert.match(r,/Email \(не подтверждено\)/);assert.match(r,/Адрес: улица1/);
+ assert.equal(branchContactExcerpt({address:'street',contactReview:{address:'verified'}},'en').length,1);
+ assert.match(branchContactExcerpt({phone:'123'},'en')[0],/unverified/);
+});
+
+test('three service/reference pages use valid actual CMS payloads in three draft languages',()=>{
+ assert.equal(referenceDrafts.draftsOnly,true);assert.equal(referenceDrafts.records.length,3);
+ for(const r of referenceDrafts.records){assert.equal(r.publicationAllowed,false);assert.equal(r.requiresReview,true);contentPayload.parse(r.create.payload);assert.deepEqual(r.translations.map(t=>t.locale),['kk','en']);for(const t of r.translations)contentPayload.parse(t.payload);}
+});
+test('all discovery evidence bindings map to real draft source keys and exact bodies, not fictitious public IDs',()=>{
+ assert.equal(publicationPlan.draftsOnly,true);assert.equal(publicationPlan.notEndpointPayload,true);
+ for(const r of publicationPlan.records){assert.equal(r.state,'DRAFT');assert.ok(r.evidenceBindings.length);for(const e of r.evidenceBindings){const source=cmsDrafts.records.find(r=>r.sourceKey===e.sourceKey&&r.request.locale===e.locale);assert.ok(source);assert.ok(source.request.payload.body.includes(e.quote));assert.equal(createHash('sha256').update(source.request.payload.body).digest('hex'),e.cmsBodySha256);}}
+});
+test('fund history mapping preserves all source rows and does not invent inventories/cases/documents',()=>{
+ const pack=JSON.parse(readFileSync('data/artur/discovery/fund-history-drafts.json','utf8'));
+ assert.deepEqual(pack.datasets.map((d:{records:unknown[]})=>d.records.length),[1552,153]);
+ for(const d of pack.datasets){const keys=new Set();for(const r of d.records){assert.equal(r.status,'DRAFT');assert.equal(r.publicationAllowed,false);assert.equal(typeof r.number,'string');assert.ok(!keys.has(r.number));keys.add(r.number);assert.ok(r.names.length>0);assert.deepEqual(r.inventoryIds,[]);assert.deepEqual(r.caseIds,[]);assert.deepEqual(r.documentIds,[]);assert.equal(r.branchId,null);}}
 });

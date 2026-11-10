@@ -4,6 +4,7 @@ import {db} from './db';
 import {contentPayload} from './cms';
 import {unsafeInstructions} from './assistant-safety';
 import type {ContentLocale} from '../contracts/cms';
+import {branchContactExcerpt} from './artur-discovery/branch-contact';
 export interface CmsPassage {id:string;title:string;text:string;isDemo:boolean;kind:'cms';href:string;revisionId:string;stamp:string}
 const stop=new Set('расскажи покажи найти найди какой какая какие когда где как что это про для архив архива сайт сайта пожалуйста ма ме туралы қандай қайда қалай мен the a an is are of on in at for about where what when how tell show please find document documents records record material materials information there any have has can may me my need help archive archives site website get do want документ документы документа документов материалы материал сведения информация есть можно нужно нужны нужен покажите расскажите құжат құжаттар құжаттарды мұрағат мұрағаттың ақпарат мәлімет керек бар'.split(' '));
 export function cmsQueryTerms(question:string){
@@ -14,8 +15,7 @@ function passage(row:{id:string;locale:string;payload:Prisma.JsonValue;reviewerI
  if(!row.reviewerId||row.reviewerId===row.authorId)return undefined;
  const parsed=contentPayload.safeParse(row.payload);if(!parsed.success)return undefined;
  const p=parsed.data;
- const labels=row.locale==='en'?['Address','Phone','Email','Hours']:row.locale==='kk'?['Мекенжай','Телефон','Email','Жұмыс уақыты']:['Адрес','Телефон','Email','Часы работы'];
- const fields=row.item.kind==='BRANCH_PROFILE'?[p.address,p.phone,p.email,p.hours].flatMap((v,i)=>v?[`${labels[i]}: ${v}`]:[]):[];
+ const fields=row.item.kind==='BRANCH_PROFILE'?branchContactExcerpt(p,row.locale as ContentLocale):[];
  const text=[...fields,p.body].join('\n').slice(0,4000);
  if(unsafeInstructions(text)||unsafeInstructions(p.title))return undefined;
  return {id:`cms_${row.id}`,title:p.title,text,isDemo:row.item.isDemo,kind:'cms',href:`/api/content/${row.item.slug}?locale=${row.locale}`,revisionId:row.id,stamp:row.updatedAt.toISOString()};

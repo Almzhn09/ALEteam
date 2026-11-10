@@ -29,3 +29,18 @@ for (const r of drafts.records) {
   assert.ok(r.request.payload.body.length > 0 && r.request.payload.body.length <= 10000);
 }
 console.log(`Verified ${originals} originals, ${texts} texts, ${linked} linked files; 13 branch drafts and ${drafts.records.length} CMS draft requests. No publication performed.`);
+
+// Supplemental source absence is allowed only when the manifest itself is absent.
+const supplemental = 'sources/archive-reference-20261110/';
+let extra;
+try {extra = JSON.parse(await readFile(supplemental + 'manifest.json', 'utf8'));}
+catch (e) {if (e.code !== 'ENOENT') throw e;}
+if (extra) {
+  for (const f of extra.files) {
+    for (const [path, expected] of [[f.original,f.sha256],[f.text,f.textSha256]]) {
+      assert.ok(path && !path.startsWith('/') && !path.split('/').includes('..'));
+      assert.equal(createHash('sha256').update(await readFile(supplemental + path)).digest('hex'), expected, path);
+    }
+  }
+  console.log(`Verified ${extra.files.length} supplementary official-source originals and extracted texts; legal currency remains unverified.`);
+}

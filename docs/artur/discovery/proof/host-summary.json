@@ -1,0 +1,36 @@
+{
+  "baseCommit": "b54aa9f2a565a45025f26c1a96415c714f935377",
+  "sourceSha256": {
+    "src/server/assistant.ts": "50f258d7799b1a290c8c7eb1e45ad4f0afbc867227e5c15dc705ea82e26c4818",
+    "src/server/cms-knowledge.ts": "5fa03f03c2a1e9757c86673b39ecd2c23dcbf5403da7b3ece8ead124faa287b0",
+    "src/server/semantic-catalog-plan.ts": "76679cbabc51f6a879de54cc16ea47317a89b21c2c1180be71c67a25aebb8f4c",
+    "src/server/semantic-catalog.ts": "abcbee3c9c4e34afe4d560c5e1ab5c6ead8b0c77ea50fa836cdbe9da9e0c9721",
+    "src/contracts/api.ts": "e5888125b92fddafe65d42a4f0bd50f7cafd5d37301630a988d87d7256959297",
+    "src/contracts/discovery.ts": "6b7fbf258b5200c5dfad3ed332ca2a5c891ef2ebde634ead116551c6827fc860",
+    "src/server/artur-discovery/types.ts": "f245dd2555288abfccc3b37f8dc88147ad2378f23de32a20da8854d9918aed3b",
+    "src/server/artur-discovery/research.ts": "088ddc8ff660d79cc11f59f73007409ea20365808f227e765428206d8c248074",
+    "src/server/artur-discovery/ranking.ts": "9b11d99bf5cce48de8946582d2691cfd96fd7347db064220643dbb1d329990ca",
+    "src/server/artur-discovery/branch-contact.ts": "26d3bb223e4cc1f35026cff256d17e0bbb1d9143e14eca4f6de293b3c153b1a3",
+    "src/server/artur-discovery/explanation.ts": "5a2ba1016d0746e7d9b053f2bb74d6e72e678cc2b836bdece79dc2f48524e387",
+    "src/server/artur-discovery/index.ts": "56ecddf1077cd5307b0fd229d0b2b792b49d93b6f5ed150b45351915ec6605d6",
+    "src/server/artur-discovery/transport.ts": "042903d04c5cfe4546b70b05f44a99a3ba2f3968c506055f6e6eba42fd2c56c6",
+    "src/server/artur-discovery/names.ts": "486564e411dd35481a7073305b6759802ba334756c73a5095bc1799f2ab1589f"
+  },
+  "unitPassed": 335,
+  "httpSuitesPassed": {
+    "test-discovery": 4,
+    "test-semantic": 39,
+    "test-cms-assistant": 12
+  },
+  "release": "13 scenarios /54 screens; existing UI, no claim of new discovery screens",
+  "build": "passed",
+  "typecheck": "passed",
+  "i18n": "426/426",
+  "database": "real isolated PostgreSQL16.14; new contract migration; owned container removed",
+  "scope": "Engine modules and current assistant plus merged contract/source-draft core; new discovery transport/UI endpoints not yet connected",
+  "limitations": [
+    "Extractive quotations + glossary, not arbitrary-document paraphrase",
+    "Source facts/materials remain draft; no independent archive/native/rights approval",
+    "Home/related/explanation/history/subscription endpoint wiring and new UI depend on COL-B/F"
+  ]
+}

@@ -1,4 +1,5 @@
 import type { CatalogFilters } from './catalog';
+import type {NameExpansion,ResearchStep,ResearchAction} from './discovery';
 // Frontend-safe DTOs: do not import src/server modules into client components.
 export type DocumentType = 'LETTER' | 'PHOTO' | 'MAP' | 'REPORT';
 export type CommentStatus = 'PENDING' | 'PUBLISHED' | 'REJECTED' | 'HIDDEN';
@@ -39,6 +40,11 @@ export interface ModerationInput {
 }
 export interface AssistantInput { question: string; locale?: 'ru' | 'kk' | 'en'; history?: { role: 'user' | 'assistant'; content: string }[] }
 export interface AssistantAnswer {
+  nameExpansion?:NameExpansion;
+  nameExpansionProvenance?:{kind:'project_dictionary';sourceIds:string[]};
+  researchSteps?:ResearchStep[];
+  actions?:ResearchAction[];
+  researchLimitations?:string[];
   catalogQuery?: CatalogFilters;
   answer: string; noAnswer: boolean; mode: 'retrieval' | 'llm' | 'local-model' | 'external';
   sources: { id: string; title: string; isDemo: boolean; kind: 'document' | 'guide' | 'cms'; locale?: 'ru' | 'kk' | 'en'; digitalCopyAllowed?: boolean; href: string }[];

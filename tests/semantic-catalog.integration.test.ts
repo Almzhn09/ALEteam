@@ -177,15 +177,15 @@ test('COL-A02: source-derived historical names retrieve a real published record 
   for(const row of originals)await db.documentTranslation.update({where:{documentId_locale:{documentId:id,locale:row.locale}},data:{locality:row.locale==='en'?'Leninogorsk':'Лениногорск'}});
   for(const [locale,question] of [['ru','Фото Риддера 1960'],['en','Photos of Ridder in 1960']] as const){
    const answer=await ok('/assistant','POST',{question,locale},readers[locale]);assert.deepEqual(answer.sources.map((s:{id:string})=>s.id),[id]);
-   assert.equal(answer.nameExpansion.status,'resolved');assert.ok(answer.nameExpansion.variants.includes('Лениногорск'));assert.equal(answer.catalogQuery.yearFrom,1960);
+   assert.equal(answer.nameExpansion.applied,true);assert.equal(answer.nameExpansion.clarificationRequired,false);assert.ok(answer.nameExpansion.variants.includes('Лениногорск'));assert.equal(answer.catalogQuery.yearFrom,1960);
   }
  }finally{for(const row of originals)await db.documentTranslation.update({where:{documentId_locale:{documentId:id,locale:row.locale}},data:{locality:row.locality}});}
 });
 test('COL-A02: the existing assistant adds source-grounded research steps and safe catalog actions',async()=>{
  const answer=await ok('/assistant','POST',{question:'Хочу узнать историю школы в Усть-Каменогорске 1960',locale:'ru'},readers.ru);
  assert.equal(answer.noAnswer,false);assert.deepEqual(answer.sources.map((s:{id:string})=>s.id),[documents.p60]);
- assert.ok(answer.researchSteps.some((s:{kind:string})=>s.kind==='follow_sources'));assert.equal(answer.actions[0].type,'catalogSearch');assert.equal(answer.actions[0].query.q,'школа');
- assert.equal(answer.actions[0].query.yearFrom,1960);assert.ok(answer.researchLimitations[0].includes('автоматически'));
+ assert.ok(answer.researchSteps.some((s:{id:string})=>s.id==='follow'));assert.equal(answer.actions[0].type,'catalogSearch');assert.equal(answer.actions[0].filters.q,'школа');
+ assert.equal(answer.actions[0].filters.yearFrom,1960);assert.ok(answer.researchLimitations[0].includes('автоматически'));
  const none=await ok('/assistant','POST',{question:'Хочу узнать историю школы города Риддер 1880',locale:'ru'},readers.ru);assert.equal(none.noAnswer,true);assert.deepEqual(none.sources,[]);assert.ok(none.researchSteps.length>0);
 });
 test('COL-A02: ambiguous place and missing research subject return clarification without executable query',async()=>{

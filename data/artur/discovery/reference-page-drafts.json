@@ -1,0 +1,235 @@
+{
+  "version": 1,
+  "draftsOnly": true,
+  "records": [
+    {
+      "sourceKey": "paid-services-info",
+      "requiresReview": true,
+      "publicationAllowed": false,
+      "create": {
+        "slug": "archive-paid-services-info",
+        "kind": "PAGE",
+        "branchId": null,
+        "isDemo": false,
+        "locale": "ru",
+        "payload": {
+          "title": "Платные услуги: справочная информация",
+          "body": "На официальном сайте архива размещено постановление об утверждении прейскуранта. На первой странице скана читаются реквизиты: 15 декабря 2023 года №289. Документ и цены представлены для ознакомления; актуальность и применимость нужно уточнять у архива. Этот сайт не оформляет заказы, не рассчитывает стоимость и не принимает оплату.",
+          "rights": "Открытые материалы официального сайта архива; актуальность, права и перевод проверяет редактор.",
+          "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52679",
+          "sourceNote": "R01: 6480e6fd39bbf0f48c7c8396028da57d29cbec405c44a83a3ede7d575fad3b8f",
+          "links": [
+            {
+              "label": "Постановление \"Об утверждении прейскуранта цен на товары (работы, услуги), реализуемые государственными архивами управле",
+              "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%9F%D0%BE%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BF%D1%80%D0%B5%D0%B9%D1%81%D0%BA%D1%83%D1%80%D0%B0%D0%BD%D1%82%20%D1%80%D1%83%D1%81.pdf"
+            }
+          ]
+        }
+      },
+      "translations": [
+        {
+          "locale": "kk",
+          "payload": {
+            "title": "Ақылы қызметтер туралы анықтамалық ақпарат",
+            "body": "Архивтің ресми сайтында прейскурантты бекіту туралы қаулы жарияланған. Сканның бірінші бетінде 2023 жылғы 15 желтоқсандағы №289 деректемелері көрінеді. Құжат пен бағалар танысу үшін берілген; өзектілігі мен қолданылуын архивтен нақтылау қажет. Бұл сайт тапсырыс рәсімдемейді, құнын есептемейді және төлем қабылдамайды.",
+            "rights": "Открытые материалы официального сайта архива; актуальность, права и перевод проверяет редактор.",
+            "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52679",
+            "sourceNote": "R01: 6480e6fd39bbf0f48c7c8396028da57d29cbec405c44a83a3ede7d575fad3b8f",
+            "links": [
+              {
+                "label": "Постановление \"Об утверждении прейскуранта цен на товары (работы, услуги), реализуемые государственными архивами управле",
+                "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%9F%D0%BE%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BF%D1%80%D0%B5%D0%B9%D1%81%D0%BA%D1%83%D1%80%D0%B0%D0%BD%D1%82%20%D1%80%D1%83%D1%81.pdf"
+              }
+            ]
+          }
+        },
+        {
+          "locale": "en",
+          "payload": {
+            "title": "Paid services: reference information",
+            "body": "The archive website provides a resolution approving a price list. The first scanned page reads 15 December 2023, No. 289. The document and prices are for reference; confirm their currency and applicability with the archive. This site does not place orders, calculate charges or accept payments.",
+            "rights": "Открытые материалы официального сайта архива; актуальность, права и перевод проверяет редактор.",
+            "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52679",
+            "sourceNote": "R01: 6480e6fd39bbf0f48c7c8396028da57d29cbec405c44a83a3ede7d575fad3b8f",
+            "links": [
+              {
+                "label": "Постановление \"Об утверждении прейскуранта цен на товары (работы, услуги), реализуемые государственными архивами управле",
+                "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%9F%D0%BE%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BF%D1%80%D0%B5%D0%B9%D1%81%D0%BA%D1%83%D1%80%D0%B0%D0%BD%D1%82%20%D1%80%D1%83%D1%81.pdf"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "sourceKey": "public-services-info",
+      "requiresReview": true,
+      "publicationAllowed": false,
+      "create": {
+        "slug": "archive-public-services-info",
+        "kind": "PAGE",
+        "branchId": null,
+        "isDemo": false,
+        "locale": "ru",
+        "payload": {
+          "title": "Государственная услуга: где найти официальную информацию",
+          "body": "На сайте архива доступны закон о государственных услугах в редакции 2018 года, правила по приказу №159 от 29 мая 2020 года и отчёт за 2025 год. Эти сохранённые версии не подтверждают действующую редакцию законодательства на сегодня. Проверьте актуальные условия в официальном источнике или у архива. Для оформления используйте обозначенный внешний государственный ресурс. Этот сайт не принимает заявления и не отслеживает обращения.",
+          "rights": "Открытые материалы официального сайта архива; актуальность, права и перевод проверяет редактор.",
+          "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/22187",
+          "sourceNote": "R03: 788714faa0f8fc3122bfcf527fda457f54c8a9a9b0d9c18f7790f4d0340abc10; R04: 58e5c26e8944adfdfc4ca4049ea90406a5b58f4145a78f25556317938a3749de; R05: c0877f7195dde84095f9b7df5e74bcd2b1ef7732afde30d2f5fcb858f6ef4ad0",
+          "links": [
+            {
+              "label": "Закон Республики Казахстан \"О государственных услугах\" (с изменениями дополнениями по состоянию на 13.06.2018 г.)",
+              "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%97%D0%B0%D0%BA%D0%BE%D0%BD%20%D0%A0%D0%9A%20%D0%9E%20%D0%B3%D0%BE%D1%81.%D1%83%D1%81%D0%BB%D1%83%D0%B3%D0%B0%D1%85%20%D0%B2%20%D1%80%D0%B5%D0%B4%2C%2013.06.2018.ru.docx"
+            },
+            {
+              "label": "Правила оказания государственной услуги \"Выдача архивных справок, копий архивных документов или архивных выписок\"",
+              "url": "http://e-arhiv.vko.gov.kz/akimsemey/state/2020/%D0%9F%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0.doc"
+            },
+            {
+              "label": "Отчет о деятельности КГУ «Государственный архив» управления цифровизации и архивов Восточно-Казахстанской области и его ",
+              "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%BE%D1%82%D1%87%D0%B5%D1%82%20%D0%BF%D0%BE%20%D0%B3%D0%BE%D1%81%D1%83%D1%81%D0%BB%D1%83%D0%B3%D0%B5%20%D0%B7%D0%B0%202025%D0%B3.docx"
+            },
+            {
+              "label": "Внешний портал eGov",
+              "url": "https://egov.kz/"
+            },
+            {
+              "label": "Официальная база «Әділет»",
+              "url": "https://adilet.zan.kz/rus"
+            }
+          ]
+        }
+      },
+      "translations": [
+        {
+          "locale": "kk",
+          "payload": {
+            "title": "Мемлекеттік қызмет: ресми ақпаратты қайдан табуға болады",
+            "body": "Архив сайтында мемлекеттік қызметтер туралы заңның 2018 жылғы редакциясы,2020 жылғы 29 мамырдағы №159 бұйрыққа сәйкес қағидалар және 2025 жылғы есеп бар. Бұл сақталған нұсқалар заңнаманың бүгінгі қолданыстағы редакциясын растамайды. Өзекті талаптарды ресми дереккөзден немесе архивтен тексеріңіз. Рәсімдеу үшін көрсетілген сыртқы мемлекеттік ресурсқа өтіңіз. Бұл сайт өтініш қабылдамайды және олардың мәртебесін қадағаламайды.",
+            "rights": "Открытые материалы официального сайта архива; актуальность, права и перевод проверяет редактор.",
+            "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/22187",
+            "sourceNote": "R03: 788714faa0f8fc3122bfcf527fda457f54c8a9a9b0d9c18f7790f4d0340abc10; R04: 58e5c26e8944adfdfc4ca4049ea90406a5b58f4145a78f25556317938a3749de; R05: c0877f7195dde84095f9b7df5e74bcd2b1ef7732afde30d2f5fcb858f6ef4ad0",
+            "links": [
+              {
+                "label": "Закон Республики Казахстан \"О государственных услугах\" (с изменениями дополнениями по состоянию на 13.06.2018 г.)",
+                "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%97%D0%B0%D0%BA%D0%BE%D0%BD%20%D0%A0%D0%9A%20%D0%9E%20%D0%B3%D0%BE%D1%81.%D1%83%D1%81%D0%BB%D1%83%D0%B3%D0%B0%D1%85%20%D0%B2%20%D1%80%D0%B5%D0%B4%2C%2013.06.2018.ru.docx"
+              },
+              {
+                "label": "Правила оказания государственной услуги \"Выдача архивных справок, копий архивных документов или архивных выписок\"",
+                "url": "http://e-arhiv.vko.gov.kz/akimsemey/state/2020/%D0%9F%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0.doc"
+              },
+              {
+                "label": "Отчет о деятельности КГУ «Государственный архив» управления цифровизации и архивов Восточно-Казахстанской области и его ",
+                "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%BE%D1%82%D1%87%D0%B5%D1%82%20%D0%BF%D0%BE%20%D0%B3%D0%BE%D1%81%D1%83%D1%81%D0%BB%D1%83%D0%B3%D0%B5%20%D0%B7%D0%B0%202025%D0%B3.docx"
+              },
+              {
+                "label": "Сыртқы eGov порталы",
+                "url": "https://egov.kz/"
+              },
+              {
+                "label": "Ресми «Әділет» базасы",
+                "url": "https://adilet.zan.kz/rus"
+              }
+            ]
+          }
+        },
+        {
+          "locale": "en",
+          "payload": {
+            "title": "Public services: finding official information",
+            "body": "The archive website provides a 2018 version of the public-services law, rules under Order No.159 of 29 May 2020, and a 2025 report. These saved versions do not establish the law currently in force. Check current conditions with an official source or the archive. Use the clearly labelled external government resource to apply. This site does not accept or track applications.",
+            "rights": "Открытые материалы официального сайта архива; актуальность, права и перевод проверяет редактор.",
+            "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/22187",
+            "sourceNote": "R03: 788714faa0f8fc3122bfcf527fda457f54c8a9a9b0d9c18f7790f4d0340abc10; R04: 58e5c26e8944adfdfc4ca4049ea90406a5b58f4145a78f25556317938a3749de; R05: c0877f7195dde84095f9b7df5e74bcd2b1ef7732afde30d2f5fcb858f6ef4ad0",
+            "links": [
+              {
+                "label": "Закон Республики Казахстан \"О государственных услугах\" (с изменениями дополнениями по состоянию на 13.06.2018 г.)",
+                "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%97%D0%B0%D0%BA%D0%BE%D0%BD%20%D0%A0%D0%9A%20%D0%9E%20%D0%B3%D0%BE%D1%81.%D1%83%D1%81%D0%BB%D1%83%D0%B3%D0%B0%D1%85%20%D0%B2%20%D1%80%D0%B5%D0%B4%2C%2013.06.2018.ru.docx"
+              },
+              {
+                "label": "Правила оказания государственной услуги \"Выдача архивных справок, копий архивных документов или архивных выписок\"",
+                "url": "http://e-arhiv.vko.gov.kz/akimsemey/state/2020/%D0%9F%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0.doc"
+              },
+              {
+                "label": "Отчет о деятельности КГУ «Государственный архив» управления цифровизации и архивов Восточно-Казахстанской области и его ",
+                "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%BE%D1%82%D1%87%D0%B5%D1%82%20%D0%BF%D0%BE%20%D0%B3%D0%BE%D1%81%D1%83%D1%81%D0%BB%D1%83%D0%B3%D0%B5%20%D0%B7%D0%B0%202025%D0%B3.docx"
+              },
+              {
+                "label": "External eGov portal",
+                "url": "https://egov.kz/"
+              },
+              {
+                "label": "Official Adilet legal database",
+                "url": "https://adilet.zan.kz/rus"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "sourceKey": "reading-room-info",
+      "requiresReview": true,
+      "publicationAllowed": false,
+      "create": {
+        "slug": "archive-reading-room-info",
+        "kind": "PAGE",
+        "branchId": null,
+        "isDemo": false,
+        "locale": "ru",
+        "payload": {
+          "title": "Читальный зал",
+          "body": "В предоставленном документе «Контакты» указан график читального зала: понедельник–пятница, 9:00–16:00. На старом сайте опубликованы правила, утверждённые приказом №58 от 2 октября 2000 года. Их актуальность требует проверки; эта сохранённая версия не объявляется действующим регламентом. Перед посещением уточните график и правила у архива. Запись и заказ дел на этом сайте не выполняются.",
+          "rights": "Открытые материалы официального сайта архива; актуальность, права и перевод проверяет редактор.",
+          "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1338",
+          "sourceNote": "R02: 9c59d080f00106e46c9f58c6ffb3bdf1a5879aab131143dab8b74110dacd7299; S05 Контакты.docx; hours differ from old website, confirmation pending",
+          "links": [
+            {
+              "label": "Правила работы исследователей в читальных залах государственных архивов Республики Казахстан",
+              "url": "http://e-arhiv.vko.gov.kz/akimsemey/upload/%D0%9F%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0%20%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B%20%D0%B2%20%D1%87%D0%B8%D1%82%20%D0%B7%D0%B0%D0%BB.doc"
+            }
+          ]
+        }
+      },
+      "translations": [
+        {
+          "locale": "kk",
+          "payload": {
+            "title": "Оқу залы",
+            "body": "Берілген «Контакты» құжатында оқу залының кестесі көрсетілген: дүйсенбі–жұма, 9:00–16:00. Ескі сайтта 2000 жылғы 2 қазандағы №58 бұйрықпен бекітілген қағидалар жарияланған. Олардың өзектілігін тексеру қажет; сақталған нұсқа қолданыстағы регламент ретінде ұсынылмайды. Келмес бұрын кесте мен қағидаларды архивтен нақтылаңыз. Бұл сайтта жазылу және істерге тапсырыс беру жүргізілмейді.",
+            "rights": "Открытые материалы официального сайта архива; актуальность, права и перевод проверяет редактор.",
+            "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1338",
+            "sourceNote": "R02: 9c59d080f00106e46c9f58c6ffb3bdf1a5879aab131143dab8b74110dacd7299; S05 Контакты.docx; hours differ from old website, confirmation pending",
+            "links": [
+              {
+                "label": "Правила работы исследователей в читальных залах государственных архивов Республики Казахстан",
+                "url": "http://e-arhiv.vko.gov.kz/akimsemey/upload/%D0%9F%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0%20%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B%20%D0%B2%20%D1%87%D0%B8%D1%82%20%D0%B7%D0%B0%D0%BB.doc"
+              }
+            ]
+          }
+        },
+        {
+          "locale": "en",
+          "payload": {
+            "title": "Reading room",
+            "body": "The supplied Contacts document lists reading-room hours as Monday–Friday, 9:00–16:00. The old website publishes rules approved by Order No.58 of 2 October 2000. Their current validity requires checking; the saved version is not presented as the current regulation. Confirm hours and rules with the archive before visiting. This site does not book visits or order files.",
+            "rights": "Открытые материалы официального сайта архива; актуальность, права и перевод проверяет редактор.",
+            "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1338",
+            "sourceNote": "R02: 9c59d080f00106e46c9f58c6ffb3bdf1a5879aab131143dab8b74110dacd7299; S05 Контакты.docx; hours differ from old website, confirmation pending",
+            "links": [
+              {
+                "label": "Правила работы исследователей в читальных залах государственных архивов Республики Казахстан",
+                "url": "http://e-arhiv.vko.gov.kz/akimsemey/upload/%D0%9F%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0%20%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B%20%D0%B2%20%D1%87%D0%B8%D1%82%20%D0%B7%D0%B0%D0%BB.doc"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "review": {
+    "legalCurrency": "not independently verified; original document dates disclosed",
+    "translation": "KK/EN editorial drafts; native review pending"
+  }
+}
