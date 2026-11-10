@@ -763,4 +763,5 @@ export const en: Record<string, string> = {
   'Материал показан на языке источника.': 'This material is shown in its source language.',
   "Личный кабинет": "My account",
   "Войдите, чтобы увидеть подписки, уведомления и свои комментарии.": "Sign in to see subscriptions, notifications and your comments.",
+  'Документ доступен в формате PDF.': 'This document is available as a PDF.',
 };

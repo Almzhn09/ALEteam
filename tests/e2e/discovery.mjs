@@ -1,10 +1,10 @@
 // Cross-feature browser acceptance with real APIs, independently reviewed synthetic fixtures only.
 import {chromium} from 'playwright-core';
 import assert from 'node:assert/strict';
-import {randomBytes} from 'node:crypto';
+import {randomBytes,createHash} from 'node:crypto';
 import {execFileSync,spawn} from 'node:child_process';
 import {once} from 'node:events';
-import {mkdir,writeFile} from 'node:fs/promises';
+import {mkdir,writeFile,readFile} from 'node:fs/promises';
 const database=process.env.TEST_DATABASE_URL;if(!database||!new URL(database).pathname.endsWith('_test'))throw Error('Dedicated test DB required');
 const base=process.env.BASE_URL,out='.local/team-ui/discovery';await mkdir(out,{recursive:true});
 const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH??'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
@@ -52,6 +52,12 @@ try{
  });
  await check('chronology works without coordinates and never invents a day',async()=>{
   await page.goto(base+'/places?placeId='+place.id);await page.getByRole('heading',{name:'ДЕМО событие с точностью до месяца'}).waitFor();assert.ok(await page.locator('.history-timeline').getByText('05.1791',{exact:true}).count());assert.ok(!(await page.locator('.history-timeline').innerText()).includes('01.05.1791'));await page.getByLabel('Год от',{exact:true}).fill('1800');await page.getByRole('button',{name:'Показать',exact:true}).click();await page.getByText('Для выбранного периода опубликованных событий нет.',{exact:true}).waitFor();
+ });
+ await check('published image preview is one leaf, switches to the master on zoom and is absent from original downloads',async()=>{
+  const bytes=await readFile('data/scans/demo-doc-01.png');let upload=(await api(author,'/admin/uploads','POST',{documentId:'demo-doc-01',originalName:'ДЕМО дополнительный лист.png',mimeType:'image/png',expectedBytes:bytes.length,expectedSha256:createHash('sha256').update(bytes).digest('hex'),rights:'ALEteam CC0-1.0',sourceNote:'Synthetic master/preview browser fixture'})).item;
+  const staged=await author.request.put(base+'/api/admin/uploads/'+upload.id+'/content',{headers:{Origin:base,'Content-Type':'image/png','If-Match':'"'+upload.updatedAt+'"'},data:bytes});assert.equal(staged.status(),200);upload=(await staged.json()).item;
+  upload=(await api(reviewer,'/admin/uploads/'+upload.id+'/review','POST',{expectedUpdatedAt:upload.updatedAt,decision:'APPROVE',rightsConfirmed:true,reason:'Independent review of synthetic source bytes'})).item;upload=(await api(reviewer,'/admin/uploads/'+upload.id+'/publish','POST',{expectedUpdatedAt:upload.updatedAt,downloadable:true})).item;
+  await page.goto(base+'/documents/demo-doc-01');await page.getByRole('button',{name:'Следующий лист',exact:true}).click();await page.locator('.viewer-stage img[src="/api/files/preview-'+upload.id+'"]').waitFor();await page.getByText('Лист 2 из 2',{exact:true}).waitFor();assert.equal(await page.locator('a[href="/api/files/preview-'+upload.id+'"]').count(),0);await page.getByRole('button',{name:'Увеличить',exact:true}).click();await page.locator('.viewer-stage img[src="/api/files/'+upload.fileId+'"]').waitFor();
  });
  await check('subscription survives login return, delivers only new matches and can be removed',async()=>{
   await page.goto(base+'/catalog?q='+marker);await page.getByRole('link',{name:'Войти и следить за темой'}).click();await page.locator('input[type=email]').fill(users[1].email);await page.locator('input[type=password]').fill(password);await page.locator('main form button[type=submit]').click();await page.waitForURL(u=>u.pathname==='/catalog');await page.getByRole('button',{name:'Следить за темой',exact:true}).click();await page.getByRole('button',{name:'Вы следите за темой',exact:true}).waitFor();

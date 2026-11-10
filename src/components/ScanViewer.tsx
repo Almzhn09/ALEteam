@@ -3,23 +3,26 @@ import { useRef, useState, type KeyboardEvent } from 'react';
 import type { ArchiveFile } from '@/contracts/api';
 import { fileUrl } from '@/lib/api';
 import { useI18n } from '@/lib/lang';
+import {fittedScan} from '@/lib/scan-files';
 
 const ZOOMS = [1, 1.5, 2, 3, 4];
 
-export function ScanViewer({ files, title }: { files: ArchiveFile[]; title: string }) {
+export function ScanViewer({ files, title,previews=[] }: { files: ArchiveFile[]; title: string;previews?:ArchiveFile[] }) {
   const { t } = useI18n();
   const [index, setIndex] = useState(0);
   const [zoom, setZoom] = useState(0);
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [loaded,setLoaded]=useState<{id:string;status:'ready'|'error'}|null>(null);
   const viewer = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const file = files[index];
+  const displayFile=fittedScan(file,previews,zoom);
+  const status=loaded?.id===displayFile.id?loaded.status:'loading';
   const count = files.length;
 
   function show(i: number) {
     const next = Math.min(count - 1, Math.max(0, i));
     if (next === index) return;
-    setStatus('loading'); setZoom(0); setIndex(next); stage.current?.scrollTo(0, 0);
+    setLoaded(null); setZoom(0); setIndex(next); stage.current?.scrollTo(0, 0);
   }
 
   const go = (delta: number) => show(index + delta);
@@ -60,10 +63,10 @@ export function ScanViewer({ files, title }: { files: ArchiveFile[]; title: stri
         style={zoom > 0 ? { placeItems: 'start' } : undefined}>
         {status === 'loading' && <span className="row muted" role="status"><span className="spinner" aria-hidden="true" /> {t('Загрузка скана…')}</span>}
         {status === 'error' && <p className="field-error" role="alert">{t('Не удалось загрузить скан. Попробуйте позже.')}</p>}
-        <img key={file.id} src={fileUrl(file.id)} alt={`${t('Скан документа')} «${title}», ${t('лист {n} из {total}', { n: index + 1, total: count })}: ${file.name}`}
+        <img key={displayFile.id} src={fileUrl(displayFile.id)} alt={`${t('Скан документа')} «${title}», ${t('лист {n} из {total}', { n: index + 1, total: count })}: ${file.name}`}
           decoding="async" draggable={false}
-          ref={img => { if (img?.complete && status === 'loading') setStatus(img.naturalWidth ? 'ready' : 'error'); }}
-          onLoad={() => setStatus('ready')} onError={() => setStatus('error')}
+          ref={img => { if (img?.complete && status === 'loading') setLoaded({id:displayFile.id,status:img.naturalWidth?'ready':'error'}); }}
+          onLoad={() => setLoaded({id:displayFile.id,status:'ready'})} onError={() => setLoaded({id:displayFile.id,status:'error'})}
           style={{
             display: status === 'ready' ? 'block' : 'none',
             ...(zoom === 0 ? { maxWidth: '100%', maxHeight: 'calc(var(--stage-h) - 24px)', width: 'auto', height: 'auto' } : { width: `${scale * 100}%`, maxWidth: 'none' }),

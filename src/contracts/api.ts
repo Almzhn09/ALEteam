@@ -13,7 +13,7 @@ export interface DocumentSummary {
   year: number; type: DocumentType; fundId: string; isDemo: boolean;
   locale?: string; availableLocales?: string[];
 }
-export interface ArchiveFile { id: string; name: string; mimeType: string; size: number; downloadable: boolean }
+export interface ArchiveFile { id: string; name: string; mimeType: string; size: number; downloadable: boolean;variant?:'master'|'preview';parentFileId?:string|null }
 export interface DocumentDetail extends DocumentSummary {
   sourceUrl: string | null; rights: string; isPublic: boolean; createdAt: string;
   fund: Fund; files: ArchiveFile[];

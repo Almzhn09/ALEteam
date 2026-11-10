@@ -19,6 +19,8 @@ import {parseFact} from '../src/server/discovery-facts';
 import {arturDiscoveryEngines} from '../src/server/artur-discovery/transport';
 import type {CandidateSnapshot,SourceRef} from '../src/contracts/discovery';
 import {internalHref} from '../src/server/artur-discovery/types';
+import {originalFiles,fittedScan} from '../src/lib/scan-files';
+import type {ArchiveFile} from '../src/contracts/api';
 const base=(id:string,patch:Partial<EngineMaterial>={}):EngineMaterial=>({id,kind:'document',locale:'ru',revision:'rev-1',title:'Школа города Риддер',description:'Фотографии школы и школьной библиотеки',href:'/documents/'+id,publication:'published',metadataAllowed:true,branchVisible:true,deleted:false,textAllowed:true,topicIds:['education'],facts:[],isDemo:true,...patch});
 const editorial={personalizationEnabled:false,historyEnabled:false,topicIds:[],viewedIds:[]};
 const snapshot=(patch:Partial<ReadableSnapshot>={}):ReadableSnapshot=>({source:{id:'doc-1',kind:'document',locale:'ru',revision:'r1',title:'Учёт документов',href:'/documents/doc-1'},publication:'published',metadataAllowed:true,digitalCopyAllowed:true,branchVisible:true,deleted:false,fragments:[{id:'p1',text:'Архивный фонд содержит документы учреждения. Опись помогает найти нужное дело. Архивный шифр Р-001/02 нужно сохранять точно.',page:1,quality:'verified'}],...patch});
@@ -26,6 +28,12 @@ const snapshot=(patch:Partial<ReadableSnapshot>={}):ReadableSnapshot=>({source:{
 test('authorized file text URLs are supported without accepting arbitrary paths or external sources',()=>{
  assert.equal(internalHref.parse('/api/files/demo-scan-1/text'),'/api/files/demo-scan-1/text');
  for(const path of ['https://example.test/api/files/f/text','/api/files/../private/text','/api/files/f/content','/api/files/f/text?path=secret'])assert.equal(internalHref.safeParse(path).success,false);
+});
+test('a derivative is not a second scan leaf; fit uses its real preview and zoom preserves the master',()=>{
+ const master:ArchiveFile={id:'scan',name:'Original.png',mimeType:'image/png',size:200000,downloadable:true,variant:'master'};
+ const preview:ArchiveFile={...master,id:'small',size:20000,downloadable:false,variant:'preview',parentFileId:master.id};
+ const unrelated:ArchiveFile={...preview,id:'other',parentFileId:'different-source'};
+ assert.deepEqual(originalFiles([preview,master,unrelated]),[master]);assert.equal(fittedScan(master,[unrelated,preview],0).id,preview.id);assert.equal(fittedScan(master,[preview],1).id,master.id);assert.equal(fittedScan(master,[unrelated],0).id,master.id);
 });
 test('newspaper review pack retains all real holdings rows and never turns them into documents',()=>{
  const data=JSON.parse(readFileSync('data/artur/discovery/newspaper-holdings-drafts.json','utf8'));

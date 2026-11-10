@@ -12,6 +12,7 @@ import { CopyButton, Share } from '@/components/Share';
 import { RecognizedText } from '@/components/DocumentDiscovery';
 import {RelatedMaterials,ExplainDocument} from '@/components/DiscoveryMaterials';
 import {RememberDocument} from '@/components/HomeDiscovery';
+import {originalFiles} from '@/lib/scan-files';
 
 const isImage = (mime: string) => mime === 'image/png' || mime === 'image/jpeg';
 const isPdf = (mime: string) => mime === 'application/pdf';
@@ -29,7 +30,9 @@ export interface PublicDocument {
 
 export async function DocumentView({ doc, translated }: { doc: PublicDocument; translated: boolean }) {
   const t=await getT();
-  const scans = doc.files.filter(f => isImage(f.mimeType));
+  const originals=originalFiles(doc.files);
+  const scans = originals.filter(f => isImage(f.mimeType));
+  const firstPdf=originals.find(f=>isPdf(f.mimeType));
   const period = doc.yearTo && doc.yearTo !== doc.year ? `${doc.year}–${doc.yearTo}` : String(doc.year);
   const inventory = doc.archivalCase?.inventory;
   const filter = (query: Record<string, string>) => `/catalog?${new URLSearchParams(query)}`;
@@ -53,17 +56,18 @@ export async function DocumentView({ doc, translated }: { doc: PublicDocument; t
           </section>
 
           {!doc.allowDigitalCopy ? <Notice tone="info" title={t('Цифровая копия закрыта')}><p>{doc.accessConditions ?? t('Карточка открыта, но доступ к цифровой копии не предоставляется.')}</p></Notice>
-            : scans.length > 0 ? <ScanViewer files={scans} title={doc.title} />
+            : scans.length > 0 ? <ScanViewer files={scans} previews={doc.files} title={doc.title} />
+            : firstPdf?<div className="panel stack"><p>{t('Документ доступен в формате PDF.')}</p><PdfViewer file={firstPdf} title={doc.title}/></div>
             : <div className="panel muted small">{t('Для этого документа нет опубликованных изображений сканов.')}</div>}
           {scans.filter(f => /^demo-scan-[1-5]$/.test(f.id)).map(f => <RecognizedText key={f.id} fileId={f.id} />)}
           {doc.allowDigitalCopy&&<ExplainDocument documentId={doc.id}/>}
           <RelatedMaterials documentId={doc.id}/>
 
-          {doc.files.length > 0 && (
+          {originals.length > 0 && (
             <section aria-labelledby="files-title">
               <h2 id="files-title">{t('Файлы')}</h2>
               <ul className="result-list">
-                {doc.files.map(f => (
+                {originals.map(f => (
                   <li key={f.id} className="card card-flat" style={{ padding: 'var(--space-3) var(--space-4)' }}>
                     <div className="row spread">
                       <span lang={doc.locale}>{f.name} <span className="muted small">· {isPdf(f.mimeType) ? 'PDF' : isImage(f.mimeType) ? t('изображение') : f.mimeType} · {formatSize(f.size)}</span></span>
