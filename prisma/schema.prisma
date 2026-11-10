@@ -17,6 +17,8 @@ enum CommentStatus {
   HIDDEN
 }
 model User {
+ discoveryPreference DiscoveryPreference?
+ topicSubscriptions TopicSubscription[]
   id            String    @id
   name          String
   email         String    @unique
@@ -245,6 +247,7 @@ model ModerationDecision {
 }
 
 model ArchiveBranch {
+ discoveryFacts DiscoveryFact[]
  id String @id
  code String @unique
  name String
@@ -335,6 +338,7 @@ enum PublicationState {
  ARCHIVED
 }
 model ContentItem {
+ sourceDraftBindings SourceDraftBinding[]
  document Document?
  id String @id @default(cuid())
  slug String @unique
@@ -346,6 +350,7 @@ model ContentItem {
  revisions ContentRevision[]
 }
 model ContentRevision {
+ sourceDraftBindings SourceDraftBinding[]
  catalogBaseVersion Int?
  publishedDocumentTranslation DocumentTranslation?
  id String @id @default(cuid())
@@ -471,4 +476,108 @@ model CatalogImportSource {
  batch CatalogImport @relation(fields: [batchId, branchId, sourceNamespace], references: [id, branchId, sourceNamespace])
  document Document @relation(fields: [documentId], references: [id])
  @@id([branchId, sourceNamespace, sourceId])
+}
+
+// COL-B01: source-bound structured facts. Narratives stay in the existing reviewed CMS.
+model DiscoveryFact {
+ id String @id @default(cuid())
+ kind String
+ branchId String?
+ parentId String?
+ data Json
+ sources Json
+ status String @default("DRAFT")
+ authorId String
+ reviewerId String?
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ branch ArchiveBranch? @relation(fields:[branchId], references:[id])
+ parent DiscoveryFact? @relation("DiscoveryParent", fields:[parentId], references:[id])
+ children DiscoveryFact[] @relation("DiscoveryParent")
+ @@index([kind,status,id])
+ @@index([parentId,status,id])
+}
+model SourceDraftBatch {
+ id String @id @default(cuid())
+ digest String
+ mode String
+ manifest Json
+ report Json
+ status String
+ authorId String
+ createdAt DateTime @default(now())
+ committedAt DateTime?
+ @@index([authorId,createdAt])
+}
+model SourceDraftBinding {
+ id String @id @default(cuid())
+ namespace String
+ sourceKey String
+ locale String
+ requestHash String
+ sourceHash String
+ itemId String
+ revisionId String
+ branchId String?
+ original Json
+ createdAt DateTime @default(now())
+ item ContentItem @relation(fields:[itemId], references:[id])
+ revision ContentRevision @relation(fields:[revisionId], references:[id])
+ @@unique([namespace,sourceKey,locale])
+ @@index([itemId])
+}
+model DiscoveryPreference {
+ userId String @id
+ topicIds String[] @default([])
+ personalizationEnabled Boolean @default(false)
+ historyEnabled Boolean @default(false)
+ updatedAt DateTime @updatedAt
+ user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+}
+model TopicSubscription {
+ id String @id @default(cuid())
+ userId String
+ fingerprint String
+ spec Json
+ active Boolean @default(true)
+ baseline BigInt
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+ notices TopicNotice[]
+ @@unique([userId,fingerprint])
+ @@index([active,baseline])
+}
+model MaterialPublication {
+ sequence BigInt @id @default(autoincrement())
+ kind String
+ materialId String
+ locale String
+ revision String
+ createdAt DateTime @default(now())
+ @@unique([kind,materialId,locale,revision])
+}
+model TopicNotice {
+ id String @id @default(cuid())
+ subscriptionId String
+ materialKey String
+ publicationSequence BigInt
+ readAt DateTime?
+ createdAt DateTime @default(now())
+ subscription TopicSubscription @relation(fields:[subscriptionId], references:[id], onDelete:Cascade)
+ @@unique([subscriptionId,materialKey])
+ @@index([subscriptionId,createdAt,id])
+}
+model DiscoveryAggregate {
+ id String @id @default(cuid())
+ kind String
+ materialId String
+ locale String
+ periodFrom DateTime
+ periodTo DateTime
+ count Int
+ approvedBy String
+ sourceNote String
+ createdAt DateTime @default(now())
+ @@unique([kind,materialId,locale,periodFrom,periodTo])
 }
