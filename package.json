@@ -54,7 +54,8 @@
     "archive:jobs": "node --env-file-if-exists=.env --import tsx scripts/watch-archive-jobs.ts",
     "check:display": "node --env-file-if-exists=.env --import tsx scripts/check-display.ts",
     "sources:verify": "node scripts/verify-archive-sources.mjs",
-    "check:team-ui": "node --import tsx scripts/check-team-ui.ts"
+    "check:team-ui": "node --import tsx scripts/check-team-ui.ts",
+    "check:performance": "node scripts/check-performance.mjs"
   },
   "dependencies": {
     "@e965/xlsx": "0.20.3",

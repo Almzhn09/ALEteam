@@ -35,6 +35,8 @@ jobs:
       - run: npm test
       - name: Source-inspired discovery planning holdout
         run: npm run evaluate:discovery
+      - name: Verify immutable supplied sources
+        run: npm run sources:verify
       - name: Synthetic aggregate quality report
         run: |
           mkdir -p .local/assistant-quality
@@ -79,6 +81,12 @@ jobs:
           CHROMIUM_PATH="$browser_path" npm run test:release
       - name: Discovery transport, subscriptions, source and spreadsheet adapters
         run: npm run test:discovery
+      - name: Integrated team UI, discovery journey and spacing matrix
+        shell: bash
+        run: |
+          browser_path="$(command -v google-chrome || command -v chromium)"
+          test -n "$browser_path"
+          CHROMIUM_PATH="$browser_path" npm run check:team-ui
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -92,6 +100,10 @@ jobs:
             .local/uploads
             .local/imports
             .local/discovery
+            .local/team-ui/summary.json
+            .local/team-ui/discovery/report.json
+            .local/team-ui/discovery/*.png
+            .local/team-ui/visual/report.json
   deployment:
     runs-on: ubuntu-latest
     steps:

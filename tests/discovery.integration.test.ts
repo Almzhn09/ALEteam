@@ -173,7 +173,7 @@ test('COL-A02: live catalog asks which Altay is intended and accepts an explicit
 });
 test('COL-B03 explanation uses readable public file text only; restricted copy and stale version are rejected',async()=>{
  const proof=(await ok('/discovery/materials/document/demo-doc-01')).source;
- const before=await ok('/documents/demo-doc-01/explanation','POST',{locale:'ru'});assert.equal(before.status,'ready');assert.equal(before.mode,'extractive');assert.ok(before.citations.length);assert.ok(before.limitations.some((s:string)=>s.includes('ошиб')));
+ const before=await ok('/documents/demo-doc-01/explanation','POST',{locale:'ru'});assert.equal(before.status,'ready');assert.equal(before.mode,'extractive');assert.equal(before.ocr.used,true);assert.equal(before.ocr.quality,'unreviewed');assert.ok(before.citations.length);assert.ok(before.limitations.some((s:string)=>s.includes('ошиб')));
  for(const citation of before.citations){const authorized=(await ok(citation.source.href.replace('/api',''))).item;assert.ok(authorized.text.includes(citation.quote));assert.equal(citation.source.fragment.page,undefined);}
  const same=await ok('/documents/demo-doc-01/explanation','POST',{locale:'en',sourceRevision:before.sourceRevision});assert.equal(same.status,'ready');assert.equal(same.citations[0].source.locale,'ru');
  assert.equal((await call('/documents/demo-doc-01/explanation','POST',{locale:'ru',sourceRevision:'0'.repeat(64)})).status,409);

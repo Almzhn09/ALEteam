@@ -41,6 +41,7 @@ export async function explanation(request:Request,id:string){
  if(!input)return json({...base,status:'no_text',limitations:['No approved readable file text is available.']});
  if(!discoveryEngines.explainFragments)return json({...base,status:'unsupported',limitations:['COL-A03 engine is not connected. OCR, if used, requires independent review.']});
  const output=checkedExplanation(discoveryEngines.explainFragments(input,{locale:p.locale,now:new Date().toISOString()}),input);
+ output.ocr=input.ocr;
  if(truncated)output.limitations.push({ru:'Использованы первые 12 000 символов разрешённого текста; это выдержки из части документа.',kk:'Рұқсат етілген мәтіннің алғашқы 12 000 таңбасы пайдаланылды; үзінділер құжаттың бір бөлігіне қатысты.',en:'Only the first 12,000 characters of authorized text were used; the excerpts cover part of the document.'}[p.locale]);
  const current=await resolveMaterial({kind:'document',id},material.source.locale,false);if(!current||current.source.revision!==material.source.revision)unavailable();
  const text=await authorizedFileText(selectedFileId!);

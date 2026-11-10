@@ -39,6 +39,7 @@ export interface AuthorizedText {
 export interface Explanation {
   status: 'ready' | 'no_text' | 'low_quality' | 'unsupported'; mode: 'extractive' | 'glossary' | 'grounded' | null;
   sourceRevision: string | null; summary?: string; terms: {term: string; explanation: string; fragmentIds: string[]}[];
+  ocr?:AuthorizedText['ocr'];
   citations: {fragmentId: string; quote: string; source: SourceRef}[]; limitations: string[];
 }
 export interface InterestSettings {topicIds: string[]; personalizationEnabled: boolean; historyEnabled: boolean; updatedAt: string | null}

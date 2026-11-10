@@ -179,6 +179,10 @@ try {
       measurements.push({name,requests:times.length,p50Ms:Math.round(times[5]*100)/100,p95Ms:Math.round(times[11]*100)/100,publicDocuments:catalog.total,corpus:'synthetic seeded demo plus this isolated workflow; not S09 funds',runtime:'Node 24 Linux Docker local loopback; sequential requests; includes full response bytes',browser:'Node fetch; Lighthouse not measured'});
     }
   });
+  await check('standalone explanation keeps real OCR provenance, citations and original language fallback',async()=>{
+    const origin=config.BETTER_AUTH_URL,response=await fetch(origin+'/api/documents/demo-doc-01/explanation',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify({locale:'en'})});assert.equal(response.status,200);
+    const result=await response.json();assert.equal(result.status,'ready');assert.equal(result.mode,'extractive');assert.equal(result.ocr.used,true);assert.equal(result.ocr.quality,'unreviewed');assert.ok(result.citations.length);assert.ok(result.citations.every(c=>c.source.locale==='ru'&&c.source.fragment.page===undefined));
+  });
   await check('compiled standalone assistant retains chained date bounds and refuses contradictions',async()=>{
     const origin=config.BETTER_AUTH_URL,cookie=await login(origin);
     const history=[{role:'user',content:'photos in the 1930s'},{role:'user',content:'and after 1930'}];
