@@ -6,10 +6,12 @@ import { db } from './db';
 import { ApiError, idSchema, json, pageSchema, queryParams } from './http';
 import { archiveLocale } from './archive-schema';
 import {publicDocumentWhere, publicDocumentSql} from './public-visibility';
+import {expandCatalogNames} from './discovery-names';
 import {createHash} from 'node:crypto';
 
 const filterText = z.string().trim().min(1).max(200);
 export const catalogSchema = pageSchema.extend({
+  nameMode:z.enum(['literal','expanded']).default('literal'),placeId:idSchema.optional(),
   q: z.string().trim().max(200).default(''), locale: archiveLocale.default('ru'),
   branchId: idSchema.optional(), fundId: idSchema.optional(), inventoryId: idSchema.optional(), caseId: idSchema.optional(),
   fundNumber: filterText.optional(), inventoryNumber: filterText.optional(), caseNumber: filterText.optional(),
@@ -24,11 +26,17 @@ export const catalogSchema = pageSchema.extend({
 const contains = (value: string) => `%${value.replace(/[\\%_]/g, '\\$&')}%`;
 export async function documentList(request: Request) {
   const p = catalogSchema.parse(queryParams(request));
+  const {allowedDocumentIds,...expansion}=await expandCatalogNames(p,p.locale);
+  if(expansion.clarificationRequired)return json({items:[],total:0,page:p.page,pageSize:p.pageSize,locale:p.locale,nameExpansion:expansion});
+  const queries=expansion.applied&&!p.locality&&!p.placeId&&expansion.variants.length?expansion.variants:[p.q];
+  const queryFilters=queries.filter(Boolean).map(q=>Prisma.sql`(t."searchVector" @@ plainto_tsquery('simple', ${q})
+    OR ${p.locale==='ru'?Prisma.sql`t."russianVector" @@ plainto_tsquery('russian', ${q})`:Prisma.sql`false`}
+    OR t.title ILIKE ${contains(q)} OR d.reference ILIKE ${contains(q)}
+    OR EXISTS(SELECT 1 FROM unnest(t.tags) AS term WHERE term ILIKE ${contains(q)}))`);
+  const locations=expansion.applied&&p.locality?expansion.variants: p.locality?[p.locality]:[];
   const filter = Prisma.sql`${publicDocumentSql} AND t.locale = ${p.locale}
-    ${p.q ? Prisma.sql`AND (t."searchVector" @@ plainto_tsquery('simple', ${p.q})
-      OR ${p.locale === 'ru' ? Prisma.sql`t."russianVector" @@ plainto_tsquery('russian', ${p.q})` : Prisma.sql`false`}
-      OR t.title ILIKE ${contains(p.q)} OR d.reference ILIKE ${contains(p.q)}
-      OR EXISTS(SELECT 1 FROM unnest(t.tags) AS term WHERE term ILIKE ${contains(p.q)}))` : Prisma.empty}
+    ${allowedDocumentIds?(allowedDocumentIds.length?Prisma.sql`AND d.id IN (${Prisma.join(allowedDocumentIds)})`:Prisma.sql`AND false`):Prisma.empty}
+    ${queryFilters.length?Prisma.sql`AND (${Prisma.join(queryFilters,' OR ')})`:Prisma.empty}
     ${p.branchId ? Prisma.sql`AND f."branchId" = ${p.branchId}` : Prisma.empty}
     ${p.fundId ? Prisma.sql`AND d."fundId" = ${p.fundId}` : Prisma.empty}
     ${p.inventoryId ? Prisma.sql`AND c."inventoryId" = ${p.inventoryId}` : Prisma.empty}
@@ -39,7 +47,7 @@ export async function documentList(request: Request) {
     ${p.reference ? Prisma.sql`AND d.reference ILIKE ${contains(p.reference)}` : Prisma.empty}
     ${p.author ? Prisma.sql`AND t."authorName" ILIKE ${contains(p.author)}` : Prisma.empty}
     ${p.organization ? Prisma.sql`AND t.organization ILIKE ${contains(p.organization)}` : Prisma.empty}
-    ${p.locality ? Prisma.sql`AND t.locality ILIKE ${contains(p.locality)}` : Prisma.empty}
+    ${locations.length?Prisma.sql`AND (${Prisma.join(locations.map(name=>Prisma.sql`t.locality ILIKE ${contains(name)}`),' OR ')})`:Prisma.empty}
     ${p.originalLanguage ? Prisma.sql`AND lower(d."originalLanguage") = lower(${p.originalLanguage})` : Prisma.empty}
     ${p.category ? Prisma.sql`AND lower(t.category) = lower(${p.category})` : Prisma.empty}
     ${p.tag ? Prisma.sql`AND EXISTS(SELECT 1 FROM unnest(t.tags) AS tag WHERE lower(tag) = lower(${p.tag}))` : Prisma.empty}
@@ -56,7 +64,7 @@ export async function documentList(request: Request) {
       FROM ${tables} WHERE ${filter} ORDER BY ${order} LIMIT ${p.pageSize} OFFSET ${(p.page - 1) * p.pageSize}`),
     db.$queryRaw<{count: number}[]>(Prisma.sql`SELECT count(*)::int AS count FROM ${tables} WHERE ${filter}`),
   ], {isolationLevel: 'RepeatableRead'});
-  return json({items, page: p.page, pageSize: p.pageSize, total: counts[0].count, locale: p.locale});
+  return json({items, page: p.page, pageSize: p.pageSize, total: counts[0].count, locale: p.locale, nameExpansion:expansion});
 }
 export async function publicDocument(id: string, request?: Request) {
   idSchema.parse(id);
