@@ -1,0 +1,17 @@
+{
+  "syntheticData": true,
+  "stagingDoesNotMutateArchive": true,
+  "scopesAndStrictInput": true,
+  "draftOnlyCommitAndStringIdentity": true,
+  "concurrentCommitDoesNotDuplicate": true,
+  "importedDraftsAbsentFromAssistant": true,
+  "idempotentReorderedReplay": true,
+  "exactMetadataExportVerified": true,
+  "conflictsHaveNoPartialArchiveWrites": true,
+  "destinationRecheckedAtCommit": true,
+  "softRollbackRetainsHistoryAndNeverRepublishes": true,
+  "pendingFileWorkBlocksRollback": true,
+  "manualEditsAreProtectedFromOverwriteAndRollback": true,
+  "ordinaryReviewAndLocaleVersionGatesRemainEnforced": true,
+  "quotaAuditAndRevocation": true
+}
