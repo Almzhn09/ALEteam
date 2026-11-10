@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "source": "S09-link-2.xlsb.json",
+      "sha256": "437e527ac4f3441540fcdfa6f8adaed9c67e3fe36c43aa40423cec84bf074778",
+      "sourceAsOf": "unconfirmed; filenames2018 conflict with link labels2026",
+      "nonemptyRows": 3755,
+      "distinctLiteralFundNumbers": 1552,
+      "historyGroups": 523,
+      "rowsMissingNumber": [
+        3467,
+        3468
+      ],
+      "numericNumberRowsPotentialDisplayFormattingLoss": []
+    },
+    {
+      "source": "S09-link-3.xlsb.json",
+      "sha256": "aa2b8ed1e372850d282926687d97a35e1577f82e581c8c609489b363987520c5",
+      "sourceAsOf": "unconfirmed; filenames2018 conflict with link labels2026",
+      "nonemptyRows": 318,
+      "distinctLiteralFundNumbers": 153,
+      "historyGroups": 65,
+      "rowsMissingNumber": [
+        319
+      ],
+      "numericNumberRowsPotentialDisplayFormattingLoss": []
+    }
+  ],
+  "mapping": {
+    "number": "literal string; no Unicode/accounting normalization",
+    "name": "historical names as separate source assertions; canonical current name requires review",
+    "period": "preserve original notation, not parsed precise dates",
+    "volume": "raw source column only; not individual document count",
+    "branch": "unknown; bind to reviewed real Branch id before commit",
+    "inventory/case/document": "not present; do not fabricate",
+    "rights": "all draft; metadata/copy approval separate",
+    "datesExcel": "raw serials retained; confirm epoch/cell display before conversion"
+  }
+}

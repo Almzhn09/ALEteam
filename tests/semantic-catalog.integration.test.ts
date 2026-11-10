@@ -169,3 +169,29 @@ test('approved real-format references and lettered accounting numbers are search
  const accounting=await ok('/assistant','POST',{question:'Карты фонд Р-0017 опись 0001 дело 0003/А 1988',locale:'ru'},readers.ru);assert.deepEqual(accounting.sources.map((s:{id:string})=>s.id),[created.item.id]);assert.equal(accounting.catalogQuery.fundNumber,'Р-0017');assert.equal(accounting.catalogQuery.inventoryNumber,'0001');assert.equal(accounting.catalogQuery.caseNumber,'0003/А');
  refinements.exactLabelledReferencesAndLetteredIdentifiers=true;await mkdir('.local/semantic-catalog',{recursive:true});await writeFile('.local/semantic-catalog/refinements.json',JSON.stringify({syntheticData:true,...refinements},null,2)+'\n');
 });
+
+
+test('COL-A02: source-derived historical names retrieve a real published record in RU and EN',async()=>{
+ const id=documents.p60;const originals=await db.documentTranslation.findMany({where:{documentId:id},select:{locale:true,locality:true}});
+ try{
+  for(const row of originals)await db.documentTranslation.update({where:{documentId_locale:{documentId:id,locale:row.locale}},data:{locality:row.locale==='en'?'Leninogorsk':'Лениногорск'}});
+  for(const [locale,question] of [['ru','Фото Риддера 1960'],['en','Photos of Ridder in 1960']] as const){
+   const answer=await ok('/assistant','POST',{question,locale},readers[locale]);assert.deepEqual(answer.sources.map((s:{id:string})=>s.id),[id]);
+   assert.equal(answer.nameExpansion.status,'resolved');assert.ok(answer.nameExpansion.variants.includes('Лениногорск'));assert.equal(answer.catalogQuery.yearFrom,1960);
+  }
+ }finally{for(const row of originals)await db.documentTranslation.update({where:{documentId_locale:{documentId:id,locale:row.locale}},data:{locality:row.locality}});}
+});
+test('COL-A02: the existing assistant adds source-grounded research steps and safe catalog actions',async()=>{
+ const answer=await ok('/assistant','POST',{question:'Хочу узнать историю школы в Усть-Каменогорске 1960',locale:'ru'},readers.ru);
+ assert.equal(answer.noAnswer,false);assert.deepEqual(answer.sources.map((s:{id:string})=>s.id),[documents.p60]);
+ assert.ok(answer.researchSteps.some((s:{kind:string})=>s.kind==='follow_sources'));assert.equal(answer.actions[0].type,'catalogSearch');assert.equal(answer.actions[0].query.q,'школа');
+ assert.equal(answer.actions[0].query.yearFrom,1960);assert.ok(answer.researchLimitations[0].includes('автоматически'));
+ const none=await ok('/assistant','POST',{question:'Хочу узнать историю школы города Риддер 1880',locale:'ru'},readers.ru);assert.equal(none.noAnswer,true);assert.deepEqual(none.sources,[]);assert.ok(none.researchSteps.length>0);
+});
+test('COL-A02: ambiguous place and missing research subject return clarification without executable query',async()=>{
+ for(const question of ['Хочу узнать','Хочу изучить историю Алтая']){
+  const answer=await ok('/assistant','POST',{question,locale:'ru'},readers.ru);assert.equal(answer.noAnswer,true);assert.deepEqual(answer.sources,[]);assert.equal(answer.catalogQuery,undefined);assert.deepEqual(answer.actions,[]);
+ }
+ const answer=await ok('/assistant','POST',{question:'после 1940',locale:'ru',history:[{role:'user',content:'Фото Алтая'}]},readers.ru);
+ assert.equal(answer.noAnswer,true);assert.equal(answer.catalogQuery,undefined);assert.match(answer.answer,/Уточните место/);
+});

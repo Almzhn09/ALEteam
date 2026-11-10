@@ -1,0 +1,254 @@
+{
+  "version": 1,
+  "draftsOnly": true,
+  "records": [
+    {
+      "id": "ust-founded",
+      "placeId": "ust-kamenogorsk",
+      "status": "DRAFT",
+      "publicationAllowed": false,
+      "locale": "ru",
+      "title": "Основание Усть-Каменогорска",
+      "date": {
+        "year": 1720,
+        "month": 8,
+        "day": 30,
+        "precision": "day"
+      },
+      "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+      "evidence": [
+        {
+          "sourceId": "S03--календарь 2025",
+          "path": "sources/archive-20261110/text/S03--календарь 2025 год каз рус.docx.txt",
+          "sha256": "32f4a1f1a0cc72a340f720ce23eada196043d19ba7814adffcacccecb9c74a06",
+          "line": 100,
+          "quote": "30 августа | 305 лет (1720) со дня образования г. Усть-Каменогорска"
+        }
+      ],
+      "documentIds": [],
+      "coordinates": null,
+      "sourceAnniversaryText": "305 лет (1720) со дня образования г. Усть-Каменогорска",
+      "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+    },
+    {
+      "id": "ust-school",
+      "placeId": "ust-kamenogorsk",
+      "status": "DRAFT",
+      "publicationAllowed": false,
+      "locale": "ru",
+      "title": "Открытие Мариинского женского училища в Усть-Каменогорске",
+      "date": {
+        "year": 1901,
+        "month": 8,
+        "precision": "month"
+      },
+      "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+      "evidence": [
+        {
+          "sourceId": "S03--календарь 2026",
+          "path": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+          "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "line": 26,
+          "quote": "август | 125 лет (1901) со дня открытия в г.Усть-Каменогорске Мариинского  женского училища"
+        }
+      ],
+      "documentIds": [],
+      "coordinates": null,
+      "sourceAnniversaryText": "125 лет (1901) со дня открытия в г.Усть-Каменогорске Мариинского  женского училища",
+      "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+    },
+    {
+      "id": "ust-titanium",
+      "placeId": "ust-kamenogorsk",
+      "status": "DRAFT",
+      "publicationAllowed": false,
+      "locale": "ru",
+      "title": "Ввод в эксплуатацию Усть-Каменогорского титаномагниевого комбината",
+      "date": {
+        "year": 1965,
+        "month": 3,
+        "day": 27,
+        "precision": "day"
+      },
+      "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+      "evidence": [
+        {
+          "sourceId": "S03--календарь 2025",
+          "path": "sources/archive-20261110/text/S03--календарь 2025 год каз рус.docx.txt",
+          "sha256": "32f4a1f1a0cc72a340f720ce23eada196043d19ba7814adffcacccecb9c74a06",
+          "line": 88,
+          "quote": "27 марта | 70 лет со (1965) дня сдачи в эксплуатацию Усть-Каменогорского титаномагниевого комбината"
+        }
+      ],
+      "documentIds": [],
+      "coordinates": null,
+      "sourceAnniversaryText": "70 лет со (1965) дня сдачи в эксплуатацию Усть-Каменогорского титаномагниевого комбината",
+      "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+    },
+    {
+      "id": "ridder-founded",
+      "placeId": "ridder",
+      "status": "DRAFT",
+      "publicationAllowed": false,
+      "locale": "ru",
+      "title": "Основание Риддера",
+      "date": {
+        "year": 1786,
+        "month": 5,
+        "precision": "month"
+      },
+      "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+      "evidence": [
+        {
+          "sourceId": "S03--календарь 2026",
+          "path": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+          "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "line": 14,
+          "quote": "май | 240 лет (1786) со дня основания г.Риддер"
+        }
+      ],
+      "documentIds": [],
+      "coordinates": null,
+      "sourceAnniversaryText": "240 лет (1786) со дня основания г.Риддер",
+      "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+    },
+    {
+      "id": "ridder-renamed",
+      "placeId": "ridder",
+      "status": "DRAFT",
+      "publicationAllowed": false,
+      "locale": "ru",
+      "title": "Переименование Риддера в Лениногорск",
+      "date": {
+        "year": 1941,
+        "month": 2,
+        "day": 6,
+        "precision": "day"
+      },
+      "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+      "evidence": [
+        {
+          "sourceId": "S03--календарь 2026",
+          "path": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+          "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "line": 10,
+          "quote": "6 февраля | 85 лет (1941) со дня переименования г.Риддер в Лениногорск"
+        }
+      ],
+      "documentIds": [],
+      "coordinates": null,
+      "sourceAnniversaryText": "85 лет (1941) со дня переименования г.Риддер в Лениногорск",
+      "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+    },
+    {
+      "id": "ridder-museum",
+      "placeId": "ridder",
+      "status": "DRAFT",
+      "publicationAllowed": false,
+      "locale": "ru",
+      "title": "Открытие историко-краеведческого музея Риддера",
+      "date": {
+        "year": 1961,
+        "month": 7,
+        "day": 1,
+        "precision": "day"
+      },
+      "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+      "evidence": [
+        {
+          "sourceId": "S03--календарь 2026",
+          "path": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+          "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "line": 20,
+          "quote": "1 июля | 65 лет (1961) со дня образования историко- краеведческого музея в г.  Риддере"
+        }
+      ],
+      "documentIds": [],
+      "coordinates": null,
+      "sourceAnniversaryText": "65 лет (1961) со дня образования историко- краеведческого музея в г.  Риддере",
+      "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+    },
+    {
+      "id": "altay-founded",
+      "placeId": "altay-city",
+      "status": "DRAFT",
+      "publicationAllowed": false,
+      "locale": "ru",
+      "title": "Основание Зыряновска",
+      "date": {
+        "year": 1791,
+        "precision": "year"
+      },
+      "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+      "evidence": [
+        {
+          "sourceId": "S03--календарь 2026",
+          "path": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+          "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "line": 45,
+          "quote": "1791 г. | 235 лет со дня основания г.Зыряновск"
+        }
+      ],
+      "documentIds": [],
+      "coordinates": null,
+      "sourceAnniversaryText": "235 лет со дня основания г.Зыряновск",
+      "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+    },
+    {
+      "id": "altay-city-status",
+      "placeId": "altay-city",
+      "status": "DRAFT",
+      "publicationAllowed": false,
+      "locale": "ru",
+      "title": "Преобразование посёлка Зыряновск в город",
+      "date": {
+        "year": 1941,
+        "month": 1,
+        "day": 17,
+        "precision": "day"
+      },
+      "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+      "evidence": [
+        {
+          "sourceId": "S03--календарь 2026",
+          "path": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+          "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "line": 7,
+          "quote": "17 января | 85 лет (1941) со дня преобразования п.Зыряновск в город"
+        }
+      ],
+      "documentIds": [],
+      "coordinates": null,
+      "sourceAnniversaryText": "85 лет (1941) со дня преобразования п.Зыряновск в город",
+      "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+    },
+    {
+      "id": "altay-renamed",
+      "placeId": "altay-city",
+      "status": "DRAFT",
+      "publicationAllowed": false,
+      "locale": "ru",
+      "title": "Переименование Зыряновска в Алтай",
+      "date": {
+        "year": 2018,
+        "month": 12,
+        "day": 28,
+        "precision": "day"
+      },
+      "dateBasis": "S02 cites decree date; branch re-registration is a different event",
+      "evidence": [
+        {
+          "sourceId": "S02",
+          "path": "sources/archive-20261110/text/S02--История архива.docx.txt",
+          "sha256": "752bdbe469e558be73e14f526028b933cf372ea2a2f08b241fee69961e9ac3e0",
+          "line": 39,
+          "quote": "В 2019 году произошло переименование Зыряновского филиала  КГУ «Государственный  архив» управления культуры, архивов и документации Восточно-Казахстанской области. На основании Указа Президента Республики Казахстан от 28 декабря 2018 года № 821 Зыряновский район и город Зыряновск Восточно-Казахстанской области переименованы в район Алтай и город Алтай. В связи с чем, 11 февраля 2019 года Зыряновский филиал прошел государственную перерегистрацию в органах юстиции и стал именоваться филиал Алтай КГУ «Государственный архив» управления культуры, архивов и документации Восточно-Казахстанской области."
+        }
+      ],
+      "documentIds": [],
+      "coordinates": null,
+      "sourceAnniversaryText": "Переименование Зыряновска в Алтай по указу №821",
+      "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+    }
+  ]
+}

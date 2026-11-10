@@ -13,6 +13,7 @@ import {semanticConversationPlan,requiresCatalogEvidence} from './semantic-catal
 import {retrieveSemanticCatalog,revalidateCatalogSources,semanticCatalogAnswer,type CatalogPassage} from './semantic-catalog';
 import {englishSiteDialog} from './english-dialog';
 import {publicDocumentWhere} from './public-visibility';
+import {planResearch} from './artur-discovery/research';
 
 export const assistantInput = z.object({
   locale: z.enum(['ru','kk','en']).optional(),
@@ -62,5 +63,6 @@ export async function assistant(request: Request) {
     return document&&document.translations.length ? {id:document.id,title:document.translations[0].title,isDemo:document.isDemo,locale:documentLocale,kind:'document',href:`/api/documents/${id}?locale=${documentLocale}`} : undefined;
   });
   if (sources.some(s => !s)) throw new ApiError(502, 'INVALID_ASSISTANT_RESPONSE', 'Ответ помощника содержит недоступный источник.');
-  return json({ answer: result.answer, noAnswer: result.noAnswer, mode: result.mode ?? 'external', sources,...(plan.handled&&!plan.clarification&&!cmsPassages.length&&!process.env.ASSISTANT_SERVICE_URL?{catalogQuery:plan.filters}:{}) });
+  const research=!process.env.ASSISTANT_SERVICE_URL?planResearch(input.question,locale,plan):undefined;
+  return json({...(research?{researchSteps:research.steps,actions:research.actions,researchLimitations:research.limitations}:{}),...(plan.nameExpansion?{nameExpansion:plan.nameExpansion}:{}), answer: result.answer, noAnswer: result.noAnswer, mode: result.mode ?? 'external', sources,...(plan.handled&&!plan.clarification&&!cmsPassages.length&&!process.env.ASSISTANT_SERVICE_URL?{catalogQuery:plan.filters}:{}) });
 }

@@ -1,0 +1,238 @@
+{
+  "version": 1,
+  "draftsOnly": true,
+  "records": [
+    {
+      "id": "ust-kamenogorsk",
+      "name": {
+        "ru": "Усть-Каменогорск",
+        "kk": "Өскемен",
+        "en": "Ust-Kamenogorsk"
+      },
+      "ambiguousNames": [],
+      "aliases": [
+        {
+          "name": "Усть-Каменогорск",
+          "locale": "ru",
+          "forms": [
+            "Усть-Каменогорска",
+            "Усть-Каменогорске",
+            "Усть Каменогорск"
+          ],
+          "historical": false,
+          "transliteration": false
+        },
+        {
+          "name": "Өскемен",
+          "locale": "kk",
+          "forms": [
+            "Өскеменде",
+            "Өскеменнің",
+            "Өскеменге"
+          ],
+          "historical": false,
+          "transliteration": false
+        },
+        {
+          "name": "Ust-Kamenogorsk",
+          "locale": "en",
+          "forms": [
+            "Ust Kamenogorsk"
+          ],
+          "historical": false,
+          "transliteration": true
+        },
+        {
+          "name": "Oskemen",
+          "locale": "en",
+          "forms": [
+            "Öskemen"
+          ],
+          "historical": false,
+          "transliteration": true
+        }
+      ],
+      "evidence": [
+        {
+          "sourceId": "S05",
+          "path": "sources/archive-20261110/text/S05--Контакты.docx.txt",
+          "sha256": "ae50e7ec7822927a76778144d82bff4b28b21d7c8a52ef49d9c590120f5447e2",
+          "line": 2,
+          "quote": "Адрес: Республика Казахстан, 070000, г.Усть-Каменогорск, ул.Бейбітшілік, 26/1 (Головкова, 26/1)"
+        },
+        {
+          "sourceId": "S03--календарь 2026",
+          "path": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+          "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "line": 91,
+          "quote": "3 қазан | Өскеменде 600 абонентке бірінші кезектегі жартылай автоматты телефон станциясын іске қосылуына 80 жыл (1946)"
+        }
+      ],
+      "status": "DRAFT",
+      "coordinates": null,
+      "review": "source_checked_not_archive_approved",
+      "translationReview": "en project transliterations; native review pending"
+    },
+    {
+      "id": "ridder",
+      "name": {
+        "ru": "Риддер",
+        "kk": "Риддер",
+        "en": "Ridder"
+      },
+      "ambiguousNames": [],
+      "aliases": [
+        {
+          "name": "Риддер",
+          "locale": "ru",
+          "forms": [
+            "Риддера",
+            "Риддере"
+          ],
+          "historical": false,
+          "transliteration": false
+        },
+        {
+          "name": "Лениногорск",
+          "locale": "ru",
+          "forms": [
+            "Лениногорска",
+            "Лениногорске"
+          ],
+          "historical": true,
+          "transliteration": false
+        },
+        {
+          "name": "Ridder",
+          "locale": "en",
+          "forms": [],
+          "historical": false,
+          "transliteration": true
+        },
+        {
+          "name": "Leninogorsk",
+          "locale": "en",
+          "forms": [],
+          "historical": true,
+          "transliteration": true
+        }
+      ],
+      "evidence": [
+        {
+          "sourceId": "S03--календарь 2026",
+          "path": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+          "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "line": 10,
+          "quote": "6 февраля | 85 лет (1941) со дня переименования г.Риддер в Лениногорск"
+        }
+      ],
+      "nameChange": {
+        "year": 1941,
+        "direction": "Риддер → Лениногорск",
+        "returnToRidderYear": null,
+        "note": "Year of return not established by this evidence; do not invent alias validity end."
+      },
+      "status": "DRAFT",
+      "coordinates": null,
+      "review": "source_checked_not_archive_approved",
+      "translationReview": "en project transliterations; native review pending"
+    },
+    {
+      "id": "altay-city",
+      "name": {
+        "ru": "Алтай",
+        "kk": "Алтай",
+        "en": "Altay"
+      },
+      "ambiguousNames": [
+        "Алтай",
+        "Алтая",
+        "Алтае",
+        "Алтайда",
+        "Altay",
+        "Altai"
+      ],
+      "aliases": [
+        {
+          "name": "Алтай",
+          "locale": "ru",
+          "forms": [
+            "Алтая",
+            "Алтае"
+          ],
+          "historical": false,
+          "transliteration": false
+        },
+        {
+          "name": "Зыряновск",
+          "locale": "ru",
+          "forms": [
+            "Зыряновска",
+            "Зыряновске"
+          ],
+          "historical": true,
+          "transliteration": false
+        },
+        {
+          "name": "Зырян",
+          "locale": "kk",
+          "forms": [
+            "Зырянда"
+          ],
+          "historical": true,
+          "transliteration": false
+        },
+        {
+          "name": "Алтай",
+          "locale": "kk",
+          "forms": [
+            "Алтайда"
+          ],
+          "historical": false,
+          "transliteration": false
+        },
+        {
+          "name": "Altay",
+          "locale": "en",
+          "forms": [
+            "Altai"
+          ],
+          "historical": false,
+          "transliteration": true
+        },
+        {
+          "name": "Zyryanovsk",
+          "locale": "en",
+          "forms": [],
+          "historical": true,
+          "transliteration": true
+        }
+      ],
+      "evidence": [
+        {
+          "sourceId": "S02",
+          "path": "sources/archive-20261110/text/S02--История архива.docx.txt",
+          "sha256": "752bdbe469e558be73e14f526028b933cf372ea2a2f08b241fee69961e9ac3e0",
+          "line": 39,
+          "quote": "В 2019 году произошло переименование Зыряновского филиала  КГУ «Государственный  архив» управления культуры, архивов и документации Восточно-Казахстанской области. На основании Указа Президента Республики Казахстан от 28 декабря 2018 года № 821 Зыряновский район и город Зыряновск Восточно-Казахстанской области переименованы в район Алтай и город Алтай. В связи с чем, 11 февраля 2019 года Зыряновский филиал прошел государственную перерегистрацию в органах юстиции и стал именоваться филиал Алтай КГУ «Государственный архив» управления культуры, архивов и документации Восточно-Казахстанской области."
+        },
+        {
+          "sourceId": "S03--календарь 2026",
+          "path": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+          "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "line": 104,
+          "quote": "1791 ж. | Зырян қ. құрылуына 235 жыл"
+        }
+      ],
+      "nameChange": {
+        "year": 2018,
+        "direction": "Зыряновск → Алтай",
+        "note": "S02 cites decree of 2018-12-28; 2019-02-11 is branch registration, not city renaming."
+      },
+      "status": "DRAFT",
+      "coordinates": null,
+      "review": "source_checked_not_archive_approved",
+      "translationReview": "en project transliterations; native review pending"
+    }
+  ]
+}

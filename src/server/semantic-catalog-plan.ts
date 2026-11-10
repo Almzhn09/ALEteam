@@ -6,9 +6,11 @@ import candidate from '../../training/full-tz/models/query-model.json';
 import {generateLocalQuery} from './local-model';
 import {archiveSearchIntent} from './archive-search-intent';
 import {unsafeInstructions} from './assistant-safety';
+import {expandNames,type NameExpansion} from './artur-discovery/names';
+import {researchQuestion,stripResearchFraming} from './artur-discovery/research';
 export interface SemanticPlan {
  handled:boolean;locale:ContentLocale;filters:CatalogFilters;localityVariants:string[];
- method:'rules'|'dictionary'|'local-model';clarification?:'period'|'unsafe'|'type';periodOnly:boolean;
+ method:'rules'|'dictionary'|'local-model';clarification?:'period'|'unsafe'|'type'|'place'|'subject';periodOnly:boolean;nameExpansion?:NameExpansion;
 }
 const typePatterns:[RegExp,'PHOTO'|'MAP'|'LETTER'|'REPORT'][]=[
  [/(?<!\p{L})(?:фотограф\p{L}*|фото(?:лар\p{L}*)?|photos?|photographs?|фотосурет\p{L}*)(?!\p{L})/giu,'PHOTO'],
@@ -16,7 +18,6 @@ const typePatterns:[RegExp,'PHOTO'|'MAP'|'LETTER'|'REPORT'][]=[
  [/(?<!\p{L})(?:письм\p{L}*|хат(?:тар\p{L}*)?|letters?)(?!\p{L})/giu,'LETTER'],
  [/(?<!\p{L})(?:отч[её]т\p{L}*|есеп(?:тер\p{L}*)?|reports?)(?!\p{L})/giu,'REPORT'],
 ];
-const placePattern=/(?<!\p{L})(?:усть[-\s]каменогорск(?:а|е|у|ом)?|ust[-\s]kamenogorsk|өскемен(?:нің|ге|де|нен|ді)?|oskemen|öskemen)(?!\p{L})/giu;
 const fillers=new Set('найди найти найдите покажи покажите документы документ документов материал материалы что такое где когда какой какие как расскажи о об для мне за в на по до после с про пожалуйста есть ли год году года годов годы город города архивный архивтік archive from in the of a an to between before after through please show find need want what where when which how about are is can you do documents document materials records record photos year years city town маған туралы керек бар ма құжат құжаттар құжаттарды құжаттары мәлімет ақпарат қала қаласының жылы жылға жылдан жыл жылдар дейін кейін ізде іздеп көрсет табу ал а and'.split(' '));
 const explicitCatalog=/(?<!\p{L})(?:документ\p{L}*|материал\p{L}*|құжат\p{L}*|documents?|records?|materials?)(?!\p{L})/iu;
 function stripPeriods(value:string){return value.replace(/(?<!\d)((?:18|19|20)\d)0\s*(?:[-–]?\s*(?:х|е)(?:\s+год\p{L}*)?|s|жылдар\p{L}*)(?!\d)/giu,' ').replace(/(?<!\d)(?:18|19|20)\d{2}(?!\d)/gu,' ');}
@@ -24,7 +25,7 @@ export function semanticCatalogPlan(question:string,locale:ContentLocale,useMode
  if(question.length>4000)throw Error('Invalid question');
  const empty:SemanticPlan={handled:false,locale,filters:{locale,sort:'year_asc',pageSize:5},localityVariants:[],method:'rules',periodOnly:false};
  if(unsafeInstructions(question))return {...empty,handled:true,clarification:'unsafe'};
- let text=question;const filters:CatalogFilters={...empty.filters};
+ let text=researchQuestion(question)?stripResearchFraming(question):question;const filters:CatalogFilters={...empty.filters};
  const labelled=text.match(/(?<!\p{L})(?:шифр|reference|ref)(?:\s*[:№]\s*|\s+)([\p{L}\p{N}][\p{L}\p{N}./_-]{0,119})(?![\p{L}\p{N}./_-])/iu);
  const reference=labelled&&/\p{N}/u.test(labelled[1])?labelled[1]:text.match(/(?<![\p{L}\p{N}])DEMO-[\p{L}\p{N}_/-]{1,100}(?![\p{L}\p{N}_/-])/iu)?.[0];
  if(reference){filters.reference=reference;text=text.replace(labelled?.[1]===reference?labelled[0]:reference,' ');}
@@ -41,7 +42,7 @@ export function semanticCatalogPlan(question:string,locale:ContentLocale,useMode
  let residual=text;for(const [pattern,type] of typePatterns){pattern.lastIndex=0;if(pattern.test(text)){detectedTypes.add(type);if(!filters.type)filters.type=type;}pattern.lastIndex=0;residual=residual.replace(pattern,' ');}
  const negativeType=/(?<!\p{L})(?:не|кроме)\s+(?:фото|фотограф|карт|письм|отч[её]т)|(?<!\p{L})(?:not|except|exclude|excluding|without)\s+(?:photos?|photographs?|maps?|letters?|reports?)|(?:фотосурет\p{L}*|карта\p{L}*|хат\p{L}*|есеп\p{L}*)\s+емес/iu.test(text);
  const typeConflict=detectedTypes.size>1||negativeType;if(typeConflict)delete filters.type;
- placePattern.lastIndex=0;const place=placePattern.test(text);placePattern.lastIndex=0;residual=residual.replace(placePattern,' ');
+ const expansion=expandNames(residual,locale);const place=expansion.status==='resolved'||expansion.status==='ambiguous';residual=expansion.normalizedQuestion;
  residual=stripPeriods(residual).toLowerCase();
  const labels:string[]=[];const translated:string[]=[];
  for(const topic of dictionary.topics){const pattern=new RegExp(`(?<!\\p{L})(?:${topic.pattern})(?!\\p{L})`,'giu');if(pattern.test(residual)){labels.push(topic.label);translated.push(topic.query[locale]);pattern.lastIndex=0;residual=residual.replace(pattern,' ');}}
@@ -56,11 +57,11 @@ export function semanticCatalogPlan(question:string,locale:ContentLocale,useMode
  }else if(useModel&&labels.length){const p=generateLocalQuery(question,candidate);if(p.complete&&p.confidence>=0.8&&labels.includes(p.query))method='local-model';}
  const numbers=filters.fundNumber||filters.inventoryNumber||filters.caseNumber;
  const generic=explicitCatalog.test(question);
- const handled=Boolean(detectedTypes.size||labels.length||reference||numbers||(place&&hasPeriod)||(generic&&(place||hasPeriod)));
- const localityVariants=place?dictionary.places[0].filterVariants[locale]:[];
+ const handled=Boolean(expansion.status==='ambiguous'||researchQuestion(question)||detectedTypes.size||labels.length||reference||numbers||(place&&hasPeriod)||(generic&&(place||hasPeriod)));
+ const localityVariants=expansion.status==='resolved'?expansion.variants:[];
  if(localityVariants.length)filters.locality=localityVariants[0];
- return {handled,locale,filters,localityVariants,method,periodOnly:hasPeriod&&!generic&&!detectedTypes.size&&!place&&!labels.length&&!reference&&!numbers&&!q,
-  ...(temporal.periodAmbiguous?{clarification:'period' as const}:typeConflict?{clarification:'type' as const}:{})};
+ return {handled,locale,filters,localityVariants,method,...(place?{nameExpansion:expansion}:{}),periodOnly:hasPeriod&&!generic&&!detectedTypes.size&&!place&&!labels.length&&!reference&&!numbers&&!q,
+  ...(researchQuestion(question)&&!q&&!place&&!reference&&!numbers&&!filters.type&&!hasPeriod?{clarification:'subject' as const}:expansion.status==='ambiguous'?{clarification:'place' as const}:temporal.periodAmbiguous?{clarification:'period' as const}:typeConflict?{clarification:'type' as const}:{})};
 }
 export function semanticConversationPlan(question:string,history:readonly {role:'user'|'assistant';content:string}[],locale:ContentLocale,useModel=false){
  const current=semanticCatalogPlan(question,locale,useModel);if(!current.periodOnly)return current;
@@ -70,11 +71,11 @@ export function semanticConversationPlan(question:string,history:readonly {role:
   const both=lower!==undefined&&upper!==undefined;
   let yearFrom=combine&&!both&&lower===undefined?previous.filters.yearFrom:lower;
   let yearTo=combine&&!both&&upper===undefined?previous.filters.yearTo:upper;
-  const unresolvedType=previous.clarification==='type';
-  let clarification=unresolvedType?'type' as const:next.clarification;
+  const unresolved=previous.clarification==='type'||previous.clarification==='place'||previous.clarification==='subject'?previous.clarification:undefined;
+  let clarification=unresolved??next.clarification;
   // Retain contradictory constraints internally so the next correction can replace one bound.
   // Retrieval refuses clarification plans; these filters are not exposed as an executable query.
-  if(yearFrom!==undefined&&yearTo!==undefined&&yearFrom>yearTo)clarification=unresolvedType?'type':'period';
+  if(yearFrom!==undefined&&yearTo!==undefined&&yearFrom>yearTo)clarification=unresolved??'period';
   return {...previous,periodOnly:false,clarification,filters:{...previous.filters,yearFrom,yearTo}};
  }
  for(const turn of history.slice(-6)){
