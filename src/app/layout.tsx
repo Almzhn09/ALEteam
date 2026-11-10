@@ -9,6 +9,8 @@ import { LangProvider } from '@/lib/lang';
 import { getLang } from '@/lib/i18n-server';
 import { translator } from '@/lib/i18n';
 import { MOCK_MODE } from '@/lib/api';
+import { cookies } from 'next/headers';
+import type { DisplayTheme, TextSize } from '@/components/DisplayPreferences';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = translator(await getLang());
@@ -25,15 +27,20 @@ export const viewport: Viewport = {
 export default async function Layout({ children }: { children: ReactNode }) {
   const lang = await getLang();
   const t = translator(lang);
+  const preferences = await cookies();
+  const themeValue = preferences.get('display-theme')?.value;
+  const sizeValue = preferences.get('display-text-size')?.value;
+  const theme: DisplayTheme = themeValue === 'light' || themeValue === 'dark' ? themeValue : 'system';
+  const size: TextSize = sizeValue === '112.5' || sizeValue === '125' || sizeValue === '150' ? sizeValue : '100';
   return (
-    <html lang={lang}>
+    <html lang={lang} data-theme={theme} data-text-size={size}>
       <body>
         <LangProvider initial={lang}>
           <a className="skip-link" href="#main">{t('Перейти к содержимому')}</a>
           {MOCK_MODE && <div className="mock-banner" role="note">{t('Режим моков интерфейса: данные и ответы имитируются в браузере, это не интеграция с сервером.')}</div>}
           <SessionProvider>
             <FavoritesProvider>
-            <Header />
+            <Header initialTheme={theme} initialSize={size} />
             <main id="main" tabIndex={-1}>{children}</main>
             </FavoritesProvider>
           </SessionProvider>

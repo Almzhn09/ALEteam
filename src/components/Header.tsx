@@ -6,6 +6,7 @@ import { useSession } from '@/lib/session';
 import { useFavorites } from '@/lib/favorites';
 import { errorText } from '@/lib/api';
 import { useI18n } from '@/lib/lang';
+import { DisplayPreferences, type DisplayTheme, type TextSize } from './DisplayPreferences';
 
 const links = [
   { href: '/catalog', label: 'Каталог' },
@@ -15,7 +16,7 @@ const links = [
   { href: '/about', label: 'Об архиве' },
 ];
 
-export function Header() {
+export function Header({ initialTheme, initialSize }: { initialTheme: DisplayTheme; initialSize: TextSize }) {
   const pathname = usePathname();
   const router = useRouter();
   const { t, lang, setLang } = useI18n();
@@ -62,6 +63,7 @@ export function Header() {
           <span className="brand-mark" aria-hidden="true">ЭА</span>
           <span>{t('Электронный архив')}<small>{t('Восточно-Казахстанская область · прототип')}</small></span>
         </Link>
+        <DisplayPreferences initialTheme={initialTheme} initialSize={initialSize} />
         <button type="button" className="btn btn-ghost btn-sm" onClick={switchLang}
           lang={lang === 'ru' ? 'kk' : 'ru'} aria-label={lang === 'ru' ? 'Қазақ тіліне ауысу' : 'Переключить на русский язык'}>
           {lang === 'ru' ? 'ҚАЗ' : 'РУС'}
