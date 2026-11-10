@@ -10,7 +10,7 @@ try {
  await page.goto(base+'/login?returnTo=%2Fassistant');
  await page.getByLabel('Email',{exact:true}).fill('author@example.test');
  await page.getByLabel('Пароль',{exact:true}).fill(process.env.DEMO_AUTHOR_PASSWORD);
- await page.locator('form button[type=submit]').click();await page.waitForURL('**/assistant');
+ await page.locator('main form button[type=submit]').click();await page.waitForURL('**/assistant');
  await page.getByLabel('Ваш вопрос',{exact:true}).fill('Кітапхана туралы мәлімет керек');
  await page.getByLabel('Ваш вопрос',{exact:true}).press('Enter');
  await page.locator('[data-assistant-mode="local-model"]').waitFor();

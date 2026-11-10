@@ -2,21 +2,41 @@ import Link from 'next/link';
 import { Breadcrumbs } from '@/components/ui';
 import { getT } from '@/lib/i18n-server';
 import { guides } from '@/server/guides';
+import { getLang } from '@/lib/i18n-server';
+import { listContent } from '@/server/public-read';
+import { languageAlternates } from '@/lib/seo';
 
-export async function generateMetadata() { return { title: (await getT())('Об архиве и помощь') }; }
+const officialLinks = [
+  { id: 1330, label: 'Контактная информация' }, { id: 1338, label: 'Читальный зал' }, { id: 1340, label: 'Характеристика фондов' },
+];
+
+export async function generateMetadata() { return { title: (await getT())('Об архиве и помощь'), alternates: languageAlternates('/about') }; }
 
 export default async function AboutPage() {
-  const t = await getT();
+  const [t, lang] = await Promise.all([getT(), getLang()]);
+  const pages = (await listContent(lang, 'PAGE')).filter(p => p.payload.category === 'about');
   return (
     <div className="container page prose">
       <Breadcrumbs items={[{ label: t('Об архиве') }]} />
       <h1>{t('Об архиве и помощь')}</h1>
-      <div className="notice notice-warn" style={{ marginBottom: 'var(--space-5)' }}>
-        <div>
-          <strong className="notice-title">{t('Сведения об архиве уточняются')}</strong>
-          <p>{t('Адрес, режим работы, контакты, правила доступа и перечень услуг будут добавлены только после проверки по исходному сайту (задача A01). До этого пользуйтесь официальным сайтом:')} <a href="http://e-arhiv.vko.gov.kz/ru" target="_blank" rel="noopener noreferrer">e-arhiv.vko.gov.kz<span className="visually-hidden"> {t('(откроется в новой вкладке)')}</span></a>.</p>
-        </div>
-      </div>
+      <section className="card stack" aria-labelledby="facts-title" style={{ marginBottom: 'var(--space-5)' }}>
+        <h2 id="facts-title">{t('Государственный архив Восточно-Казахстанской области')}</h2>
+        <p className="muted small">{t('Сведения с официального сайта архива на 8 ноября 2026 года. Этот прототип не является официальным сайтом: перед визитом уточняйте данные на сайте архива.')}</p>
+        <dl className="props">
+          <dt>{t('Адрес')}</dt><dd>{t('070000, г. Усть-Каменогорск, ул. Головкова, 26/1')}</dd>
+          <dt>{t('Телефон приёмной')}</dt><dd><a href="tel:+77232255976">8 (7232) 25-59-76</a></dd>
+          <dt>E-mail</dt><dd><a href="mailto:arhiv-ukg@yandex.kz">arhiv-ukg@yandex.kz</a></dd>
+          <dt>{t('Время работы')}</dt><dd>{t('понедельник–пятница, 9:00–18:00')}</dd>
+          <dt>{t('Читальный зал')}</dt><dd>{t('понедельник–пятница, 10:00–17:00')}</dd>
+        </dl>
+        <ul style={{ margin: 0, paddingLeft: 'var(--space-5)' }}>
+          {officialLinks.map(l => <li key={l.id}><a href={`http://e-arhiv.vko.gov.kz/ru/Page/Index/${l.id}`} target="_blank" rel="noopener noreferrer">{t(l.label)}<span className="visually-hidden"> {t('(откроется в новой вкладке)')}</span></a></li>)}
+        </ul>
+      </section>
+      {pages.length > 0 && <section className="stack" aria-labelledby="pages-title" style={{ marginBottom: 'var(--space-5)' }}>
+        <h2 id="pages-title">{t('Материалы об архиве')}</h2>
+        <ul>{pages.map(p => <li key={p.id}><Link href={`/pages/${p.slug}`}>{p.payload.title}</Link></li>)}</ul>
+      </section>}
 
       <section className="stack" aria-labelledby="help-title">
         <h2 id="help-title">{t('Как пользоваться прототипом')}</h2>
@@ -31,7 +51,7 @@ export default async function AboutPage() {
         <h3>{t('Обсуждения и правила')}</h3>
         <p>{t('Комментировать могут участники после входа. Каждый комментарий проверяется на сервере: ненормативная лексика и оскорбления не публикуются, спорные сообщения ждут решения модератора. На опубликованный комментарий можно пожаловаться — модератор рассмотрит жалобу.')}</p>
         <h3>{t('Язык')}</h3>
-        <p>{t('Интерфейс доступен на русском и казахском языках. Архивные материалы показываются на языке оригинала и не переводятся автоматически.')}</p>
+        <p>{t('Интерфейс доступен на казахском, русском и английском языках. Архивные материалы показываются на языке оригинала и не переводятся автоматически.')}</p>
         <h3>{t('Демонстрационные материалы')}</h3>
         <p>{t('Записи с меткой ДЕМО вымышлены для проверки интерфейса и не являются архивными источниками.')}</p>
       </section>

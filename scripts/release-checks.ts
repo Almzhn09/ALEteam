@@ -26,7 +26,7 @@ async function step(name: string, work: () => Promise<void>) {
 async function login(page: Page, email: string, password: string, returnTo: string) {
   await page.goto(`${base}/login?returnTo=${encodeURIComponent(returnTo)}`);
   await page.getByLabel('Email', { exact: true }).fill(email); await page.getByLabel('Пароль', { exact: true }).fill(password);
-  await page.locator('form button[type=submit]').click();
+  await page.locator('main form button[type=submit]').click();
   await page.waitForURL(u => u.pathname === returnTo);
 }
 try {

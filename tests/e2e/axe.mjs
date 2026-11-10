@@ -14,7 +14,7 @@ async function audit(name) {
   if (!r.violations.length) console.log(`[${scheme}] ${name}: OK`);
 }
 for (const [n, path] of [['home', '/'], ['catalog', '/catalog?q=библиотека'], ['empty', '/catalog?q=zzzz'], ['doc', '/documents/demo-doc-03'], ['404doc', '/documents/nope'], ['fav', '/favorites'], ['about', '/about'], ['login', '/login'], ['404', '/nope'], ['assistant-guest', '/assistant']]) { await p.goto(BASE + path); await audit(n); }
-await p.goto(BASE + '/login?returnTo=%2Fassistant'); await p.getByLabel('Email').fill('moderator@example.test'); await p.getByLabel('Пароль').fill(env.DEMO_MODERATOR_PASSWORD); await p.locator('form button[type=submit]').click();
+await p.goto(BASE + '/login?returnTo=%2Fassistant'); await p.getByLabel('Email').fill('moderator@example.test'); await p.getByLabel('Пароль').fill(env.DEMO_MODERATOR_PASSWORD); await p.locator('main form button[type=submit]').click();
 await p.waitForURL(u => u.pathname === '/assistant');
 await audit('assistant');
 await p.goto(BASE + '/documents/demo-doc-03'); await audit('doc-user');

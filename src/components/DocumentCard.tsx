@@ -5,7 +5,7 @@ import type { DocumentSummary } from '@/contracts/api';
 import { useFavorites } from '@/lib/favorites';
 import { typeLabel } from '@/lib/labels';
 import { useI18n } from '@/lib/lang';
-import { DemoBadge, Ru } from './ui';
+import { DemoBadge } from './ui';
 
 export function FavoriteButton({ doc, small }: { doc: DocumentSummary; small?: boolean }) {
   const { t } = useI18n();
@@ -39,8 +39,8 @@ export function DocumentCard({ doc, fundName }: { doc: DocumentSummary; fundName
         </div>
         <FavoriteButton doc={doc} small />
       </div>
-      <h3><Link href={`/documents/${encodeURIComponent(doc.id)}`} lang="ru">{doc.title}</Link></h3>
-      <Ru as="p" className="muted small clamp-2">{doc.description}</Ru>
+      <h3><Link href={`/documents/${encodeURIComponent(doc.id)}`} lang={doc.locale ?? 'ru'}>{doc.title}</Link></h3>
+      <p className="muted small clamp-2" lang={doc.locale ?? 'ru'}>{doc.description}</p>
       <dl className="meta">
         <div><dt>{t('Год:')}</dt><dd>{doc.year}</dd></div>
         <div><dt>{t('Шифр:')}</dt><dd className="mono">{doc.reference}</dd></div>

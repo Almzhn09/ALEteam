@@ -11,7 +11,11 @@ import { useI18n } from '@/lib/lang';
 
 const PAGE_SIZE = 10;
 type Sort = keyof typeof sortLabel;
-interface Filters { q: string; fundId: string; type: DocumentType | ''; yearFrom: string; yearTo: string; sort: Sort; page: number }
+const TEXT_FILTERS = ['fundNumber', 'inventoryNumber', 'caseNumber', 'reference', 'author', 'organization', 'locality', 'originalLanguage', 'category', 'tag'] as const;
+const ID_FILTERS = ['inventoryId', 'caseId', 'branchId'] as const;
+type TextKey = typeof TEXT_FILTERS[number]; type IdKey = typeof ID_FILTERS[number];
+const filterLabel: Record<TextKey, string> = { fundNumber: 'Номер фонда', inventoryNumber: 'Номер описи', caseNumber: 'Номер дела', reference: 'Архивный шифр', author: 'Автор', organization: 'Организация', locality: 'Населённый пункт', originalLanguage: 'Язык оригинала', category: 'Категория', tag: 'Тема' };
+interface Filters extends Record<TextKey | IdKey, string> { q: string; fundId: string; type: DocumentType | ''; yearFrom: string; yearTo: string; sort: Sort; page: number; contentLang: string }
 
 const isYear = (v: string) => /^\d{1,4}$/.test(v) && Number(v) >= 1 && Number(v) <= 2100;
 
@@ -30,13 +34,18 @@ function fromUrl(params: URLSearchParams): { filters: Filters; dropped: boolean 
   if (yearFrom && yearTo && Number(yearFrom) > Number(yearTo)) { dropped = true; yearFrom = ''; yearTo = ''; }
   const sort = (pick('sort', v => v in sortLabel) || 'year_desc') as Sort;
   const pageRaw = pick('page', v => /^\d+$/.test(v) && Number(v) >= 1 && Number(v) <= 10000);
-  return { filters: { q, type, fundId, yearFrom, yearTo, sort, page: pageRaw ? Number(pageRaw) : 1 }, dropped };
+  const text = Object.fromEntries(TEXT_FILTERS.map(k => [k, (params.get(k) ?? '').trim().slice(0, 200)])) as Record<TextKey, string>;
+  const ids = Object.fromEntries(ID_FILTERS.map(k => [k, pick(k, v => /^[a-zA-Z0-9_-]{1,80}$/.test(v))])) as Record<IdKey, string>;
+  const contentLang = pick('contentLang', v => ['ru', 'kk', 'en'].includes(v));
+  return { filters: { q, type, fundId, yearFrom, yearTo, sort, page: pageRaw ? Number(pageRaw) : 1, contentLang, ...text, ...ids }, dropped };
 }
 
 function toQuery(f: Partial<Filters>) {
   const p = new URLSearchParams();
   if (f.q) p.set('q', f.q);
   if (f.fundId) p.set('fundId', f.fundId);
+  for (const key of [...TEXT_FILTERS, ...ID_FILTERS]) if (f[key]) p.set(key, f[key]!);
+  if (f.contentLang) p.set('contentLang', f.contentLang);
   if (f.type) p.set('type', f.type);
   if (f.yearFrom) p.set('yearFrom', f.yearFrom);
   if (f.yearTo) p.set('yearTo', f.yearTo);
@@ -48,11 +57,13 @@ function toQuery(f: Partial<Filters>) {
 export function Catalog() {
   const params = useSearchParams();
   const router = useRouter();
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const { filters, dropped } = useMemo(() => fromUrl(new URLSearchParams(params.toString())), [params]);
   const urlKey = toQuery(filters);
+  const contentLocale = filters.contentLang || lang;
 
-  const [draft, setDraft] = useState({ q: filters.q, yearFrom: filters.yearFrom, yearTo: filters.yearTo });
+  const textValues = (f: Filters) => Object.fromEntries(TEXT_FILTERS.map(k => [k, f[k]])) as Record<TextKey, string>;
+  const [draft, setDraft] = useState({ q: filters.q, yearFrom: filters.yearFrom, yearTo: filters.yearTo, ...textValues(filters) });
   const [yearError, setYearError] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [funds, setFunds] = useState<Fund[] | null>(null);
@@ -63,7 +74,7 @@ export function Catalog() {
   const ids = { q: useId(), from: useId(), to: useId(), type: useId(), fund: useId(), sort: useId(), yearErr: useId() };
 
   // Keep the form in sync when the URL changes through history navigation.
-  useEffect(() => { setDraft({ q: filters.q, yearFrom: filters.yearFrom, yearTo: filters.yearTo }); setYearError(''); }, [filters.q, filters.yearFrom, filters.yearTo]);
+  useEffect(() => { setDraft({ q: filters.q, yearFrom: filters.yearFrom, yearTo: filters.yearTo, ...textValues(filters) }); setYearError(''); }, [urlKey]); // urlKey captures every text filter
 
   useEffect(() => {
     const controller = new AbortController();
@@ -75,11 +86,12 @@ export function Catalog() {
     const controller = new AbortController();
     setLoading(true); setError(null);
     const api = new URLSearchParams(urlKey);
+    api.delete('contentLang'); api.delete('lang'); api.set('locale', contentLocale);
     api.set('sort', filters.sort); api.set('page', String(filters.page)); api.set('pageSize', String(PAGE_SIZE));
     apiGet<Page<DocumentSummary>>(`/documents?${api}`, controller.signal)
       .then(r => { setData(r); setLoading(false); }, e => { if (e?.name !== 'AbortError') { setError(e); setLoading(false); } });
     return () => controller.abort();
-  }, [urlKey, attempt]); // urlKey captures every filter value
+  }, [urlKey, attempt, contentLocale]); // urlKey captures every filter value
 
   const navigate = (next: Partial<Filters>) => router.push(`/catalog?${toQuery({ ...filters, ...next, page: next.page ?? 1 })}`, { scroll: false });
 
@@ -89,11 +101,12 @@ export function Catalog() {
     if ((yearFrom && !isYear(yearFrom)) || (yearTo && !isYear(yearTo))) return setYearError(t('Укажите год от 1 до 2100.'));
     if (yearFrom && yearTo && Number(yearFrom) > Number(yearTo)) return setYearError(t('Начальный год не может быть больше конечного.'));
     setYearError('');
-    navigate({ q: draft.q.trim(), yearFrom, yearTo });
+    navigate({ ...Object.fromEntries(TEXT_FILTERS.map(k => [k, draft[k].trim()])), q: draft.q.trim(), yearFrom, yearTo });
   }
 
   const fundName = (id: string) => funds?.find(f => f.id === id)?.name;
-  const activeCount = [filters.type, filters.fundId, filters.yearFrom || filters.yearTo].filter(Boolean).length;
+  const activeCount = [filters.type, filters.fundId, filters.yearFrom || filters.yearTo, ...TEXT_FILTERS.map(k => filters[k]), ...ID_FILTERS.map(k => filters[k])].filter(Boolean).length;
+  const hasAdvanced = TEXT_FILTERS.some(k => filters[k]);
   const hasAny = !!(filters.q || activeCount);
 
   return (
@@ -139,6 +152,21 @@ export function Catalog() {
               {funds?.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
             </select>
           </div>
+          <details className="advanced-filters" open={hasAdvanced}>
+            <summary>{t('Все реквизиты')}</summary>
+            {TEXT_FILTERS.map(key => (
+              <div className="field" key={key}>
+                <label htmlFor={`${ids.q}-${key}`}>{t(filterLabel[key])}</label>
+                <input id={`${ids.q}-${key}`} className="input" maxLength={200} value={draft[key]} onChange={e => setDraft(d => ({ ...d, [key]: e.target.value }))} />
+              </div>
+            ))}
+          </details>
+          <div className="field">
+            <label htmlFor={`${ids.q}-content`}>{t('Язык материалов')}</label>
+            <select id={`${ids.q}-content`} className="select" value={contentLocale} onChange={e => navigate({ contentLang: e.target.value === lang ? '' : e.target.value })}>
+              <option value="kk">Қазақша</option><option value="ru">Русский</option><option value="en">English</option>
+            </select>
+          </div>
           <div className="row" style={{ marginTop: 'var(--space-5)' }}>
             <button type="submit" className="btn btn-primary">{t('Найти')}</button>
             {hasAny && <Link href="/catalog" className="btn btn-ghost">{t('Сбросить')}</Link>}
@@ -172,6 +200,7 @@ export function Catalog() {
             <div className="card card-flat empty">
               <h3>{t('Ничего не найдено')}</h3>
               <p className="muted">{t('Попробуйте изменить запрос, расширить период или убрать часть фильтров.')}</p>
+              {contentLocale !== 'ru' && <p><Link href={`/catalog?${toQuery({ ...filters, contentLang: 'ru', page: 1 })}`} className="btn btn-secondary">{t('Показать записи на русском языке')}</Link></p>}
               {hasAny && <Link href="/catalog" className="btn btn-secondary">{t('Сбросить фильтры')}</Link>}
             </div>
           ) : data && (
