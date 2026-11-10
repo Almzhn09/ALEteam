@@ -158,6 +158,8 @@ model Document {
   @@index([originalLanguage])
 }
 model ArchiveFile {
+ variant String @default("master")
+ parentFileId String?
   id           String   @id
   documentId   String
   storageKey   String   @unique
@@ -247,6 +249,7 @@ model ModerationDecision {
 }
 
 model ArchiveBranch {
+ fileImportPreviews FileImportPreview[]
  siteMeasurements SiteMeasurement[]
  discoveryFacts DiscoveryFact[]
  id String @id
@@ -419,6 +422,8 @@ model DocumentTranslation {
 }
 
 model ArchiveUpload {
+ inspection Json?
+ inspectionJob UploadInspectionJob?
  id String @id
  documentId String
  uploaderId String
@@ -596,4 +601,38 @@ model SiteMeasurement {
  createdAt DateTime @default(now())
  branch ArchiveBranch? @relation(fields:[branchId],references:[id])
  @@index([branchId,periodFrom,periodTo])
+}
+
+model UploadInspectionJob {
+ id String @id @default(cuid())
+ uploadId String @unique
+ state String @default("QUEUED")
+ attempts Int @default(0)
+ leaseToken String?
+ leaseUntil DateTime?
+ result Json?
+ failureCode String?
+ previewStorageKey String?
+ previewSha256 String?
+ previewBytes Int?
+ previewFileId String? @unique
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ upload ArchiveUpload @relation(fields:[uploadId],references:[id],onDelete:Cascade)
+ @@index([state,leaseUntil])
+}
+model FileImportPreview {
+ id String @id @default(cuid())
+ branchId String
+ authorId String
+ sourceNamespace String
+ format String
+ sourceHash String
+ originalBytes Bytes
+ mapping Json
+ result Json
+ catalogBatchId String?
+ createdAt DateTime @default(now())
+ branch ArchiveBranch @relation(fields:[branchId],references:[id])
+ @@index([branchId,createdAt,id])
 }

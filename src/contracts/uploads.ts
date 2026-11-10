@@ -11,5 +11,5 @@ export interface ArchiveUploadDTO extends UploadCreateInput {
   actualBytes: number | null; actualSha256: string | null; state: UploadState;
   failureCode: string | null; reviewReason: string | null; rightsConfirmed: boolean;
   createdAt: string; updatedAt: string;
-  inspection: {method: 'signature-size-sha256-v1'; fullFormatParsing: false; antivirus: 'not-configured'};
+  inspection: {method: string; fullFormatParsing: boolean; antivirus: 'not-configured'; parserState?: 'QUEUED' | 'RUNNING' | 'PASSED' | 'FAILED'; pages?: number; limitations?: string[]};
 }

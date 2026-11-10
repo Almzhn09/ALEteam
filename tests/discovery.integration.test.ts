@@ -4,6 +4,7 @@ import {randomBytes,randomUUID} from 'node:crypto';
 import {execFileSync,spawn,type ChildProcess} from 'node:child_process';
 import {readFileSync} from 'node:fs';
 import {once} from 'node:events';
+import {mkdir,writeFile} from 'node:fs/promises';
 import {setTimeout as delay} from 'node:timers/promises';
 import {hashPassword} from 'better-auth/crypto';
 const url=process.env.TEST_DATABASE_URL;
@@ -12,13 +13,14 @@ process.env.DATABASE_URL=url;
 const {db}=await import('../src/server/db');
 const origin='http://localhost:3117',password=randomBytes(32).toString('hex');
 const env={...process.env,DATABASE_URL:url,BETTER_AUTH_URL:origin,BETTER_AUTH_SECRET:randomBytes(32).toString('hex'),ALLOW_DEMO_SEED:'1',DEMO_AUTHOR_PASSWORD:password,DEMO_MODERATOR_PASSWORD:password,ASSISTANT_MODE:'retrieval'};
+const apiSamples:{request:string;response:unknown}[]=[];
 let app:ChildProcess;let admin:string,writer:string,reviewer:string,guest:string,other:string;
 async function reset(){
  const names=[...readFileSync('prisma/schema.prisma','utf8').matchAll(/^model ([A-Za-z0-9_]+) \{/gm)].map(m=>m[1]).filter(n=>!['StaffRole','StaffPermission'].includes(n));
  await db.$executeRawUnsafe('TRUNCATE '+names.map(n=>'"'+n+'"').join(',')+' RESTART IDENTITY CASCADE');
 }
 async function call(path:string,method='GET',body?:unknown,cookie?:string){return fetch(origin+'/api'+path,{method,headers:{Origin:origin,...(cookie?{Cookie:cookie}:{}),...(body!==undefined?{'Content-Type':'application/json'}:{})},body:body===undefined?undefined:JSON.stringify(body)});}
-async function ok(path:string,method='GET',body?:unknown,cookie?:string,status=200){const response=await call(path,method,body,cookie);assert.equal(response.status,status,`${method} ${path}: ${await response.clone().text()}`);return response.json();}
+async function ok(path:string,method='GET',body?:unknown,cookie?:string,status=200){const response=await call(path,method,body,cookie);assert.equal(response.status,status,`${method} ${path}: ${await response.clone().text()}`);const value=await response.json();if(method==='GET'&&(/^\/discovery\/home$/.test(path)||/\/related$/.test(path)||/^\/places\?locale=en/.test(path))&&apiSamples.length<6)apiSamples.push({request:method+' /api'+path,response:value});if(method==='POST'&&path==='/documents/demo-doc-01/explanation')apiSamples.push({request:method+' /api'+path,response:value});return value;}
 before(async()=>{
  execFileSync(process.execPath,['--import','tsx','scripts/migrate.ts'],{env,stdio:'pipe'});await reset();
  execFileSync(process.execPath,['--import','tsx','prisma/seed.ts'],{env,stdio:'pipe'});
@@ -33,7 +35,7 @@ before(async()=>{
  const cookies=[];for(const who of ['admin','writer','reviewer','guest','other']){await db.rateLimit.deleteMany();const r=await call('/auth/sign-in/email','POST',{email:`discovery-${who}@example.test`,password});assert.equal(r.status,200);cookies.push(r.headers.getSetCookie().map(s=>s.split(';')[0]).join('; '));}
  [admin,writer,reviewer,guest,other]=cookies;
 },{timeout:60000});
-after(async()=>{if(app?.exitCode===null){app.kill('SIGTERM');await once(app,'exit');}await reset();await db.$disconnect();});
+after(async()=>{if(app?.exitCode===null){app.kill('SIGTERM');await once(app,'exit');}await mkdir('.local/discovery',{recursive:true});await writeFile('.local/discovery/api-examples.json',JSON.stringify({kind:'executed HTTP examples; synthetic fixtures only',examples:apiSamples},null,2)+'\n');await reset();await db.$disconnect();});
 async function publish(revision:{id:string;updatedAt:string}){
  for(const status of ['IN_REVIEW','APPROVED','PUBLISHED'])revision=(await ok(`/admin/revisions/${revision.id}/transition`,'POST',{status,expectedUpdatedAt:revision.updatedAt,reason:'Synthetic integration verification'},status==='IN_REVIEW'?writer:reviewer)).item;
  return revision;
@@ -141,7 +143,14 @@ test('COL-B04 related sources distinguish verified links and text similarity wit
  assert.equal((await call('/discovery/materials/document/'+otherDoc.item.id)).status,404);
  await db.archiveBranch.update({where:{id:'discovery-other'},data:{isPublic:true}});
 });
-
+test('COL-B03 explanation uses readable public file text only; restricted copy and stale version are rejected',async()=>{
+ const proof=(await ok('/discovery/materials/document/demo-doc-01')).source;
+ const before=await ok('/documents/demo-doc-01/explanation','POST',{locale:'ru'});assert.equal(before.status,'unsupported');assert.deepEqual(before.citations,[]);
+ assert.equal((await call('/documents/demo-doc-01/explanation','POST',{locale:'ru',sourceRevision:'0'.repeat(64)})).status,409);
+ await db.document.update({where:{id:'demo-doc-01'},data:{allowDigitalCopy:false}});
+ try{assert.equal((await call('/documents/demo-doc-01/explanation','POST',{locale:'ru'})).status,404);assert.equal((await ok('/documents/demo-doc-01')).item.files.length,0);}finally{await db.document.update({where:{id:'demo-doc-01'},data:{allowDigitalCopy:true}});}
+ assert.equal((await call('/documents/demo-doc-01/explanation','POST',{locale:'ru',storageKey:'private'})).status,400);
+});
 test('COL-B05 recommendations honor explicit interests/disable, and never invent popularity or account history',async()=>{
  const topic=await fact('TOPIC',{labels:{ru:{title:'ДЕМО тема'}}});topicId=topic.id;
  await fact('EDITORIAL',{material:{kind:'document',id:graphDocumentId},topicId,placeId,order:1});
@@ -176,7 +185,6 @@ test('COL-B05 subscriptions baseline/idempotency/worker retry and owner revocati
  await ok('/me/topic-subscriptions/'+sub.id,'DELETE',{},guest);await ok('/me/topic-subscriptions/'+sub.id,'DELETE',{},guest);
  assert.equal((await ok('/me/topic-subscriptions','GET',undefined,guest)).items.length,0);
 });
-
 test('N-B06 measurements distinguish unavailable from zero and prevent implicit collection',async()=>{
  const report=await ok('/admin/discovery/measurements','GET',undefined,admin);assert.equal(report.status,'unavailable');assert.equal(report.collectionEnabled,false);
  assert.equal((await call('/admin/discovery/measurements','GET',undefined,guest)).status,403);
@@ -220,4 +228,29 @@ test('N-B06 approved aggregate import preserves zero, suppresses small groups an
   if(enabled.exitCode===null){enabled.kill('SIGTERM');await once(enabled,'exit');}
   await db.staffAssignment.deleteMany({where:{roleId:'discovery-analytics'}});await db.staffRole.deleteMany({where:{id:'discovery-analytics'}});
  }
+});
+
+test('N-B03 spreadsheet preview preserves original accounting strings and flags possible renames without inventing documents',async()=>{
+ const branch='discovery-text-branch';
+ const csv=Buffer.from('number,name\n0005-а,Original name\n0005-а,Original name\n0005-а,Later name\n');
+ const input={branchId:branch,sourceNamespace:'discovery-funds',format:'csv',base64:csv.toString('base64'),mapping:{sheet:'Sheet1',startRow:2,mode:'funds',columns:{number:{column:1},name:{column:2}},defaults:{}}};
+ const before=await db.document.count();const preview=(await ok('/admin/file-previews','POST',input,writer,201)).item;
+ assert.equal(preview.result.mappedRows[0].values.number,'0005-а');assert.equal(preview.result.stagingAvailable,false);assert.equal(await db.document.count(),before);
+ assert.ok(preview.result.warnings.some((w:{code:string})=>w.code==='REPEATED_FUND_ROW'));assert.ok(preview.result.warnings.some((w:{code:string})=>w.code==='POSSIBLE_HISTORICAL_RENAME_REQUIRES_REVIEW'));
+ assert.equal((await call('/admin/file-previews/'+preview.id+'/stage','POST',{},writer)).status,409);
+ assert.equal((await call('/admin/file-previews/'+preview.id,'GET',undefined,other)).status,403);
+ assert.equal((await call('/admin/file-previews','POST',{...input,storageKey:'private'},writer)).status,400);
+ assert.equal((await ok('/admin/file-previews/'+preview.id+'?page=2&pageSize=1','GET',undefined,writer)).item.result.mappedRows[0].row,3);
+ assert.ok(!('originalBytes'in preview));assert.equal((await db.fileImportPreview.findUniqueOrThrow({where:{id:preview.id}})).sourceHash,(await import('node:crypto')).createHash('sha256').update(csv).digest('hex'));
+ await ok('/admin/file-previews/'+preview.id,'DELETE',{},writer);
+});
+test('N-B03 a complete explicit document mapping reuses immutable catalog staging and repeat does not create a second batch',async()=>{
+ const fund=await db.fund.findUniqueOrThrow({where:{id:fundId}});
+ const csv=Buffer.from('id,title,reference,year\n0007,ДЕМО imported original,DEMO-FILE-0007,1967\n');
+ const input={branchId:fund.branchId,sourceNamespace:'discovery-document-map',format:'csv',base64:csv.toString('base64'),mapping:{sheet:'Sheet1',startRow:2,mode:'documents',columns:{sourceId:{column:1},title:{column:2},reference:{column:3},year:{column:4}},defaults:{fundKey:'existing',description:'Synthetic original',type:'REPORT',rights:'CC0-1.0',sourceNote:'Synthetic fixture'},catalog:{isDemo:true,funds:[{key:'existing',number:fund.number,name:fund.name,description:fund.description}],inventories:[],cases:[]}}};
+ const preview=(await ok('/admin/file-previews','POST',input,writer,201)).item;assert.equal(preview.result.errorCount,0);assert.equal(preview.result.manifest.documents[0].sourceId,'0007');assert.equal(preview.result.manifest.documents[0].metadata.allowDigitalCopy,false);
+ assert.equal((await call('/admin/file-previews/'+preview.id+'/stage','POST',{},other)).status,403);
+ const before=await db.document.count();const staged=await ok('/admin/file-previews/'+preview.id+'/stage','POST',{},writer);assert.equal(staged.repeated,false);assert.equal(staged.item.state,'READY');
+ const repeat=await ok('/admin/file-previews/'+preview.id+'/stage','POST',{},writer);assert.equal(repeat.repeated,true);assert.equal(repeat.item.id,staged.item.id);assert.equal(await db.document.count(),before);
+ assert.equal((await call('/admin/file-previews/'+preview.id,'DELETE',{},writer)).status,409);
 });

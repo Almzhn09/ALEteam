@@ -28,6 +28,7 @@ async function ok(route: string, method = 'GET', body?: unknown, cookie = writer
   const r = await call(route, method, body, cookie); assert.equal(r.status, expected, method + ' ' + route); return r.json();
 }
 async function clean() {
+  const derivatives=await db.uploadInspectionJob.findMany({where:{upload:{document:{fund:{branchId:{startsWith:prefix}}}}},select:{previewStorageKey:true}});for(const job of derivatives)if(job.previewStorageKey)await unlink(path.join(root,job.previewStorageKey)).catch(()=>{});
   const rows = await db.archiveUpload.findMany({where: {document: {fund: {branchId: {startsWith: prefix}}}}, select: {storageKey: true}});
   for (const row of rows) if (row.storageKey) await unlink(path.join(root, row.storageKey)).catch(() => {});
   await db.archiveUpload.deleteMany({where: {document: {fund: {branchId: {startsWith: prefix}}}}});
@@ -103,12 +104,14 @@ test('real PNG stays quarantined until independent rights review and explicit pu
   assert.equal((await call('/admin/uploads/'+row.id+'/publish','POST',{expectedUpdatedAt:row.updatedAt},reviewer)).status,409);
   assert.equal((await call('/admin/uploads/'+row.id+'/review','POST',{expectedUpdatedAt:row.updatedAt,decision:'APPROVE',rightsConfirmed:true,reason:'Self approval attempt'},writer)).status,403);
   assert.equal((await call('/admin/uploads/'+row.id+'/review','POST',{expectedUpdatedAt:row.updatedAt,decision:'APPROVE',rightsConfirmed:false,reason:'Missing rights confirmation'},reviewer)).status,400);
-  row=await approve(row);assert.equal(row.state,'APPROVED');assert.equal((await call('/files/upload-'+row.id)).status,404);
+  row=await approve(row);assert.equal(row.inspection.fullFormatParsing,true);assert.equal(row.inspection.parserState,'PASSED');assert.equal(row.state,'APPROVED');assert.equal((await call('/files/upload-'+row.id)).status,404);
   const previous=row;row=(await ok('/admin/uploads/'+row.id+'/publish','POST',{expectedUpdatedAt:row.updatedAt,downloadable:true},reviewer)).item;assert.equal(row.state,'PUBLISHED');
   const file=await call('/files/'+row.fileId);assert.equal(file.status,200);assert.equal(sha(Buffer.from(await file.arrayBuffer())),sha(bytes));
   assert.equal((await call('/files/'+row.fileId+'?download=1')).status,200);
   assert.equal((await call('/admin/uploads/'+row.id+'/publish','POST',{expectedUpdatedAt:previous.updatedAt},reviewer)).status,409);
   assert.equal(await db.archiveFile.count({where:{id:row.fileId}}),1);
+  const derivative=await db.archiveFile.findUniqueOrThrow({where:{id:'preview-'+row.id}});assert.equal(derivative.parentFileId,row.fileId);assert.equal(derivative.variant,'preview');assert.equal(derivative.downloadable,false);assert.equal((await call('/files/'+derivative.id)).status,200);assert.equal((await call('/files/'+derivative.id+'?download=1')).status,404);
+  await db.archiveFile.update({where:{id:derivative.id},data:{isPublic:false}});assert.equal((await call('/files/'+derivative.id)).status,404);await db.archiveFile.update({where:{id:derivative.id},data:{isPublic:true}});
   const publicMetadata=JSON.stringify((await ok('/documents/'+documentId,'GET',undefined,visitor)).item);assert.ok(!publicMetadata.includes('PRIVATE_REVIEW_REASON'));assert.ok(!publicMetadata.includes('uploaderId'));
   proof.independentReviewAndExplicitPublish=true;proof.realPngBytesVerified=true;
 });
@@ -118,6 +121,9 @@ test('existing original generated PDF passes the same private-to-reviewed public
   let row=await approve(await stage(created,pdf));row=(await ok('/admin/uploads/'+row.id+'/publish','POST',{expectedUpdatedAt:row.updatedAt},reviewer)).item;
   const response=await call('/files/'+row.fileId);assert.equal(response.status,200);assert.equal(response.headers.get('content-type'),'application/pdf');assert.equal(sha(Buffer.from(await response.arrayBuffer())),sha(pdf));
   assert.equal((await call('/files/'+row.fileId+'?download=1')).status,404);
+  const text=(await ok('/files/'+row.fileId+'/text','GET',undefined,visitor)).item;assert.equal(text.isOcr,false);assert.equal(text.sourceSha256,sha(pdf));assert.ok(text.text.length>0);assert.equal(text.fragments[0].page,1);
+  const job=await db.uploadInspectionJob.findUniqueOrThrow({where:{uploadId:row.id}});await writeFile(path.join(root,job.previewStorageKey!),Buffer.from('corrupted'));assert.equal((await call('/files/'+job.previewFileId)).status,404);
+  await db.archiveUpload.update({where:{id:row.id},data:{state:'REJECTED'}});assert.equal((await call('/files/'+row.fileId+'/text')).status,404);assert.equal((await call('/files/'+job.previewFileId)).status,404);
   proof.realGeneratedPdfBytesVerified=true;
 });
 test('bad bytes fail safely and retry uses the same immutable declaration',async()=>{
@@ -188,4 +194,12 @@ test('revoking staff grants blocks upload access on the next request of an exist
   try{assert.equal((await call('/admin/uploads/'+row.id,'GET',undefined,reviewer)).status,403);}
   finally{await db.staffAssignment.create({data:{userId:prefix+'reviewer',roleId:'EDITOR',branchId:null,scopeKey:'*'}});}
   assert.equal((await call('/admin/uploads/'+row.id,'GET',undefined,reviewer)).status,200);proof.revokedGrantIsImmediate=true;
+});
+
+test('signature-only fake PNG remains quarantined after parser failure and bounded explicit retry',async()=>{
+ const content=Buffer.from([137,80,78,71,13,10,26,10,0,1,2,3]);const created=await createUpload(documentId,{expectedBytes:content.length,expectedSha256:sha(content)});const row=await stage(created,content);
+ assert.equal((await call('/admin/uploads/'+row.id+'/review','POST',{expectedUpdatedAt:row.updatedAt,decision:'APPROVE',rightsConfirmed:true,reason:'Full parse required'},reviewer)).status,422);
+ assert.equal((await ok('/admin/uploads/'+row.id)).item.state,'QUARANTINED');const state=(await ok('/admin/uploads/'+row.id+'/inspection')).item;assert.equal(state.state,'FAILED');assert.equal(state.attempts,1);assert.ok(!JSON.stringify(state).includes('storageKey'));
+ assert.equal((await call('/admin/uploads/'+row.id+'/inspection','GET',undefined,foreign)).status,403);assert.equal((await call('/admin/uploads/'+row.id+'/inspection-retry','POST',{},reviewer)).status,403);
+ await ok('/admin/uploads/'+row.id+'/inspection-retry','POST',{},writer);assert.equal((await ok('/admin/uploads/'+row.id+'/inspection')).item.state,'QUEUED');assert.equal((await call('/files/upload-'+row.id)).status,404);
 });

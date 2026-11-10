@@ -8,6 +8,7 @@ import {staffContext, audit} from './staff';
 import {allows} from './staff-policy';
 import {catalogLock} from './archive-publication';
 import {publicDocumentWhere} from './public-visibility';
+import {ensureInspection, inspectionState, retryInspection} from './upload-inspection';
 import {stageUpload, readStagedUpload, removeStagedUpload, uploadMaxBytes} from './upload-storage';
 
 const inspection = {method: 'signature-size-sha256-v1', fullFormatParsing: false, antivirus: 'not-configured'} as const;
@@ -24,7 +25,7 @@ function dto(row: ArchiveUpload): ArchiveUploadDTO {
     actualBytes: row.actualBytes, actualSha256: row.actualSha256, rights: row.rights, sourceNote: row.sourceNote,
     failureCode: row.failureCode, reviewReason: row.reviewReason, rightsConfirmed: row.rightsConfirmed,
     state: row.state as UploadState, mimeType: row.mimeType as UploadMime,
-    createdAt: row.createdAt.toISOString(), updatedAt: row.updatedAt.toISOString(), inspection};
+    createdAt: row.createdAt.toISOString(), updatedAt: row.updatedAt.toISOString(), inspection: (row.inspection ?? inspection) as ArchiveUploadDTO['inspection']};
 }
 const root = () => process.env.FILE_STORAGE_ROOT || '.local/files';
 function stale() {throw new ApiError(409, 'STALE_UPLOAD', 'Загрузка изменилась. Обновите данные.');}
@@ -98,6 +99,7 @@ export async function uploadContent(request: Request, id: string) {
       const written = await tx.archiveUpload.updateMany({where: {id, state: 'RECEIVING', receiveToken: token}, data: {
         state: 'QUARANTINED', receiveToken: null, storageKey: staged!.storageKey, actualBytes: staged!.bytes, actualSha256: staged!.sha256, updatedAt: nextTime(current)}});
       if (written.count !== 1) stale();
+      await tx.uploadInspectionJob.upsert({where:{uploadId:id},create:{uploadId:id},update:{}});
       await audit(tx, context.user.id, 'UPLOAD_CONTENT_VERIFIED', id);
       return tx.archiveUpload.findUniqueOrThrow({where: {id}});
     });
@@ -138,6 +140,7 @@ export async function reviewUpload(request: Request, id: string) {
   if (p.decision === 'APPROVE') {
     if (!item.storageKey) stale();
     await readStagedUpload({...item, storageKey: item.storageKey!}, root());
+    await ensureInspection(id);
   }
   const row = await db.$transaction(async tx => {
     const updated = await tx.archiveUpload.updateMany({where: {id, updatedAt: item.updatedAt, state: 'QUARANTINED'}, data: {
@@ -156,6 +159,7 @@ export async function publishUpload(request: Request, id: string) {
   const p = z.object({expectedUpdatedAt: z.iso.datetime(), downloadable: z.boolean().default(false)}).strict().parse(await readJson(request, 1024));
   if (p.expectedUpdatedAt !== item.updatedAt.toISOString() || item.state !== 'APPROVED' || !item.storageKey) stale();
   await readStagedUpload({...item, storageKey: item.storageKey!}, root());
+  const parsed = await ensureInspection(id);
   const row = await db.$transaction(async tx => {
     await catalogLock(tx); await tx.$queryRaw`SELECT id FROM "ArchiveUpload" WHERE id=${id} FOR UPDATE`;
     const current = await tx.archiveUpload.findUniqueOrThrow({where: {id}});
@@ -165,8 +169,18 @@ export async function publishUpload(request: Request, id: string) {
     const fileId = 'upload-' + id;
     await tx.archiveFile.create({data: {id: fileId, documentId: current.documentId, storageKey: current.storageKey!, name: current.originalName,
       mimeType: current.mimeType, size: current.expectedBytes, isPublic: true, downloadable: p.downloadable}});
+    if (!parsed.previewStorageKey || !parsed.previewSha256 || !parsed.previewBytes) stale();
+    const previewFileId = 'preview-' + id;
+    await tx.archiveFile.create({data:{id:previewFileId,documentId:current.documentId,storageKey:parsed.previewStorageKey!,name:'preview.png',mimeType:'image/png',size:parsed.previewBytes!,isPublic:true,downloadable:false,variant:'preview',parentFileId:fileId}});
+    await tx.uploadInspectionJob.update({where:{uploadId:id},data:{previewFileId}});
     const updated = await tx.archiveUpload.update({where: {id}, data: {state: 'PUBLISHED', fileId, updatedAt: nextTime(current)}});
     await audit(tx, context.user.id, 'UPLOAD_PUBLISHED', id); return updated;
   });
   return json({item: dto(row)});
+}
+
+export async function uploadInspection(request:Request,id:string,retry=false){
+ const {item,context}=await authorized(request,id,retry?'catalog.write':'catalog.read');
+ if(retry){owner(item,context.user.id);z.object({}).strict().parse(await readJson(request,1024));if(item.state!=='QUARANTINED')stale();await rateLimit(`upload-action:${context.user.id}`,60,60);return json(await retryInspection(id));}
+ z.object({}).strict().parse(queryParams(request));return json({item:await inspectionState(id)});
 }
