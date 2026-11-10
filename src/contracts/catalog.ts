@@ -45,6 +45,8 @@ export interface CatalogRevision {
   updatedAt: string;
 }
 export interface CatalogFilters {
+  nameMode?: 'literal' | 'expanded';
+  placeId?: string;
   q?: string;
   locale?: ContentLocale;
   branchId?: string;

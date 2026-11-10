@@ -81,3 +81,63 @@ test('N-B02 a reviewed synthetic branch can publish a text-only profile; hidden 
  await publish(created.item.revisions[0]);const profile=(await ok('/content/discovery-text-profile')).item;assert.equal(profile.mapAvailable,false);assert.equal(profile.payload.latitude,undefined);
  await db.archiveBranch.update({where:{id:branch.id},data:{isPublic:false}});assert.equal((await call('/content/discovery-text-profile')).status,404);
 });
+
+let evidenceSource:Record<string,unknown>,placeId:string,topicId:string,graphDocumentId:string,fundId:string;
+async function fact(kind:string,data:unknown,parentId:string|null=null,sources:unknown[]= [evidenceSource]){
+ const created=(await ok('/admin/discovery/facts','POST',{kind,data,parentId,sources},writer,201)).item;
+ assert.equal((await call('/admin/discovery/facts/'+created.id+'/verify','POST',{expectedUpdatedAt:created.updatedAt},writer)).status,403);
+ return (await ok('/admin/discovery/facts/'+created.id+'/verify','POST',{expectedUpdatedAt:created.updatedAt},reviewer)).item;
+}
+async function createDemoDocument(title:string,extra:Record<string,unknown>={}){
+ const created=await ok('/admin/catalog/documents','POST',{fundId,title,description:'Синтетический учебный документ, не историческое свидетельство.',reference:'DISC-А0007/'+randomUUID(),year:1960,yearTo:1969,type:'PHOTO',locality:'ДЕМО Старыйгород',rights:'ALEteam CC0-1.0',sourceNote:'Synthetic test authored by ALEteam',...extra},writer,201);
+ const revision=await publish(created.revision);return {...created,revision};
+}
+test('COL-B02 verified names expand only explicit mode and preserve date/type/reference filters',async()=>{
+ const created=await ok('/admin/content','POST',{slug:'discovery-demo-source',kind:'PAGE',locale:'ru',isDemo:true,payload:demoPayload},writer,201);await publish(created.item.revisions[0]);
+ evidenceSource=(await ok('/discovery/materials/cms/'+created.item.id+'?locale=ru')).source;
+ const place=await fact('PLACE',{labels:{ru:{title:'ДЕМО Новыйгород',body:'Синтетическое место для проверки.'}},coordinates:null});placeId=place.id;
+ await fact('ALIAS',{name:'ДЕМО Старыйгород',locale:'ru',validFrom:1900,validTo:1970},placeId);
+ fundId=(await ok('/admin/catalog/funds','POST',{branchId:'discovery-other',number:'0007',name:'ДЕМО фонд поиска',description:'Synthetic test'},writer,201)).item.id;
+ const document=await createDemoDocument('ДЕМО фотографии старого города');graphDocumentId=document.item.id;
+ const literal=await ok('/documents?nameMode=literal&locality='+encodeURIComponent('ДЕМО Новыйгород')+'&fundNumber=0007&yearFrom=1965&yearTo=1966&type=PHOTO');assert.equal(literal.total,0);
+ const expanded=await ok('/documents?nameMode=expanded&locality='+encodeURIComponent('ДЕМО Новыйгород')+'&fundNumber=0007&yearFrom=1965&yearTo=1966&type=PHOTO');assert.deepEqual(expanded.items.map((r:{id:string})=>r.id),[document.item.id]);assert.equal(expanded.nameExpansion.applied,true);
+ assert.equal((await ok('/documents?nameMode=expanded&locality='+encodeURIComponent('ДЕМО Новыйгород')+'&type=LETTER')).total,0);
+ assert.equal((await ok('/documents?nameMode=expanded&locality='+encodeURIComponent('ДЕМО Новыйгород')+'&yearFrom=1980&yearTo=1985')).total,0);
+ const reference=await ok('/documents?nameMode=expanded&reference='+encodeURIComponent(document.item.reference));assert.equal(reference.items[0].reference,document.item.reference);
+ const aliases=await ok('/discovery/aliases?q='+encodeURIComponent('ДЕМО Старыйгород'));assert.equal(aliases.items[0].entityId,placeId);
+});
+test('COL-B04 chronology preserves partial dates, locale fallback, cursor scope and source withdrawal',async()=>{
+ for(const year of [1960,1940,1950])await fact('HISTORY',{labels:{ru:{title:'ДЕМО событие '+year,body:'Синтетический элемент.'}},date:{datePrecision:'year',dateParts:{year}},materials:[{kind:'document',id:graphDocumentId}],certainty:'source_assertion'},placeId);
+ const places=await ok('/places?locale=en');const place=places.items.find((p:{id:string})=>p.id===placeId);assert.equal(place.translationStatus,'original');assert.equal(place.contentLocale,'ru');assert.equal(place.mapAvailable,false);assert.equal(place.historyCount,3);
+ const first=await ok('/places/'+placeId+'/history?locale=en&limit=2');assert.deepEqual(first.items.map((r:{dateParts:{year:number}})=>r.dateParts.year),[1940,1950]);assert.equal(first.items[0].dateParts.month,undefined);assert.ok(first.nextCursor);
+ const second=await ok('/places/'+placeId+'/history?locale=en&limit=2&cursor='+first.nextCursor);assert.equal(second.items[0].dateParts.year,1960);
+ assert.equal((await call('/places/'+placeId+'/history?locale=ru&cursor='+first.nextCursor)).status,400);
+ const filtered=await ok('/places/'+placeId+'/history?yearFrom=1955');assert.equal(filtered.items.length,1);
+ const invalid=await call('/admin/discovery/facts','POST',{kind:'HISTORY',parentId:placeId,data:{labels:{ru:{title:'invalid'}},date:{datePrecision:'day',dateParts:{year:1960,month:2,day:31}},certainty:'source_assertion'},sources:[evidenceSource]},writer);assert.equal(invalid.status,400);
+ const sourceItem=await db.contentItem.findUniqueOrThrow({where:{slug:'discovery-demo-source'}});const r=await db.contentRevision.findFirstOrThrow({where:{itemId:sourceItem.id,status:'PUBLISHED'}});
+ await ok('/admin/revisions/'+r.id+'/transition','POST',{status:'ARCHIVED',expectedUpdatedAt:r.updatedAt.toISOString(),reason:'Source withdrawal test'},reviewer);
+ assert.equal((await call('/places/'+placeId+'/history')).status,404);assert.equal((await ok('/discovery/aliases?q='+encodeURIComponent('ДЕМО Старыйгород'))).items.length,0);
+ // Re-publish a distinct source version and explicitly re-verify facts against it; stable place ID is preserved.
+ const next=(await ok('/admin/content/'+sourceItem.id+'/revisions','POST',{locale:'ru',payload:demoPayload},writer,201)).item;await publish(next);evidenceSource=(await ok('/discovery/materials/cms/'+sourceItem.id)).source;
+ for(const old of (await db.discoveryFact.findMany({where:{status:'VERIFIED'},orderBy:{id:'asc'}})).sort((a,b)=>Number(b.kind==='PLACE')-Number(a.kind==='PLACE'))){
+  let row=(await ok('/admin/discovery/facts/'+old.id+'/revise','POST',{expectedUpdatedAt:old.updatedAt.toISOString()},writer)).item;
+  row=(await ok('/admin/discovery/facts/'+row.id,'PATCH',{expectedUpdatedAt:row.updatedAt,sources:[evidenceSource]},writer)).item;
+  await ok('/admin/discovery/facts/'+row.id+'/verify','POST',{expectedUpdatedAt:row.updatedAt},reviewer);
+ }
+ assert.equal((await ok('/places/'+placeId+'/history')).place.id,placeId);
+});
+test('COL-B02 ambiguous names require clarification; place ID needs confirmed material association',async()=>{
+ const otherPlace=await fact('PLACE',{labels:{ru:{title:'ДЕМО Другойгород'}},coordinates:null});await fact('ALIAS',{name:'ДЕМО Старыйгород',locale:'ru'},otherPlace.id);
+ const ambiguous=await ok('/documents?nameMode=expanded&locality='+encodeURIComponent('ДЕМО Старыйгород'));assert.equal(ambiguous.total,0);assert.equal(ambiguous.nameExpansion.clarificationRequired,true);
+ const selected=await ok('/documents?placeId='+placeId);assert.ok(selected.items.some((d:{id:string})=>d.id===graphDocumentId));
+ const unrelated=await ok('/documents?placeId='+otherPlace.id);assert.equal(unrelated.total,0);
+});
+test('COL-B04 related sources distinguish verified links and text similarity without leaking a hidden branch',async()=>{
+ const otherDoc=await createDemoDocument('ДЕМО связанный материал');
+ await fact('LINK',{from:{kind:'document',id:graphDocumentId},to:{kind:'document',id:otherDoc.item.id},reason:'same_event'});
+ const related=await ok('/documents/'+graphDocumentId+'/related');const linked=related.items.find((r:{id:string})=>r.id===otherDoc.item.id);assert.equal(linked.reason.code,'same_event');assert.ok(linked.reason.evidence.length);
+ await db.archiveBranch.update({where:{id:'discovery-other'},data:{isPublic:false}});
+ assert.equal((await call('/documents/'+graphDocumentId+'/related')).status,404);
+ assert.equal((await call('/discovery/materials/document/'+otherDoc.item.id)).status,404);
+ await db.archiveBranch.update({where:{id:'discovery-other'},data:{isPublic:true}});
+});

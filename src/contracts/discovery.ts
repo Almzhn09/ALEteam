@@ -5,7 +5,7 @@ export const DISCOVERY_VERSION = 1 as const;
 export type MaterialKey = {kind: 'document' | 'cms'; id: string};
 export type TranslationStatus = 'published' | 'original';
 export interface SourceRef extends MaterialKey {
-  locale: ContentLocale; revision: string; href: string; title: string;
+  locale: ContentLocale; revision: string; href: string; title: string; isDemo?: boolean;
   fragment?: {id: string; page?: number; start?: number; end?: number};
 }
 export type ReasonCode = 'editorial' | 'chosen_topic' | 'same_place' | 'same_person' | 'same_event' | 'same_fund' | 'text_similarity';
@@ -22,7 +22,7 @@ export interface HistoricalDate {datePrecision: DatePrecision; dateParts?: {year
 export interface PlaceRef {
   id: string; name: string; description: string; contentLocale: ContentLocale; availableLocales: ContentLocale[];
   translationStatus: TranslationStatus; mapAvailable: boolean; coordinates: {latitude: number; longitude: number} | null;
-  historyCount: number;
+  historyCount: number; isDemo?: boolean;
 }
 export interface AliasRef {
   entityId: string; canonicalName: string;

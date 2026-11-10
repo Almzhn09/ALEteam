@@ -1,6 +1,12 @@
+import {resolveMaterial} from '@/server/discovery-materials';
+import {localeSchema as discoveryLocale} from '@/server/discovery-utils';
+import {z} from 'zod';
+import {places,related} from '@/server/discovery-places';
+import {aliasList} from '@/server/discovery-names';
+import {adminFacts} from '@/server/discovery-facts';
 import {sourceDrafts} from '@/server/source-drafts';
 import { db } from '@/server/db';
-import { ApiError, handle, json, readJson, requireUser, sameOrigin, rateLimit } from '@/server/http';
+import { ApiError, handle, json, readJson, requireUser, sameOrigin, rateLimit, queryParams } from '@/server/http';
 import { staffContext as staffMeGate, staffMe, staffRoles, staffUsers, assignments, auditList } from '@/server/staff';
 import { adminContent, newRevision, editRevision, transitionRevision, publicContent, editorialNotices, revisionEvents } from '@/server/cms';
 import { adminBranches, archiveRecords, restoreDocument } from '@/server/archive-admin';
@@ -58,6 +64,20 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
     }
     if (method !== 'GET') sameOrigin(request);
     if(path[0]==='admin')await staffMeGate(request);
+    if(route==='admin/discovery/facts'&&['GET','POST'].includes(method))return adminFacts(request);
+    if(path[0]==='admin'&&path[1]==='discovery'&&path[2]==='facts'){
+      if(path.length===4&&['GET','PATCH'].includes(method))return adminFacts(request,path[3]);
+      if(path.length===5&&['verify','withdraw','revise'].includes(path[4])&&method==='POST')return adminFacts(request,path[3],path[4]);
+    }
+    if(path[0]==='discovery'&&path[1]==='materials'&&path.length===4&&['document','cms'].includes(path[2])&&method==='GET'){
+      const p=z.object({locale:discoveryLocale.default('ru')}).strict().parse(queryParams(request));
+      const material=await resolveMaterial({kind:path[2] as 'document'|'cms',id:path[3]},p.locale);
+      if(!material)throw new ApiError(404,'NOT_FOUND','Материал не найден.');return json({item:material.material,source:material.source});
+    }
+    if(route==='places'&&method==='GET')return places(request);
+    if(path[0]==='places'&&path.length===3&&path[2]==='history'&&method==='GET')return places(request,path[1]);
+    if(path[0]==='documents'&&path.length===3&&path[2]==='related'&&method==='GET')return related(request,path[1]);
+    if(route==='discovery/aliases'&&method==='GET')return aliasList(request);
     if(route==='admin/source-drafts'&&['GET','POST'].includes(method))return sourceDrafts(request);
     if(path[0]==='admin'&&path[1]==='source-drafts'&&path.length===3&&method==='GET')return sourceDrafts(request,path[2]);
     if(path[0]==='admin'&&path[1]==='source-drafts'&&path.length===4&&path[3]==='commit'&&method==='POST')return sourceDrafts(request,path[2],path[3]);

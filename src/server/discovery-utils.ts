@@ -16,4 +16,4 @@ export function decodeCursor(cursor:string|undefined,key:unknown){
  if(!cursor)return undefined;
  try {const item=JSON.parse(Buffer.from(cursor,'base64url').toString('utf8'));if(item.v!==1||item.scope!==digest(key)||typeof item.id!=='string'||item.id.length>80)throw Error();return item.id as string;}catch{throw new ApiError(400,'INVALID_CURSOR','Проверьте введённые данные.');}
 }
-export function encodeCursor(id:string,key:unknown){return Buffer.from(JSON.stringify({v:1,id,scope:digest(key)})).toString('base64url');}
+export function encodeCursor(id:string,key:unknown,position?:string){return Buffer.from(JSON.stringify({v:1,id,scope:digest(key),...(position?{position}:{})})).toString('base64url');}
