@@ -10,13 +10,14 @@ import { useI18n } from '@/lib/lang';
 import type { Translate } from '@/lib/i18n';
 
 import {assistantSourceLink} from '@/lib/assistant-source-link';
+import {researchLink} from '@/lib/discovery-links';
 
 const MAX = 1000;
 
 const STORE = 'aleteam-assistant-history-v1';
 type Message =
   | { role: 'user'; content: string }
-  | { role: 'assistant'; content: string; noAnswer: boolean; sources: AssistantAnswer['sources']; mode?: AssistantAnswer['mode'] }
+  | { role: 'assistant'; content: string; noAnswer: boolean; sources: AssistantAnswer['sources']; mode?: AssistantAnswer['mode']; researchSteps?:AssistantAnswer['researchSteps']; actions?:AssistantAnswer['actions']; nameExpansion?:AssistantAnswer['nameExpansion']; researchLimitations?:AssistantAnswer['researchLimitations'] }
   | { role: 'error'; content: string; retry?: string };
 
 const examples = ['Есть ли материалы о библиотеке?', 'Что означает архивный шифр?', 'Найди документы о железной дороге'];
@@ -58,7 +59,7 @@ export function Assistant() {
     if (!user) return;
     try {
       const saved: unknown = JSON.parse(sessionStorage.getItem(`${STORE}:${user.id}:${lang}`) ?? '[]');
-      if (Array.isArray(saved)) setMessages(saved.filter(isMessage).slice(-30));
+      if (Array.isArray(saved)) setMessages(saved.filter(isMessage).slice(-30).map(m=>m.role==='assistant'?{role:m.role,content:m.content,noAnswer:m.noAnswer,sources:m.sources,mode:m.mode}:m));
     } catch { /* ignore broken storage */ }
   }, [user?.id, lang]);
   useEffect(() => {
@@ -81,7 +82,7 @@ export function Assistant() {
         apiSend<AssistantAnswer>('/assistant', 'POST', { question: q, history,locale:lang }, {}, abort.signal),
         new Promise<never>((_, reject) => abort.signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')))),
       ]);
-      if (activeUser.current === owner) setMessages(m => [...m, { role: 'assistant', content: r.answer, noAnswer: r.noAnswer, sources: r.sources, mode: r.mode }]);
+      if (activeUser.current === owner) setMessages(m => [...m, { role: 'assistant', content: r.answer, noAnswer: r.noAnswer, sources: r.sources, mode: r.mode,researchSteps:r.researchSteps,actions:r.actions,nameExpansion:r.nameExpansion,researchLimitations:r.researchLimitations }]);
     } catch (error) {
       if (activeUser.current !== owner) return;
       if ((error as Error)?.name === 'AbortError') setMessages(m => [...m, { role: 'error', content: t('Запрос отменён.'), retry: q }]);
@@ -136,6 +137,8 @@ export function Assistant() {
               <span className="badge badge-neutral" data-assistant-mode={m.mode ?? 'external'}>{m.mode === 'local-model' ? t('Локальная модель ALEteam') : m.mode === 'retrieval' ? t('Поиск по источникам') : m.mode === 'llm' ? t('LLM: выбор цитат') : t('Внешний сервис')}</span>
               {m.noAnswer && <strong className="notice-title">{t('В материалах архива ответа не найдено')}</strong>}
               {m.content}
+              {m.nameExpansion?.applied&&<p className="small muted">{t('Учтены названия:')} {m.nameExpansion.variants.join(', ')}</p>}
+              {!!m.researchSteps?.length&&<details className="research-steps" open><summary>{t('Шаги исследования')}</summary><ol>{m.researchSteps.map(step=><li key={step.id}>{step.text}</li>)}</ol><div className="row">{m.actions?.map((action,i)=><Link className="btn btn-secondary" key={i} href={researchLink(action)}>{t('Открыть предложенный поиск')}</Link>)}</div>{m.researchLimitations?.map(s=><p className="small muted" key={s}>{s}</p>)}</details>}
               {m.sources.length > 0 && (
                 <div className="sources small">
                   <strong>{t('Источники:')}</strong>

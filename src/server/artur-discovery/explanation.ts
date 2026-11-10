@@ -42,8 +42,10 @@ export function explainFragments(input:unknown,locale:EngineLocale,options:{expe
  const safe=quality.filter(f=>!unsafeInstructions(f.text)&&/[\p{L}]{3}/u.test(f.text)&&((f.text.match(/\p{L}/gu)??[]).length/Math.max(1,f.text.replace(/\s/gu,'').length))>=.45);
  if(!safe.length)return {...base,...source,textFingerprint,status:'unsupported'};
  const query=(options.question??'').slice(0,1000).toLowerCase().match(/[\p{L}]{4,}/gu)??[];
- const salient=/(?<!\p{L})(?:образован\p{L}*|созда\p{L}*|переимен\p{L}*|реорганиз\p{L}*|утвер\p{L}*|установ\p{L}*|отмен\p{L}*|прекрат\p{L}*|бекіті\p{L}*|құрыл\p{L}*|қайта ата\p{L}*|renam\p{L}*|found(?:ed|ing)|establish\p{L}*|approv\p{L}*)(?!\p{L})/iu;
- const snippets=safe.flatMap(f=>[...new Intl.Segmenter(locale,{granularity:'sentence'}).segment(f.text)].filter(s=>s.segment.trim().length>=20).map(s=>({f,start:s.index,quote:s.segment.trim(),score:query.reduce((n,w)=>n+(s.segment.toLowerCase().includes(w)?3:0),0)+(salient.test(s.segment)?2:0)+(/(?<!\d)(?:18|19|20)\d{2}(?!\d)/u.test(s.segment)?1:0)})))
+ const salient=/(?<!\p{L})(?:образован\p{L}*|создан\p{L}*|переимен\p{L}*|реорганиз\p{L}*|утвер\p{L}*|установ\p{L}*|отмен\p{L}*|прекрат\p{L}*|бекіті\p{L}*|құрыл\p{L}*|қайта ата\p{L}*|renam\p{L}*|found(?:ed|ing)|establish\p{L}*|approv\p{L}*)(?!\p{L})/iu;
+ const descriptive=/(?<!\p{L})(?:описан\p{L}*|обсуди\p{L}*|содерж\p{L}*|перечис\p{L}*|сообщ\p{L}*|посвящ\p{L}*|қарастыр\p{L}*|баянда\p{L}*|describ\p{L}*|discuss\p{L}*|contain\p{L}*)(?!\p{L})/iu;
+ const metadata=/^(?:создатель\s*:|creator\s*:|условный год\s*:|шифр\s*:|демо\s*[-·—]|не исторический документ|s?ha[- ]?256)/iu;
+ const snippets=safe.flatMap(f=>[...new Intl.Segmenter(locale,{granularity:'sentence'}).segment(f.text)].filter(s=>s.segment.trim().length>=20).map(s=>({f,start:s.index,quote:s.segment.trim(),score:query.reduce((n,w)=>n+(s.segment.toLowerCase().includes(w)?3:0),0)+(salient.test(s.segment)?6:0)+(descriptive.test(s.segment)?3:0)+(/(?<!\d)(?:1\d{3}|20\d{2})(?!\d)/u.test(s.segment)?1:0)-(metadata.test(s.segment.trim())?6:0)-(s.segment.trim().length<45&&!salient.test(s.segment)?2:0)})))
   .sort((a,b)=>b.score-a.score||doc.fragments.indexOf(a.f)-doc.fragments.indexOf(b.f)||a.start-b.start);
  const unique=new Set<string>();const citations:ExplanationCitation[]=[];
  for(const s of snippets){const quote=s.quote.slice(0,900).trim();if(unique.has(quote))continue;unique.add(quote);

@@ -53,7 +53,8 @@
     "uploads:inspect": "node --env-file-if-exists=.env --import tsx scripts/process-upload-inspections.ts",
     "archive:jobs": "node --env-file-if-exists=.env --import tsx scripts/watch-archive-jobs.ts",
     "check:display": "node --env-file-if-exists=.env --import tsx scripts/check-display.ts",
-    "sources:verify": "node scripts/verify-archive-sources.mjs"
+    "sources:verify": "node scripts/verify-archive-sources.mjs",
+    "check:team-ui": "node --import tsx scripts/check-team-ui.ts"
   },
   "dependencies": {
     "@e965/xlsx": "0.20.3",

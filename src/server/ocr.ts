@@ -10,5 +10,7 @@ export async function recognizedText(request: Request, id: string) {
   const sourceHash = createHash('sha256').update(Buffer.from(await source.arrayBuffer())).digest('hex');
   if (sourceHash !== record.sourceSha256 || createHash('sha256').update(record.text).digest('hex') !== record.textSha256) throw new ApiError(404, 'NOT_FOUND', 'Распознанный текст пока недоступен.');
   return json({ item: { id, text: record.text, engine: results.engine, languages: results.languages,
-    sourceSha256: sourceHash, isOcr: true, isDemo: record.isDemo, corrected: false } });
+    sourceSha256: sourceHash, isOcr: true, isDemo: record.isDemo, corrected: false,
+    // Tesseract's score describes recognition, not historical accuracy or a calibrated probability.
+    confidence: record.confidence / 100 } });
 }

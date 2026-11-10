@@ -8,6 +8,7 @@ import { useI18n } from '@/lib/lang';
 import { useSession } from '@/lib/session';
 import { Breadcrumbs, ErrorNotice, Loading, Notice } from '@/components/ui';
 import { Notifications } from '@/components/Notifications';
+import {TopicSubscriptions} from '@/components/TopicSubscriptions';
 
 export default function MePage() {
   const { state, user } = useSession();
@@ -27,18 +28,20 @@ export default function MePage() {
 
   return (
     <div className="container page">
-      <Breadcrumbs items={[{ label: t('Мои комментарии') }]} />
-      <h1 id="my-comments">{t('Мои комментарии')}</h1>
+      <Breadcrumbs items={[{ label: t('Личный кабинет') }]} />
+      <h1>{t('Личный кабинет')}</h1>
       {state.status === 'loading' ? <Loading rows={1} />
         : !user ? (
           <Notice tone="info" title={t('Требуется вход')}>
-            <p>{t('Войдите, чтобы увидеть свои комментарии и статусы их проверки.')}</p>
+            <p>{t('Войдите, чтобы увидеть подписки, уведомления и свои комментарии.')}</p>
             <Link className="btn btn-primary btn-sm" href="/login?returnTo=%2Fme">{t('Войти')}</Link>
           </Notice>
         ) : (
           <div className="stack">
             <p className="muted">{user.name} · {user.email} · {user.role === 'MODERATOR' ? t('модератор') : t('автор')}</p>
             <Notifications />
+            <TopicSubscriptions/>
+            <h2 id="my-comments">{t('Мои комментарии')}</h2>
             {error ? <ErrorNotice error={error} onRetry={load} />
               : !data || owner !== user.id ? <Loading rows={2} />
               : data.items.length === 0 ? <p className="muted">{t('Вы ещё не оставляли комментариев.')}</p>

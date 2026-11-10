@@ -10,7 +10,9 @@ import { ScanViewer } from '@/components/ScanViewer';
 import { PdfViewer } from '@/components/PdfViewer';
 import { Comments } from '@/components/Comments';
 import { CopyButton, Share } from '@/components/Share';
-import { RecognizedText, SimilarDocuments } from '@/components/DocumentDiscovery';
+import { RecognizedText } from '@/components/DocumentDiscovery';
+import {RelatedMaterials,ExplainDocument} from '@/components/DiscoveryMaterials';
+import {RememberDocument} from '@/components/HomeDiscovery';
 
 const isImage = (mime: string) => mime === 'image/png' || mime === 'image/jpeg';
 const isPdf = (mime: string) => mime === 'application/pdf';
@@ -35,6 +37,7 @@ export function DocumentView({ doc, translated }: { doc: PublicDocument; transla
   const row = (label: string, value: string | number | null | undefined) => value || value === 0 ? <><dt>{t(label)}</dt><dd>{value}</dd></> : null;
   return (
     <div className="container page">
+      <RememberDocument documentId={doc.id}/>
       <Breadcrumbs items={[{ href: '/catalog', label: t('Каталог') }, { label: doc.title }]} />
       <div className="doc-layout">
         <article className="stack" aria-labelledby="doc-title">
@@ -43,7 +46,7 @@ export function DocumentView({ doc, translated }: { doc: PublicDocument; transla
             <DemoBadge show={doc.isDemo} />
           </div>
           <h1 id="doc-title" lang={doc.locale} style={{ marginBottom: 0 }}>{doc.title}</h1>
-          {!translated && <p className="small muted" style={{ margin: 0 }}>{t('Перевод карточки не опубликован: сведения показаны на русском языке.')}</p>}
+          {!translated && <p className="small muted" style={{ margin: 0 }}>{t('Материал показан на языке источника.')}</p>}
           {doc.isDemo && <Notice tone="warn" title={t('Демонстрационная запись')}>{t('Материал вымышлен для проверки интерфейса и не является историческим источником.')}</Notice>}
           <section aria-labelledby="desc-title">
             <h2 id="desc-title" className="visually-hidden">{t('Описание')}</h2>
@@ -54,7 +57,8 @@ export function DocumentView({ doc, translated }: { doc: PublicDocument; transla
             : scans.length > 0 ? <ScanViewer files={scans} title={doc.title} />
             : <div className="panel muted small">{t('Для этого документа нет опубликованных изображений сканов.')}</div>}
           {scans.filter(f => /^demo-scan-[1-5]$/.test(f.id)).map(f => <RecognizedText key={f.id} fileId={f.id} />)}
-          <SimilarDocuments documentId={doc.id} />
+          {doc.allowDigitalCopy&&<ExplainDocument documentId={doc.id}/>}
+          <RelatedMaterials documentId={doc.id}/>
 
           {doc.files.length > 0 && (
             <section aria-labelledby="files-title">

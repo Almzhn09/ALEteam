@@ -5,19 +5,20 @@ import { typeLabel } from '@/lib/labels';
 import { getLang, getT } from '@/lib/i18n-server';
 import { languageAlternates } from '@/lib/seo';
 import { latestDocuments, listContent } from '@/server/public-read';
+import {HomeDiscovery} from '@/components/HomeDiscovery';
 
 const quick = [
   { href: '/catalog', title: 'Каталог документов', text: 'Поиск по тексту и архивному шифру, фильтры по периоду, типу и фонду.' },
   { href: '/exhibitions', title: 'Онлайн-выставки', text: 'Тематические экспозиции архивных материалов.' },
   { href: '/branches', title: 'Филиалы и подразделения', text: 'Адреса, контакты, график работы и маршруты до филиалов архива.' },
-  { href: '/memory', title: 'Большой архив памяти', text: 'Коллекции, события, личности и воспоминания из истории региона.' },
+  { href: '/places', title: 'История места', text: 'Города и районы: события и опубликованные источники.' },
 ];
 export function generateMetadata() { return { alternates: languageAlternates('/') }; }
 
 export default async function Home() {
   const [t, lang] = await Promise.all([getT(), getLang()]);
   const [news, exhibitions, events, ownDocs] = await Promise.all([listContent(lang, 'NEWS'), listContent(lang, 'EXHIBITION'), listContent(lang, 'EVENT'), latestDocuments(lang, 4)]);
-  const docs = ownDocs.length ? ownDocs : lang === 'ru' ? [] : await latestDocuments('ru', 4);
+  const docs = (ownDocs.length ? ownDocs : lang === 'ru' ? [] : await latestDocuments('ru', 3)).slice(0,3);
   const blocks = [
     { id: 'news', title: 'Новости и события', href: '/news', items: [...news].sort((a, b) => (b.payload.date ?? '').localeCompare(a.payload.date ?? '')).slice(0, 3) },
     { id: 'exhibitions', title: 'Онлайн-выставки', href: '/exhibitions', items: exhibitions.slice(0, 3) },
@@ -53,6 +54,7 @@ export default async function Home() {
         </div>
       </section>
 
+      <HomeDiscovery/>
       {docs.length > 0 && <section className="section" aria-labelledby="recent-title">
         <div className="row spread" style={{ marginBottom: 'var(--space-4)' }}>
           <h2 id="recent-title" style={{ margin: 0 }}>{t('Материалы каталога')}</h2>

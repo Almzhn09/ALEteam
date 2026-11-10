@@ -32,9 +32,9 @@ async function login(page: Page, email: string, password: string, returnTo: stri
 try {
   execFileSync(process.execPath, ['--import','tsx','scripts/migrate.ts'], { env, stdio: 'pipe' });
   // Only this explicitly dedicated test DB is reset; application/demo DB is untouched.
-  await db.moderationDecision.deleteMany(); await db.report.deleteMany(); await db.comment.deleteMany();
-  await db.session.deleteMany(); await db.account.deleteMany(); await db.user.deleteMany();
-  await db.rateLimit.deleteMany(); await db.apiRateLimit.deleteMany();
+  const schema=await readFile('prisma/schema.prisma','utf8');
+  const names=[...schema.matchAll(/^model ([A-Za-z0-9_]+) \{/gm)].map(m=>m[1]).filter(n=>!['StaffRole','StaffPermission'].includes(n));
+  await db.$executeRawUnsafe('TRUNCATE '+names.map(n=>'"'+n+'"').join(',')+' RESTART IDENTITY CASCADE');
   execFileSync(process.execPath, ['--import','tsx','prisma/seed.ts'], { env, stdio: 'pipe' });
   app = spawn(process.execPath, ['--use-env-proxy','node_modules/next/dist/bin/next','start','--port','3095'], { env, stdio: 'ignore' });
   let ready = false;
@@ -80,12 +80,13 @@ try {
     assert.deepEqual(await device.evaluate(() => JSON.parse(localStorage.getItem('aleteam-favorites-v1') ?? '[]')), []);
     await second.close();
   });
-  await step('document exposes actual OCR text and similar document links', async () => {
+  await step('document exposes actual OCR text and reviewed or explicitly similar related materials', async () => {
     await author.goto(base + '/documents/demo-doc-01');
     await author.locator('summary', { hasText: 'Распознанный текст (OCR)' }).click();
     await author.locator('details').filter({ has: author.locator('summary', { hasText: 'Распознанный текст (OCR)' }) }).locator('p.pre-wrap').waitFor();
-    await author.locator('summary', { hasText: 'Похожие документы' }).click();
-    await author.locator('details a[href="/documents/demo-doc-06"]').waitFor();
+    const related=await(await author.request.get(base+'/api/documents/demo-doc-01/related?locale=ru')).json();
+    assert.ok(related.items.length>=3&&related.items.length<=5);
+    for(const item of related.items){assert.notEqual(item.id,'demo-doc-01');assert.ok(item.reason.text);await author.getByRole('region',{name:'Связанные материалы',exact:true}).locator(`a[href^="/documents/${item.id}?"]`).first().waitFor();}
   });
   await step('assistant shows actual mode, document and guide links, and unknown-answer state', async () => {
     await author.goto(base + '/assistant');

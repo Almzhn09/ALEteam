@@ -83,7 +83,7 @@ try {
   await page.getByLabel('Размер текста',{exact:true}).selectOption('150');
   await page.screenshot({path:folder+'/03-mobile-reading-settings.png',fullPage:true});
   await page.getByLabel('Размер текста',{exact:true}).press('Escape');
-  await page.getByRole('button',{name:'Қазақ тіліне ауысу'}).click();
+  await page.getByLabel('Язык',{exact:true}).filter({visible:true}).selectOption('kk');
   await page.waitForFunction(()=>document.documentElement.lang==='kk');
   assert.equal(await page.getByLabel('Мәтін өлшемі',{exact:true}).inputValue(),'150');
   await page.getByRole('button',{name:'Мәзір',exact:true}).click();

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
-import type { ContentKind, PublicContentItem } from '@/contracts/cms';
+import type { ContentKind, PublicContentItem,ContentLocale } from '@/contracts/cms';
 import { Body, NoTranslation, Provenance, Related, RelatedLinks } from '@/components/content';
 import { Share } from '@/components/Share';
 import { Breadcrumbs, DemoBadge } from '@/components/ui';
@@ -9,8 +9,8 @@ import { getLang, getT } from '@/lib/i18n-server';
 import { contentMetadata } from '@/lib/seo';
 import { allContentById, getDocument, getLocalized } from '@/server/public-read';
 
-export async function detailMetadata(slug: string, path: string, kinds: readonly ContentKind[]) {
-  const lang = await getLang();
+export async function detailMetadata(slug: string, path: string, kinds: readonly ContentKind[],contentLocale?:ContentLocale) {
+  const lang = contentLocale??await getLang();
   const { item, available } = await getLocalized(slug, lang, kinds);
   if (item) return contentMetadata(item, path);
   return available.length ? { title: (await getT())('Нет перевода на выбранный язык'), robots: { index: false } } : { robots: { index: false } };
@@ -24,9 +24,9 @@ export async function related(item: PublicContentItem, lang: Lang) {
   };
 }
 
-export async function ContentDetail({ slug, path, kinds, crumb, children }: { slug: string; path: string; kinds: readonly ContentKind[]; crumb: { href: string; label: string }; children?: (item: PublicContentItem) => ReactNode }) {
+export async function ContentDetail({ slug, path, kinds, crumb, children,contentLocale }: { slug: string; path: string; kinds: readonly ContentKind[]; crumb: { href: string; label: string }; children?: (item: PublicContentItem) => ReactNode;contentLocale?:ContentLocale }) {
   const [t, lang] = await Promise.all([getT(), getLang()]);
-  const { item, available } = await getLocalized(slug, lang, kinds);
+  const { item, available } = await getLocalized(slug, contentLocale??lang, kinds);
   if (!item) {
     if (!available.length) notFound();
     return <NoTranslation available={available} t={t} crumbs={[crumb, { label: t('Нет перевода') }]} path={path} />;
@@ -43,6 +43,7 @@ export async function ContentDetail({ slug, path, kinds, crumb, children }: { sl
           <DemoBadge show={item.isDemo} />
         </div>
         <h1 style={{ marginBottom: 0 }}>{p.title}</h1>
+        {item.locale!==lang&&<p className="small muted">{t('Материал показан на языке источника.')}</p>}
         <Body item={item} />
         {children?.(item)}
       </article>

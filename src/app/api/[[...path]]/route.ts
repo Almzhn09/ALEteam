@@ -4,7 +4,7 @@ import {navigation,navigationDraft} from '@/server/navigation';
 import {resolveMaterial} from '@/server/discovery-materials';
 import {localeSchema as discoveryLocale} from '@/server/discovery-utils';
 import {z} from 'zod';
-import {home} from '@/server/discovery-home';
+import {home,topics} from '@/server/discovery-home';
 import {interests,subscriptions,topicNotices} from '@/server/discovery-personal';
 import {measurements} from '@/server/discovery-measurements';
 import {explanation} from '@/server/discovery-explanation';
@@ -85,6 +85,7 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
     if(route==='navigation'&&method==='GET')return navigation(request);
     if(route==='admin/navigation'&&method==='POST')return navigationDraft(request);
     if(route==='discovery/home'&&method==='GET')return home(request);
+    if(route==='discovery/topics'&&method==='GET')return topics(request);
     if(route==='discovery/events'&&method==='POST')throw new ApiError(503,'COLLECTION_NOT_CONFIGURED','Сервис временно недоступен.');
     if(route==='admin/discovery/measurements'&&['GET','POST','DELETE'].includes(method))return measurements(request);
     if(route==='me/interests'&&['GET','PUT'].includes(method))return interests(request);

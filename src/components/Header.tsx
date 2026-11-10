@@ -130,7 +130,8 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
               <details className="account-menu" ref={account} onKeyDown={e => { if (e.key === 'Escape') { account.current?.removeAttribute('open'); account.current?.querySelector('summary')?.focus(); } }}>
                 <summary className="btn btn-secondary btn-sm">{user.name}</summary>
                 <ul className="account-panel">
-                  <li><Link href="/me" aria-current={current('/me')}>{t('Мои комментарии')}</Link></li>
+                  <li><Link href="/me" aria-current={current('/me')}>{t('Личный кабинет')}</Link></li>
+                  <li><Link href="/me#topic-subscriptions">{t('Мои подписки')}</Link></li>
                   {user.role === 'MODERATOR' && <li><Link href="/moderation" aria-current={current('/moderation')}>{t('Модерация')}</Link></li>}
                   {staff && <li><Link href="/admin" aria-current={current('/admin')}>{t('Управление')}</Link></li>}
                   <li><button type="button" className="btn btn-ghost btn-sm" onClick={logout} disabled={busy}>{t('Выйти')}</button></li>

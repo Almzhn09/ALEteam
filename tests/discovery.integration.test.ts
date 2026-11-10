@@ -173,7 +173,9 @@ test('COL-A02: live catalog asks which Altay is intended and accepts an explicit
 });
 test('COL-B03 explanation uses readable public file text only; restricted copy and stale version are rejected',async()=>{
  const proof=(await ok('/discovery/materials/document/demo-doc-01')).source;
- const before=await ok('/documents/demo-doc-01/explanation','POST',{locale:'ru'});assert.equal(before.status,'unsupported');assert.deepEqual(before.citations,[]);
+ const before=await ok('/documents/demo-doc-01/explanation','POST',{locale:'ru'});assert.equal(before.status,'ready');assert.equal(before.mode,'extractive');assert.ok(before.citations.length);assert.ok(before.limitations.some((s:string)=>s.includes('ошиб')));
+ for(const citation of before.citations){const authorized=(await ok(citation.source.href.replace('/api',''))).item;assert.ok(authorized.text.includes(citation.quote));assert.equal(citation.source.fragment.page,undefined);}
+ const same=await ok('/documents/demo-doc-01/explanation','POST',{locale:'en',sourceRevision:before.sourceRevision});assert.equal(same.status,'ready');assert.equal(same.citations[0].source.locale,'ru');
  assert.equal((await call('/documents/demo-doc-01/explanation','POST',{locale:'ru',sourceRevision:'0'.repeat(64)})).status,409);
  await db.document.update({where:{id:'demo-doc-01'},data:{allowDigitalCopy:false}});
  try{assert.equal((await call('/documents/demo-doc-01/explanation','POST',{locale:'ru'})).status,404);assert.equal((await ok('/documents/demo-doc-01')).item.files.length,0);}finally{await db.document.update({where:{id:'demo-doc-01'},data:{allowDigitalCopy:true}});}
@@ -181,6 +183,7 @@ test('COL-B03 explanation uses readable public file text only; restricted copy a
 });
 test('COL-B05 recommendations honor explicit interests/disable, and never invent popularity or account history',async()=>{
  const topic=await fact('TOPIC',{labels:{ru:{title:'ДЕМО тема'}}});topicId=topic.id;
+ const topics=await ok('/discovery/topics?locale=en&limit=20');assert.equal(topics.items.find((t:{id:string})=>t.id===topicId).translationStatus,'original');assert.ok(topics.items.every((t:{sources:unknown[]})=>t.sources.length));
  await fact('EDITORIAL',{material:{kind:'document',id:graphDocumentId},topicId,placeId,order:1});
  const cold=await ok('/discovery/home');assert.equal(cold.recommended.mode,'editorial');assert.equal(cold.recommended.engine,'artur');assert.equal(cold.popular.status,'unavailable');assert.equal(cold.popular.period,null);assert.deepEqual(cold.continue.items,[]);
  await ok('/me/interests','PUT',{topicIds:[topicId],personalizationEnabled:true,historyEnabled:false},guest);
@@ -281,4 +284,21 @@ test('N-B03 a complete explicit document mapping reuses immutable catalog stagin
  const before=await db.document.count();const staged=await ok('/admin/file-previews/'+preview.id+'/stage','POST',{},writer);assert.equal(staged.repeated,false);assert.equal(staged.item.state,'READY');
  const repeat=await ok('/admin/file-previews/'+preview.id+'/stage','POST',{},writer);assert.equal(repeat.repeated,true);assert.equal(repeat.item.id,staged.item.id);assert.equal(await db.document.count(),before);
  assert.equal((await call('/admin/file-previews/'+preview.id,'DELETE',{},writer)).status,409);
+});
+test('N-A03 real XLSB source mappings preserve literal fund groups and original bytes without catalog publication',async()=>{
+ const report=JSON.parse(readFileSync('data/artur/discovery/fund-mapping-report.json','utf8'));
+ const before=await db.document.count();
+ for(const [file,number,name,startRow,expectedFirst]of [['S09-link-2.xlsb',3,7,2,'Р-1 ч.с.'],['S09-link-3.xlsb',5,9,3,'1П/ч.с']] as const){
+  const bytes=readFileSync('sources/archive-20261110/linked/'+file);
+  const input={branchId:'discovery-text-branch',sourceNamespace:'source-mapping-'+file.replace('.','-'),format:'xlsb',base64:bytes.toString('base64'),mapping:{sheet:'Фонды',startRow,mode:'funds',columns:{number:{column:number,representation:'display'},name:{column:name,representation:'display'}},defaults:{}}};
+  const preview=(await ok('/admin/file-previews','POST',input,writer,201)).item;
+  assert.equal(preview.result.mappedRows[0].values.number,expectedFirst);assert.equal(preview.result.stagingAvailable,false);
+  const saved=await db.fileImportPreview.findUniqueOrThrow({where:{id:preview.id}}),result=saved.result as {mappedRows:{values:{number:string}}[];nonEmptyRows:number;warnings:{code:string}[]};
+  assert.deepEqual(Buffer.from(saved.originalBytes),bytes);
+  const source=report.sources.find((s:{source:string})=>s.source===file+'.json');assert.equal(result.nonEmptyRows,source.nonemptyRows);assert.equal(new Set(result.mappedRows.map(r=>r.values.number)).size,source.distinctLiteralFundNumbers);
+  assert.ok(result.warnings.some(w=>w.code==='POSSIBLE_HISTORICAL_RENAME_REQUIRES_REVIEW'));
+  assert.equal((await call('/admin/file-previews/'+preview.id+'/stage','POST',{},writer)).status,409);
+  await ok('/admin/file-previews/'+preview.id,'DELETE',{},writer);
+ }
+ assert.equal(await db.document.count(),before);
 });

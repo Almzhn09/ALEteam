@@ -1,0 +1,433 @@
+{
+  "version": 1,
+  "candidateCount": 31,
+  "approvedCount": 0,
+  "state": "DRAFT",
+  "note": "Real source-based editorial candidates, not invented archival documents and not an approved public collection. Synthetic browser fixtures are separate.",
+  "records": [
+    {
+      "reviewKey": "cms-history-1",
+      "type": "cms",
+      "sourceKey": "history-1",
+      "sourceId": "S02",
+      "locale": "ru",
+      "title": "История архива · 1",
+      "bodySha256": "e9c7eba7d8793541ac9f8fcfd9d475a1f169f0a37e079f261062fc1fcd88f426",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-history-2",
+      "type": "cms",
+      "sourceKey": "history-2",
+      "sourceId": "S02",
+      "locale": "ru",
+      "title": "История архива · 2",
+      "bodySha256": "2ce1f87aed843f969790c6361c1ec195a44266ffc9601e54153b01c0ccf83997",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-contacts",
+      "type": "cms",
+      "sourceKey": "contacts",
+      "sourceId": "S05",
+      "locale": "ru",
+      "title": "Контакты",
+      "bodySha256": "be9fb7bafd1ec5e8b86b74d9ad110db27081a177842f6e1b466107a330b9e7e0",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-structure",
+      "type": "cms",
+      "sourceKey": "structure",
+      "sourceId": "S07",
+      "locale": "ru",
+      "title": "Структура архива",
+      "bodySha256": "d4d517d3aa582b49c96d284b9188313afc8e01102b1dacf653d51f0fdd81e467",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-calendar-2022-ru",
+      "type": "cms",
+      "sourceKey": "calendar-2022-ru",
+      "sourceId": "S03/календарь 2022 год каз рус.docx",
+      "locale": "ru",
+      "title": "Календарь памятных дат · 2022",
+      "bodySha256": "c5fdb1de290ec1a3c88c64c619ec6d2f1da6ccb4dd5593fd58e008ce8446db1f",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-calendar-2022-kk",
+      "type": "cms",
+      "sourceKey": "calendar-2022-kk",
+      "sourceId": "S03/календарь 2022 год каз рус.docx",
+      "locale": "kk",
+      "title": "Атаулы күндер күнтізбесі · 2022",
+      "bodySha256": "3911b0ba610e072834a24ca3dac7badc415748bc8bc2c7ab666f2f4557c59eb4",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-calendar-2023-ru",
+      "type": "cms",
+      "sourceKey": "calendar-2023-ru",
+      "sourceId": "S03/календарь 2023 год каз рус.docx",
+      "locale": "ru",
+      "title": "Календарь памятных дат · 2023",
+      "bodySha256": "43fe2309db38cce303b3b601ed9df5d5e7579c7fd2c4780d557a8f5e452cb1e1",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-calendar-2023-kk",
+      "type": "cms",
+      "sourceKey": "calendar-2023-kk",
+      "sourceId": "S03/календарь 2023 год каз рус.docx",
+      "locale": "kk",
+      "title": "Атаулы күндер күнтізбесі · 2023",
+      "bodySha256": "779f38bd8ae38de42ac33880b8578982586f2d8cff331ff4b718fc7bfde9a022",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-calendar-2024-ru",
+      "type": "cms",
+      "sourceKey": "calendar-2024-ru",
+      "sourceId": "S03/календарь 2024 год каз рус.docx",
+      "locale": "ru",
+      "title": "Календарь памятных дат · 2024",
+      "bodySha256": "44cf65f40817ab4b0a0fdbca01bed7f498bfded7477a9c8fc25b429d9e95ce25",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-calendar-2024-kk",
+      "type": "cms",
+      "sourceKey": "calendar-2024-kk",
+      "sourceId": "S03/календарь 2024 год каз рус.docx",
+      "locale": "kk",
+      "title": "Атаулы күндер күнтізбесі · 2024",
+      "bodySha256": "facaf6ae3b992eaff77e5d6da5a4c0f680bc9df446db742a4c5ef7bf3b6c831a",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-calendar-2025-ru",
+      "type": "cms",
+      "sourceKey": "calendar-2025-ru",
+      "sourceId": "S03/календарь 2025 год каз рус.docx",
+      "locale": "ru",
+      "title": "Календарь памятных дат · 2025",
+      "bodySha256": "9db247592637f20f89612fb82af408033c550ca183ed65b278df7956814240c8",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-calendar-2025-kk",
+      "type": "cms",
+      "sourceKey": "calendar-2025-kk",
+      "sourceId": "S03/календарь 2025 год каз рус.docx",
+      "locale": "kk",
+      "title": "Атаулы күндер күнтізбесі · 2025",
+      "bodySha256": "779f2ca1fd6f841e15dff0c893c7ba72f5fbb247f4a6183feffb4f4e3c2475ca",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-calendar-2026-ru",
+      "type": "cms",
+      "sourceKey": "calendar-2026-ru",
+      "sourceId": "S03/календарь 2026 год каз рус.docx",
+      "locale": "ru",
+      "title": "Календарь памятных дат · 2026",
+      "bodySha256": "953cfe59a5471f74541ed57b56c9a26a303c799ac0c45d0653df98e3a32f53b7",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-calendar-2026-kk",
+      "type": "cms",
+      "sourceKey": "calendar-2026-kk",
+      "sourceId": "S03/календарь 2026 год каз рус.docx",
+      "locale": "kk",
+      "title": "Атаулы күндер күнтізбесі · 2026",
+      "bodySha256": "0a716648cb9fb54bc0a398ec07d0b2163432bc8ee0c4b36a3c741372f3b51633",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-compliance-14",
+      "type": "cms",
+      "sourceKey": "compliance-14",
+      "sourceId": "S04/Информация каз.docx",
+      "locale": "kk",
+      "title": "Информация каз",
+      "bodySha256": "d4be8af42bd58e9708b67aebc2f4049d0c3b73102c92cf49b2c2cbf4900270b8",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-compliance-15",
+      "type": "cms",
+      "sourceKey": "compliance-15",
+      "sourceId": "S04/Информация о работе комплаенс службы.docx",
+      "locale": "ru",
+      "title": "Информация о работе комплаенс службы",
+      "bodySha256": "0a125c601906257873a0b804fcf0f94fb6487ed8aadaf26cef9ce56f5d11f86e",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-compliance-16",
+      "type": "cms",
+      "sourceKey": "compliance-16",
+      "sourceId": "S04/О проведении внутреннего анализа коррупционных рисков.docx",
+      "locale": "ru",
+      "title": "О проведении внутреннего анализа коррупционных рисков",
+      "bodySha256": "92995617320534b2be1047a7155dd0d76dcc52b900521fa055d3703dbb8d0e9e",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "cms-compliance-17",
+      "type": "cms",
+      "sourceKey": "compliance-17",
+      "sourceId": "S04/Сыбайлас жемқорлық тәуекелдеріне ішкі талдау жүргізу туралы.docx",
+      "locale": "kk",
+      "title": "Сыбайлас жемқорлық тәуекелдеріне ішкі талдау жүргізу туралы",
+      "bodySha256": "f4c8a9e72186305bef55edbe8c59b9f9027313acd9c2d85d09866b3c277bb3b0",
+      "decision": "PENDING",
+      "blockers": [
+        "independent editorial/rights review",
+        "native-language review where applicable"
+      ]
+    },
+    {
+      "reviewKey": "branch-S01-Книга-6",
+      "type": "branch",
+      "sourceKey": "S01-Книга-6",
+      "sourceId": "S01",
+      "locale": "ru",
+      "title": "Филиал района Алтай                          КГУ \"Государственный архив Восточно-Казахстанской области\" управление цифровизации и архивов Восточно-Казахстанской области",
+      "decision": "PENDING",
+      "blockers": [
+        "hours/coordinates not supplied; text card allowed",
+        "confirm current contacts"
+      ]
+    },
+    {
+      "reviewKey": "branch-S01-Книга-7",
+      "type": "branch",
+      "sourceKey": "S01-Книга-7",
+      "sourceId": "S01",
+      "locale": "ru",
+      "title": "Глубоковский районный филиал   КГУ «Государственный архив Восточно-Казахстанской области» управление цифровизации и архивов Восточно-Казахстанской области",
+      "decision": "PENDING",
+      "blockers": [
+        "email-domain-needs-confirmation",
+        "hours/coordinates not supplied; text card allowed",
+        "confirm current contacts"
+      ]
+    },
+    {
+      "reviewKey": "branch-S01-Книга-8",
+      "type": "branch",
+      "sourceKey": "S01-Книга-8",
+      "sourceId": "S01",
+      "locale": "ru",
+      "title": "Зайсанский районный филиал         КГУ \"Государственный архив Восточно-Казахстанской области\" управление цифровизации и архивов Восточно-Казахстанской области",
+      "decision": "PENDING",
+      "blockers": [
+        "email-domain-needs-confirmation",
+        "hours/coordinates not supplied; text card allowed",
+        "confirm current contacts"
+      ]
+    },
+    {
+      "reviewKey": "branch-S01-Книга-9",
+      "type": "branch",
+      "sourceKey": "S01-Книга-9",
+      "sourceId": "S01",
+      "locale": "ru",
+      "title": "Катон-Карагайский районный филиал КГУ «Государственный архив Восточно-Казахстанской области» управление цифровизации и архивов Восточно-Казахстанской области",
+      "decision": "PENDING",
+      "blockers": [
+        "hours/coordinates not supplied; text card allowed",
+        "confirm current contacts"
+      ]
+    },
+    {
+      "reviewKey": "branch-S01-Книга-10",
+      "type": "branch",
+      "sourceKey": "S01-Книга-10",
+      "sourceId": "S01",
+      "locale": "ru",
+      "title": "Курчумский районный филиал       КГУ «Государственный архив Восточно-Казахстанской области» управление цифровизации и архивов Восточно-Казахстанской области",
+      "decision": "PENDING",
+      "blockers": [
+        "hours/coordinates not supplied; text card allowed",
+        "confirm current contacts"
+      ]
+    },
+    {
+      "reviewKey": "branch-S01-Книга-11",
+      "type": "branch",
+      "sourceKey": "S01-Книга-11",
+      "sourceId": "S01",
+      "locale": "ru",
+      "title": "Филиал района Марқакөл                  КГУ «Государственный архив Восточно-Казахстанской области» управление цифровизаии и архивов Восточно-Казахстанской области",
+      "decision": "PENDING",
+      "blockers": [
+        "missing-phone",
+        "hours/coordinates not supplied; text card allowed",
+        "confirm current contacts"
+      ]
+    },
+    {
+      "reviewKey": "branch-S01-Книга-12",
+      "type": "branch",
+      "sourceKey": "S01-Книга-12",
+      "sourceId": "S01",
+      "locale": "ru",
+      "title": "Риддерский городской филиал          КГУ \"Государственный архив Восточно-Казахстанской области\" управление цифровизации и архивов Восточно-Казахстанской области",
+      "decision": "PENDING",
+      "blockers": [
+        "hours/coordinates not supplied; text card allowed",
+        "confirm current contacts"
+      ]
+    },
+    {
+      "reviewKey": "branch-S01-Книга-13",
+      "type": "branch",
+      "sourceKey": "S01-Книга-13",
+      "sourceId": "S01",
+      "locale": "ru",
+      "title": "Филиал района Самар                           КГУ «Государственный архив Восточно-Казахстанской области» управление цифровизаии и архивов Восточно-Казахстанской области",
+      "decision": "PENDING",
+      "blockers": [
+        "hours/coordinates not supplied; text card allowed",
+        "confirm current contacts"
+      ]
+    },
+    {
+      "reviewKey": "branch-S01-Книга-14",
+      "type": "branch",
+      "sourceKey": "S01-Книга-14",
+      "sourceId": "S01",
+      "locale": "ru",
+      "title": "Тарбагатайский районный филиал КГУ «Государственный архив Восточно-Казахстанской области» управление цифровизации и архивов Восточно-Казахстанской области",
+      "decision": "PENDING",
+      "blockers": [
+        "hours/coordinates not supplied; text card allowed",
+        "confirm current contacts"
+      ]
+    },
+    {
+      "reviewKey": "branch-S01-Книга-15",
+      "type": "branch",
+      "sourceKey": "S01-Книга-15",
+      "sourceId": "S01",
+      "locale": "ru",
+      "title": "Уланский районный филиал            КГУ «Государственный архив Восточно-Казахстанской области» управление цифровизаии и архивов Восточно-Казахстанской области",
+      "decision": "PENDING",
+      "blockers": [
+        "hours/coordinates not supplied; text card allowed",
+        "confirm current contacts"
+      ]
+    },
+    {
+      "reviewKey": "branch-S01-Книга-16",
+      "type": "branch",
+      "sourceKey": "S01-Книга-16",
+      "sourceId": "S01",
+      "locale": "ru",
+      "title": "Филиал района Үлкен – Нарын             КГУ «Государственный архив Восточно-Казахстанской области» управление цифровизаии и архивов Восточно-Казахстанской области",
+      "decision": "PENDING",
+      "blockers": [
+        "hours/coordinates not supplied; text card allowed",
+        "confirm current contacts"
+      ]
+    },
+    {
+      "reviewKey": "branch-S01-Книга-17",
+      "type": "branch",
+      "sourceKey": "S01-Книга-17",
+      "sourceId": "S01",
+      "locale": "ru",
+      "title": "Усть-Каменогорский городской  филиал по личному составу                                  КГУ «Государственный архив Восточно-Казахстанской области» управление цифровизации и архивов Восточно-Казахстанской области",
+      "decision": "PENDING",
+      "blockers": [
+        "hours/coordinates not supplied; text card allowed",
+        "confirm current contacts"
+      ]
+    },
+    {
+      "reviewKey": "branch-S01-Книга-18",
+      "type": "branch",
+      "sourceKey": "S01-Книга-18",
+      "sourceId": "S01",
+      "locale": "ru",
+      "title": "Шемонаихинский районный филиал КГУ «Государственный архив Восточно-Казахстанской области» управление цифровизаии и архивов Восточно-Казахстанской области",
+      "decision": "PENDING",
+      "blockers": [
+        "hours/coordinates not supplied; text card allowed",
+        "confirm current contacts"
+      ]
+    }
+  ]
+}

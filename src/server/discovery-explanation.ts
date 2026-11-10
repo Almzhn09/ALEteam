@@ -22,17 +22,17 @@ export function checkedExplanation(value:unknown,input:AuthorizedText):Explanati
 export async function explanation(request:Request,id:string){
  idSchema.parse(id);const p=z.object({locale:localeSchema,sourceRevision:z.string().regex(/^[a-f0-9]{64}$/).optional()}).strict().parse(await readJson(request,2048));
  await rateLimit('discovery-explanation',60,60);
- const material=await resolveMaterial({kind:'document',id},p.locale,false);if(!material)unavailable();
+ const material=await resolveMaterial({kind:'document',id},p.locale,true);if(!material)unavailable();
  const card=await db.document.findUniqueOrThrow({where:{id},select:{allowDigitalCopy:true}});if(!card.allowDigitalCopy)unavailable();
  const files=await db.archiveFile.findMany({where:{documentId:id,isPublic:true},select:{id:true},orderBy:{id:'asc'},take:5});
- let input:AuthorizedText|undefined;let selectedFileId:string|undefined;
+ let input:AuthorizedText|undefined;let selectedFileId:string|undefined;let truncated=false;
  for(const file of files){
   try{
    const item=await authorizedFileText(file.id);
    const text=String(item.text).slice(0,12000);if(!text.trim())continue;
    const fingerprint=digest([material.source.revision,file.id,item.sourceSha256,item.textSha256]);
    const source={...material.source,revision:fingerprint,href:`/api/files/${encodeURIComponent(file.id)}/text`,fragment:{id:file.id}};
-   input={source,fingerprint,sourceSha256:item.sourceSha256,textSha256:item.textSha256,fragments:item.fragments,ocr:{used:item.isOcr,quality:item.isOcr?(item.corrected?'reviewed':'unreviewed'):'not_applicable',engine:item.engine}};selectedFileId=file.id;break;
+   input={source,fingerprint,sourceSha256:item.sourceSha256,textSha256:item.textSha256,fragments:item.fragments,ocr:{used:item.isOcr,quality:item.isOcr?(item.corrected?'reviewed':'unreviewed'):'not_applicable',engine:item.engine,...('confidence' in item&&typeof item.confidence==='number'?{confidence:item.confidence}:{})}};selectedFileId=file.id;truncated=item.truncated;break;
   }catch(error){if((error as {status?:number}).status!==404)throw error;}
  }
  const revision=input?.fingerprint??material.source.revision;
@@ -41,7 +41,8 @@ export async function explanation(request:Request,id:string){
  if(!input)return json({...base,status:'no_text',limitations:['No approved readable file text is available.']});
  if(!discoveryEngines.explainFragments)return json({...base,status:'unsupported',limitations:['COL-A03 engine is not connected. OCR, if used, requires independent review.']});
  const output=checkedExplanation(discoveryEngines.explainFragments(input,{locale:p.locale,now:new Date().toISOString()}),input);
- const current=await resolveMaterial({kind:'document',id},p.locale,false);if(!current||current.source.revision!==material.source.revision)unavailable();
+ if(truncated)output.limitations.push({ru:'Использованы первые 12 000 символов разрешённого текста; это выдержки из части документа.',kk:'Рұқсат етілген мәтіннің алғашқы 12 000 таңбасы пайдаланылды; үзінділер құжаттың бір бөлігіне қатысты.',en:'Only the first 12,000 characters of authorized text were used; the excerpts cover part of the document.'}[p.locale]);
+ const current=await resolveMaterial({kind:'document',id},material.source.locale,false);if(!current||current.source.revision!==material.source.revision)unavailable();
  const text=await authorizedFileText(selectedFileId!);
  if(text.sourceSha256!==input.sourceSha256||text.textSha256!==input.textSha256)unavailable();
  return json(output);

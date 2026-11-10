@@ -122,6 +122,7 @@ test('existing original generated PDF passes the same private-to-reviewed public
   const response=await call('/files/'+row.fileId);assert.equal(response.status,200);assert.equal(response.headers.get('content-type'),'application/pdf');assert.equal(sha(Buffer.from(await response.arrayBuffer())),sha(pdf));
   assert.equal((await call('/files/'+row.fileId+'?download=1')).status,404);
   const text=(await ok('/files/'+row.fileId+'/text','GET',undefined,visitor)).item;assert.equal(text.isOcr,false);assert.equal(text.sourceSha256,sha(pdf));assert.ok(text.text.length>0);assert.equal(text.fragments[0].page,1);
+  const explained=await ok('/documents/'+documentId+'/explanation','POST',{locale:'en'},visitor);assert.equal(explained.status,'ready');assert.equal(explained.mode,'extractive');assert.ok(explained.citations.some((c:{source:{fragment:{page?:number}}})=>c.source.fragment.page===1));
   const job=await db.uploadInspectionJob.findUniqueOrThrow({where:{uploadId:row.id}});await writeFile(path.join(root,job.previewStorageKey!),Buffer.from('corrupted'));assert.equal((await call('/files/'+job.previewFileId)).status,404);
   await db.archiveUpload.update({where:{id:row.id},data:{state:'REJECTED'}});assert.equal((await call('/files/'+row.fileId+'/text')).status,404);assert.equal((await call('/files/'+job.previewFileId)).status,404);
   proof.realGeneratedPdfBytesVerified=true;

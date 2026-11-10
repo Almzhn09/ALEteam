@@ -5,7 +5,7 @@ import {z} from 'zod';
 export const engineLocale=z.enum(['ru','kk','en']);
 export type EngineLocale=z.infer<typeof engineLocale>;
 export const engineId=z.string().regex(/^[\p{L}\p{N}][\p{L}\p{N}._:-]{0,119}$/u);
-export const internalHref=z.string().max(500).regex(/^\/(?:api\/)?(?:documents|content|places)\/[a-zA-Z0-9_-]{1,100}(?:\?locale=(?:ru|kk|en))?$/u);
+export const internalHref=z.string().max(500).regex(/^\/(?:(?:api\/)?(?:documents|content|places)\/[a-zA-Z0-9_-]{1,100}(?:\?locale=(?:ru|kk|en))?|api\/files\/[a-zA-Z0-9_-]{1,100}\/(?:text|ocr))$/u);
 export const sourceRefSchema=z.object({id:engineId,kind:z.enum(['document','cms']),locale:engineLocale,revision:z.string().min(1).max(128),title:z.string().min(1).max(500),href:internalHref}).strict();
 export type EngineSourceRef=z.infer<typeof sourceRefSchema>;
 const fact=z.object({kind:z.enum(['place','person','event','fund']),id:engineId,verified:z.boolean(),sourceIds:z.array(engineId).max(10)}).strict();

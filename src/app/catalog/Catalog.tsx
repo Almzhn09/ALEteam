@@ -8,14 +8,16 @@ import { sortLabel, typeLabel } from '@/lib/labels';
 import { DocumentCard } from '@/components/DocumentCard';
 import { ErrorNotice, Loading, Notice, Pagination } from '@/components/ui';
 import { useI18n } from '@/lib/lang';
+import type {NameExpansion} from '@/contracts/discovery';
+import {FollowTopic} from '@/components/TopicSubscriptions';
 
 const PAGE_SIZE = 10;
 type Sort = keyof typeof sortLabel;
 const TEXT_FILTERS = ['fundNumber', 'inventoryNumber', 'caseNumber', 'reference', 'author', 'organization', 'locality', 'originalLanguage', 'category', 'tag'] as const;
-const ID_FILTERS = ['inventoryId', 'caseId', 'branchId'] as const;
+const ID_FILTERS = ['inventoryId', 'caseId', 'branchId','placeId'] as const;
 type TextKey = typeof TEXT_FILTERS[number]; type IdKey = typeof ID_FILTERS[number];
 const filterLabel: Record<TextKey, string> = { fundNumber: 'Номер фонда', inventoryNumber: 'Номер описи', caseNumber: 'Номер дела', reference: 'Архивный шифр', author: 'Автор', organization: 'Организация', locality: 'Населённый пункт', originalLanguage: 'Язык оригинала', category: 'Категория', tag: 'Тема' };
-interface Filters extends Record<TextKey | IdKey, string> { q: string; fundId: string; type: DocumentType | ''; yearFrom: string; yearTo: string; sort: Sort; page: number; contentLang: string }
+interface Filters extends Record<TextKey | IdKey, string> { q: string; fundId: string; type: DocumentType | ''; yearFrom: string; yearTo: string; sort: Sort; page: number; contentLang: string;nameMode:'literal'|'expanded' }
 
 const isYear = (v: string) => /^\d{1,4}$/.test(v) && Number(v) >= 1 && Number(v) <= 2100;
 
@@ -37,11 +39,12 @@ function fromUrl(params: URLSearchParams): { filters: Filters; dropped: boolean 
   const text = Object.fromEntries(TEXT_FILTERS.map(k => [k, (params.get(k) ?? '').trim().slice(0, 200)])) as Record<TextKey, string>;
   const ids = Object.fromEntries(ID_FILTERS.map(k => [k, pick(k, v => /^[a-zA-Z0-9_-]{1,80}$/.test(v))])) as Record<IdKey, string>;
   const contentLang = pick('contentLang', v => ['ru', 'kk', 'en'].includes(v));
-  return { filters: { q, type, fundId, yearFrom, yearTo, sort, page: pageRaw ? Number(pageRaw) : 1, contentLang, ...text, ...ids }, dropped };
+  return { filters: { q, type, fundId, yearFrom, yearTo, sort, page: pageRaw ? Number(pageRaw) : 1, contentLang,nameMode:params.get('nameMode')==='expanded'?'expanded':'literal', ...text, ...ids }, dropped };
 }
 
 function toQuery(f: Partial<Filters>) {
   const p = new URLSearchParams();
+  if(f.nameMode==='expanded')p.set('nameMode','expanded');
   if (f.q) p.set('q', f.q);
   if (f.fundId) p.set('fundId', f.fundId);
   for (const key of [...TEXT_FILTERS, ...ID_FILTERS]) if (f[key]) p.set(key, f[key]!);
@@ -67,7 +70,7 @@ export function Catalog() {
   const [yearError, setYearError] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [funds, setFunds] = useState<Fund[] | null>(null);
-  const [data, setData] = useState<Page<DocumentSummary> | null>(null);
+  const [data, setData] = useState<(Page<DocumentSummary>&{nameExpansion?:NameExpansion}) | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [attempt, setAttempt] = useState(0);
@@ -88,7 +91,7 @@ export function Catalog() {
     const api = new URLSearchParams(urlKey);
     api.delete('contentLang'); api.delete('lang'); api.set('locale', contentLocale);
     api.set('sort', filters.sort); api.set('page', String(filters.page)); api.set('pageSize', String(PAGE_SIZE));
-    apiGet<Page<DocumentSummary>>(`/documents?${api}`, controller.signal)
+    apiGet<Page<DocumentSummary>&{nameExpansion?:NameExpansion}>(`/documents?${api}`, controller.signal)
       .then(r => { setData(r); setLoading(false); }, e => { if (e?.name !== 'AbortError') { setError(e); setLoading(false); } });
     return () => controller.abort();
   }, [urlKey, attempt, contentLocale]); // urlKey captures every filter value
@@ -189,6 +192,11 @@ export function Catalog() {
           </div>
         </div>
 
+        <div className="stack discovery-search-controls"><label className="row"><input type="checkbox" checked={filters.nameMode==='expanded'} onChange={e=>navigate({nameMode:e.target.checked?'expanded':'literal',placeId:''})}/>{t('Учитывать исторические названия мест')}</label>
+        {data?.nameExpansion?.applied&&<p className="small muted">{t('Учтены названия:')} {data.nameExpansion.variants.join(', ')}</p>}
+        {data?.nameExpansion?.clarificationRequired&&<Notice tone="info" title={t('Уточните место')}>{t('Название неоднозначно. Укажите город или выберите буквальный поиск.')} <Link href="/places">{t('История места')}</Link></Notice>}
+        <FollowTopic selection={{filters:Object.fromEntries([...new URLSearchParams(toQuery(filters)).entries()].filter(([key])=>!['page','sort','contentLang'].includes(key)))}}/>
+        </div>
         {error ? <ErrorNotice error={error} onRetry={() => setAttempt(a => a + 1)} title={t('Не удалось выполнить поиск')} />
           : loading && !data ? <Loading label={t('Поиск документов')} />
           : data && data.items.length === 0 && data.total > 0 ? (

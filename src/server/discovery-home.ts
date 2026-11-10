@@ -1,11 +1,16 @@
 import {z} from 'zod';
 import {db} from './db';
-import {liveFacts} from './discovery-facts';
-import {boundedPage,materialKey} from './discovery-utils';
+import {liveFacts,localLabel} from './discovery-facts';
+import {boundedPage,materialKey,decodeCursor,encodeCursor} from './discovery-utils';
 import {resolveMaterial,resolveEvidence,materialWithReason,type ResolvedMaterial} from './discovery-materials';
 import {json,queryParams,requireUser,ApiError,idSchema} from './http';
 import {discoveryEngines} from './discovery-engine-registry';
 import type {MaterialKey,MaterialRef,SourceRef} from '../contracts/discovery';
+export async function topics(request:Request){
+ const p=boundedPage.strict().parse(queryParams(request)),scope=['topics',p.locale],after=decodeCursor(p.cursor,scope);
+ const rows=(await liveFacts('TOPIC')).filter(row=>!after||row.id>after),selected=rows.slice(0,p.limit);
+ return json({locale:p.locale,items:selected.map(row=>{const label=localLabel((row.data as {labels:unknown}).labels,p.locale);return {id:row.id,title:label.value.title,description:label.value.body,contentLocale:label.contentLocale,availableLocales:label.availableLocales,translationStatus:label.translationStatus,isDemo:row.evidence.some(s=>s.isDemo),sources:row.evidence};}),nextCursor:rows.length>p.limit?encodeCursor(selected.at(-1)!.id,scope):null});
+}
 export async function home(request:Request){
  const p=boundedPage.omit({cursor:true}).extend({topicIds:z.string().max(2000).optional()}).strict().parse(queryParams(request));
  let personalizationEnabled=false,topicIds=p.topicIds?p.topicIds.split(',').filter(Boolean):[];
@@ -32,7 +37,7 @@ export async function home(request:Request){
   const latest=await db.discoveryAggregate.findFirst({orderBy:[{periodTo:'desc'},{id:'asc'}]});
   if(latest){popular.status='measured';popular.period={from:latest.periodFrom.toISOString(),to:latest.periodTo.toISOString()};
    const rows=await db.discoveryAggregate.findMany({where:{periodFrom:latest.periodFrom,periodTo:latest.periodTo,count:{gte:5}},orderBy:[{count:'desc'},{id:'asc'}],take:100});
-   for(const row of rows){const current=await resolveMaterial({kind:row.kind as MaterialKey['kind'],id:row.materialId},p.locale);if(current)popular.items.push(materialWithReason(current,'editorial',[current.source],p.locale));if(popular.items.length===p.limit)break;}
+   for(const row of rows){const current=await resolveMaterial({kind:row.kind as MaterialKey['kind'],id:row.materialId},p.locale);if(current)popular.items.push(materialWithReason(current,'popular',[current.source],p.locale));if(popular.items.length===p.limit)break;}
   }
  }
  return json({locale:p.locale,recommended:{mode:items.some(i=>i.reason.code==='history')?'history':items.some(i=>i.reason.code==='chosen_topic')||!items.length&&personalizationEnabled&&topicIds.length?'interests':'editorial',items,engine},popular,continue:{scope:'browser',items:[]},history:{status:'not_configured'}});

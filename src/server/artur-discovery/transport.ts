@@ -22,7 +22,7 @@ function snapshot(input:readonly CandidateSnapshot[],locale:EngineLocale){
 }
 function ranked(result:EngineRankedItem[],lookup:Map<string,CandidateSnapshot>){return result.map(r=>{
  const candidate=lookup.get(r.id);if(!candidate||candidate.source.revision!==r.revision)throw Error('ENGINE_RETURNED_UNKNOWN_SOURCE');
- const reason:ReasonCode=r.reason.code==='interests'?'chosen_topic':r.reason.code==='popular'?'editorial':r.reason.code;
+ const reason:ReasonCode=r.reason.code==='interests'?'chosen_topic':r.reason.code;
  return {key:{kind:candidate.material.kind,id:candidate.material.id},reason,evidence:r.reason.evidence.map(e=>{const original=lookup.get(e.id);if(!original||original.source.revision!==e.revision)throw Error('ENGINE_RETURNED_UNKNOWN_EVIDENCE');return original.source;})};
 });}
 function aliases(input:AliasRef[]):AliasEntity[]{return input.map(a=>{

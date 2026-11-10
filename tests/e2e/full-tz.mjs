@@ -16,11 +16,13 @@ process.on('uncaughtException', e => { for (const r of results) console.log(r); 
 const check = (name, ok, extra = '') => { results.push(`${ok ? 'PASS' : 'FAIL'} ${name} ${extra}`); };
 const seen = (p, sel, timeout = 10000) => p.waitForSelector(sel, { timeout }).then(() => true, () => false);
 
-const database = new pg.Client({ connectionString: process.env.DATABASE_URL }); await database.connect();
+const databaseUrl=process.env.TEST_DATABASE_URL??process.env.DATABASE_URL;
+if(!databaseUrl||!new URL(databaseUrl).pathname.endsWith('_test'))throw Error('Dedicated test database ending in _test required');
+const database = new pg.Client({ connectionString: databaseUrl }); await database.connect();
 const resetLimits = async () => { await database.query('delete from "RateLimit"'); await database.query('delete from "ApiRateLimit"'); };
 await resetLimits();
 
-const browser = await chromium.launch({ channel: process.env.BROWSER_CHANNEL ?? 'msedge' });
+const browser = await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH,headless:true,args:['--no-sandbox']}:{ channel: process.env.BROWSER_CHANNEL ?? 'msedge' });
 async function open(width = 1280, options = {}) {
   const ctx = await browser.newContext({ viewport: { width, height: 900 }, ...options });
   const p = await ctx.newPage(); p.setDefaultTimeout(15000);
@@ -270,7 +272,7 @@ check('share controls present', await guest.getByRole('button', { name: 'Коп�
 
 // Roles
 await resetLimits();
-const authorEnv = Object.fromEntries(readFileSync('.env', 'utf8').split(/\r?\n/).filter(l => l.includes('=')).map(l => [l.slice(0, l.indexOf('=')), l.slice(l.indexOf('=') + 1)]));
+const authorEnv = process.env.DEMO_AUTHOR_PASSWORD?{DEMO_AUTHOR_PASSWORD:process.env.DEMO_AUTHOR_PASSWORD}:Object.fromEntries(readFileSync(process.env.ENV_FILE??'.env', 'utf8').split(/\r?\n/).filter(l => l.includes('=')).map(l => [l.slice(0, l.indexOf('=')), l.slice(l.indexOf('=') + 1)]));
 const visitor = await open(1280);
 await visitor.goto(`${BASE}/admin`);
 check('guest asked to sign in to admin', await seen(visitor, 'text=Требуется вход'));

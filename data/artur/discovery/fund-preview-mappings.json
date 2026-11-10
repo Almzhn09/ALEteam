@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "templates": [
+    {
+      "originalPath": "sources/archive-20261110/linked/S09-link-2.xlsb",
+      "sha256": "cf9c63b4e00009738fed27c53f08736349dd7e7f93b17faec2a1574e75aeb3eb",
+      "requiresBranchMapping": true,
+      "previewTemplate": {
+        "branchId": null,
+        "sourceNamespace": "archive-2018-s09-link-2",
+        "format": "xlsb",
+        "mapping": {
+          "sheet": "Фонды",
+          "startRow": 2,
+          "mode": "funds",
+          "columns": {
+            "number": {
+              "column": 3,
+              "representation": "display"
+            },
+            "name": {
+              "column": 7,
+              "representation": "display"
+            }
+          },
+          "defaults": {}
+        }
+      },
+      "additionalSourceColumns": {
+        "historicalPeriod": 6,
+        "volumeNotation": 9
+      },
+      "missing": [
+        "reviewed branch ID",
+        "confirmed source date (2018 vs 2026)",
+        "stable archival entity identity beyond literal number",
+        "approved metadata/copy rights"
+      ],
+      "stagingAvailable": false
+    },
+    {
+      "originalPath": "sources/archive-20261110/linked/S09-link-3.xlsb",
+      "sha256": "470631d78a74a459f8b009e1698f077087883733cca90f128a23bee45191bd21",
+      "requiresBranchMapping": true,
+      "previewTemplate": {
+        "branchId": null,
+        "sourceNamespace": "archive-2018-s09-link-3",
+        "format": "xlsb",
+        "mapping": {
+          "sheet": "Фонды",
+          "startRow": 3,
+          "mode": "funds",
+          "columns": {
+            "number": {
+              "column": 5,
+              "representation": "display"
+            },
+            "name": {
+              "column": 9,
+              "representation": "display"
+            }
+          },
+          "defaults": {}
+        }
+      },
+      "additionalSourceColumns": {
+        "historicalPeriod": 8,
+        "volumeNotation": 11
+      },
+      "missing": [
+        "reviewed branch ID",
+        "confirmed source date (2018 vs 2026)",
+        "stable archival entity identity beyond literal number",
+        "approved metadata/copy rights"
+      ],
+      "stagingAvailable": false
+    }
+  ],
+  "notes": [
+    "Read exact original bytes and supply base64 only through the staff-only preview endpoint. Null branchId is deliberately not an executable request.",
+    "Year/volume/rename information remains raw source assertions. Fund preview cannot create inventories/cases/documents."
+  ]
+}

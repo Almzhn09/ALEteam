@@ -50,7 +50,7 @@ function measure() {
   return { overflow, header: Math.round(header), problems };
 }
 
-const browser = await chromium.launch({ channel: process.env.BROWSER_CHANNEL ?? 'msedge' });
+const browser = await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH,headless:true,args:['--no-sandbox']}:{ channel: process.env.BROWSER_CHANNEL ?? 'msedge' });
 const log = [];
 for (const [width, theme, size, lang, zoom] of variants) {
   const ctx = await browser.newContext({ viewport: { width: width / zoom, height: 900 / zoom }, deviceScaleFactor: zoom });
@@ -90,7 +90,8 @@ for (const [width, theme, size, lang, zoom] of variants) {
   await ctx.close();
 }
 await browser.close();
-writeFileSync(OUT + 'report.json', JSON.stringify({ recordedAt: new Date().toISOString(), base: BASE, browser: 'Microsoft Edge (Playwright, headless)', note: 'zoom 2 = CSS viewport halved at device scale 2; this approximates, not replaces, real browser zoom', results: log }, null, 1));
+writeFileSync(OUT + 'report.json', JSON.stringify({ recordedAt: new Date().toISOString(), base: BASE, browser: process.env.CHROMIUM_PATH?'Chromium (Playwright, headless)':'Microsoft Edge (Playwright, headless)', note: 'zoom 2 = CSS viewport halved at device scale 2; this approximates, not replaces, real browser zoom', results: log }, null, 1));
 const bad = log.filter(r => r.overflow || r.problems?.length || r.axe?.length || r.ok === false);
 for (const r of bad) console.log(`${r.page} ${r.width}/${r.theme}/${r.textSize}/${r.lang}${r.zoom > 1 ? '/zoom200' : ''}: ${[r.overflow && 'overflow', ...(r.problems ?? []), ...(r.axe ?? []).map(a => 'axe ' + a), r.ok === false && 'focus not returned'].filter(Boolean).join(' | ')}`);
 console.log(`checked ${log.length}, with findings ${bad.length}`);
+if(bad.length)process.exitCode=1;
