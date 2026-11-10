@@ -355,7 +355,6 @@ dialog::backdrop { background: rgb(10 12 18 / 55%); }
 :root[data-theme="dark"] .leaflet-tile-pane { filter: brightness(.75) invert(1) hue-rotate(180deg); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .leaflet-tile-pane { filter: brightness(.75) invert(1) hue-rotate(180deg); } }
 .route { margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--border); }
-.assistant-fab { position: fixed; right: var(--gutter); bottom: var(--space-4); z-index: 30; box-shadow: var(--shadow); border-radius: 999px; }
 dialog.assistant-dialog { width: min(640px, calc(100vw - 2 * var(--gutter))); max-height: 85vh; margin: auto; }
 .assistant-dialog .chat-form { background: var(--surface); }
 main { padding-bottom: var(--space-7); }
@@ -398,4 +397,50 @@ dialog.tour::backdrop { background: rgb(10 12 18 / 30%); }
 @media (max-width: 767px) {
   .site-header { position: static; }
   .decade-nav { top: 0; }
+}
+
+/* Narrow reading pages keep the shared container edge and limit only their content. */
+.measure-narrow > * { max-width: 880px; }
+.measure-wide > * { max-width: 960px; }
+.measure-form > * { max-width: 520px; }
+details > summary { min-height: 44px; padding-block: var(--space-2); cursor: pointer; }
+.leaflet-control-attribution a { text-decoration: underline; }
+/* Focused controls are scrolled clear of the fixed assistant button. */
+/* Large text: the two-row desktop header no longer fits, so the compact header is used up to 1919px. */
+@media (min-width: 1200px) and (max-width: 1919px) {
+  html[data-text-size="125"] .menu-toggle, html[data-text-size="150"] .menu-toggle { display: inline-flex; }
+  html[data-text-size="125"] .header-search, html[data-text-size="150"] .header-search { display: none; }
+  html[data-text-size="125"] .menu-search, html[data-text-size="150"] .menu-search { display: flex; }
+  html[data-text-size="125"] .site-header .nav-wrap, html[data-text-size="150"] .site-header .nav-wrap { display: none; position: absolute; left: 0; right: 0; top: 100%; flex-basis: auto; background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow); padding: var(--space-3) var(--gutter) var(--space-4); max-height: calc(100dvh - var(--header-height, 64px)); overflow-y: auto; }
+  html[data-text-size="125"] .site-header .nav-wrap[data-open="true"], html[data-text-size="150"] .site-header .nav-wrap[data-open="true"] { display: block; }
+  html[data-text-size="125"] .nav, html[data-text-size="150"] .nav { flex-direction: column; align-items: stretch; flex-wrap: wrap; }
+  html[data-text-size="125"] .user-chip, html[data-text-size="150"] .user-chip { margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--border); flex-wrap: wrap; }
+  html[data-text-size="125"] .header-inner .brand, html[data-text-size="150"] .header-inner .brand { flex: 1 1 auto; }
+}
+/* An inline favourite button sat flush against the next action inside vertical stacks. */
+.stack > .fav-btn { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.account-menu { position: relative; }
+.account-menu > summary { list-style: none; max-width: 16rem; overflow-wrap: anywhere; }
+.account-menu > summary::-webkit-details-marker { display: none; }
+.account-panel { position: absolute; right: 0; top: calc(100% + var(--space-2)); z-index: 30; min-width: 220px; list-style: none; margin: 0; padding: var(--space-2); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); box-shadow: var(--shadow); display: grid; gap: var(--space-1); }
+.account-panel a { display: block; padding: var(--space-2) var(--space-3); min-height: 44px; border-radius: var(--radius-sm); text-decoration: none; color: var(--text); }
+.account-panel a:hover { background: var(--surface-2); }
+.account-panel .btn { width: 100%; justify-content: flex-start; }
+@media (max-width: 1199px) { .account-panel { position: static; box-shadow: none; margin-top: var(--space-2); } }
+.branch-map .leaflet-control-attribution a { text-decoration: underline; }
+/* Desktop header: one row of brand, flexible search and tools; the menu copy of search stays hidden. */
+@media (min-width: 1200px) {
+  html:not([data-text-size="125"]):not([data-text-size="150"]) .menu-search { display: none; }
+  html:not([data-text-size="125"]):not([data-text-size="150"]) .header-search { flex: 1 1 160px; min-width: 0; }
+  .header-search .input { min-width: 0; }
+  html:not([data-text-size="125"]):not([data-text-size="150"]) .header-tools { flex-wrap: nowrap; }
+}
+.header-tools .select-compact, .header-search .input, .header-search .btn, .menu-search .input, .menu-search .btn { min-height: 44px; }
+/* Mobile: the header is not sticky but stays the anchor of the dropdown menu. */
+@media (max-width: 767px) { .site-header { position: relative; z-index: 20; } }
+/* Small screens: display settings open in the flow at full width instead of a floating panel that can leave the screen. */
+@media (max-width: 1199px) {
+  .display-preferences[open] { flex-basis: 100%; }
+  .display-preferences .display-panel { position: static; width: 100%; margin-top: var(--space-2); box-shadow: none; }
 }

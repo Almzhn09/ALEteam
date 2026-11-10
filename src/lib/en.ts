@@ -687,7 +687,7 @@ export const en: Record<string, string> = {
   'Как пользоваться': 'How to use',
   'Как пользоваться сайтом': 'How to use the site',
   'Кнопка «Вид сайта» в шапке меняет тему и размер текста, рядом выбирается язык. Настройки сохраняются в этом браузере и не сбрасывают открытую страницу.': 'The “Display” button in the header changes the theme and text size; the language is chosen next to it. Settings are kept in this browser and do not reset the open page.',
-  'Кнопка «ИИ-помощник» открывает помощника на любой странице. Он отвечает по опубликованным материалам и показывает источники. Вопросы можно задавать после входа.': 'The “AI assistant” button opens the assistant on any page. It answers from published materials and shows its sources. You can ask questions after signing in.',
+  'Кнопка «ИИ-помощник» в шапке открывает помощника на любой странице. Он отвечает по опубликованным материалам и показывает источники. Вопросы можно задавать после входа.': 'The “AI assistant” button in the header opens the assistant on any page. It answers from published materials and shows its sources. You can ask questions after signing in.',
   'Открыть каталог': 'Open the catalogue',
   'Открыть помощника': 'Open the assistant',
   'Пройти короткий тур': 'Take a short tour',

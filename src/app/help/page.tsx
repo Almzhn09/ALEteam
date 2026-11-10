@@ -15,7 +15,7 @@ export default async function HelpPage() {
   const [faq, pages] = await Promise.all([listContent(lang, 'FAQ'), listContent(lang, 'PAGE')]);
   const articles = pages.filter(p => p.payload.category === 'help');
   return (
-    <div className="container page stack" style={{ maxWidth: 880 }}>
+    <div className="container page measure-narrow stack">
       <Breadcrumbs items={[{ label: t('Справка и частые вопросы') }]} />
       <h1>{t('Справка и частые вопросы')}</h1>
       <section className="panel" aria-labelledby="structure-title">

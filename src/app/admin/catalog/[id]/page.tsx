@@ -44,7 +44,9 @@ export default function DocumentEditor({ params }: { params: Promise<{ id: strin
     const key = latest ? `${latest.id}:${latest.updatedAt}` : `new:${locale}`;
     if (key === formKey) return;
     if (keepDraft && latest && formKey.startsWith(`${latest.id}:`)) { setFormKey(key); return; }
-    setFormKey(key); setForm(latest?.payload ? formFrom(latest.payload) : emptyDoc); setSaved('');
+    // A refresh of the same revision keeps the success message; another revision or language clears it.
+    const sameRevision = !!latest && formKey.startsWith(`${latest.id}:`);
+    setFormKey(key); setForm(latest?.payload ? formFrom(latest.payload) : emptyDoc); if (!sameRevision) setSaved('');
   }, [latest, locale, formKey]);
 
   if (loadError) return loadError instanceof ApiClientError && loadError.status === 404 ? <Notice tone="error" title={t('Документ не найден')}><p>{t('Он не существует или недоступен в вашей области.')}</p></Notice> : <ErrorNotice error={loadError} onRetry={() => void load()} />;

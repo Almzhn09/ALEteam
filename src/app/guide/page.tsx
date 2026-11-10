@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { TourButton, tourSteps } from '@/components/Tour';
+import { TourButton } from '@/components/Tour';
+import { tourSteps } from '@/lib/tour-steps';
 import { Breadcrumbs } from '@/components/ui';
 import { getT } from '@/lib/i18n-server';
 import { languageAlternates } from '@/lib/seo';
@@ -12,7 +13,7 @@ export async function generateMetadata() {
 export default async function GuidePage() {
   const t = await getT();
   return (
-    <div className="container page stack" style={{ maxWidth: 880 }}>
+    <div className="container page measure-narrow stack">
       <Breadcrumbs items={[{ label: t('Как пользоваться сайтом') }]} />
       <div>
         <h1>{t('Как пользоваться сайтом')}</h1>

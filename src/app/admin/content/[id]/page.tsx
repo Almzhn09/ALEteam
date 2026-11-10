@@ -45,7 +45,9 @@ export default function ContentEditorPage({ params }: { params: Promise<{ id: st
     const key = latest ? `${latest.id}:${latest.updatedAt}` : `new:${locale}`;
     if (key === formKey) return;
     if (keepDraft && latest && formKey.startsWith(`${latest.id}:`)) { setFormKey(key); return; }
-    setFormKey(key); setForm(latest ? { ...emptyPayload(), ...latest.payload } : emptyPayload()); setSaved(false);
+    // A refresh of the same revision keeps the success message; another revision or language clears it.
+    const sameRevision = !!latest && formKey.startsWith(`${latest.id}:`);
+    setFormKey(key); setForm(latest ? { ...emptyPayload(), ...latest.payload } : emptyPayload()); if (!sameRevision) setSaved(false);
   }, [latest, locale, formKey]);
 
   if (loadError) return <ErrorNotice error={loadError} onRetry={() => void load()} />;

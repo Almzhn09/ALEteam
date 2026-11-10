@@ -23,7 +23,7 @@ export default async function NewsPage({ searchParams }: { searchParams: Promise
   const query = { q, category, year: yearText };
   const filtered = !!(q || category || yearText);
   return (
-    <div className="container page stack" style={{ maxWidth: 960 }}>
+    <div className="container page measure-wide stack">
       <Breadcrumbs items={[{ label: t('Новости и события') }]} />
       <h1>{t('Новости и события')}</h1>
       <FilterBar action="/news" t={t} reset={filtered}>

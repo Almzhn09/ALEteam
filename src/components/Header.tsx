@@ -8,6 +8,7 @@ import { apiGet, errorText } from '@/lib/api';
 import { useI18n } from '@/lib/lang';
 import { DisplayPreferences, type DisplayTheme, type TextSize } from './DisplayPreferences';
 import { TourButton } from './Tour';
+import { AssistantWidget } from './AssistantWidget';
 import { LANGS, langName, type Lang } from '@/lib/i18n';
 
 const links = [
@@ -56,6 +57,7 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
   const [staff, setStaff] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
   const header = useRef<HTMLElement>(null);
+  const account = useRef<HTMLDetailsElement>(null);
   const searchId = useId();
   useEffect(() => {
     const node = header.current;
@@ -66,7 +68,7 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
     return () => { observer.disconnect(); document.documentElement.style.removeProperty('--header-height'); };
   }, []);
 
-  useEffect(() => { setOpen(false); }, [pathname]);
+  useEffect(() => { setOpen(false); account.current?.removeAttribute('open'); }, [pathname]);
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') { setOpen(false); toggle.current?.focus(); } };
@@ -96,8 +98,8 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
           <span className="brand-mark" aria-hidden="true">ЭА</span>
           <span>{t('Электронный архив')}<small>{t('Восточно-Казахстанская область · прототип')}</small></span>
         </Link>
-        <form className="header-search" action="/catalog" method="get" role="search" aria-label={t('Поиск по архиву')}>
-          <label htmlFor={searchId} className="visually-hidden">{t('Что вы ищете')}</label>
+        <form className="header-search" action="/catalog" method="get" role="search" aria-label={t('Поиск по каталогу')}>
+          <label htmlFor={searchId} className="visually-hidden">{t('Поиск по каталогу')}</label>
           <input id={searchId} name="q" className="input" type="search" maxLength={200} autoComplete="off" placeholder={t('Поиск по каталогу')} />
           <button type="submit" className="btn btn-primary btn-sm">{t('Найти')}</button>
         </form>
@@ -105,13 +107,14 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
           <Suspense><LanguageSelect /></Suspense>
           <DisplayPreferences initialTheme={initialTheme} initialSize={initialSize} />
           <TourButton />
+          <AssistantWidget />
         </div>
         <button ref={toggle} type="button" className="btn btn-secondary btn-sm menu-toggle" aria-expanded={open} aria-controls="site-nav" onClick={() => setOpen(v => !v)}>
           {open ? t('Закрыть') : t('Меню')}
         </button>
         <div className="nav-wrap" id="site-nav" data-open={open}>
-          <form className="menu-search" action="/catalog" method="get" role="search" aria-label={t('Поиск по архиву')}>
-            <label htmlFor={`${searchId}-menu`} className="visually-hidden">{t('Что вы ищете')}</label>
+          <form className="menu-search" action="/catalog" method="get" role="search" aria-label={t('Поиск по каталогу')}>
+            <label htmlFor={`${searchId}-menu`} className="visually-hidden">{t('Поиск по каталогу')}</label>
             <input id={`${searchId}-menu`} name="q" className="input" type="search" maxLength={200} autoComplete="off" placeholder={t('Поиск по каталогу')} />
             <button type="submit" className="btn btn-primary btn-sm">{t('Найти')}</button>
           </form>
@@ -122,14 +125,19 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
             <Link href="/favorites" className="small" aria-current={current('/favorites')}>
               <span aria-hidden="true">★</span> {t('Избранное')}{favorites.hydrated && favorites.items.length > 0 && <span className="muted"> ({favorites.items.length})</span>}
             </Link>
-            {user?.role === 'MODERATOR' && <Link href="/moderation" className="small" aria-current={current('/moderation')}>{t('Модерация')}</Link>}
-            {staff && <Link href="/admin" className="small" aria-current={current('/admin')}>{t('Управление')}</Link>}
             {state.status === 'loading' && <span className="muted small">{t('Проверка входа…')}</span>}
-            {user && <>
-              <Link href="/me" className="small" aria-current={current('/me')}>{user.name}</Link>
-              <button type="button" className="btn btn-ghost btn-sm" onClick={logout} disabled={busy}>{t('Выйти')}</button>
-              {logoutError && <span className="field-error" role="alert">{logoutError}</span>}
-            </>}
+            {user && (
+              <details className="account-menu" ref={account} onKeyDown={e => { if (e.key === 'Escape') { account.current?.removeAttribute('open'); account.current?.querySelector('summary')?.focus(); } }}>
+                <summary className="btn btn-secondary btn-sm">{user.name}</summary>
+                <ul className="account-panel">
+                  <li><Link href="/me" aria-current={current('/me')}>{t('Мои комментарии')}</Link></li>
+                  {user.role === 'MODERATOR' && <li><Link href="/moderation" aria-current={current('/moderation')}>{t('Модерация')}</Link></li>}
+                  {staff && <li><Link href="/admin" aria-current={current('/admin')}>{t('Управление')}</Link></li>}
+                  <li><button type="button" className="btn btn-ghost btn-sm" onClick={logout} disabled={busy}>{t('Выйти')}</button></li>
+                </ul>
+              </details>
+            )}
+            {logoutError && <span className="field-error" role="alert">{logoutError}</span>}
             {(state.status === 'guest' || state.status === 'error') && (
               <Link className="btn btn-primary btn-sm" href={`/login?returnTo=${encodeURIComponent(pathname)}`}>{t('Войти')}</Link>
             )}

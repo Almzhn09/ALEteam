@@ -7,7 +7,6 @@ import { SessionProvider } from '@/lib/session';
 import { FavoritesProvider } from '@/lib/favorites';
 import { LangProvider } from '@/lib/lang';
 import { getLang } from '@/lib/i18n-server';
-import { AssistantWidget } from '@/components/AssistantWidget';
 import { siteUrl } from '@/lib/seo';
 import { translator } from '@/lib/i18n';
 import { MOCK_MODE } from '@/lib/api';
@@ -45,7 +44,6 @@ export default async function Layout({ children }: { children: ReactNode }) {
             <FavoritesProvider>
             <Header initialTheme={theme} initialSize={size} />
             <main id="main" tabIndex={-1}>{children}</main>
-            <AssistantWidget />
             </FavoritesProvider>
           </SessionProvider>
           <Footer />

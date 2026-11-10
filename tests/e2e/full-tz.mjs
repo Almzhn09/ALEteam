@@ -96,7 +96,9 @@ await adminPage.getByRole('button', { name: 'Сохранить', exact: true })
 check('stale edit shows conflict', await seen(adminPage, 'text=Конфликт изменений'));
 check('typed text survives the conflict', await seen(adminPage, 'text=Ваш текст остался в форме') && (await adminPage.getByLabel('Текст', { exact: true }).inputValue()).startsWith('Исправленный'));
 await adminPage.getByRole('button', { name: 'Сохранить', exact: true }).click();
-check('edit after refresh saves', await seen(adminPage, 'text=Сохранено.'));
+const savedAfterConflict = await seen(adminPage, 'text=Сохранено.');
+if (!savedAfterConflict) { await adminPage.screenshot({ path: OUT + 'fail-edit-after-conflict.png', fullPage: true }); console.log('DEBUG', (await adminPage.locator('main').innerText()).slice(0, 900)); }
+check('edit after refresh saves', savedAfterConflict);
 await adminPage.getByLabel('Причина или комментарий').fill('Исправлено');
 await adminPage.getByRole('button', { name: 'Отправить на проверку' }).click();
 await seen(adminPage, '.card .badge-IN_REVIEW');
@@ -178,11 +180,11 @@ await guest.goto(`${BASE}/exhibitions?from=1955&to=1958`);
 check('exhibition period filter', await seen(guest, `a:has-text("Демо-выставка ${run}")`));
 await guest.goto(`${BASE}/exhibitions?from=1800&to=1801`);
 check('exhibition empty state', await seen(guest, 'text=Ничего не найдено'));
-await guest.goto(`${BASE}/memory`);
+await guest.goto(`${BASE}/memory?q=${run}`);
 check('event timeline shows real events', await seen(guest, `.timeline a:has-text("Демо-событие ${run}")`));
-await guest.goto(`${BASE}/memory?section=events&place=${encodeURIComponent('Өскемен')}&from=1940&to=1950`);
+await guest.goto(`${BASE}/memory?section=events&q=${run}&place=${encodeURIComponent('Өскемен')}&from=1940&to=1950`);
 check('memory filters by place and period', await seen(guest, `a:has-text("Демо-событие ${run}")`));
-await guest.goto(`${BASE}/memory?section=people`);
+await guest.goto(`${BASE}/memory?section=people&q=${run}`);
 check('people section', await seen(guest, `a:has-text("Демо-личность ${run}")`));
 await guest.goto(`${BASE}/help`);
 check('FAQ listed', await seen(guest, `summary:has-text("Что такое опись ${run}?")`));
@@ -276,7 +278,7 @@ await login(visitor, { email: 'author@example.test', password: authorEnv.DEMO_AU
 check('non-staff refused', await seen(visitor, 'text=Нет доступа'));
 check('non-staff API refused', (await api(visitor, 'GET', '/admin/content')).status() === 403);
 await visitor.goto(`${BASE}/`);
-await visitor.getByRole('button', { name: 'ИИ-помощник' }).click();
+await visitor.locator('.assistant-open').click();
 check('assistant opens as a panel', await seen(visitor, 'dialog[open] textarea'));
 await visitor.keyboard.press('Escape');
 check('assistant closes with Escape', await visitor.locator('dialog[open]').count() === 0);

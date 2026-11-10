@@ -34,7 +34,7 @@ export async function ContentDetail({ slug, path, kinds, crumb, children }: { sl
   const links = await related(item, lang);
   const p = item.payload;
   return (
-    <div className="container page stack" style={{ maxWidth: 880 }}>
+    <div className="container page measure-narrow stack">
       <Breadcrumbs items={[crumb, { label: p.title }]} />
       <article className="stack" lang={item.locale}>
         <div className="row" style={{ gap: 'var(--space-2)' }}>

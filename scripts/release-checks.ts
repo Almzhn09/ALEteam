@@ -166,7 +166,7 @@ try {
     await author.locator('main a[href="/documents/demo-doc-01"]').waitFor();
     const tab = await authorContext.newPage();
     await tab.goto(base + '/me');
-    await tab.getByRole('button', { name: 'Выйти', exact: true }).click();
+    await tab.locator('.account-menu > summary').click(); await tab.getByRole('button', { name: 'Выйти', exact: true }).click();
     await author.getByText('Здесь пока пусто', { exact: true }).waitFor();
     assert.equal(await author.locator('main a[href="/documents/demo-doc-01"]').count(), 0);
     await tab.close();
@@ -204,7 +204,7 @@ try {
   await step('keyboard skip link and logout revoke the actual browser session', async () => {
     await login(author, 'author@example.test', authorPassword, '/');
     await author.goto(base); await author.keyboard.press('Tab'); assert.equal(await author.evaluate(() => document.activeElement?.tagName), 'A');
-    await author.getByRole('button', { name: 'Выйти', exact: true }).click();
+    await author.locator('.account-menu > summary').click(); await author.getByRole('button', { name: 'Выйти', exact: true }).click();
     await author.waitForFunction(async () => (await fetch('/api/me')).status === 401);
     assert.equal((await author.request.get(base + '/api/me')).status(), 401);
   });
