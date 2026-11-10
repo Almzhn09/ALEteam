@@ -43,7 +43,7 @@ check('invalid id → not found', await wait(page, 'h1:has-text("Докумен�
 async function login(email, password, returnTo = '/') {
   await page.goto(`${BASE}/login?returnTo=${encodeURIComponent(returnTo)}`);
   await page.getByLabel('Email').fill(email); await page.getByLabel('Пароль').fill(password);
-  await page.locator('form button[type=submit]').click();
+  await page.locator('main form button[type=submit]').click();
 }
 await login('author@example.test', 'wrong-password-xx');
 check('real wrong password', await wait(page, 'text=Неверный email или пароль.'));
@@ -91,7 +91,7 @@ check('author UI no access', await wait(page, 'text=Нет доступа'));
 
 // Logout
 await page.goto(BASE + '/');
-if (!(await page.getByRole('button', { name: 'Выйти' }).isVisible())) await page.getByRole('button', { name: 'Меню' }).click();
+await page.locator('.account-menu > summary').click();
 await page.getByRole('button', { name: 'Выйти' }).click();
 check('logout', await wait(page, '.user-chip >> text=Войти'));
 check('session revoked', (await page.request.get(BASE + '/api/me')).status() === 401);

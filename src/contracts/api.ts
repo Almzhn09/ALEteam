@@ -11,6 +11,7 @@ export interface Fund { id: string; name: string; description: string }
 export interface DocumentSummary {
   id: string; title: string; description: string; reference: string;
   year: number; type: DocumentType; fundId: string; isDemo: boolean;
+  locale?: string; availableLocales?: string[];
 }
 export interface ArchiveFile { id: string; name: string; mimeType: string; size: number; downloadable: boolean }
 export interface DocumentDetail extends DocumentSummary {

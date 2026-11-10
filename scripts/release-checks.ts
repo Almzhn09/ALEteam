@@ -26,7 +26,7 @@ async function step(name: string, work: () => Promise<void>) {
 async function login(page: Page, email: string, password: string, returnTo: string) {
   await page.goto(`${base}/login?returnTo=${encodeURIComponent(returnTo)}`);
   await page.getByLabel('Email', { exact: true }).fill(email); await page.getByLabel('Пароль', { exact: true }).fill(password);
-  await page.locator('form button[type=submit]').click();
+  await page.locator('main form button[type=submit]').click();
   await page.waitForURL(u => u.pathname === returnTo);
 }
 try {
@@ -60,7 +60,7 @@ try {
     await author.goto(base + '/documents/demo-doc-01');
     await author.locator('.viewer-stage img').waitFor({ state: 'visible' });
     assert.ok(await author.locator('.viewer-stage img').evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0));
-    await author.getByRole('button', { name: 'Увеличить', exact: true }).click(); await author.getByText('150%', { exact: true }).waitFor();
+    await author.getByRole('button', { name: 'Увеличить', exact: true }).click(); await author.locator('.viewer-toolbar').getByText('150%', { exact: true }).waitFor();
     await author.getByRole('button', { name: /^Добавить в избранное:/ }).click();
     await author.goto(base + '/favorites'); await author.reload(); await author.locator('main a[href="/documents/demo-doc-01"]').waitFor();
     assert.equal((await author.request.get(base + '/api/files/demo-file-5?download=1')).status(), 404);
@@ -166,7 +166,7 @@ try {
     await author.locator('main a[href="/documents/demo-doc-01"]').waitFor();
     const tab = await authorContext.newPage();
     await tab.goto(base + '/me');
-    await tab.getByRole('button', { name: 'Выйти', exact: true }).click();
+    await tab.locator('.account-menu > summary').click(); await tab.getByRole('button', { name: 'Выйти', exact: true }).click();
     await author.getByText('Здесь пока пусто', { exact: true }).waitFor();
     assert.equal(await author.locator('main a[href="/documents/demo-doc-01"]').count(), 0);
     await tab.close();
@@ -204,7 +204,7 @@ try {
   await step('keyboard skip link and logout revoke the actual browser session', async () => {
     await login(author, 'author@example.test', authorPassword, '/');
     await author.goto(base); await author.keyboard.press('Tab'); assert.equal(await author.evaluate(() => document.activeElement?.tagName), 'A');
-    await author.getByRole('button', { name: 'Выйти', exact: true }).click();
+    await author.locator('.account-menu > summary').click(); await author.getByRole('button', { name: 'Выйти', exact: true }).click();
     await author.waitForFunction(async () => (await fetch('/api/me')).status === 401);
     assert.equal((await author.request.get(base + '/api/me')).status(), 401);
   });

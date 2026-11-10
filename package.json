@@ -51,13 +51,16 @@
     "evaluate:discovery": "node --import tsx scripts/evaluate-artur-discovery.ts",
     "discovery:deliver": "node --env-file-if-exists=.env --import tsx scripts/deliver-topic-notices.ts",
     "uploads:inspect": "node --env-file-if-exists=.env --import tsx scripts/process-upload-inspections.ts",
-    "archive:jobs": "node --env-file-if-exists=.env --import tsx scripts/watch-archive-jobs.ts"
+    "archive:jobs": "node --env-file-if-exists=.env --import tsx scripts/watch-archive-jobs.ts",
+    "check:display": "node --env-file-if-exists=.env --import tsx scripts/check-display.ts",
+    "sources:verify": "node scripts/verify-archive-sources.mjs"
   },
   "dependencies": {
     "@e965/xlsx": "0.20.3",
     "@prisma/adapter-pg": "7.10.1",
     "@prisma/client": "7.10.1",
     "better-auth": "1.7.18",
+    "leaflet": "1.9.4",
     "next": "16.4.5",
     "pdfjs-dist": "6.5.438",
     "pg": "8.23.1",
@@ -69,6 +72,7 @@
   "devDependencies": {
     "@prisma/client-generator-js": "7.10.1",
     "@prisma/internals": "7.10.1",
+    "@types/leaflet": "1.9.20",
     "@types/node": "26.6.6",
     "@types/pg": "8.23.1",
     "@types/react": "19.3.0",

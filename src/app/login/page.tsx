@@ -8,7 +8,7 @@ export async function generateMetadata() { return { title: (await getT())('Вх�
 export default async function LoginPage() {
   const t = await getT();
   return (
-    <div className="container page" style={{ maxWidth: 520 }}>
+    <div className="container page measure-form">
       <Breadcrumbs items={[{ label: t('Вход') }]} />
       <h1>{t('Вход')}</h1>
       <p className="muted">{t('Вход нужен, чтобы комментировать документы, отправлять жалобы, задавать вопросы ИИ-помощнику и модерировать обсуждения. Публичная регистрация в прототипе закрыта.')}</p>

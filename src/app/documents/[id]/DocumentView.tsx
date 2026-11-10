@@ -1,49 +1,38 @@
 'use client';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import type { DocumentDetail } from '@/contracts/api';
-import { ApiClientError, apiGet, fileUrl } from '@/lib/api';
+import type { ArchiveFile, DocumentType } from '@/contracts/api';
+import { fileUrl } from '@/lib/api';
 import { formatSize, typeLabel } from '@/lib/labels';
 import { useI18n } from '@/lib/lang';
-import { Breadcrumbs, DemoBadge, ErrorNotice, Loading, Notice, Ru } from '@/components/ui';
+import { Breadcrumbs, DemoBadge, Notice } from '@/components/ui';
 import { FavoriteButton } from '@/components/DocumentCard';
 import { ScanViewer } from '@/components/ScanViewer';
+import { PdfViewer } from '@/components/PdfViewer';
 import { Comments } from '@/components/Comments';
+import { CopyButton, Share } from '@/components/Share';
 import { RecognizedText, SimilarDocuments } from '@/components/DocumentDiscovery';
 
 const isImage = (mime: string) => mime === 'image/png' || mime === 'image/jpeg';
+const isPdf = (mime: string) => mime === 'application/pdf';
+const isAv = (mime: string) => mime.startsWith('audio/') || mime.startsWith('video/');
 
-export function DocumentView({ id }: { id: string }) {
-  const { t, lang } = useI18n();
-  const [doc, setDoc] = useState<DocumentDetail | null>(null);
-  const [error, setError] = useState<unknown>(null);
-  const [attempt, setAttempt] = useState(0);
+export interface PublicDocument {
+  id: string; title: string; description: string; reference: string; year: number; yearTo: number | null; type: DocumentType; isDemo: boolean;
+  fundId: string; locale: string; availableLocales: string[]; originalLanguage: string | null; leafCount: number | null; allowDigitalCopy: boolean;
+  rights: string; sourceUrl: string | null; sourceNote: string | null; authorName: string | null; organization: string | null; locality: string | null;
+  storageLocation: string | null; accessConditions: string | null; category: string | null; tags: string[];
+  fund: { id: string; name: string; description: string; number: string | null };
+  archivalCase: { id: string; number: string; title: string; inventory: { id: string; number: string; title: string } } | null;
+  files: ArchiveFile[];
+}
 
-  useEffect(() => {
-    const controller = new AbortController();
-    setError(null);
-    apiGet<{ item: DocumentDetail }>(`/documents/${encodeURIComponent(id)}`, controller.signal)
-      .then(r => { setDoc(r.item); document.title = `${r.item.title} · ${t('Электронный архив')}`; },
-        e => { if (e?.name !== 'AbortError') setError(e); });
-    return () => controller.abort();
-  }, [id, attempt]); // t only affects the tab title
-
-  if (error instanceof ApiClientError && (error.status === 404 || error.status === 400)) {
-    return (
-      <div className="container page">
-        <Breadcrumbs items={[{ href: '/catalog', label: t('Каталог') }, { label: t('Документ не найден') }]} />
-        <div className="card card-flat empty">
-          <h1>{t('Документ не найден')}</h1>
-          <p className="muted">{t('Материал не существует, закрыт для публичного доступа или ссылка содержит ошибку.')}</p>
-          <Link className="btn btn-primary" href="/catalog">{t('Вернуться в каталог')}</Link>
-        </div>
-      </div>
-    );
-  }
-  if (error) return <div className="container page"><ErrorNotice error={error} onRetry={() => setAttempt(a => a + 1)} title={t('Не удалось загрузить документ')} /></div>;
-  if (!doc) return <div className="container page"><Loading label={t('Загрузка документа')} rows={3} /></div>;
-
+export function DocumentView({ doc, translated }: { doc: PublicDocument; translated: boolean }) {
+  const { t } = useI18n();
   const scans = doc.files.filter(f => isImage(f.mimeType));
+  const period = doc.yearTo && doc.yearTo !== doc.year ? `${doc.year}–${doc.yearTo}` : String(doc.year);
+  const inventory = doc.archivalCase?.inventory;
+  const filter = (query: Record<string, string>) => `/catalog?${new URLSearchParams(query)}`;
+  const row = (label: string, value: string | number | null | undefined) => value || value === 0 ? <><dt>{t(label)}</dt><dd>{value}</dd></> : null;
   return (
     <div className="container page">
       <Breadcrumbs items={[{ href: '/catalog', label: t('Каталог') }, { label: doc.title }]} />
@@ -53,15 +42,16 @@ export function DocumentView({ id }: { id: string }) {
             <span className="badge badge-neutral">{t(typeLabel[doc.type])}</span>
             <DemoBadge show={doc.isDemo} />
           </div>
-          <h1 id="doc-title" lang="ru" style={{ marginBottom: 0 }}>{doc.title}</h1>
-          {lang !== 'ru' && <p className="small muted" style={{ margin: 0 }}>{t('Описание материала приводится на языке оригинала.')}</p>}
+          <h1 id="doc-title" lang={doc.locale} style={{ marginBottom: 0 }}>{doc.title}</h1>
+          {!translated && <p className="small muted" style={{ margin: 0 }}>{t('Перевод карточки не опубликован: сведения показаны на русском языке.')}</p>}
           {doc.isDemo && <Notice tone="warn" title={t('Демонстрационная запись')}>{t('Материал вымышлен для проверки интерфейса и не является историческим источником.')}</Notice>}
           <section aria-labelledby="desc-title">
             <h2 id="desc-title" className="visually-hidden">{t('Описание')}</h2>
-            <Ru as="p" className="prose pre-wrap">{doc.description}</Ru>
+            <p className="prose pre-wrap" lang={doc.locale}>{doc.description}</p>
           </section>
 
-          {scans.length > 0 ? <ScanViewer files={scans} title={doc.title} />
+          {!doc.allowDigitalCopy ? <Notice tone="info" title={t('Цифровая копия закрыта')}><p>{doc.accessConditions ?? t('Карточка открыта, но доступ к цифровой копии не предоставляется.')}</p></Notice>
+            : scans.length > 0 ? <ScanViewer files={scans} title={doc.title} />
             : <div className="panel muted small">{t('Для этого документа нет опубликованных изображений сканов.')}</div>}
           {scans.filter(f => /^demo-scan-[1-5]$/.test(f.id)).map(f => <RecognizedText key={f.id} fileId={f.id} />)}
           <SimilarDocuments documentId={doc.id} />
@@ -71,16 +61,20 @@ export function DocumentView({ id }: { id: string }) {
               <h2 id="files-title">{t('Файлы')}</h2>
               <ul className="result-list">
                 {doc.files.map(f => (
-                  <li key={f.id} className="card card-flat row spread" style={{ padding: 'var(--space-3) var(--space-4)' }}>
-                    <span><Ru>{f.name}</Ru> <span className="muted small">· {f.mimeType === 'application/pdf' ? 'PDF' : isImage(f.mimeType) ? t('изображение') : f.mimeType} · {formatSize(f.size)}</span></span>
-                    <span className="row" style={{ gap: 'var(--space-2)' }}>
-                      <a className="btn btn-secondary btn-sm" href={fileUrl(f.id)} target="_blank" rel="noopener noreferrer">
-                        {t('Открыть')}<span className="visually-hidden"> {f.name} {t('(откроется в новой вкладке)')}</span>
-                      </a>
-                      {f.downloadable
-                        ? <a className="btn btn-secondary btn-sm" href={fileUrl(f.id, true)} download>{t('Скачать')}<span className="visually-hidden"> {f.name}</span></a>
-                        : <span className="small muted">{t('Скачивание не разрешено')}</span>}
-                    </span>
+                  <li key={f.id} className="card card-flat" style={{ padding: 'var(--space-3) var(--space-4)' }}>
+                    <div className="row spread">
+                      <span lang={doc.locale}>{f.name} <span className="muted small">· {isPdf(f.mimeType) ? 'PDF' : isImage(f.mimeType) ? t('изображение') : f.mimeType} · {formatSize(f.size)}</span></span>
+                      <span className="row" style={{ gap: 'var(--space-2)' }}>
+                        {isPdf(f.mimeType) && <PdfViewer file={f} title={doc.title} />}
+                        <a className="btn btn-secondary btn-sm" href={fileUrl(f.id)} target="_blank" rel="noopener noreferrer">
+                          {t('Открыть')}<span className="visually-hidden"> {f.name} {t('(откроется в новой вкладке)')}</span>
+                        </a>
+                        {f.downloadable
+                          ? <a className="btn btn-secondary btn-sm" href={fileUrl(f.id, true)} download>{t('Скачать')}<span className="visually-hidden"> {f.name}</span></a>
+                          : <span className="small muted">{t('Скачивание не разрешено')}</span>}
+                      </span>
+                    </div>
+                    {isAv(f.mimeType) && (f.mimeType.startsWith('audio/') ? <audio controls preload="none" src={fileUrl(f.id)} /> : <video controls preload="none" src={fileUrl(f.id)} style={{ width: '100%' }} />)}
                   </li>
                 ))}
               </ul>
@@ -90,17 +84,25 @@ export function DocumentView({ id }: { id: string }) {
 
         <aside className="card stack" aria-labelledby="props-title">
           <h2 id="props-title" style={{ fontSize: '1.15rem' }}>{t('Реквизиты')}</h2>
-          <dl className="props">
+          <dl className="props" lang={doc.locale}>
             <dt>{t('Архивный шифр')}</dt><dd className="mono">{doc.reference}</dd>
-            <dt>{t('Год')}</dt><dd>{doc.year}</dd>
+            <dt>{t('Период')}</dt><dd>{period}</dd>
             <dt>{t('Тип')}</dt><dd>{t(typeLabel[doc.type])}</dd>
-            <dt>{t('Фонд')}</dt><dd><Link href={`/catalog?fundId=${encodeURIComponent(doc.fund.id)}`} lang="ru">{doc.fund.name}</Link></dd>
-            <dt>{t('Права')}</dt><dd lang="ru">{doc.rights}</dd>
+            <dt>{t('Фонд')}</dt><dd><Link href={filter({ fundId: doc.fund.id })}>{doc.fund.number ? `№ ${doc.fund.number}. ` : ''}{doc.fund.name}</Link></dd>
+            {inventory && <><dt>{t('Опись')}</dt><dd><Link href={filter({ fundId: doc.fund.id, inventoryId: inventory.id })}>№ {inventory.number}. {inventory.title}</Link></dd></>}
+            {doc.archivalCase && <><dt>{t('Дело')}</dt><dd><Link href={filter({ fundId: doc.fund.id, caseId: doc.archivalCase.id })}>№ {doc.archivalCase.number}. {doc.archivalCase.title}</Link></dd></>}
+            {row('Автор', doc.authorName)}{row('Организация', doc.organization)}{row('Населённый пункт', doc.locality)}
+            {row('Язык оригинала', doc.originalLanguage)}{row('Количество листов', doc.leafCount)}{row('Категория', doc.category)}{row('Место хранения', doc.storageLocation)}
+            {doc.tags.length > 0 && <><dt>{t('Темы')}</dt><dd>{doc.tags.map((tag, i) => <span key={tag}>{i > 0 && ', '}<Link href={filter({ tag })}>{tag}</Link></span>)}</dd></>}
+            <dt>{t('Права')}</dt><dd>{doc.rights}</dd>
+            {row('Происхождение', doc.sourceNote)}
             <dt>{t('Источник')}</dt>
             <dd>{doc.sourceUrl && /^https?:\/\//i.test(doc.sourceUrl)
               ? <a href={doc.sourceUrl} target="_blank" rel="noopener noreferrer">{t('Открыть источник')}<span className="visually-hidden"> {t('(откроется в новой вкладке)')}</span></a>
               : <span className="muted">{t('Не указан')}</span>}</dd>
           </dl>
+          <div className="row" style={{ gap: 'var(--space-2)' }}><CopyButton text={doc.reference} label={t('Копировать шифр')} done={t('Шифр скопирован')} /></div>
+          <Share title={doc.title} path={`/documents/${encodeURIComponent(doc.id)}`} />
           <FavoriteButton doc={doc} />
           <Link className="btn btn-secondary" href={`/assistant?q=${encodeURIComponent(t('Расскажи о документе {ref}', { ref: doc.reference }))}`}>{t('Спросить ИИ о документе')}</Link>
         </aside>

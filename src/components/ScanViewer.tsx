@@ -43,12 +43,12 @@ export function ScanViewer({ files, title }: { files: ArchiveFile[]; title: stri
   return (
     <section className="viewer" ref={viewer} aria-label={`${t('Просмотр сканов')}: ${title}`} aria-roledescription={t('просмотрщик')}>
       <div className="viewer-toolbar">
-        <div className="row" style={{ gap: 'var(--space-1)' }}>
+        <div className="row" style={{ gap: 'var(--space-2)' }}>
           <button type="button" className="btn btn-secondary btn-sm btn-icon" onClick={() => go(-1)} disabled={index === 0} aria-label={t('Предыдущий лист')}>←</button>
           <span className="small" aria-live="polite" style={{ minWidth: 88, textAlign: 'center' }}>{t('Лист {n} из {total}', { n: index + 1, total: count })}</span>
           <button type="button" className="btn btn-secondary btn-sm btn-icon" onClick={() => go(1)} disabled={index === count - 1} aria-label={t('Следующий лист')}>→</button>
         </div>
-        <div className="row" style={{ gap: 'var(--space-1)' }}>
+        <div className="row" style={{ gap: 'var(--space-2)' }}>
           <button type="button" className="btn btn-secondary btn-sm btn-icon" onClick={() => zoomBy(-1)} disabled={zoom === 0} aria-label={t('Уменьшить')}>−</button>
           <button type="button" className="btn btn-secondary btn-sm" onClick={() => setZoom(0)} aria-label={t('Вписать в окно')} style={{ minWidth: 64 }}>{Math.round(scale * 100)}%</button>
           <button type="button" className="btn btn-secondary btn-sm btn-icon" onClick={() => zoomBy(1)} disabled={zoom === ZOOMS.length - 1} aria-label={t('Увеличить')}>+</button>

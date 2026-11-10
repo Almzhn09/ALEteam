@@ -145,7 +145,7 @@ export async function editorialNotices(request:Request){
  const branches=c.branches('content.read');
  const catalogBranches=c.branches('catalog.read');
  const where={userId:c.user.id,revision:{item:{OR:[{kind:{not:'ARCHIVE_DOCUMENT' as const},...scopeWhere(branches)},{kind:'ARCHIVE_DOCUMENT' as const,...scopeWhere(catalogBranches)}]}}};
- const[items,total]=await db.$transaction([db.editorialNotice.findMany({where,orderBy:{createdAt:'desc'},skip:(p.page-1)*p.pageSize,take:p.pageSize}),db.editorialNotice.count({where})]);return json({items,total,...p});
+ const[items,total]=await db.$transaction([db.editorialNotice.findMany({where,include:{revision:{select:{itemId:true,locale:true,item:{select:{kind:true,document:{select:{id:true}}}}}}},orderBy:{createdAt:'desc'},skip:(p.page-1)*p.pageSize,take:p.pageSize}),db.editorialNotice.count({where})]);return json({items,total,...p});
 }
 export async function revisionEvents(request:Request,id:string){
  const revision=await db.contentRevision.findUnique({where:{id:idSchema.parse(id)},include:{item:true}});if(!revision)throw new ApiError(404,'NOT_FOUND','Редакция не найдена.');

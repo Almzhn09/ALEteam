@@ -8,7 +8,7 @@ export async function generateMetadata() { return { title: (await getT())('Мо�
 export default async function ModerationPage() {
   const t = await getT();
   return (
-    <div className="container page" style={{ maxWidth: 960 }}>
+    <div className="container page measure-wide">
       <Breadcrumbs items={[{ label: t('Модерация') }]} />
       <h1>{t('Кабинет модератора')}</h1>
       <Suspense fallback={<Loading />}><Moderation /></Suspense>
