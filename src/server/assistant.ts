@@ -62,5 +62,5 @@ export async function assistant(request: Request) {
     return document&&document.translations.length ? {id:document.id,title:document.translations[0].title,isDemo:document.isDemo,locale:documentLocale,kind:'document',href:`/api/documents/${id}?locale=${documentLocale}`} : undefined;
   });
   if (sources.some(s => !s)) throw new ApiError(502, 'INVALID_ASSISTANT_RESPONSE', 'Ответ помощника содержит недоступный источник.');
-  return json({ answer: result.answer, noAnswer: result.noAnswer, mode: result.mode ?? 'external', sources,...(plan.handled&&!cmsPassages.length&&!process.env.ASSISTANT_SERVICE_URL?{catalogQuery:plan.filters}:{}) });
+  return json({ answer: result.answer, noAnswer: result.noAnswer, mode: result.mode ?? 'external', sources,...(plan.handled&&!plan.clarification&&!cmsPassages.length&&!process.env.ASSISTANT_SERVICE_URL?{catalogQuery:plan.filters}:{}) });
 }

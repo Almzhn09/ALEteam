@@ -21,6 +21,7 @@ const env={...process.env,DATABASE_URL:url,BETTER_AUTH_URL:origin,BETTER_AUTH_SE
 let app:ChildProcess,writer:string,editor:string,fundId:string,caseId:string,privateFile:string|undefined;
 const readers:Record<string,string>={},documents:Record<string,string>={},revisions:Record<string,{id:string;updatedAt:string}>={};
 const rows:unknown[]=[];
+const refinements:Record<string,boolean>={};
 async function call(route:string,method='GET',body?:unknown,cookie?:string){return fetch(origin+'/api'+route,{method,headers:{Origin:origin,...(body===undefined?{}:{'Content-Type':'application/json'}),...(cookie?{Cookie:cookie}:{})},body:body===undefined?undefined:JSON.stringify(body)});}
 async function ok(route:string,method='GET',body?:unknown,cookie?:string,status=200){const r=await call(route,method,body,cookie);assert.equal(r.status,status,`${method} ${route}`);return r.json();}
 async function clean(){
@@ -144,4 +145,27 @@ test('hiding a branch revokes catalog, files, OCR, CMS links, personal surfaces 
   await db.archiveBranch.update({where:{id:branchId},data:{isPublic:true}});await db.archiveFile.update({where:{id:scanId},data:{documentId:scan.documentId}});
   await db.favorite.deleteMany({where:{userId:prefix+'ru',documentId}});await db.notification.deleteMany({where:{id:notificationId}});await db.comment.deleteMany({where:{id:commentId}});
  }
+});
+
+test('successive period refinements and corrections keep the intended bounds without resolving an unknown type',async()=>{
+ const history=[{role:'user',content:'Photos of Oskemen in the 1960s'},{role:'user',content:'and after 1970'}];
+ let r=await ok('/assistant','POST',{question:'and before 1980',locale:'en',history},readers.en);assert.deepEqual(r.sources.map((s:{id:string})=>s.id),[documents.p69]);assert.equal(r.catalogQuery.yearFrom,1971);assert.equal(r.catalogQuery.yearTo,1979);
+ r=await ok('/assistant','POST',{question:'and before 1965',locale:'en',history},readers.en);assert.equal(r.noAnswer,true);assert.deepEqual(r.sources,[]);assert.equal(r.catalogQuery,undefined);
+ r=await ok('/assistant','POST',{question:'and before 1980',locale:'en',history:[...history,{role:'user',content:'and before 1965'}]},readers.en);assert.deepEqual(r.sources.map((s:{id:string})=>s.id),[documents.p69]);assert.equal(r.catalogQuery.yearFrom,1971);assert.equal(r.catalogQuery.yearTo,1979);
+ r=await ok('/assistant','POST',{question:'and after 1970',locale:'en',history:[{role:'user',content:'Photos and maps of Oskemen'}]},readers.en);assert.equal(r.noAnswer,true);assert.deepEqual(r.sources,[]);assert.match(r.answer,/specify one document type/);assert.equal(r.catalogQuery,undefined);
+ refinements.successiveBoundsAndCorrection=true;refinements.unresolvedTypeNeverBroadens=true;
+});
+test('explicit document-only queries apply date or locality without inventing a type',async()=>{
+ const r=await ok('/assistant','POST',{question:'documents in 1965',locale:'en'},readers.en);assert.deepEqual(r.sources.map((s:{id:string})=>s.id).sort(),[documents.restricted,documents.other,documents.map].sort());assert.equal(r.catalogQuery.yearFrom,1965);assert.equal(r.catalogQuery.yearTo,1965);assert.equal(r.catalogQuery.type,undefined);assert.equal(r.catalogQuery.locality,undefined);
+ const city=await ok('/assistant','POST',{question:'documents in Oskemen',locale:'en'},readers.en);assert.deepEqual(city.sources.map((s:{id:string})=>s.id).sort(),[documents.p60,documents.restricted,documents.map].sort());assert.equal(city.catalogQuery.type,undefined);assert.ok(city.catalogQuery.locality);
+ refinements.explicitGenericQueriesKeepTheirScope=true;
+});
+test('approved real-format references and lettered accounting numbers are searched exactly',async()=>{
+ const branchId=prefix+'branch';const f=(await ok('/admin/catalog/funds','POST',{branchId,number:'Р-0017',name:'DEMO lettered fund',description:'Original synthetic accounting fixture'},writer,201)).item;
+ const inventory=(await ok('/admin/catalog/inventories','POST',{fundId:f.id,number:'0001',title:'DEMO lettered inventory'},writer,201)).item;
+ const archivalCase=(await ok('/admin/catalog/cases','POST',{fundId:f.id,inventoryId:inventory.id,number:'0003/А',title:'DEMO lettered case'},writer,201)).item;
+ const reference='Р-0017-О0001-Д0003';const created=await ok('/admin/catalog/documents','POST',{fundId:f.id,caseId:archivalCase.id,reference,year:1988,type:'MAP',title:'ДЕМО: буквенный шифр',description:'Original synthetic reference fixture; not historical evidence.',rights:'ALEteam CC0-1.0',sourceNote:'Original synthetic fixture'},writer,201);await publish(created.revision);
+ const exact=await ok('/assistant','POST',{question:'шифр '+reference,locale:'ru'},readers.ru);assert.deepEqual(exact.sources.map((s:{id:string})=>s.id),[created.item.id]);assert.equal(exact.catalogQuery.reference,reference);assert.equal(exact.catalogQuery.yearFrom,undefined);
+ const accounting=await ok('/assistant','POST',{question:'Карты фонд Р-0017 опись 0001 дело 0003/А 1988',locale:'ru'},readers.ru);assert.deepEqual(accounting.sources.map((s:{id:string})=>s.id),[created.item.id]);assert.equal(accounting.catalogQuery.fundNumber,'Р-0017');assert.equal(accounting.catalogQuery.inventoryNumber,'0001');assert.equal(accounting.catalogQuery.caseNumber,'0003/А');
+ refinements.exactLabelledReferencesAndLetteredIdentifiers=true;await mkdir('.local/semantic-catalog',{recursive:true});await writeFile('.local/semantic-catalog/refinements.json',JSON.stringify({syntheticData:true,...refinements},null,2)+'\n');
 });

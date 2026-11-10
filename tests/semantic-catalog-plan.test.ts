@@ -51,3 +51,25 @@ test('strong catalog filters do not hide a general question answered by reviewed
  const weak=semanticCatalogPlan('Library hours','en');assert.ok(weak.handled);assert.equal(requiresCatalogEvidence(weak,'Library hours'),false);
  const strong=semanticCatalogPlan('Library photos 1960','en');assert.equal(requiresCatalogEvidence(strong,'Library photos 1960'),true);
 });
+
+test('successive explicit date refinements retain both independent bounds and clarify a contradiction',()=>{
+ const history=[{role:'user' as const,content:'Photos of Oskemen in the 1960s'},{role:'user' as const,content:'and after 1970'}];
+ const plan=semanticConversationPlan('and before 1980',history,'en');assert.equal(plan.filters.yearFrom,1971);assert.equal(plan.filters.yearTo,1979);assert.equal(plan.filters.type,'PHOTO');assert.ok(plan.filters.locality);
+ const wrong=semanticConversationPlan('and before 1965',history,'en');assert.equal(wrong.clarification,'period');
+ const corrected=semanticConversationPlan('and before 1980',[...history,{role:'user',content:'and before 1965'}],'en');assert.equal(corrected.filters.yearFrom,1971);assert.equal(corrected.filters.yearTo,1979);assert.equal(corrected.clarification,undefined);
+});
+test('lettered accounting identifiers and labelled real references are extracted before ordinary text normalization',()=>{
+ const number=semanticCatalogPlan('Фотографии фонд Р-0017 опись 0001 дело 0003/А','ru');assert.equal(number.filters.fundNumber,'Р-0017');assert.equal(number.filters.q,undefined);
+ const reference=semanticCatalogPlan('шифр Р-0017-О0001-Д0003','ru');assert.equal(reference.handled,true);assert.equal(reference.filters.reference,'Р-0017-О0001-Д0003');assert.equal(reference.filters.q,undefined);
+ assert.equal(semanticCatalogPlan('What is an archive reference?','en').handled,false);
+});
+test('an explicit all-document date/place query is handled without an invented type or hidden context',()=>{
+ const dated=semanticCatalogPlan('documents in 1965','en');assert.equal(dated.handled,true);assert.equal(dated.filters.yearFrom,1965);assert.equal(dated.filters.yearTo,1965);assert.equal(dated.filters.type,undefined);assert.equal(dated.periodOnly,false);
+ const located=semanticCatalogPlan('documents in Oskemen','en');assert.equal(located.handled,true);assert.ok(located.filters.locality);assert.equal(located.filters.type,undefined);
+ const independent=semanticConversationPlan('documents in 1965',[{role:'user',content:'Photos of Oskemen in the 1960s'}],'en');assert.equal(independent.filters.type,undefined);assert.equal(independent.filters.locality,undefined);
+});
+test('a period does not resolve an ambiguous type and a weak CMS subject does not become catalog history',()=>{
+ const ambiguous=semanticConversationPlan('and after 1970',[{role:'user',content:'Photos and maps of Oskemen'}],'en');assert.equal(ambiguous.clarification,'type');
+ assert.equal(semanticConversationPlan('and after 1970',[{role:'user',content:'Photos and maps of Oskemen'},{role:'user',content:'1970–1960'}],'en').clarification,'type');
+ assert.equal(semanticConversationPlan('and after 1970',[{role:'user',content:'Library hours'}],'en').handled,false);
+});
