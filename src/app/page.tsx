@@ -1,17 +1,28 @@
 import Link from 'next/link';
-import { RecentDocuments } from './RecentDocuments';
+import { ContentCard } from '@/components/content';
+import { DocumentCard } from '@/components/DocumentCard';
 import { typeLabel } from '@/lib/labels';
-import { getT } from '@/lib/i18n-server';
+import { getLang, getT } from '@/lib/i18n-server';
+import { languageAlternates } from '@/lib/seo';
+import { latestDocuments, listContent } from '@/server/public-read';
 
 const quick = [
   { href: '/catalog', title: 'Каталог документов', text: 'Поиск по тексту и архивному шифру, фильтры по периоду, типу и фонду.' },
-  { href: '/assistant', title: 'Спросить ИИ-помощника', text: 'Найти материалы и разобраться в работе архива — с проверяемыми ссылками на карточки.' },
-  { href: '/timeline', title: 'Шкала времени', text: 'Материалы по десятилетиям: от ранних документов к современным.' },
-  { href: '/favorites', title: 'Избранное', text: 'Сохраняйте документы и возвращайтесь к ним позже — на этом устройстве.' },
+  { href: '/exhibitions', title: 'Онлайн-выставки', text: 'Тематические экспозиции архивных материалов.' },
+  { href: '/branches', title: 'Филиалы и подразделения', text: 'Адреса, контакты, график работы и маршруты до филиалов архива.' },
+  { href: '/memory', title: 'Большой архив памяти', text: 'Коллекции, события, личности и воспоминания из истории региона.' },
 ];
+export function generateMetadata() { return { alternates: languageAlternates('/') }; }
 
 export default async function Home() {
-  const t = await getT();
+  const [t, lang] = await Promise.all([getT(), getLang()]);
+  const [news, exhibitions, events, ownDocs] = await Promise.all([listContent(lang, 'NEWS'), listContent(lang, 'EXHIBITION'), listContent(lang, 'EVENT'), latestDocuments(lang, 4)]);
+  const docs = ownDocs.length ? ownDocs : lang === 'ru' ? [] : await latestDocuments('ru', 4);
+  const blocks = [
+    { id: 'news', title: 'Новости и события', href: '/news', items: [...news].sort((a, b) => (b.payload.date ?? '').localeCompare(a.payload.date ?? '')).slice(0, 3) },
+    { id: 'exhibitions', title: 'Онлайн-выставки', href: '/exhibitions', items: exhibitions.slice(0, 3) },
+    { id: 'events', title: 'Большой архив памяти', href: '/memory', items: events.slice(0, 3) },
+  ].filter(b => b.items.length);
   return <>
     <section className="hero" aria-labelledby="hero-title">
       <div className="container">
@@ -19,15 +30,12 @@ export default async function Home() {
         <p className="lead">{t('Ищите архивные документы, просматривайте карточки и сканы, сохраняйте находки и обсуждайте материалы.')}</p>
         <form className="hero-search" action="/catalog" method="get" role="search" aria-label={t('Поиск по архиву')}>
           <label htmlFor="hero-q" className="visually-hidden">{t('Что вы ищете')}</label>
-          <input id="hero-q" name="q" className="input" type="search" maxLength={200} autoComplete="off"
-            placeholder={t('Например: библиотека или DEMO-Ф2-О1-Д1')} />
+          <input id="hero-q" name="q" className="input" type="search" maxLength={200} autoComplete="off" placeholder={t('Например: библиотека или DEMO-Ф2-О1-Д1')} />
           <button type="submit" className="btn btn-primary">{t('Найти')}</button>
         </form>
         <div className="row small" style={{ marginTop: 'var(--space-4)' }}>
           <span className="muted">{t('Типы документов:')}</span>
-          {(Object.keys(typeLabel) as (keyof typeof typeLabel)[]).map(type => (
-            <Link key={type} href={`/catalog?type=${type}`}>{t(typeLabel[type])}</Link>
-          ))}
+          {(Object.keys(typeLabel) as (keyof typeof typeLabel)[]).map(type => <Link key={type} href={`/catalog?type=${type}`}>{t(typeLabel[type])}</Link>)}
         </div>
       </div>
     </section>
@@ -45,18 +53,29 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="section" aria-labelledby="recent-title">
+      {docs.length > 0 && <section className="section" aria-labelledby="recent-title">
         <div className="row spread" style={{ marginBottom: 'var(--space-4)' }}>
           <h2 id="recent-title" style={{ margin: 0 }}>{t('Материалы каталога')}</h2>
           <Link href="/catalog?sort=year_desc">{t('Все материалы')} →</Link>
         </div>
-        <RecentDocuments />
-      </section>
+        {!ownDocs.length && lang !== 'ru' && <p className="small muted">{t('Переводы карточек ещё не опубликованы: показаны записи на русском языке.')}</p>}
+        <ul className="result-list grid-cards">{docs.map(doc => <li key={doc.id}><DocumentCard doc={doc} /></li>)}</ul>
+      </section>}
+
+      {blocks.map(block => (
+        <section key={block.id} className="section" aria-labelledby={`${block.id}-title`}>
+          <div className="row spread" style={{ marginBottom: 'var(--space-4)' }}>
+            <h2 id={`${block.id}-title`} style={{ margin: 0 }}>{t(block.title)}</h2>
+            <Link href={block.href}>{t('Все материалы')} →</Link>
+          </div>
+          <ul className="result-list grid-cards">{block.items.map(i => <li key={i.id}><ContentCard item={i} lang={lang} t={t} /></li>)}</ul>
+        </section>
+      ))}
 
       <section className="section" aria-labelledby="about-title">
         <div className="panel prose">
           <h2 id="about-title">{t('Об архиве')}</h2>
-          <p>{t('Это прототип обновлённого интерфейса. Проверенные сведения об архиве, режим работы, контакты и перечень услуг будут добавлены после аудита исходного сайта — мы не публикуем непроверенных фактов.')}</p>
+          <p>{t('Прототип обновлённого интерфейса Государственного архива Восточно-Казахстанской области. Адрес и режим работы сверены с официальным сайтом 8 ноября 2026 года.')}</p>
           <p style={{ margin: 0 }}>{t('Официальная информация:')} <a href="http://e-arhiv.vko.gov.kz/ru" rel="noopener noreferrer" target="_blank">e-arhiv.vko.gov.kz<span className="visually-hidden"> {t('(откроется в новой вкладке)')}</span></a> · <Link href="/about">{t('Подробнее и помощь')}</Link></p>
         </div>
       </section>

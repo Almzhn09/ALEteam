@@ -43,7 +43,7 @@ check('invalid id → not found', await wait(page, 'h1:has-text("Докумен�
 async function login(email, password, returnTo = '/') {
   await page.goto(`${BASE}/login?returnTo=${encodeURIComponent(returnTo)}`);
   await page.getByLabel('Email').fill(email); await page.getByLabel('Пароль').fill(password);
-  await page.locator('form button[type=submit]').click();
+  await page.locator('main form button[type=submit]').click();
 }
 await login('author@example.test', 'wrong-password-xx');
 check('real wrong password', await wait(page, 'text=Неверный email или пароль.'));

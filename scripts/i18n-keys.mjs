@@ -9,7 +9,7 @@ const files = [];
   for (const name of readdirSync(dir)) {
     const full = path.join(dir, name);
     if (statSync(full).isDirectory()) { if (name !== 'generated') walk(full); }
-    else if (/\.(ts|tsx)$/.test(name) && name !== 'kk.ts') files.push(full);
+    else if (/\.(ts|tsx)$/.test(name) && !['kk.ts', 'en.ts'].includes(name)) files.push(full);
   }
 })('src');
 
@@ -27,11 +27,19 @@ for (const file of files) {
   // Strings passed through t() indirectly: label maps, API fallbacks, tab and action lists.
   if (/(labels|api)\.ts$|(Header|page|Moderation|Assistant)\.tsx$/.test(file)) for (const m of source.matchAll(fieldRe)) add(m[1]);
   if (server) for (const m of source.matchAll(apiErrorRe)) add(m[1]);
+  // These files pass labels through helpers (Field, row, tuples), so every Cyrillic literal counts.
+  if (/admin[\\/]|BranchExplorer|DocumentView|Catalog\.tsx|memory[\\/]page/.test(file)) {
+    for (const m of source.matchAll(new RegExp(STRING, 'g'))) add(m[1]);
+    for (const m of source.matchAll(/(?:label|title)="([^"]+)"/g)) add(m[1]);
+  }
   const examples = source.match(/const examples = \[([^\]]*)\]/);
   if (examples) for (const m of examples[1].matchAll(new RegExp(STRING, 'g'))) add(m[1]);
 }
+const lang = process.argv.find(a => a.startsWith('--lang='))?.slice(7);
 const { kk } = await import(new URL('../src/lib/kk.ts', import.meta.url));
-const missing = [...keys].filter(k => !(k in kk)).sort();
+const { en } = await import(new URL('../src/lib/en.ts', import.meta.url));
+const dictionaries = { kk, en };
+const missing = [...keys].filter(k => (lang ? [lang] : ['kk', 'en']).some(l => !(k in dictionaries[l]))).sort();
 const unused = Object.keys(kk).filter(k => !keys.has(k));
 if (process.argv.includes('--list')) console.log(JSON.stringify(missing, null, 1));
 if (process.argv.includes('--unused')) console.log(unused);

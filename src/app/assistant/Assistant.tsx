@@ -57,13 +57,13 @@ export function Assistant() {
     setMessages([]); setMessageOwner(user?.id ?? null);
     if (!user) return;
     try {
-      const saved: unknown = JSON.parse(sessionStorage.getItem(`${STORE}:${user.id}`) ?? '[]');
+      const saved: unknown = JSON.parse(sessionStorage.getItem(`${STORE}:${user.id}:${lang}`) ?? '[]');
       if (Array.isArray(saved)) setMessages(saved.filter(isMessage).slice(-30));
     } catch { /* ignore broken storage */ }
-  }, [user?.id]);
+  }, [user?.id, lang]);
   useEffect(() => {
     if (!user || messageOwner !== user.id) return;
-    try { sessionStorage.setItem(`${STORE}:${user.id}`, JSON.stringify(messages.slice(-30))); } catch { /* storage unavailable */ }
+    try { sessionStorage.setItem(`${STORE}:${user.id}:${lang}`, JSON.stringify(messages.slice(-30))); } catch { /* storage unavailable */ }
     logEnd.current?.scrollIntoView({ block: 'nearest' });
   }, [messages, user?.id, messageOwner]);
 
@@ -95,7 +95,7 @@ export function Assistant() {
   function onKey(e: KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void ask(question); }
   }
-  function clear() { setMessages([]); try { if (user) sessionStorage.removeItem(`${STORE}:${user.id}`); } catch { /* ignore */ } }
+  function clear() { setMessages([]); try { if (user) sessionStorage.removeItem(`${STORE}:${user.id}:${lang}`); } catch { /* ignore */ } }
 
   if (state.status === 'loading') return <Loading rows={1} label={t('Проверка входа…')} />;
   if (!user) return (

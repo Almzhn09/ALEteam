@@ -7,6 +7,8 @@ import { SessionProvider } from '@/lib/session';
 import { FavoritesProvider } from '@/lib/favorites';
 import { LangProvider } from '@/lib/lang';
 import { getLang } from '@/lib/i18n-server';
+import { AssistantWidget } from '@/components/AssistantWidget';
+import { siteUrl } from '@/lib/seo';
 import { translator } from '@/lib/i18n';
 import { MOCK_MODE } from '@/lib/api';
 import { cookies } from 'next/headers';
@@ -15,6 +17,7 @@ import type { DisplayTheme, TextSize } from '@/components/DisplayPreferences';
 export async function generateMetadata(): Promise<Metadata> {
   const t = translator(await getLang());
   return {
+    metadataBase: new URL(siteUrl()),
     title: { default: t('Электронный архив — прототип ALEteam'), template: `%s · ${t('Электронный архив')}` },
     description: t('Прототип обновлённого электронного архива: поиск документов, карточки со сканами, избранное, ИИ-помощник и обсуждения.'),
   };
@@ -42,6 +45,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
             <FavoritesProvider>
             <Header initialTheme={theme} initialSize={size} />
             <main id="main" tabIndex={-1}>{children}</main>
+            <AssistantWidget />
             </FavoritesProvider>
           </SessionProvider>
           <Footer />
