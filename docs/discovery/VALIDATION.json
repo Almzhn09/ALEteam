@@ -1,0 +1,187 @@
+{
+  "testedAt": "2026-11-10T15:39:23.541Z",
+  "base": "artur-full-tz-20261109@1592296",
+  "branch": "backend/alimzhan-discovery-v1",
+  "status": "IMPLEMENTED; independent acceptance pending",
+  "unit": {
+    "passed": 309,
+    "failed": 0
+  },
+  "httpSuites": [
+    {
+      "name": "base",
+      "passed": 21,
+      "failed": 0
+    },
+    {
+      "name": "cms",
+      "passed": 14,
+      "failed": 0
+    },
+    {
+      "name": "catalog",
+      "passed": 12,
+      "failed": 0
+    },
+    {
+      "name": "imports",
+      "passed": 9,
+      "failed": 0
+    },
+    {
+      "name": "cms-assistant",
+      "passed": 12,
+      "failed": 0
+    },
+    {
+      "name": "semantic",
+      "passed": 36,
+      "failed": 0
+    },
+    {
+      "name": "uploads",
+      "passed": 11,
+      "failed": 0
+    },
+    {
+      "name": "discovery",
+      "passed": 16,
+      "failed": 0
+    }
+  ],
+  "browser": {
+    "checks": 13,
+    "auditedScreens": 54,
+    "kind": "existing interface regression; RU/KK, light/dark, 360/768/1440; not new discovery UI"
+  },
+  "typecheck": "passed",
+  "productionBuild": "passed",
+  "i18n": {
+    "keys": 426,
+    "translated": 426,
+    "missing": 0
+  },
+  "sourceVerification": {
+    "originals": 9,
+    "texts": 25,
+    "linked": 3,
+    "branchDrafts": 13,
+    "cmsDraftRequests": 18
+  },
+  "docker": {
+    "checks": [
+      {
+        "name": "runtime is non-root and both images exclude environment files",
+        "passed": true
+      },
+      {
+        "name": "fresh Compose stack initializes schema, original assets and two accounts",
+        "passed": true
+      },
+      {
+        "name": "standalone runtime serves a PNG and persists an authenticated comment",
+        "passed": true
+      },
+      {
+        "name": "CMS creates independent reviewed translations and archive hierarchy in Compose",
+        "passed": true
+      },
+      {
+        "name": "standalone stages private bytes, independently publishes a file and commits metadata drafts",
+        "passed": true
+      },
+      {
+        "name": "new source, spreadsheet and discovery records are private and persist before backup",
+        "passed": true
+      },
+      {
+        "name": "optional workers profile runs bounded batches and stops without changing public visibility",
+        "passed": true
+      },
+      {
+        "name": "search and real PNG preview timing is recorded on the declared synthetic corpus",
+        "passed": true
+      },
+      {
+        "name": "compiled standalone assistant retains chained date bounds and refuses contradictions",
+        "passed": true
+      },
+      {
+        "name": "database and app restart preserve the marker comment and file volume",
+        "passed": true
+      },
+      {
+        "name": "backup includes private database and files with an integrity manifest",
+        "passed": true
+      },
+      {
+        "name": "same-project, corrupted-backup and occupied-volume restore fail before changing resources",
+        "passed": true
+      },
+      {
+        "name": "restore to a fresh project recovers the marker, users and exact file bytes",
+        "passed": true
+      },
+      {
+        "name": "CMS roles, hierarchy, translations, private history and notices survive backup and restore",
+        "passed": true
+      },
+      {
+        "name": "catalog publication snapshots, translations and copy restrictions survive restore",
+        "passed": true
+      },
+      {
+        "name": "published and quarantined upload bytes plus import provenance survive restore exactly",
+        "passed": true
+      },
+      {
+        "name": "new discovery baselines, source bindings, original spreadsheet bytes and parsed previews survive restore",
+        "passed": true
+      },
+      {
+        "name": "favorites, notification preferences and reply events survive restart and restore",
+        "passed": true
+      }
+    ],
+    "runtimePdfWithoutNetwork": {
+      "passed": true,
+      "parser": "pdfjs-6.5.438",
+      "pages": 1,
+      "readableFragments": 1,
+      "previewBytes": 25223,
+      "masterSha256": "5032181eb85f45d0f5dc68c065d1cd8e4382271b057b067cf44818b03f9ebfa0"
+    },
+    "backupRetainedPrivately": true
+  },
+  "measurements": [
+    {
+      "name": "catalog_search",
+      "requests": 12,
+      "p50Ms": 6.2,
+      "p95Ms": 20.29,
+      "publicDocuments": 21,
+      "corpus": "synthetic seeded demo plus this isolated workflow; not S09 funds",
+      "runtime": "Node 24 Linux Docker local loopback; sequential requests; includes full response bytes",
+      "browser": "Node fetch; Lighthouse not measured"
+    },
+    {
+      "name": "png_preview",
+      "requests": 12,
+      "p50Ms": 6.85,
+      "p95Ms": 13.67,
+      "publicDocuments": 21,
+      "corpus": "synthetic seeded demo plus this isolated workflow; not S09 funds",
+      "runtime": "Node 24 Linux Docker local loopback; sequential requests; includes full response bytes",
+      "browser": "Node fetch; Lighthouse not measured"
+    }
+  ],
+  "limitations": [
+    "All workflow fixtures are synthetic; sources are not automatically published.",
+    "No real historical graph facts or final S09 mapping have been accepted.",
+    "COL-A03 explaining engine is not connected; response is unsupported.",
+    "History/event collection disabled; aggregates require explicit operator-approved input.",
+    "No antivirus provider; no public hosting/domain or external HTTPS acceptance.",
+    "No independent human legal/language/content acceptance or new discovery UI acceptance.",
+    "Remote GitHub Actions result has not been observed; equivalent checks ran locally."
+  ]
+}

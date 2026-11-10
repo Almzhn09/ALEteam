@@ -44,16 +44,20 @@ export async function catalogImports(request: Request, id?: string) {
   const context = await contextFor(request,manifest.branchId,true);
   await rateLimit(`import-create:${context.user.id}`,10,60);
   const batch = await db.$transaction(async tx => {
-    await catalogLock(tx);
-    if (!await tx.archiveBranch.count({where:{id:manifest.branchId}})) throw new ApiError(404,'NOT_FOUND','Филиал не найден.');
-    if (await tx.catalogImport.count({where:{authorId:context.user.id,state:{in:['READY','VALIDATION_FAILED']}}})>=20) throw new ApiError(409,'IMPORT_QUOTA','Завершите или отмените предыдущие планы импорта.');
-    const plan = await validateCatalogImport(tx,manifest);
-    const batch = await tx.catalogImport.create({data:{id:randomUUID(),branchId:manifest.branchId,sourceNamespace:manifest.sourceNamespace,
-      authorId:context.user.id,manifest:manifest as unknown as Prisma.InputJsonObject,digest:importManifestDigest(manifest),
-      state:plan.report.valid?'READY':'VALIDATION_FAILED',report:plan.report as unknown as Prisma.InputJsonObject,createdDocuments:[]}});
-    await audit(tx,context.user.id,'IMPORT_STAGED',batch.id);return batch;
+    return stageCatalogImport(tx,manifest,context.user.id);
   },{timeout:30000,isolationLevel:'RepeatableRead'});
   return json({item:dto(batch,true)},201);
+}
+// Shared immutable staging: spreadsheet adapters use exactly the same validator/quota/audit.
+export async function stageCatalogImport(tx:Prisma.TransactionClient,manifest:CatalogImportManifest,actorId:string){
+    await catalogLock(tx);
+    if (!await tx.archiveBranch.count({where:{id:manifest.branchId}})) throw new ApiError(404,'NOT_FOUND','Филиал не найден.');
+    if (await tx.catalogImport.count({where:{authorId:actorId,state:{in:['READY','VALIDATION_FAILED']}}})>=20) throw new ApiError(409,'IMPORT_QUOTA','Завершите или отмените предыдущие планы импорта.');
+    const plan = await validateCatalogImport(tx,manifest);
+    const batch = await tx.catalogImport.create({data:{id:randomUUID(),branchId:manifest.branchId,sourceNamespace:manifest.sourceNamespace,
+      authorId:actorId,manifest:manifest as unknown as Prisma.InputJsonObject,digest:importManifestDigest(manifest),
+      state:plan.report.valid?'READY':'VALIDATION_FAILED',report:plan.report as unknown as Prisma.InputJsonObject,createdDocuments:[]}});
+    await audit(tx,actorId,'IMPORT_STAGED',batch.id);return batch;
 }
 async function materialize(tx:Prisma.TransactionClient, manifest:CatalogImportManifest, actorId:string, batchId:string, plan:Awaited<ReturnType<typeof validateCatalogImport>>) {
   for(const row of manifest.funds)if(!plan.funds.has(row.key)) {

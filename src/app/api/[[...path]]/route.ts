@@ -1,10 +1,13 @@
+import {filePreviews} from '@/server/file-import-preview';
+import {fileText} from '@/server/authorized-file-text';
 import {navigation,navigationDraft} from '@/server/navigation';
-import {measurements} from '@/server/discovery-measurements';
-import {home} from '@/server/discovery-home';
-import {interests,subscriptions,topicNotices} from '@/server/discovery-personal';
 import {resolveMaterial} from '@/server/discovery-materials';
 import {localeSchema as discoveryLocale} from '@/server/discovery-utils';
 import {z} from 'zod';
+import {home} from '@/server/discovery-home';
+import {interests,subscriptions,topicNotices} from '@/server/discovery-personal';
+import {measurements} from '@/server/discovery-measurements';
+import {explanation} from '@/server/discovery-explanation';
 import {places,related} from '@/server/discovery-places';
 import {aliasList} from '@/server/discovery-names';
 import {adminFacts} from '@/server/discovery-facts';
@@ -21,7 +24,7 @@ import { createComment, decideComment, decisionHistory, listComments, moderation
 import { assistant } from '@/server/assistant';
 import { assistantQuality } from '@/server/corpus-health';
 import {publicBranchScope, publicDocumentWhere} from '@/server/public-visibility';
-import {uploads, uploadContent, uploadRetry, reviewUpload, publishUpload} from '@/server/uploads';
+import {uploads, uploadContent, uploadRetry, reviewUpload, publishUpload,uploadInspection} from '@/server/uploads';
 import {catalogImports, importAction, exportImport} from '@/server/catalog-imports';
 import { getGuide, guides } from '@/server/guides';
 import { deleteFavorites, listFavorites, saveFavorites } from '@/server/personal';
@@ -73,21 +76,22 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
       if(path.length===4&&['GET','PATCH'].includes(method))return adminFacts(request,path[3]);
       if(path.length===5&&['verify','withdraw','revise'].includes(path[4])&&method==='POST')return adminFacts(request,path[3],path[4]);
     }
+    if(path[0]==='documents'&&path.length===3&&path[2]==='explanation'&&method==='POST')return explanation(request,path[1]);
     if(path[0]==='discovery'&&path[1]==='materials'&&path.length===4&&['document','cms'].includes(path[2])&&method==='GET'){
       const p=z.object({locale:discoveryLocale.default('ru')}).strict().parse(queryParams(request));
       const material=await resolveMaterial({kind:path[2] as 'document'|'cms',id:path[3]},p.locale);
       if(!material)throw new ApiError(404,'NOT_FOUND','Материал не найден.');return json({item:material.material,source:material.source});
     }
+    if(route==='navigation'&&method==='GET')return navigation(request);
+    if(route==='admin/navigation'&&method==='POST')return navigationDraft(request);
     if(route==='discovery/home'&&method==='GET')return home(request);
     if(route==='discovery/events'&&method==='POST')throw new ApiError(503,'COLLECTION_NOT_CONFIGURED','Сервис временно недоступен.');
+    if(route==='admin/discovery/measurements'&&['GET','POST','DELETE'].includes(method))return measurements(request);
     if(route==='me/interests'&&['GET','PUT'].includes(method))return interests(request);
     if(route==='me/topic-subscriptions'&&['GET','POST'].includes(method))return subscriptions(request);
     if(path[0]==='me'&&path[1]==='topic-subscriptions'&&path.length===3&&method==='DELETE')return subscriptions(request,path[2]);
     if(route==='me/topic-notifications'&&method==='GET')return topicNotices(request);
     if(path[0]==='me'&&path[1]==='topic-notifications'&&path.length===3&&method==='PATCH')return topicNotices(request,path[2]);
-    if(route==='navigation'&&method==='GET')return navigation(request);
-    if(route==='admin/navigation'&&method==='POST')return navigationDraft(request);
-    if(route==='admin/discovery/measurements'&&['GET','POST','DELETE'].includes(method))return measurements(request);
     if(route==='places'&&method==='GET')return places(request);
     if(path[0]==='places'&&path.length===3&&path[2]==='history'&&method==='GET')return places(request,path[1]);
     if(path[0]==='documents'&&path.length===3&&path[2]==='related'&&method==='GET')return related(request,path[1]);
@@ -98,6 +102,11 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
     if(route==='admin/me'&&method==='GET')return staffMe(request);
     if(route==='admin/assistant/quality'&&method==='GET')return assistantQuality(request);
     if(route==='admin/uploads'&&['GET','POST'].includes(method))return uploads(request);
+    if(route==='admin/file-previews'&&method==='POST')return filePreviews(request);
+    if(path[0]==='admin'&&path[1]==='file-previews'){
+      if(path.length===3&&['GET','DELETE'].includes(method))return filePreviews(request,path[2]);
+      if(path.length===4&&path[3]==='stage'&&method==='POST')return filePreviews(request,path[2],'stage');
+    }
     if(route==='admin/imports'&&['GET','POST'].includes(method))return catalogImports(request);
     if(path[0]==='admin'&&path[1]==='imports'){
       if(path.length===3&&method==='GET')return catalogImports(request,path[2]);
@@ -106,6 +115,8 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
     }
     if(path[0]==='admin'&&path[1]==='uploads'&&path.length===3&&method==='GET')return uploads(request,path[2]);
     if(path[0]==='admin'&&path[1]==='uploads'&&path.length===4){
+      if(path[3]==='inspection'&&method==='GET')return uploadInspection(request,path[2]);
+      if(path[3]==='inspection-retry'&&method==='POST')return uploadInspection(request,path[2],true);
       if(path[3]==='content'&&['GET','PUT'].includes(method))return uploadContent(request,path[2]);
       if(path[3]==='retry'&&method==='POST')return uploadRetry(request,path[2]);
       if(path[3]==='review'&&method==='POST')return reviewUpload(request,path[2]);
@@ -159,6 +170,7 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
       if (method === 'POST') return createComment(request, path[1]);
     }
     if (path[0] === 'files' && path.length === 2 && method === 'GET') return fileResponse(request, path[1]);
+    if(path[0]==='files'&&path.length===3&&path[2]==='text'&&method==='GET')return fileText(request,path[1]);
     if (path[0] === 'files' && path.length === 3 && path[2] === 'ocr' && method === 'GET') return recognizedText(request, path[1]);
     if (route === 'me' && method === 'GET') {
       const user = await requireUser(request);

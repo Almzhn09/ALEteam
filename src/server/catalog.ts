@@ -76,7 +76,7 @@ export async function publicDocument(id: string, request?: Request) {
       authorName: true, organization: true, locality: true, storageLocation: true, accessConditions: true, category: true, tags: true}},
     archivalCase: {select: {id: true, number: true, title: true, inventory: {select: {id: true, number: true, title: true}}}},
     fund: {select: {id: true, name: true, description: true, branchId: true, number: true}},
-    files: {where: {isPublic: true, document: {allowDigitalCopy: true}}, select: {id: true, name: true, mimeType: true, size: true, downloadable: true}},
+    files: {where: {isPublic: true, document: {allowDigitalCopy: true}}, select: {id: true, name: true, mimeType: true, size: true, downloadable: true, variant:true,parentFileId:true},orderBy:[{variant:'desc'},{id:'asc'}]},
   }});
   const translation = document?.translations.find(t => t.locale === locale);
   if (!document || !translation) throw new ApiError(404, 'NOT_FOUND', 'Документ не найден.');
@@ -88,7 +88,10 @@ export async function fileResponse(request: Request, id: string) {
   const params = z.object({ download: z.enum(['1']).optional() }).strict().parse(queryParams(request));
   const file = await db.archiveFile.findFirst({ where: { id, isPublic: true, document: { ...publicDocumentWhere, allowDigitalCopy:true } },
     include: {upload: {select: {state: true, expectedBytes: true, expectedSha256: true, rightsConfirmed: true, uploaderId: true, reviewerId: true}}} });
+  const derivative = file?.variant==='preview'?await db.uploadInspectionJob.findUnique({where:{previewFileId:id},include:{upload:true}}):null;
+  if(file?.variant==='preview'&&(!derivative||derivative.state!=='PASSED'||derivative.upload.state!=='PUBLISHED'||!derivative.upload.rightsConfirmed||!derivative.upload.reviewerId||derivative.upload.reviewerId===derivative.upload.uploaderId||derivative.upload.fileId!==file.parentFileId||derivative.previewStorageKey!==file.storageKey))throw new ApiError(404,'NOT_FOUND','Файл не найден.');
   if (!file || (params.download && !file.downloadable)) throw new ApiError(404, 'NOT_FOUND', 'Файл не найден.');
+  if(derivative){const master=await db.archiveFile.findFirst({where:{id:file.parentFileId!,documentId:file.documentId,variant:'master',isPublic:true}});if(!master)throw new ApiError(404,'NOT_FOUND','Файл не найден.');await fileResponse(new Request('http://preview.invalid/'),master.id);}
   const allowed = ['application/pdf', 'image/png', 'image/jpeg'];
   if (!allowed.includes(file.mimeType) || file.size > 20 * 1024 * 1024) throw new ApiError(404, 'NOT_FOUND', 'Файл не найден.');
   const root = await realpath(process.env.FILE_STORAGE_ROOT || '.local/files');
@@ -104,6 +107,7 @@ export async function fileResponse(request: Request, id: string) {
     const valid = file.mimeType === 'application/pdf' ? data.subarray(0, 5).toString() === '%PDF-'
       : file.mimeType === 'image/png' ? data.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10]))
       : data[0] === 255 && data[1] === 216 && data[2] === 255;
+    if(derivative&&(derivative.previewBytes!==data.length||createHash('sha256').update(data).digest('hex')!==derivative.previewSha256))throw new ApiError(404,'NOT_FOUND','Файл не найден.');
     if (!valid) throw new ApiError(404, 'NOT_FOUND', 'Файл не найден.');
     if (file.upload && (file.upload.state !== 'PUBLISHED' || !file.upload.rightsConfirmed || !file.upload.reviewerId
       || file.upload.reviewerId === file.upload.uploaderId || file.upload.expectedBytes !== data.length

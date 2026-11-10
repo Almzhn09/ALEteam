@@ -34,14 +34,14 @@ export interface HistoryEntry extends HistoricalDate {id: string; title: string;
 export interface TextFragment {id: string; text: string; page?: number; start?: number; end?: number}
 export interface AuthorizedText {
   source: SourceRef; fingerprint: string; sourceSha256: string; textSha256: string;
-  fragments: TextFragment[]; ocr: {used: boolean; quality: 'reviewed' | 'unreviewed' | 'low'; engine?: string; confidence?: number};
+  fragments: TextFragment[]; ocr: {used: boolean; quality: 'reviewed' | 'unreviewed' | 'low' | 'not_applicable'; engine?: string; confidence?: number};
 }
 export interface Explanation {
   status: 'ready' | 'no_text' | 'low_quality' | 'unsupported'; mode: 'extractive' | 'glossary' | 'grounded' | null;
   sourceRevision: string | null; summary?: string; terms: {term: string; explanation: string; fragmentIds: string[]}[];
   citations: {fragmentId: string; quote: string; source: SourceRef}[]; limitations: string[];
 }
-export interface InterestSettings {topicIds: string[]; personalizationEnabled: boolean; historyEnabled: boolean; updatedAt: string}
+export interface InterestSettings {topicIds: string[]; personalizationEnabled: boolean; historyEnabled: boolean; updatedAt: string | null}
 export interface SubscriptionInput {topicId?: string; placeId?: string; filters?: CatalogFilters & {nameMode?: 'literal' | 'expanded'; placeId?: string}; locale: ContentLocale}
 export interface TopicSubscription extends SubscriptionInput {id: string; active: boolean; createdAt: string}
 export interface TopicNotice {id: string; subscriptionId: string; material: MaterialRef; createdAt: string; readAt: string | null}

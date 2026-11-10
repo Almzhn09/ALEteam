@@ -10,7 +10,7 @@
     "build": "npm run db:generate && next build --webpack",
     "start": "node --use-env-proxy node_modules/next/dist/bin/next start --hostname 0.0.0.0",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests/unit.test.ts tests/moderation.test.ts tests/moderation-variants.test.ts tests/assistant.test.ts tests/corpus.test.ts tests/discovery.test.ts tests/local-model.test.ts tests/site-dialog.test.ts tests/artur-full-tz.test.ts tests/artur-training-candidate.test.ts tests/artur-search-periods.test.ts tests/artur-migration.test.ts tests/artur-migration-files.test.ts tests/artur-quality-model.test.ts tests/staff-policy.test.ts tests/cms-grounding.test.ts tests/artur-content-drafts.test.ts tests/english-dialog.test.ts tests/semantic-catalog-plan.test.ts tests/assistant-quality.test.ts tests/upload-storage.test.ts tests/catalog-import-schema.test.ts tests/artur-discovery.test.ts",
+    "test": "tsx --test tests/unit.test.ts tests/moderation.test.ts tests/moderation-variants.test.ts tests/assistant.test.ts tests/corpus.test.ts tests/discovery.test.ts tests/local-model.test.ts tests/site-dialog.test.ts tests/artur-full-tz.test.ts tests/artur-training-candidate.test.ts tests/artur-search-periods.test.ts tests/artur-migration.test.ts tests/artur-migration-files.test.ts tests/artur-quality-model.test.ts tests/staff-policy.test.ts tests/cms-grounding.test.ts tests/artur-content-drafts.test.ts tests/english-dialog.test.ts tests/semantic-catalog-plan.test.ts tests/assistant-quality.test.ts tests/upload-storage.test.ts tests/catalog-import-schema.test.ts tests/discovery-policy.test.ts tests/file-processing.test.ts tests/artur-discovery.test.ts",
     "test:integration": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/integration.test.ts",
     "db:generate": "node --import tsx scripts/generate-client.ts",
     "db:migrate": "node --env-file-if-exists=.env --import tsx scripts/migrate.ts",
@@ -49,7 +49,9 @@
     "test:imports": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/catalog-imports.integration.test.ts",
     "test:discovery": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/discovery.integration.test.ts",
     "evaluate:discovery": "node --import tsx scripts/evaluate-artur-discovery.ts",
-    "discovery:deliver": "node --env-file-if-exists=.env --import tsx scripts/deliver-topic-notices.ts"
+    "discovery:deliver": "node --env-file-if-exists=.env --import tsx scripts/deliver-topic-notices.ts",
+    "uploads:inspect": "node --env-file-if-exists=.env --import tsx scripts/process-upload-inspections.ts",
+    "archive:jobs": "node --env-file-if-exists=.env --import tsx scripts/watch-archive-jobs.ts"
   },
   "dependencies": {
     "@e965/xlsx": "0.20.3",
