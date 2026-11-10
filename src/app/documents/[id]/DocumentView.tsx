@@ -1,9 +1,8 @@
-'use client';
 import Link from 'next/link';
 import type { ArchiveFile, DocumentType } from '@/contracts/api';
 import { fileUrl } from '@/lib/api';
 import { formatSize, typeLabel } from '@/lib/labels';
-import { useI18n } from '@/lib/lang';
+import {getT} from '@/lib/i18n-server';
 import { Breadcrumbs, DemoBadge, Notice } from '@/components/ui';
 import { FavoriteButton } from '@/components/DocumentCard';
 import { ScanViewer } from '@/components/ScanViewer';
@@ -28,8 +27,8 @@ export interface PublicDocument {
   files: ArchiveFile[];
 }
 
-export function DocumentView({ doc, translated }: { doc: PublicDocument; translated: boolean }) {
-  const { t } = useI18n();
+export async function DocumentView({ doc, translated }: { doc: PublicDocument; translated: boolean }) {
+  const t=await getT();
   const scans = doc.files.filter(f => isImage(f.mimeType));
   const period = doc.yearTo && doc.yearTo !== doc.year ? `${doc.year}–${doc.yearTo}` : String(doc.year);
   const inventory = doc.archivalCase?.inventory;

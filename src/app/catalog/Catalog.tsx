@@ -10,6 +10,7 @@ import { ErrorNotice, Loading, Notice, Pagination } from '@/components/ui';
 import { useI18n } from '@/lib/lang';
 import type {NameExpansion} from '@/contracts/discovery';
 import {FollowTopic} from '@/components/TopicSubscriptions';
+import type {ContentLocale} from '@/contracts/cms';
 
 const PAGE_SIZE = 10;
 type Sort = keyof typeof sortLabel;
@@ -63,7 +64,7 @@ export function Catalog() {
   const { t, lang } = useI18n();
   const { filters, dropped } = useMemo(() => fromUrl(new URLSearchParams(params.toString())), [params]);
   const urlKey = toQuery(filters);
-  const contentLocale = filters.contentLang || lang;
+  const contentLocale = (filters.contentLang || lang) as ContentLocale;
 
   const textValues = (f: Filters) => Object.fromEntries(TEXT_FILTERS.map(k => [k, f[k]])) as Record<TextKey, string>;
   const [draft, setDraft] = useState({ q: filters.q, yearFrom: filters.yearFrom, yearTo: filters.yearTo, ...textValues(filters) });
@@ -195,7 +196,7 @@ export function Catalog() {
         <div className="stack discovery-search-controls"><label className="row"><input type="checkbox" checked={filters.nameMode==='expanded'} onChange={e=>navigate({nameMode:e.target.checked?'expanded':'literal',placeId:''})}/>{t('Учитывать исторические названия мест')}</label>
         {data?.nameExpansion?.applied&&<p className="small muted">{t('Учтены названия:')} {data.nameExpansion.variants.join(', ')}</p>}
         {data?.nameExpansion?.clarificationRequired&&<Notice tone="info" title={t('Уточните место')}>{t('Название неоднозначно. Укажите город или выберите буквальный поиск.')} <Link href="/places">{t('История места')}</Link></Notice>}
-        <FollowTopic selection={{filters:Object.fromEntries([...new URLSearchParams(toQuery(filters)).entries()].filter(([key])=>!['page','sort','contentLang'].includes(key)))}}/>
+        <FollowTopic contentLocale={contentLocale} selection={{filters:Object.fromEntries([...new URLSearchParams(toQuery(filters)).entries()].filter(([key])=>!['page','sort','contentLang'].includes(key)))}}/>
         </div>
         {error ? <ErrorNotice error={error} onRetry={() => setAttempt(a => a + 1)} title={t('Не удалось выполнить поиск')} />
           : loading && !data ? <Loading label={t('Поиск документов')} />

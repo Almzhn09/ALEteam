@@ -108,6 +108,12 @@ test('extractive explanation prefers source content to cover labels and creator 
  const result=explainFragments(snapshot({fragments:[{id:'body',quality:'verified',text:'Создатель: Учебная мастерская архива. Условный год: 1905. ДЕМО — ОРИГИНАЛЬНЫЙ УЧЕБНЫЙ ЛИСТ. В записи описана работа читального зала городской библиотеки. Участники обсудили сохранение каталогов и организацию доступа к книгам. Документ содержит перечень книг и решения собрания читателей.'}]}),'ru');
  assert.equal(result.status,'ready');assert.match(result.citations[0].quote,/описана|обсудили|содержит/);assert.ok(result.citations.every(c=>!c.quote.startsWith('Создатель:')));
 });
+test('wrapped OCR lines remain one complete source sentence with exact raw-text offsets',()=>{
+ const text='В учебной записи описана\r\nвстреча читателей в городской библиотеке. Участники обсудили каталог книг и время работы\nчитального зала.';
+ const result=explainFragments(snapshot({fragments:[{id:'wrapped',quality:'ocr',confidence:.93,text}]}),'ru');
+ assert.equal(result.status,'ready');assert.ok(result.citations.some(c=>c.quote.includes('описана\r\nвстреча читателей')));assert.ok(result.citations.some(c=>c.quote.includes('работы\nчитального зала.')));
+ for(const citation of result.citations)assert.equal(text.slice(citation.start,citation.end),citation.quote);
+});
 test('source revision/OCR changes invalidate an explanation; unsafe source URLs and duplicate fragments rejected',()=>{
  const input=snapshot(),r=explainFragments(input,'ru');assert.throws(()=>explainFragments(input,'ru',{expectedRevision:'old'}),/SOURCE_REVISION_CHANGED/);
  input.fragments[0].text+=' Ещё один текст.';assert.throws(()=>explainFragments(input,'ru',{expectedFingerprint:r.textFingerprint}),/SOURCE_TEXT_CHANGED/);

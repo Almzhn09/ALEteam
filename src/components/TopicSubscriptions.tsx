@@ -3,15 +3,17 @@ import Link from 'next/link';
 import {useEffect,useState} from 'react';
 import {usePathname,useSearchParams} from 'next/navigation';
 import type {CursorPage,TopicSubscription,TopicNotice,SubscriptionInput} from '@/contracts/discovery';
+import type {ContentLocale} from '@/contracts/cms';
 import {apiGet,apiSend} from '@/lib/api';
 import {useSession} from '@/lib/session';
 import {useI18n} from '@/lib/lang';
 import {materialLink} from '@/lib/discovery-links';
 import {ErrorNotice,Loading} from './ui';
-export function FollowTopic({selection}:{selection:Omit<SubscriptionInput,'locale'>}){
+export function FollowTopic({selection,contentLocale}:{selection:Omit<SubscriptionInput,'locale'>;contentLocale?:ContentLocale}){
  const {user,state}=useSession(),{lang,t}=useI18n(),path=usePathname(),params=useSearchParams();const [saved,setSaved]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState<unknown>(null);const key=JSON.stringify(selection);
- useEffect(()=>{setSaved(false);setError(null);},[key,user?.id,lang]);
- async function follow(){setBusy(true);setError(null);try{await apiSend('/me/topic-subscriptions','POST',{...selection,locale:lang});setSaved(true);}catch(e){setError(e);}finally{setBusy(false);}}
+ const locale=contentLocale??lang;
+ useEffect(()=>{setSaved(false);setError(null);},[key,user?.id,locale]);
+ async function follow(){setBusy(true);setError(null);try{await apiSend('/me/topic-subscriptions','POST',{...selection,locale});setSaved(true);}catch(e){setError(e);}finally{setBusy(false);}}
  if(state.status==='loading')return null;
  return <div className="stack">{user?<div className="row"><button className="btn btn-secondary" type="button" disabled={busy||saved} onClick={()=>void follow()}>{t(saved?'Вы следите за темой':'Следить за темой')}</button>{saved&&<Link href="/me#topic-subscriptions">{t('Мои подписки')}</Link>}</div>:<Link className="btn btn-secondary" href={'/login?returnTo='+encodeURIComponent(path+(params.size?'?'+params:''))}>{t('Войти и следить за темой')}</Link>}{!!error&&<ErrorNotice error={error}/>}</div>;
 }

@@ -1,10 +1,11 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import { Suspense, useRef, useState } from 'react';
-import { Assistant } from '@/app/assistant/Assistant';
+import dynamic from 'next/dynamic';
 import { useI18n } from '@/lib/lang';
 
-// The chat stays unmounted until opened, so it costs ordinary page loads nothing.
+const Assistant=dynamic(()=>import('@/app/assistant/Assistant').then(m=>m.Assistant),{ssr:false});
+// Load chat code only when opened; normal document views do not download a second chat bundle.
 // Lives in the header tools rather than floating, so it never covers page content.
 export function AssistantWidget() {
   const { t } = useI18n();
