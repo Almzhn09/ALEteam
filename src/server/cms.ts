@@ -1,3 +1,4 @@
+import {recordMaterialPublication} from './discovery-publications';
 import { z } from 'zod';
 import { locales, contentKinds } from '../contracts/cms';
 import { db } from './db';
@@ -118,6 +119,10 @@ export async function transitionRevision(request:Request,id:string){
    }
   }
   const updated=await tx.contentRevision.update({where:{id},data:{status:p.status,...(p.status==='APPROVED'?{reviewerId:c.user.id}:{}),updatedAt:new Date(Math.max(Date.now(),r.updatedAt.getTime()+1))}});
+  if(p.status==='PUBLISHED'){
+   if(catalog){const document=await tx.document.findUniqueOrThrow({where:{contentItemId:current.itemId}});await recordMaterialPublication(tx,'document',document.id,r.locale,r.id);}
+   else if(current.item.kind!=='SETTING')await recordMaterialPublication(tx,'cms',current.itemId,r.locale,r.id);
+  }
   const recipients=new Set([r.authorId]);
   if(p.status==='IN_REVIEW'){
    const reviewers=await tx.staffAssignment.findMany({where:{user:{isActive:true},role:{permissions:{some:{permission:'content.review'}}},OR:[{branchId:null},{branchId:current.item.branchId}]},select:{userId:true}});reviewers.forEach(r=>recipients.add(r.userId));

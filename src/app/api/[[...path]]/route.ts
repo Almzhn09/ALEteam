@@ -1,3 +1,5 @@
+import {home} from '@/server/discovery-home';
+import {interests,subscriptions,topicNotices} from '@/server/discovery-personal';
 import {resolveMaterial} from '@/server/discovery-materials';
 import {localeSchema as discoveryLocale} from '@/server/discovery-utils';
 import {z} from 'zod';
@@ -74,6 +76,13 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
       const material=await resolveMaterial({kind:path[2] as 'document'|'cms',id:path[3]},p.locale);
       if(!material)throw new ApiError(404,'NOT_FOUND','Материал не найден.');return json({item:material.material,source:material.source});
     }
+    if(route==='discovery/home'&&method==='GET')return home(request);
+    if(route==='discovery/events'&&method==='POST')throw new ApiError(503,'COLLECTION_NOT_CONFIGURED','Сервис временно недоступен.');
+    if(route==='me/interests'&&['GET','PUT'].includes(method))return interests(request);
+    if(route==='me/topic-subscriptions'&&['GET','POST'].includes(method))return subscriptions(request);
+    if(path[0]==='me'&&path[1]==='topic-subscriptions'&&path.length===3&&method==='DELETE')return subscriptions(request,path[2]);
+    if(route==='me/topic-notifications'&&method==='GET')return topicNotices(request);
+    if(path[0]==='me'&&path[1]==='topic-notifications'&&path.length===3&&method==='PATCH')return topicNotices(request,path[2]);
     if(route==='places'&&method==='GET')return places(request);
     if(path[0]==='places'&&path.length===3&&path[2]==='history'&&method==='GET')return places(request,path[1]);
     if(path[0]==='documents'&&path.length===3&&path[2]==='related'&&method==='GET')return related(request,path[1]);

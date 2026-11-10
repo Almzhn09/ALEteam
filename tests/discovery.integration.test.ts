@@ -141,3 +141,38 @@ test('COL-B04 related sources distinguish verified links and text similarity wit
  assert.equal((await call('/discovery/materials/document/'+otherDoc.item.id)).status,404);
  await db.archiveBranch.update({where:{id:'discovery-other'},data:{isPublic:true}});
 });
+
+test('COL-B05 recommendations honor explicit interests/disable, and never invent popularity or account history',async()=>{
+ const topic=await fact('TOPIC',{labels:{ru:{title:'ДЕМО тема'}}});topicId=topic.id;
+ await fact('EDITORIAL',{material:{kind:'document',id:graphDocumentId},topicId,placeId,order:1});
+ const cold=await ok('/discovery/home');assert.equal(cold.recommended.mode,'editorial');assert.equal(cold.popular.status,'unavailable');assert.equal(cold.popular.period,null);assert.deepEqual(cold.continue.items,[]);
+ await ok('/me/interests','PUT',{topicIds:[topicId],personalizationEnabled:true,historyEnabled:false},guest);
+ const chosen=await ok('/discovery/home','GET',undefined,guest);assert.equal(chosen.recommended.mode,'interests');assert.equal(chosen.recommended.items[0].reason.code,'chosen_topic');
+ await ok('/me/interests','PUT',{topicIds:[topicId],personalizationEnabled:false,historyEnabled:false},guest);assert.equal((await ok('/discovery/home','GET',undefined,guest)).recommended.mode,'editorial');
+ assert.equal((await call('/me/interests','PUT',{topicIds:[],personalizationEnabled:true,historyEnabled:true},guest)).status,503);
+ assert.equal((await call('/discovery/events','POST',{type:'view',id:graphDocumentId})).status,503);
+});
+test('COL-B05 subscriptions baseline/idempotency/worker retry and owner revocation are enforced',async()=>{
+ const filter={filters:{q:'FOLLOW_TOPIC_MARKER'},locale:'ru'};
+ const initial=await createDemoDocument('FOLLOW_TOPIC_MARKER existing');
+ const sub=(await ok('/me/topic-subscriptions','POST',filter,guest,201)).item;
+ const duplicate=(await ok('/me/topic-subscriptions','POST',filter,guest)).item;assert.equal(duplicate.id,sub.id);
+ assert.equal((await ok('/me/topic-notifications','GET',undefined,guest)).items.length,0);
+ const next=await createDemoDocument('FOLLOW_TOPIC_MARKER new');
+ execFileSync(process.execPath,['--import','tsx','scripts/deliver-topic-notices.ts'],{env,stdio:'pipe'});
+ const first=await ok('/me/topic-notifications','GET',undefined,guest);assert.equal(first.items.length,1);assert.equal(first.items[0].material.id,next.item.id);assert.notEqual(first.items[0].material.id,initial.item.id);
+ execFileSync(process.execPath,['--import','tsx','scripts/deliver-topic-notices.ts'],{env,stdio:'pipe'});
+ assert.equal((await ok('/me/topic-notifications','GET',undefined,guest)).items.length,1);
+ const languageView=await ok('/me/topic-notifications?locale=en','GET',undefined,guest);assert.equal(languageView.items[0].material.translationStatus,'original');
+ const newRevision=(await ok('/admin/catalog/documents/'+next.item.id+'/revisions','POST',{locale:'ru',payload:{...next.revision.payload,title:'FOLLOW_TOPIC_MARKER revised'}},writer,201)).item;
+ next.revision=await publish(newRevision);execFileSync(process.execPath,['--import','tsx','scripts/deliver-topic-notices.ts'],{env,stdio:'pipe'});
+ assert.equal((await ok('/me/topic-notifications','GET',undefined,guest)).items.length,1);
+ assert.equal((await ok('/me/topic-notifications','GET',undefined,other)).items.length,0);
+ assert.equal((await call('/me/topic-subscriptions/'+sub.id,'DELETE',{},other)).status,404);
+ assert.equal((await call('/me/topic-notifications/'+first.items[0].id,'PATCH',{},other)).status,404);
+ await ok('/me/topic-notifications/'+first.items[0].id,'PATCH',{},guest);
+ await ok('/admin/revisions/'+next.revision.id+'/transition','POST',{status:'ARCHIVED',expectedUpdatedAt:next.revision.updatedAt,reason:'withdraw match'},reviewer);
+ assert.equal((await ok('/me/topic-notifications','GET',undefined,guest)).items.length,0);
+ await ok('/me/topic-subscriptions/'+sub.id,'DELETE',{},guest);await ok('/me/topic-subscriptions/'+sub.id,'DELETE',{},guest);
+ assert.equal((await ok('/me/topic-subscriptions','GET',undefined,guest)).items.length,0);
+});

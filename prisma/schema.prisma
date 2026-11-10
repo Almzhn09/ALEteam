@@ -247,6 +247,7 @@ model ModerationDecision {
 }
 
 model ArchiveBranch {
+ siteMeasurements SiteMeasurement[]
  discoveryFacts DiscoveryFact[]
  id String @id
  code String @unique
@@ -535,6 +536,7 @@ model DiscoveryPreference {
  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
 }
 model TopicSubscription {
+ cursor BigInt @default(0)
  id String @id @default(cuid())
  userId String
  fingerprint String
@@ -580,4 +582,18 @@ model DiscoveryAggregate {
  sourceNote String
  createdAt DateTime @default(now())
  @@unique([kind,materialId,locale,periodFrom,periodTo])
+}
+
+model SiteMeasurement {
+ id String @id @default(cuid())
+ metric String
+ branchId String?
+ periodFrom DateTime
+ periodTo DateTime
+ count Int
+ sourceNote String
+ approvedBy String
+ createdAt DateTime @default(now())
+ branch ArchiveBranch? @relation(fields:[branchId],references:[id])
+ @@index([branchId,periodFrom,periodTo])
 }
