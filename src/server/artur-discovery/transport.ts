@@ -10,12 +10,12 @@ const key=(m:MaterialKey)=>m.kind+':'+m.id;
 function engineSource(s:SourceRef){return sourceRefSchema.parse({id:s.id,kind:s.kind,locale:s.locale,revision:s.revision,title:s.title,href:s.href});}
 function snapshot(input:readonly CandidateSnapshot[],locale:EngineLocale){
  const lookup=new Map<string,CandidateSnapshot>();
- const materials=input.map(c=>{
+ const materials=input.map((c,index)=>{
   if(c.source.id!==c.material.id||c.source.kind!==c.material.kind||c.source.locale!==c.material.contentLocale)throw Error('SOURCE_IDENTITY_MISMATCH');
   engineSource(c.source);if(lookup.has(key(c.material)))throw Error('DUPLICATE_MATERIAL_SNAPSHOT');lookup.set(key(c.material),c);
   // Context locale chooses labels; the original source/content locale is restored below, never relabelled to the user.
   const result:EngineMaterial={id:key(c.material),kind:c.material.kind,locale,revision:c.source.revision,title:c.material.title,href:c.material.href,
-   publication:'published',metadataAllowed:true,branchVisible:true,deleted:false,textAllowed:true,description:c.text,topicIds:c.topicIds,isDemo:c.material.isDemo,
+   publication:'published',metadataAllowed:true,branchVisible:true,deleted:false,textAllowed:true,description:c.text.slice(0,10000),topicIds:c.topicIds,isDemo:c.material.isDemo,editorialRank:index,
    facts:[...c.placeIds.map(id=>({kind:'place' as const,id,verified:true,sourceIds:[key(c.material)]})),...(c.personIds??[]).map(id=>({kind:'person' as const,id,verified:true,sourceIds:[key(c.material)]})),...(c.eventIds??[]).map(id=>({kind:'event' as const,id,verified:true,sourceIds:[key(c.material)]})),...(c.fundId?[{kind:'fund' as const,id:c.fundId,verified:true,sourceIds:[key(c.material)]}]:[])]};
   return result;
  });return {materials,lookup};
@@ -45,7 +45,7 @@ export const arturDiscoveryEngines:DiscoveryEngines={
  explainFragments(input,context){
   // COL-B03 has already checked card/copy/OCR rights; unreviewed OCR still cannot be called verified here.
   const result=explainFragments({source:engineSource(input.source),publication:'published',metadataAllowed:true,digitalCopyAllowed:true,branchVisible:true,deleted:false,
-   fragments:input.fragments.map(f=>({id:f.id,text:f.text,...(f.page?{page:f.page}:{}),quality:!input.ocr.used||input.ocr.quality==='reviewed'?'verified':'ocr',...(input.ocr.used&&input.ocr.quality==='reviewed'?{confidence:1}:{})}))},context.locale);
+   fragments:input.fragments.map(f=>({id:f.id,text:f.text,...(f.page?{page:f.page}:{}),quality:!input.ocr.used||input.ocr.quality==='reviewed'?'verified':'ocr',...(input.ocr.used?(input.ocr.quality==='reviewed'?{confidence:1}:input.ocr.quality==='unreviewed'&&input.ocr.confidence!==undefined?{confidence:input.ocr.confidence}:{}):{})}))},context.locale);
   if(!['ready','no_text','low_quality','unsupported'].includes(result.status))throw Error('INVALID_AUTHORIZED_TEXT_STATE');
   return {status:result.status as 'ready'|'no_text'|'low_quality'|'unsupported',mode:result.status==='ready'?'extractive':null,sourceRevision:input.source.revision,
    ...(result.summary?{summary:result.summary}:{}),terms:result.terms.map(t=>({term:t.term,explanation:t.meaning,fragmentIds:result.citations.filter(c=>c.quote.toLowerCase().includes(t.term.toLowerCase())).map(c=>c.fragmentId)})),

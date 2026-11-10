@@ -224,3 +224,10 @@ test('published opaque database topic IDs work without substituting project slug
  const r=rankRecommendations(all,'ru',{personalizationEnabled:true,historyEnabled:false,topicIds:[topic],viewedIds:[]});assert.equal(r.mode,'interests');assert.deepEqual(r.items.map(i=>i.id),['a']);
  const dto=candidate('a');dto.topicIds=[topic];assert.equal(arturDiscoveryEngines.rankRecommendations({candidates:[dto],topicIds:[topic],personalizationEnabled:true,limit:3},context)[0].reason,'chosen_topic');
 });
+
+test('actual machine confidence permits explicitly labelled OCR while low/missing confidence remains blocked',()=>{
+ const source=candidate('ocr').source,input={source,fingerprint:'f'.repeat(64),sourceSha256:'a'.repeat(64),textSha256:'b'.repeat(64),fragments:[{id:'part',text:'Архивный фонд содержит документы учреждения.'}],ocr:{used:true,quality:'unreviewed' as const,confidence:.96}};
+ const r=arturDiscoveryEngines.explainFragments(input,context);assert.equal(r.status,'ready');assert.ok(r.limitations.some(s=>s.includes('OCR')));
+ assert.equal(arturDiscoveryEngines.explainFragments({...input,ocr:{used:true,quality:'low',confidence:.99}},context).status,'low_quality');
+ assert.equal(arturDiscoveryEngines.explainFragments({...input,ocr:{used:true,quality:'unreviewed',confidence:.4}},context).status,'low_quality');
+});

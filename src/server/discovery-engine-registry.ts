@@ -1,4 +1,4 @@
-// COL-A02/A03/A04/A05: add static imports of the reviewed pure engines here in a follow-up handoff.
-// Never accept executable modules or engine URLs over HTTP.
+// Static, reviewed local engines only. Never load modules or URLs from HTTP input.
 import type {DiscoveryEngines} from '../contracts/discovery';
-export const discoveryEngines:Partial<DiscoveryEngines>={};
+import {arturDiscoveryEngines} from './artur-discovery/transport';
+export const discoveryEngines:DiscoveryEngines=arturDiscoveryEngines;

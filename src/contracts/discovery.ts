@@ -34,7 +34,7 @@ export interface HistoryEntry extends HistoricalDate {id: string; title: string;
 export interface TextFragment {id: string; text: string; page?: number; start?: number; end?: number}
 export interface AuthorizedText {
   source: SourceRef; fingerprint: string; sourceSha256: string; textSha256: string;
-  fragments: TextFragment[]; ocr: {used: boolean; quality: 'reviewed' | 'unreviewed' | 'low'; engine?: string};
+  fragments: TextFragment[]; ocr: {used: boolean; quality: 'reviewed' | 'unreviewed' | 'low'; engine?: string; confidence?: number};
 }
 export interface Explanation {
   status: 'ready' | 'no_text' | 'low_quality' | 'unsupported'; mode: 'extractive' | 'glossary' | 'grounded' | null;

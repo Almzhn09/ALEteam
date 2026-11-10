@@ -172,7 +172,7 @@ test('COL-A02: live catalog asks which Altay is intended and accepts an explicit
 test('COL-B05 recommendations honor explicit interests/disable, and never invent popularity or account history',async()=>{
  const topic=await fact('TOPIC',{labels:{ru:{title:'ДЕМО тема'}}});topicId=topic.id;
  await fact('EDITORIAL',{material:{kind:'document',id:graphDocumentId},topicId,placeId,order:1});
- const cold=await ok('/discovery/home');assert.equal(cold.recommended.mode,'editorial');assert.equal(cold.popular.status,'unavailable');assert.equal(cold.popular.period,null);assert.deepEqual(cold.continue.items,[]);
+ const cold=await ok('/discovery/home');assert.equal(cold.recommended.mode,'editorial');assert.equal(cold.recommended.engine,'artur');assert.equal(cold.popular.status,'unavailable');assert.equal(cold.popular.period,null);assert.deepEqual(cold.continue.items,[]);
  await ok('/me/interests','PUT',{topicIds:[topicId],personalizationEnabled:true,historyEnabled:false},guest);
  const chosen=await ok('/discovery/home','GET',undefined,guest);assert.equal(chosen.recommended.mode,'interests');assert.equal(chosen.recommended.items[0].reason.code,'chosen_topic');
  await ok('/me/interests','PUT',{topicIds:[topicId],personalizationEnabled:false,historyEnabled:false},guest);assert.equal((await ok('/discovery/home','GET',undefined,guest)).recommended.mode,'editorial');
