@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "sourceType": "synthetic",
+  "measuredAt": "2026-11-09T00:00:00.000Z",
+  "rows": [
+    {"topicId":"catalog","periodStart":"2026-11-01","periodEnd":"2026-11-08","searches":20,"emptyResults":8,"stalePages":2},
+    {"topicId":"exhibitions","periodStart":"2026-11-01","periodEnd":"2026-11-08","searches":10,"emptyResults":0,"stalePages":0},
+    {"topicId":"favorites","periodStart":"2026-11-01","periodEnd":"2026-11-08","searches":3,"emptyResults":2,"stalePages":0}
+  ]
+}

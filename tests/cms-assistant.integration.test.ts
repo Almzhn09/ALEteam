@@ -22,7 +22,7 @@ async function call(path:string,method='GET',body?:unknown,cookie?:string){retur
 async function cleanup(){
  const where={item:{slug:{startsWith:prefix}}};
  await db.editorialNotice.deleteMany({where:{revision:where}});await db.publicationEvent.deleteMany({where:{revision:where}});await db.contentRevision.deleteMany({where});await db.contentItem.deleteMany({where:{slug:{startsWith:prefix}}});
- await db.auditEvent.deleteMany({where:{actorId:{startsWith:prefix}}});await db.staffAssignment.deleteMany({where:{userId:{startsWith:prefix}}});await db.session.deleteMany({where:{userId:{startsWith:prefix}}});await db.account.deleteMany({where:{userId:{startsWith:prefix}}});await db.user.deleteMany({where:{id:{startsWith:prefix}}});await db.archiveBranch.deleteMany({where:{id:branchId}});
+ await db.auditEvent.deleteMany({where:{actorId:{startsWith:prefix}}});await db.staffAssignment.deleteMany({where:{userId:{startsWith:prefix}}});await db.session.deleteMany({where:{userId:{startsWith:prefix}}});await db.account.deleteMany({where:{userId:{startsWith:prefix}}});await db.user.deleteMany({where:{id:{startsWith:prefix}}});await db.archiveBranch.deleteMany({where:{id:{startsWith:prefix}}});
 }
 before(async()=>{
  execFileSync(process.execPath,['--import','tsx','scripts/migrate.ts'],{env,stdio:'pipe'});await cleanup();
@@ -136,4 +136,30 @@ test('generic CMS wording does not hijack a specific catalog search',async()=>{
 test('reviewed CMS facts take priority over a weak learned subject when no catalog filters were requested',async()=>{
  const item=await create('Library hours','en','FAQ',null,{body:'DEMO: the library opens at 10. Original reviewed FAQ text.'});await publish(item.revisions[0]);
  const r=await ask('Library hours','en');assert.equal(r.sources[0].kind,'cms');assert.ok(r.answer.includes('opens at 10'));assert.equal(r.catalogQuery,undefined);assert.equal(r.mode,'retrieval');
+});
+
+test('analyst sees scoped live corpus measurements without texts or visitor data; withdrawal and role revocation apply immediately',async()=>{
+ assert.equal((await call('/admin/assistant/quality')).status,401);
+ for(const cookie of [visitor,writer,reviewer])assert.equal((await call('/admin/assistant/quality','GET',undefined,cookie)).status,403);
+ const analyst=prefix+'analyst';await db.user.create({data:{id:analyst,name:'DEMO analyst',email:analyst+'@example.test',emailVerified:true,accounts:{create:{id:randomUUID(),providerId:'credential',accountId:analyst,password:await hashPassword(password)}}}});
+ await db.staffAssignment.create({data:{userId:analyst,roleId:'ANALYST',branchId,scopeKey:branchId}});
+ const login=await call('/auth/sign-in/email','POST',{email:analyst+'@example.test',password});assert.equal(login.status,200);
+ const cookie=login.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ');
+ const report=async(path='/admin/assistant/quality')=>{const r=await call(path,'GET',undefined,cookie);assert.equal(r.status,200);return (await r.json()).item;};
+ await db.archiveBranch.update({where:{id:branchId},data:{isPublic:true}});
+ const item=await create('NEVER_QUOTE_QUALITY_CONTENT','ru','FAQ',branchId,{body:'NEVER_QUOTE_QUALITY_BODY'});const original=await publish(item.revisions[0]);
+ await db.contentRevision.update({where:{id:original.id},data:{updatedAt:new Date('2000-01-01')}});
+ const baseline=await report();assert.deepEqual(baseline.scope.branchIds,[branchId]);assert.equal(baseline.content.reviewDueItems,1);assert.equal(baseline.traffic.status,'not-connected');assert.equal(baseline.traffic.searches,null);
+ const output=JSON.stringify(baseline);for(const secret of ['NEVER_QUOTE_QUALITY','demo@example.test',analyst,'authorId','reviewerId','payload','Служебныйкомментарий'])assert.ok(!output.includes(secret));
+ const foreign=prefix+'foreign';await db.archiveBranch.create({data:{id:foreign,code:foreign,name:'DEMO foreign branch',isPublic:true}});
+ const other=await create('FOREIGN_QUALITY_PRIVATE','ru','FAQ',foreign);await publish(other.revisions[0]);
+ assert.equal((await report()).content.items,baseline.content.items);
+ assert.equal((await call('/admin/assistant/quality?branchId='+foreign,'GET',undefined,cookie)).status,403);
+ for(const query of ['?reviewAfterDays=0','?reviewAfterDays=abc','?email=private','?reviewAfterDays=180&reviewAfterDays=200'])assert.equal((await call('/admin/assistant/quality'+query,'GET',undefined,cookie)).status,400);
+ const next=await call('/admin/content/'+item.id+'/revisions','POST',{locale:'en',payload:payload('QUALITY English')},writer);assert.equal(next.status,201);const en=await publish((await next.json()).item);
+ assert.equal((await report()).content.locales.en.published,baseline.content.locales.en.published+1);
+ await transition(en,'ARCHIVED');assert.equal((await report()).content.locales.en.published,baseline.content.locales.en.published);
+ await db.archiveBranch.update({where:{id:branchId},data:{isPublic:false}});assert.equal((await report()).content.items,0);
+ await db.staffAssignment.deleteMany({where:{userId:analyst}});assert.equal((await call('/admin/assistant/quality','GET',undefined,cookie)).status,403);
+ await mkdir('.local/cms-assistant',{recursive:true});await writeFile('.local/cms-assistant/corpus-quality.json',JSON.stringify({syntheticData:true,scopedReport:baseline,foreignScopeDenied:true,revocationApplied:true,textAndVisitorDataAbsent:true},null,2)+'\n');
 });

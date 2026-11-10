@@ -70,6 +70,13 @@ for(const c of fixtures.cases)test(c.id+': '+c.locale,async()=>{
  if(['sem-26','sem-27'].includes(c.id))assert.match(r.answer,/specify|Уточните/);
  for(const source of r.sources){assert.equal(source.locale,c.locale);assert.equal((await call(source.href.replace('/api',''))).status,200);}
 });
+test('live quality report measures reviewed catalog translations and metadata-only restrictions',async()=>{
+ const {readCorpusHealth}=await import('../src/server/corpus-health');const report=await readCorpusHealth([prefix+'branch']);
+ assert.equal(report.catalog.items,7);assert.equal(report.catalog.restrictedCopies,1);assert.equal(report.catalog.demoItems,7);
+ assert.deepEqual(report.catalog.locales,{ru:{published:7,missing:0},kk:{published:5,missing:2},en:{published:6,missing:1}});
+ assert.equal(report.catalog.invalidPublications,0);assert.equal(report.traffic.searches,null);
+ const text=JSON.stringify(report);for(const marker of ['NEVER_QUOTE_PRIVATE','API_KEY','Original fictional','authorId','reviewerId'])assert.ok(!text.includes(marker));
+});
 test('restricted source gives metadata only; its valid PNG copy is still inaccessible',async()=>{
  const r=await ok('/assistant','POST',{question:'Фото Усть-Каменогорска 1965',locale:'ru'},readers.ru);const restricted=r.sources.find((s:{id:string})=>s.id===documents.restricted);assert.equal(restricted.digitalCopyAllowed,false);assert.match(r.answer,/только опубликованные метаданные/);assert.ok(!r.answer.includes('ДЕМО restricted. Школа.'));
  assert.equal((await call('/files/'+prefix+'file')).status,404);assert.equal((await call('/files/'+prefix+'file/ocr')).status,404);

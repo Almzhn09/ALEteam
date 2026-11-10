@@ -8,6 +8,7 @@ import { getAuth } from '@/server/auth';
 import { documentList, fileResponse, publicDocument } from '@/server/catalog';
 import { createComment, decideComment, decisionHistory, listComments, moderationQueue, ownComments, reportComment } from '@/server/discussions';
 import { assistant } from '@/server/assistant';
+import { assistantQuality } from '@/server/corpus-health';
 import { getGuide, guides } from '@/server/guides';
 import { deleteFavorites, listFavorites, saveFavorites } from '@/server/personal';
 import { listNotifications, notificationSettings, readNotification } from '@/server/notifications';
@@ -54,6 +55,7 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
     if (method !== 'GET') sameOrigin(request);
     if(path[0]==='admin')await staffMeGate(request);
     if(route==='admin/me'&&method==='GET')return staffMe(request);
+    if(route==='admin/assistant/quality'&&method==='GET')return assistantQuality(request);
     if(route==='admin/roles'&&['GET','PUT'].includes(method))return staffRoles(request);
     if(route==='admin/users'&&['GET','POST'].includes(method))return staffUsers(request);
     if(path[0]==='admin'&&path[1]==='users'&&path.length===3&&method==='PATCH')return staffUsers(request,path[2]);

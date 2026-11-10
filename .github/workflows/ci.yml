@@ -33,6 +33,10 @@ jobs:
       - run: npm run typecheck
       - run: npm run i18n:check
       - run: npm test
+      - name: Synthetic aggregate quality report
+        run: |
+          mkdir -p .local/assistant-quality
+          npm run report:quality -- --input data/artur/quality-aggregate-example.json --output .local/assistant-quality/example.json
       # Build does not use DATABASE_URL or auth/LLM secrets.
       - run: npm run build
       - run: npm run test:integration
@@ -78,6 +82,7 @@ jobs:
             .local/release/screenshots
             .local/cms-assistant
             .local/semantic-catalog
+            .local/assistant-quality
   deployment:
     runs-on: ubuntu-latest
     steps:
