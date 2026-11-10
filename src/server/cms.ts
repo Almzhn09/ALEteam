@@ -1,3 +1,7 @@
+import {projectNavigation} from './navigation-projection';
+import {resolveMaterial} from './discovery-materials';
+import {navigationSchema} from './navigation-schema';
+import {recordMaterialPublication} from './discovery-publications';
 import { z } from 'zod';
 import { locales, contentKinds } from '../contracts/cms';
 import { db } from './db';
@@ -14,6 +18,7 @@ export const kindSchema=z.enum(contentKinds);
 const safeUrl=z.string().url().max(2000).refine(value=>{const u=new URL(value);return ['http:','https:'].includes(u.protocol)&&!u.username&&!u.password;});
 export const contactReviewSchema=z.object(Object.fromEntries(['address','phone','email','hours','coordinates'].map(k=>[k,z.enum(['verified','unverified','missing','needs_confirmation'])]))).strict();
 export const contentPayload=z.object({
+ navigation:navigationSchema.optional(),
  title:z.string().trim().min(1).max(200),body:z.string().trim().min(1).max(10000),
  sourceUrl:safeUrl.optional(),sourceNote:z.string().trim().min(1).max(1000).optional(),rights:z.string().trim().min(1).max(1000),
  date:z.iso.date().optional(),yearFrom:z.number().int().min(1).max(2100).optional(),yearTo:z.number().int().min(1).max(2100).optional(),
@@ -28,6 +33,7 @@ export const contentPayload=z.object({
 }).strict().refine(p=>p.yearFrom===undefined||p.yearTo===undefined||p.yearFrom<=p.yearTo,{path:['yearTo'],message:'Invalid interval'});
 export const transitions:Record<string,readonly string[]>={DRAFT:['IN_REVIEW'],CHANGES_REQUESTED:['IN_REVIEW'],IN_REVIEW:['CHANGES_REQUESTED','APPROVED'],APPROVED:['PUBLISHED'],PUBLISHED:['ARCHIVED']};
 export function checkPayload(kind:string,p:z.infer<typeof contentPayload>,isDemo:boolean){
+ if(p.navigation&&!['PAGE','SETTING'].includes(kind))throw new ApiError(400,'INVALID_NAVIGATION','Проверьте введённые данные.');
  if(!isDemo&&!p.sourceUrl&&!p.sourceNote)throw new ApiError(400,'SOURCE_REQUIRED','Укажите происхождение материала.');
  if(new Set(p.exhibitIds).size!==p.exhibitIds.length)throw new ApiError(400,'DUPLICATE_EXHIBIT','Экспонат указан повторно.');
  if(kind==='BRANCH_PROFILE'&&(!p.address||(p.latitude===undefined)!==(p.longitude===undefined)))throw new ApiError(400,'BRANCH_FIELDS_REQUIRED','Проверьте введённые данные.');
@@ -81,6 +87,7 @@ export async function editRevision(request:Request,id:string){
 }
 async function publicationLinks(tx:Prisma.TransactionClient,revision:{itemId:string;locale:string;payload:Prisma.JsonValue}){
  const p=contentPayload.parse(revision.payload);
+ for(const entry of (p.navigation??[]).flatMap(e=>[e,...e.children]))if(entry.material&&!await resolveMaterial(entry.material,revision.locale as 'ru'|'kk'|'en',true,tx))throw new ApiError(409,'UNAVAILABLE_SOURCE','Связанный материал недоступен.');
  if(p.documentIds.length!==await tx.document.count({where:{id:{in:p.documentIds},...publicDocumentWhere}}))throw new ApiError(409,'UNAVAILABLE_SOURCE','Связанный документ недоступен.');
  if(p.fileIds.length!==await tx.archiveFile.count({where:{id:{in:p.fileIds},isPublic:true,document:{...publicDocumentWhere,allowDigitalCopy:true}}}))throw new ApiError(409,'UNAVAILABLE_FILE','Связанный файл недоступен.');
  for(const id of [...p.contentIds,...p.exhibitIds]){
@@ -118,6 +125,10 @@ export async function transitionRevision(request:Request,id:string){
    }
   }
   const updated=await tx.contentRevision.update({where:{id},data:{status:p.status,...(p.status==='APPROVED'?{reviewerId:c.user.id}:{}),updatedAt:new Date(Math.max(Date.now(),r.updatedAt.getTime()+1))}});
+  if(p.status==='PUBLISHED'){
+   if(catalog){const document=await tx.document.findUniqueOrThrow({where:{contentItemId:current.itemId}});await recordMaterialPublication(tx,'document',document.id,r.locale,r.id);}
+   else if(current.item.kind!=='SETTING')await recordMaterialPublication(tx,'cms',current.itemId,r.locale,r.id);
+  }
   const recipients=new Set([r.authorId]);
   if(p.status==='IN_REVIEW'){
    const reviewers=await tx.staffAssignment.findMany({where:{user:{isActive:true},role:{permissions:{some:{permission:'content.review'}}},OR:[{branchId:null},{branchId:current.item.branchId}]},select:{userId:true}});reviewers.forEach(r=>recipients.add(r.userId));
@@ -149,11 +160,13 @@ async function publicDTO(r:{id:string;itemId:string;locale:string;payload:Prisma
  const linked=await db.contentRevision.findMany({where:{itemId:{in:[...p.contentIds,...p.exhibitIds]},locale:r.locale,status:'PUBLISHED',item:publicContentScope},select:{itemId:true}});const ids=new Set(linked.map(x=>x.itemId));
  const docIds=new Set(docs.map(d=>d.id));const fileIds=new Set(files.map(f=>f.id));
  const published=await db.contentRevision.findMany({where:{itemId:r.itemId,status:'PUBLISHED'},select:{locale:true},orderBy:{locale:'asc'}});
- return {...(r.item.kind==='BRANCH_PROFILE'?{mapAvailable:p.latitude!==undefined&&p.longitude!==undefined&&(!p.contactReview||p.contactReview.coordinates==='verified')}:{}),id:r.itemId,slug:r.item.slug,kind:r.item.kind,branchId:r.item.branchId,isDemo:r.item.isDemo,locale:r.locale,availableLocales:published.map(v=>v.locale),updatedAt:r.updatedAt,payload:{...p,documentIds:p.documentIds.filter(id=>docIds.has(id)),fileIds:p.fileIds.filter(id=>fileIds.has(id)),contentIds:p.contentIds.filter(id=>ids.has(id)),exhibitIds:p.exhibitIds.filter(id=>ids.has(id))}};
+ return {...(r.item.kind==='BRANCH_PROFILE'?{mapAvailable:p.latitude!==undefined&&p.longitude!==undefined&&(!p.contactReview||p.contactReview.coordinates==='verified')}:{}),id:r.itemId,slug:r.item.slug,kind:r.item.kind,branchId:r.item.branchId,isDemo:r.item.isDemo,locale:r.locale,availableLocales:published.map(v=>v.locale),updatedAt:r.updatedAt,payload:{...p,...(p.navigation?{navigation:await projectNavigation(p.navigation,r.locale as 'ru'|'kk'|'en')} : {}),documentIds:p.documentIds.filter(id=>docIds.has(id)),fileIds:p.fileIds.filter(id=>fileIds.has(id)),contentIds:p.contentIds.filter(id=>ids.has(id)),exhibitIds:p.exhibitIds.filter(id=>ids.has(id))}};
 }
 export async function publicContent(request:Request,slug?:string){
- const p=pageSchema.extend({locale:localeSchema.default('ru'),kind:kindSchema.optional(),branchId:idSchema.optional(),q:z.string().trim().max(100).default('')}).strict().parse(queryParams(request));
+ const p=pageSchema.extend({locale:localeSchema.default('ru'),kind:kindSchema.optional(),branchId:idSchema.optional(),q:z.string().trim().max(100).default(''),category:z.string().trim().min(1).max(100).optional(),dateFrom:z.iso.date().optional(),dateTo:z.iso.date().optional()}).strict().parse(queryParams(request));
  const where:Prisma.ContentRevisionWhereInput={status:'PUBLISHED',locale:p.locale,item:{...publicContentScope,...(slug?{slug}:{}),...(p.kind?{kind:p.kind}:{}),...(p.branchId?{branchId:p.branchId}:{})},...(p.q?{payload:{path:['title'],string_contains:p.q}}:{})};
+ if(p.dateFrom&&p.dateTo&&p.dateFrom>p.dateTo)throw new ApiError(400,'INVALID_DATE_RANGE','Проверьте введённые данные.');
+ where.AND=[...(p.category?[{payload:{path:['category'],equals:p.category}}]:[]),...(p.dateFrom?[{payload:{path:['date'],gte:p.dateFrom}}]:[]),...(p.dateTo?[{payload:{path:['date'],lte:p.dateTo}}]:[])];
  const[rows,total]=await db.$transaction([db.contentRevision.findMany({where,include:{item:true},orderBy:[{updatedAt:'desc'},{id:'asc'}],skip:(p.page-1)*p.pageSize,take:p.pageSize}),db.contentRevision.count({where})],{isolationLevel:'RepeatableRead'});
  const items=await Promise.all(rows.map(publicDTO));if(slug){if(!items.length)throw new ApiError(404,'NOT_FOUND','Публикация не найдена.');return json({item:items[0]});}return json({items,total,page:p.page,pageSize:p.pageSize,locale:p.locale});
 }

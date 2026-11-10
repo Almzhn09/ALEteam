@@ -48,7 +48,8 @@
     "test:uploads": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/uploads.integration.test.ts",
     "test:imports": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/catalog-imports.integration.test.ts",
     "test:discovery": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/discovery.integration.test.ts",
-    "evaluate:discovery": "node --import tsx scripts/evaluate-artur-discovery.ts"
+    "evaluate:discovery": "node --import tsx scripts/evaluate-artur-discovery.ts",
+    "discovery:deliver": "node --env-file-if-exists=.env --import tsx scripts/deliver-topic-notices.ts"
   },
   "dependencies": {
     "@e965/xlsx": "0.20.3",
