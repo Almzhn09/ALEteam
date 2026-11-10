@@ -11,7 +11,7 @@ export function MaterialCards({items}:{items:MaterialRef[]}){
  const {t}=useI18n();return <ul className="result-list grid-cards">{items.map(item=><li key={item.kind+item.id} className="card card-flat stack">
   <DemoBadge show={item.isDemo}/><h3><Link href={materialLink(item)} lang={item.contentLocale}>{item.title}</Link></h3>
   {item.translationStatus==='original'&&<p className="small muted">{t('Показан оригинал: перевод не опубликован.')}</p>}
-  <details className="small"><summary>{item.reason.text}</summary><ul>{item.reason.evidence.map(s=><li key={s.kind+s.id+s.locale}><Link href={materialLink(s)} lang={s.locale}>{s.title}</Link></li>)}</ul></details>
+  {item.reason.evidence.length>0&&<details className="small"><summary>{item.reason.text}</summary><ul>{item.reason.evidence.map(s=><li key={s.kind+s.id+s.locale}><Link href={materialLink(s)} lang={s.locale}>{s.title}</Link></li>)}</ul></details>}
  </li>)}</ul>;
 }
 export function RelatedMaterials({documentId}:{documentId:string}){
