@@ -1,0 +1,374 @@
+diff --git a/package.json b/package.json
+index ced0105..b1951b4 100644
+--- a/package.json
++++ b/package.json
+@@ -46,7 +46,9 @@
+     "report:quality": "node --import tsx scripts/report-assistant-quality.ts",
+     "capture:review": "node --env-file-if-exists=.env --import tsx scripts/capture-review.ts",
+     "test:uploads": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/uploads.integration.test.ts",
+-    "test:imports": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/catalog-imports.integration.test.ts"
++    "test:imports": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/catalog-imports.integration.test.ts",
++    "check:display": "node --env-file-if-exists=.env --import tsx scripts/check-display.ts",
++    "sources:verify": "node scripts/verify-archive-sources.mjs"
+   },
+   "dependencies": {
+     "@prisma/adapter-pg": "7.10.1",
+diff --git a/scripts/release-checks.ts b/scripts/release-checks.ts
+index 7625b2e..13a2bbb 100644
+--- a/scripts/release-checks.ts
++++ b/scripts/release-checks.ts
+@@ -60,7 +60,7 @@ try {
+     await author.goto(base + '/documents/demo-doc-01');
+     await author.locator('.viewer-stage img').waitFor({ state: 'visible' });
+     assert.ok(await author.locator('.viewer-stage img').evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0));
+-    await author.getByRole('button', { name: 'Увеличить', exact: true }).click(); await author.getByText('150%', { exact: true }).waitFor();
++    await author.getByRole('button', { name: 'Увеличить', exact: true }).click(); await author.locator('.viewer-toolbar').getByText('150%', { exact: true }).waitFor();
+     await author.getByRole('button', { name: /^Добавить в избранное:/ }).click();
+     await author.goto(base + '/favorites'); await author.reload(); await author.locator('main a[href="/documents/demo-doc-01"]').waitFor();
+     assert.equal((await author.request.get(base + '/api/files/demo-file-5?download=1')).status(), 404);
+diff --git a/src/app/globals.css b/src/app/globals.css
+index f723318..35cb254 100644
+--- a/src/app/globals.css
++++ b/src/app/globals.css
+@@ -24,7 +24,6 @@
+   --shadow: 0 1px 2px rgb(40 30 10 / 6%), 0 4px 16px rgb(40 30 10 / 6%);
+ 
+   --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+-  --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif;
+   --font-mono: ui-monospace, "Cascadia Mono", Consolas, "Liberation Mono", monospace;
+ 
+   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 72px;
+@@ -34,7 +33,7 @@
+ }
+ @media (min-width: 768px) { :root { --gutter: 24px; } }
+ @media (prefers-color-scheme: dark) {
+-  :root {
++  :root:not([data-theme="light"]) {
+     color-scheme: dark;
+     --bg: #121620; --surface: #1a202b; --surface-2: #242b38;
+     --text: #ece7dc; --muted: #aab1bf; --border: #343d4d; --border-strong: #6b7486;
+@@ -44,16 +43,29 @@
+     --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 16px rgb(0 0 0 / 25%);
+   }
+ }
++:root[data-theme="dark"] {
++    color-scheme: dark;
++    --bg: #121620; --surface: #1a202b; --surface-2: #242b38;
++    --text: #ece7dc; --muted: #aab1bf; --border: #343d4d; --border-strong: #6b7486;
++    --accent: #72c3e2; --accent-hover: #98d4eb; --accent-soft: #183442; --on-accent: #08161d;
++    --gold: #e2b75e; --danger: #ff9584; --danger-soft: #3a1d1a; --success: #7fd69b; --success-soft: #16301f;
++    --warning: #f1c46a; --warning-soft: #33280f; --focus: #f0a64a;
++    --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 16px rgb(0 0 0 / 25%);
++}
++
+ 
+ *, *::before, *::after { box-sizing: border-box; }
+ html { -webkit-text-size-adjust: 100%; }
++html[data-text-size="112.5"] { font-size: 112.5%; }
++html[data-text-size="125"] { font-size: 125%; }
++html[data-text-size="150"] { font-size: 150%; }
+ body {
+   margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+-  background: var(--bg); color: var(--text); font: 16px/1.6 var(--font-sans);
++  background: var(--bg); color: var(--text); font: 1rem/1.65 var(--font-sans);
+   overflow-wrap: anywhere;
+ }
+ main { flex: 1; }
+-h1, h2, h3 { font-family: var(--font-serif); line-height: 1.2; font-weight: 600; margin: 0 0 var(--space-3); text-wrap: balance; }
++h1, h2, h3 { letter-spacing: -.02em; font-family: var(--font-sans); line-height: 1.2; font-weight: 600; margin: 0 0 var(--space-3); text-wrap: balance; }
+ h1 { font-size: clamp(1.75rem, 1.3rem + 2vw, 2.6rem); }
+ h2 { font-size: clamp(1.3rem, 1.1rem + 1vw, 1.75rem); }
+ h3 { font-size: 1.15rem; }
+@@ -84,7 +96,7 @@ code, .mono { font-family: var(--font-mono); font-size: .92em; }
+   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+   min-height: 44px; padding: 0 var(--space-4); border-radius: var(--radius-sm);
+   border: 1px solid transparent; font: inherit; font-weight: 600; line-height: 1.2;
+-  text-decoration: none; cursor: pointer; white-space: nowrap; flex: none; transition: background .15s, border-color .15s, color .15s;
++  text-decoration: none; cursor: pointer; white-space: nowrap; flex: none;
+ }
+ .btn:disabled, .btn[aria-disabled="true"] { opacity: .55; cursor: not-allowed; }
+ .btn-primary { background: var(--accent); color: var(--on-accent); }
+@@ -138,8 +150,8 @@ legend { padding: 0; }
+ /* Header & navigation */
+ .mock-banner { background: var(--warning-soft); color: var(--warning); border-bottom: 1px solid var(--warning); font-size: .875rem; font-weight: 600; text-align: center; padding: var(--space-1) var(--gutter); }
+ .site-header { background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 20; }
+-.header-inner { display: flex; align-items: center; gap: var(--space-4); min-height: 64px; }
+-.brand { display: flex; align-items: center; gap: var(--space-2); color: var(--text); text-decoration: none; font-family: var(--font-serif); font-weight: 700; font-size: 1.15rem; line-height: 1.1; margin-right: auto; }
++.header-inner { display: flex; flex-wrap: wrap; padding-block: var(--space-2); align-items: center; gap: var(--space-4); min-height: 64px; }
++.brand { min-width: 0; max-width: 100%; display: flex; align-items: center; gap: var(--space-2); color: var(--text); text-decoration: none; font-family: var(--font-sans); font-weight: 700; font-size: 1.15rem; line-height: 1.1; margin-right: auto; }
+ .brand:hover { color: var(--text); }
+ .brand-mark { width: 36px; height: 36px; border-radius: 8px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; font-size: 1rem; flex: none; }
+ .brand small { display: block; font-family: var(--font-sans); font-weight: 500; font-size: .75rem; color: var(--muted); }
+@@ -150,6 +162,7 @@ legend { padding: 0; }
+ .nav-toggle { display: none; }
+ .user-chip { display: flex; align-items: center; gap: var(--space-2); font-size: .9rem; }
+ @media (max-width: 959px) {
++  .nav-wrap { max-height: calc(100dvh - var(--header-height, 64px)); overflow-y: auto; }
+   .nav-toggle { display: inline-flex; }
+   .nav-wrap { display: none; position: absolute; left: 0; right: 0; top: 100%; background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow); padding: var(--space-3) var(--gutter) var(--space-4); }
+   .nav-wrap[data-open="true"] { display: block; }
+@@ -278,3 +291,16 @@ dialog::backdrop { background: rgb(10 12 18 / 55%); }
+ .timeline-items { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
+ .clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+ @media (max-width: 419px) { .brand small { display: none; } }
++
++/* Reading preferences stay compact; native controls support keyboard and zoom. */
++.display-preferences { position: relative; }
++.display-preferences > summary { list-style: none; min-height: 44px; }
++.display-preferences > summary::-webkit-details-marker { display: none; }
++.display-preferences[open] > summary { background: var(--accent-soft); }
++.display-panel { position: absolute; right: 0; top: calc(100% + 8px); z-index: 30; width: min(280px, calc(100vw - 32px)); padding: var(--space-4); background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius); box-shadow: var(--shadow); }
++.display-panel .field + .field { margin-top: var(--space-3); }
++@media (max-width: 559px) {
++  .brand { flex-basis: 100%; margin-block: var(--space-1); }
++  .display-panel { left: 0; right: auto; }
++}
++@media (min-width: 960px) { .filters { top: calc(var(--header-height, 88px) + 16px); } }
+diff --git a/src/app/layout.tsx b/src/app/layout.tsx
+index c43ebc9..9f7557b 100644
+--- a/src/app/layout.tsx
++++ b/src/app/layout.tsx
+@@ -9,6 +9,8 @@ import { LangProvider } from '@/lib/lang';
+ import { getLang } from '@/lib/i18n-server';
+ import { translator } from '@/lib/i18n';
+ import { MOCK_MODE } from '@/lib/api';
++import { cookies } from 'next/headers';
++import type { DisplayTheme, TextSize } from '@/components/DisplayPreferences';
+ 
+ export async function generateMetadata(): Promise<Metadata> {
+   const t = translator(await getLang());
+@@ -25,15 +27,20 @@ export const viewport: Viewport = {
+ export default async function Layout({ children }: { children: ReactNode }) {
+   const lang = await getLang();
+   const t = translator(lang);
++  const preferences = await cookies();
++  const themeValue = preferences.get('display-theme')?.value;
++  const sizeValue = preferences.get('display-text-size')?.value;
++  const theme: DisplayTheme = themeValue === 'light' || themeValue === 'dark' ? themeValue : 'system';
++  const size: TextSize = sizeValue === '112.5' || sizeValue === '125' || sizeValue === '150' ? sizeValue : '100';
+   return (
+-    <html lang={lang}>
++    <html lang={lang} data-theme={theme} data-text-size={size}>
+       <body>
+         <LangProvider initial={lang}>
+           <a className="skip-link" href="#main">{t('Перейти к содержимому')}</a>
+           {MOCK_MODE && <div className="mock-banner" role="note">{t('Режим моков интерфейса: данные и ответы имитируются в браузере, это не интеграция с сервером.')}</div>}
+           <SessionProvider>
+             <FavoritesProvider>
+-            <Header />
++            <Header initialTheme={theme} initialSize={size} />
+             <main id="main" tabIndex={-1}>{children}</main>
+             </FavoritesProvider>
+           </SessionProvider>
+diff --git a/src/components/Header.tsx b/src/components/Header.tsx
+index 3f1eadb..2cef154 100644
+--- a/src/components/Header.tsx
++++ b/src/components/Header.tsx
+@@ -6,6 +6,7 @@ import { useSession } from '@/lib/session';
+ import { useFavorites } from '@/lib/favorites';
+ import { errorText } from '@/lib/api';
+ import { useI18n } from '@/lib/lang';
++import { DisplayPreferences, type DisplayTheme, type TextSize } from './DisplayPreferences';
+ 
+ const links = [
+   { href: '/catalog', label: 'Каталог' },
+@@ -15,7 +16,7 @@ const links = [
+   { href: '/about', label: 'Об архиве' },
+ ];
+ 
+-export function Header() {
++export function Header({ initialTheme, initialSize }: { initialTheme: DisplayTheme; initialSize: TextSize }) {
+   const pathname = usePathname();
+   const router = useRouter();
+   const { t, lang, setLang } = useI18n();
+@@ -62,6 +63,7 @@ export function Header() {
+           <span className="brand-mark" aria-hidden="true">ЭА</span>
+           <span>{t('Электронный архив')}<small>{t('Восточно-Казахстанская область · прототип')}</small></span>
+         </Link>
++        <DisplayPreferences initialTheme={initialTheme} initialSize={initialSize} />
+         <button type="button" className="btn btn-ghost btn-sm" onClick={switchLang}
+           lang={lang === 'ru' ? 'kk' : 'ru'} aria-label={lang === 'ru' ? 'Қазақ тіліне ауысу' : 'Переключить на русский язык'}>
+           {lang === 'ru' ? 'ҚАЗ' : 'РУС'}
+diff --git a/src/lib/kk.ts b/src/lib/kk.ts
+index 395e12e..522ed06 100644
+--- a/src/lib/kk.ts
++++ b/src/lib/kk.ts
+@@ -1,6 +1,12 @@
+ // Kazakh UI dictionary (F12). Key — Russian source string. Draft translation: must be reviewed by a native speaker.
+ // Check coverage: npx tsx scripts/i18n-keys.mjs --check
+ export const kk: Record<string, string> = {
++  "Вид сайта": "Сайт көрінісі",
++  "Цветовая тема": "Түс тақырыбы",
++  "Как на устройстве": "Құрылғыдағыдай",
++  "Светлая": "Ашық",
++  "Тёмная": "Қараңғы",
++  "Размер текста": "Мәтін өлшемі",
+   "Завершите или отмените предыдущие планы импорта.": "Алдыңғы импорт жоспарларын аяқтаңыз немесе тоқтатыңыз.",
+   "Импорт изменился. Обновите данные и повторите проверку.": "Импорт өзгерді. Деректерді жаңартып, тексеруді қайталаңыз.",
+   "Импорт не найден.": "Импорт табылмады.",
+diff --git a/src/components/DisplayPreferences.tsx b/src/components/DisplayPreferences.tsx
+new file mode 100644
+index 0000000..841718b
+--- /dev/null
++++ b/src/components/DisplayPreferences.tsx
+@@ -0,0 +1,54 @@
++'use client';
++
++import { useRef, useState } from 'react';
++import { useI18n } from '@/lib/lang';
++
++export type DisplayTheme = 'system' | 'light' | 'dark';
++export type TextSize = '100' | '112.5' | '125' | '150';
++
++export function DisplayPreferences({ initialTheme, initialSize }: { initialTheme: DisplayTheme; initialSize: TextSize }) {
++  const { t } = useI18n();
++  const [theme, setTheme] = useState(initialTheme);
++  const [size, setSize] = useState(initialSize);
++  const panel = useRef<HTMLDetailsElement>(null);
++
++  function save(name: string, value: string) {
++    document.cookie = `${name}=${value}; path=/; max-age=31536000; samesite=lax`;
++  }
++
++  return (
++    <details className="display-preferences" ref={panel} onKeyDown={event => {
++      if (event.key === 'Escape') {
++        panel.current?.removeAttribute('open');
++        panel.current?.querySelector('summary')?.focus();
++      }
++    }}>
++      <summary className="btn btn-secondary">{t('Вид сайта')}</summary>
++      <div className="display-panel">
++        <div className="field">
++          <label htmlFor="display-theme">{t('Цветовая тема')}</label>
++          <select id="display-theme" className="select" value={theme} onChange={event => {
++            const next = event.target.value as DisplayTheme;
++            setTheme(next); document.documentElement.dataset.theme = next; save('display-theme', next);
++          }}>
++            <option value="system">{t('Как на устройстве')}</option>
++            <option value="light">{t('Светлая')}</option>
++            <option value="dark">{t('Тёмная')}</option>
++          </select>
++        </div>
++        <div className="field">
++          <label htmlFor="display-text-size">{t('Размер текста')}</label>
++          <select id="display-text-size" className="select" value={size} onChange={event => {
++            const next = event.target.value as TextSize;
++            setSize(next); document.documentElement.dataset.textSize = next; save('display-text-size', next);
++          }}>
++            <option value="100">100%</option>
++            <option value="112.5">112.5%</option>
++            <option value="125">125%</option>
++            <option value="150">150%</option>
++          </select>
++        </div>
++      </div>
++    </details>
++  );
++}
+diff --git a/scripts/check-display.ts b/scripts/check-display.ts
+new file mode 100644
+index 0000000..e52ff86
+--- /dev/null
++++ b/scripts/check-display.ts
+@@ -0,0 +1,100 @@
++import { chromium } from 'playwright-core';
++import {spawn, execFileSync, type ChildProcess} from 'node:child_process';
++import {once} from 'node:events';
++import {randomBytes, createHash} from 'node:crypto';
++import {readFile, mkdir, writeFile} from 'node:fs/promises';
++import {setTimeout as delay} from 'node:timers/promises';
++import assert from 'node:assert/strict';
++const database = process.env.TEST_DATABASE_URL;
++if (!database || !new URL(database).pathname.endsWith('_test')) throw Error('Dedicated TEST_DATABASE_URL ending in _test required');
++const base = 'http://localhost:3097', folder = '.local/display-20261110';
++const env = {...process.env, DATABASE_URL: database, BETTER_AUTH_URL: base, BETTER_AUTH_SECRET: randomBytes(32).toString('hex'),
++  ALLOW_DEMO_SEED:'1', DEMO_AUTHOR_PASSWORD:randomBytes(32).toString('hex'), DEMO_MODERATOR_PASSWORD:randomBytes(32).toString('hex'), NEXT_PUBLIC_API_MOCK:'0'};
++let app: ChildProcess | undefined;
++const browser = await chromium.launch({executablePath:process.env.CHROMIUM_PATH ?? '/usr/bin/chromium',headless:true,args:['--no-sandbox']});
++const checks: unknown[] = [], errors: string[] = [];
++try {
++  await mkdir(folder,{recursive:true});
++  execFileSync(process.execPath,['--import','tsx','scripts/migrate.ts'],{env,stdio:'pipe'});
++  execFileSync(process.execPath,['--import','tsx','prisma/seed.ts'],{env,stdio:'pipe'});
++  app=spawn(process.execPath,['node_modules/next/dist/bin/next','start','--port','3097'],{env,stdio:'ignore'});
++  let ready=false;
++  for(let i=0;i<100;i++) {try {if((await fetch(base+'/api/health')).ok){ready=true;break;}}catch{} await delay(100);}
++  assert.ok(ready);
++  const context=await browser.newContext({viewport:{width:1440,height:1000},colorScheme:'dark'});
++  const page=await context.newPage();page.on('pageerror',e=>errors.push(e.name));
++  await page.goto(base+'/catalog?q='+encodeURIComponent('библиотека'));
++  await page.getByText('Найдено:').waitFor();
++  const initialUrl=page.url();
++  await page.getByText('Вид сайта',{exact:true}).click();
++  await page.getByLabel('Цветовая тема',{exact:true}).selectOption('light');
++  await page.getByLabel('Размер текста',{exact:true}).selectOption('150');
++  assert.equal(page.url(),initialUrl);
++  assert.equal(await page.locator('html').getAttribute('data-theme'),'light');
++  assert.equal(await page.locator('body').evaluate(el=>getComputedStyle(el).fontSize),'24px');
++  await page.getByLabel('Размер текста',{exact:true}).press('Escape');
++  assert.equal(await page.locator('.display-preferences').getAttribute('open'),null);
++  assert.equal(await page.locator('.display-preferences summary').evaluate(el=>el===document.activeElement),true);
++  await page.reload();await page.getByText('Найдено:').waitFor();
++  assert.equal(await page.getByLabel('Размер текста',{exact:true}).inputValue(),'150');
++  assert.equal(await page.locator('body').evaluate(el=>getComputedStyle(el).colorScheme),'light');
++  const html=await (await context.request.get(page.url())).text();
++  assert.match(html, /data-theme="light"/);assert.match(html, /data-text-size="150"/);
++  checks.push({name:'preferences preserve search URL, persist on reload, render in server HTML, override dark OS; Escape restores focus',passed:true});
++  const axe=await readFile('node_modules/axe-core/axe.min.js','utf8');
++  for(const width of [360,768,1440]) for(const theme of ['light','dark']) for(const size of ['100','112.5','125','150']) {
++    await page.setViewportSize({width,height:1000});
++    await page.locator('.display-preferences summary').click();
++    await page.getByLabel('Цветовая тема',{exact:true}).selectOption(theme);
++    await page.getByLabel('Размер текста',{exact:true}).selectOption(size);
++    await page.getByLabel('Размер текста',{exact:true}).press('Escape');
++    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`${width}/${theme}/${size}: overflow`);
++    await page.addScriptTag({content:axe});
++    const violations=await page.evaluate(async()=> (await (window as unknown as {axe:{run:(o:unknown)=>Promise<{violations:{id:string; nodes:{html:string; failureSummary?:string}[]}[]}>}}).axe.run({runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}})).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({html:n.html,summary:n.failureSummary}))})));
++    if (violations.length) await writeFile(folder+'/failure.json',JSON.stringify({width,theme,size,violations},null,2));
++    assert.deepEqual(violations,[],`${width}/${theme}/${size}`);
++    checks.push({width,theme,size,overflow:false,axeViolations:violations});
++  }
++  // A 720px CSS viewport on a 1440px-wide display represents the reflow width at 200% browser zoom.
++  // Font enlargement is also tested above; this is not a manual browser/OS zoom certification.
++  await page.setViewportSize({width:720,height:500});
++  await page.goto(base);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
++  checks.push({name:'720 CSS px reflow (200% width equivalent on 1440 display)',passed:true});
++  await context.clearCookies();await page.goto(base);
++  assert.equal(await page.locator('html').getAttribute('data-theme'),'system');
++  assert.equal(await page.locator('body').evaluate(el=>getComputedStyle(el).colorScheme),'dark');
++  await page.emulateMedia({colorScheme:'light'});
++  assert.equal(await page.locator('body').evaluate(el=>getComputedStyle(el).colorScheme),'light');
++  checks.push({name:'system preference follows device changes',passed:true});
++  await page.locator('.display-preferences summary').click();
++  await page.getByLabel('Цветовая тема',{exact:true}).selectOption('dark');
++  assert.equal(await page.locator('body').evaluate(el=>getComputedStyle(el).colorScheme),'dark');
++  await page.getByLabel('Размер текста',{exact:true}).selectOption('125');
++  await page.getByLabel('Размер текста',{exact:true}).press('Escape');
++  await page.setViewportSize({width:1440,height:1000});
++  await page.screenshot({path:folder+'/02-home-dark-large.png',fullPage:true});
++  await page.locator('.display-preferences summary').click();
++  await page.getByLabel('Цветовая тема',{exact:true}).selectOption('light');
++  await page.getByLabel('Размер текста',{exact:true}).selectOption('100');
++  await page.getByLabel('Размер текста',{exact:true}).press('Escape');
++  await page.screenshot({path:folder+'/01-home-light.png',fullPage:true});
++  await page.setViewportSize({width:360,height:844});
++  await page.locator('.display-preferences summary').click();
++  await page.getByLabel('Размер текста',{exact:true}).selectOption('150');
++  await page.screenshot({path:folder+'/03-mobile-reading-settings.png',fullPage:true});
++  await page.getByLabel('Размер текста',{exact:true}).press('Escape');
++  await page.getByRole('button',{name:'Қазақ тіліне ауысу'}).click();
++  await page.waitForFunction(()=>document.documentElement.lang==='kk');
++  assert.equal(await page.getByLabel('Мәтін өлшемі',{exact:true}).inputValue(),'150');
++  await page.getByRole('button',{name:'Мәзір',exact:true}).click();
++  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
++  await page.screenshot({path:folder+'/04-mobile-kk-large.png',fullPage:true});
++  checks.push({name:'Kazakh switch retains preference; mobile navigation and reading settings remain available',passed:true});
++  assert.deepEqual(errors,[]);
++  const sourceSha256:Record<string,string>={};
++  for(const file of ['src/components/DisplayPreferences.tsx','src/components/Header.tsx','src/app/layout.tsx','src/app/globals.css','src/lib/kk.ts']) sourceSha256[file]=createHash('sha256').update(await readFile(file)).digest('hex');
++  await writeFile(folder+'/report.json',JSON.stringify({capturedAt:new Date().toISOString(),baseCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),sourceSha256,checks,browserErrors:errors,syntheticData:true,environment:'Local production Next.js; real isolated PostgreSQL; Chromium',limitations:['Manual browser zoom, screen reader and native language review remain; EN UI and future CMS screens not covered.']},null,2)+'\n');
++  console.log(`PASS ${checks.length} display checks, including 24 viewport/theme/text combinations; four screenshots.`);
++} finally {
++  await browser.close();if(app?.exitCode===null){app.kill('SIGTERM');await once(app,'exit');}
++}

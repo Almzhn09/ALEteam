@@ -1,0 +1,13 @@
+{
+  "baseCommit": "ca0c0307e1166c012bbf67a38154b310d6ccaf0b",
+  "patchSha256": "d79c6c2be5e913ba8556dd3582c14a5453ce91fd457369fcca99566c9a9fda49",
+  "applicationFilesAppliedInPublishedTree": false,
+  "previouslyValidatedSourceSha256": {
+    "src/components/DisplayPreferences.tsx": "9bb894f6b67f9c3b86d65f727db416738a36565ad93535d9eab0f0b8ad7aa15b",
+    "src/components/Header.tsx": "213191ff3b9cee3d8cc425707a5c7d9be885dc5b8d7f72909c3ffde34daded2a",
+    "src/app/layout.tsx": "ec39ff7b26d764feb25918cb3bccd29c3bf08d10f1ff5e7311249e2cc46beb1c",
+    "src/app/globals.css": "f1e94e14e93931ff580ea5bbc7106d4d62d55d2729f8f56a61fe6f53e59de947",
+    "src/lib/kk.ts": "57f3a994e8223fd35c9ae3be4598f60998b8bf0ea5807f8357caff7f2e397988"
+  },
+  "note": "Existing local work prepared before pause; patch handed to frontend owner without applying it to published application."
+}
