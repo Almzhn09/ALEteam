@@ -1,3 +1,4 @@
+import {sourceDrafts} from '@/server/source-drafts';
 import { db } from '@/server/db';
 import { ApiError, handle, json, readJson, requireUser, sameOrigin, rateLimit } from '@/server/http';
 import { staffContext as staffMeGate, staffMe, staffRoles, staffUsers, assignments, auditList } from '@/server/staff';
@@ -57,6 +58,9 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
     }
     if (method !== 'GET') sameOrigin(request);
     if(path[0]==='admin')await staffMeGate(request);
+    if(route==='admin/source-drafts'&&['GET','POST'].includes(method))return sourceDrafts(request);
+    if(path[0]==='admin'&&path[1]==='source-drafts'&&path.length===3&&method==='GET')return sourceDrafts(request,path[2]);
+    if(path[0]==='admin'&&path[1]==='source-drafts'&&path.length===4&&path[3]==='commit'&&method==='POST')return sourceDrafts(request,path[2],path[3]);
     if(route==='admin/me'&&method==='GET')return staffMe(request);
     if(route==='admin/assistant/quality'&&method==='GET')return assistantQuality(request);
     if(route==='admin/uploads'&&['GET','POST'].includes(method))return uploads(request);

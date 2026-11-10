@@ -46,7 +46,8 @@
     "report:quality": "node --import tsx scripts/report-assistant-quality.ts",
     "capture:review": "node --env-file-if-exists=.env --import tsx scripts/capture-review.ts",
     "test:uploads": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/uploads.integration.test.ts",
-    "test:imports": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/catalog-imports.integration.test.ts"
+    "test:imports": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/catalog-imports.integration.test.ts",
+    "test:discovery": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/discovery.integration.test.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.10.1",

@@ -7,10 +7,12 @@ import { staffContext, audit } from './staff';
 import { allows } from './staff-policy';
 import { parseDocumentPayload } from './archive-schema';
 import { catalogLock, validateDocumentRevision, applyDocumentPublication } from './archive-publication';
+import {createCmsDraft,appendCmsDraft} from './cms-drafts';
 import {publicDocumentWhere, publicContentScope} from './public-visibility';
 export const localeSchema=z.enum(locales);
 export const kindSchema=z.enum(contentKinds);
 const safeUrl=z.string().url().max(2000).refine(value=>{const u=new URL(value);return ['http:','https:'].includes(u.protocol)&&!u.username&&!u.password;});
+export const contactReviewSchema=z.object(Object.fromEntries(['address','phone','email','hours','coordinates'].map(k=>[k,z.enum(['verified','unverified','missing','needs_confirmation'])]))).strict();
 export const contentPayload=z.object({
  title:z.string().trim().min(1).max(200),body:z.string().trim().min(1).max(10000),
  sourceUrl:safeUrl.optional(),sourceNote:z.string().trim().min(1).max(1000).optional(),rights:z.string().trim().min(1).max(1000),
@@ -19,15 +21,16 @@ export const contentPayload=z.object({
  documentIds:z.array(idSchema).max(50).default([]),contentIds:z.array(idSchema).max(50).default([]),
  fileIds:z.array(idSchema).max(20).default([]),exhibitIds:z.array(idSchema).max(100).default([]),
  address:z.string().trim().max(500).optional(),phone:z.string().trim().max(60).optional(),email:z.email().max(200).optional(),hours:z.string().trim().max(500).optional(),
+ contactReview:contactReviewSchema.optional(),
  latitude:z.number().min(-90).max(90).optional(),longitude:z.number().min(-180).max(180).optional(),
  seoDescription:z.string().max(300).optional(),seoKeywords:z.array(z.string().max(60)).max(20).default([]),
  links:z.array(z.object({label:z.string().min(1).max(120),url:safeUrl}).strict()).max(30).default([]),
 }).strict().refine(p=>p.yearFrom===undefined||p.yearTo===undefined||p.yearFrom<=p.yearTo,{path:['yearTo'],message:'Invalid interval'});
 export const transitions:Record<string,readonly string[]>={DRAFT:['IN_REVIEW'],CHANGES_REQUESTED:['IN_REVIEW'],IN_REVIEW:['CHANGES_REQUESTED','APPROVED'],APPROVED:['PUBLISHED'],PUBLISHED:['ARCHIVED']};
-function checkPayload(kind:string,p:z.infer<typeof contentPayload>,isDemo:boolean){
+export function checkPayload(kind:string,p:z.infer<typeof contentPayload>,isDemo:boolean){
  if(!isDemo&&!p.sourceUrl&&!p.sourceNote)throw new ApiError(400,'SOURCE_REQUIRED','Укажите происхождение материала.');
  if(new Set(p.exhibitIds).size!==p.exhibitIds.length)throw new ApiError(400,'DUPLICATE_EXHIBIT','Экспонат указан повторно.');
- if(kind==='BRANCH_PROFILE'&&(!p.address||!p.phone||!p.email||!p.hours||p.latitude===undefined||p.longitude===undefined))throw new ApiError(400,'BRANCH_FIELDS_REQUIRED','Заполните контакты, график и координаты филиала.');
+ if(kind==='BRANCH_PROFILE'&&(!p.address||(p.latitude===undefined)!==(p.longitude===undefined)))throw new ApiError(400,'BRANCH_FIELDS_REQUIRED','Проверьте введённые данные.');
 }
 function scopeWhere(branches:string[]|null){return branches===null?{}:{branchId:{in:branches}};}
 async function authorizedItem(request:Request,id:string,permission:string){
@@ -47,7 +50,7 @@ export async function adminContent(request:Request,id?:string){
  if(p.kind==='SETTING'&&p.branchId)throw new ApiError(400,'GLOBAL_SETTING','Настройки сайта имеют глобальную область.');
  if(p.kind==='BRANCH_PROFILE'&&!p.branchId)throw new ApiError(400,'BRANCH_REQUIRED','Укажите филиал.');
  checkPayload(p.kind,p.payload,p.isDemo);await rateLimit(`cms-write:${c.user.id}`,60,60);
- const item=await db.$transaction(async tx=>{const item=await tx.contentItem.create({data:{slug:p.slug,kind:p.kind,branchId:p.branchId,isDemo:p.isDemo,revisions:{create:{locale:p.locale,version:1,payload:p.payload,authorId:c.user.id}}},include:{revisions:true}});await audit(tx,c.user.id,'CONTENT_CREATED',item.id);return item;});return json({item},201);
+ const item=await db.$transaction(async tx=>{const item=await createCmsDraft(tx,p,c.user.id);await audit(tx,c.user.id,'CONTENT_CREATED',item.id);return item;});return json({item},201);
 }
 export async function newRevision(request:Request,itemId:string){
  const {item,c}=await authorizedItem(request,itemId,'content.write');
@@ -55,10 +58,7 @@ export async function newRevision(request:Request,itemId:string){
  const p=z.object({locale:localeSchema,payload:contentPayload}).strict().parse(await readJson(request));checkPayload(item.kind,p.payload,item.isDemo);
  await rateLimit(`cms-write:${c.user.id}`,60,60);
  const revision=await db.$transaction(async tx=>{
-  await tx.$queryRaw`SELECT id FROM "ContentItem" WHERE id=${itemId} FOR UPDATE`;
-  const latest=await tx.contentRevision.findFirst({where:{itemId,locale:p.locale},orderBy:{version:'desc'}});
-  if(latest&&['DRAFT','CHANGES_REQUESTED','IN_REVIEW','APPROVED'].includes(latest.status))throw new ApiError(409,'DRAFT_EXISTS','Сначала завершите текущую редакцию.');
-  const revision=await tx.contentRevision.create({data:{itemId,locale:p.locale,version:(latest?.version??0)+1,payload:p.payload,authorId:c.user.id}});await audit(tx,c.user.id,'REVISION_CREATED',revision.id);return revision;
+  const revision=await appendCmsDraft(tx,itemId,p.locale,p.payload,c.user.id);await audit(tx,c.user.id,'REVISION_CREATED',revision.id);return revision;
  });return json({item:revision},201);
 }
 export async function editRevision(request:Request,id:string){
@@ -149,7 +149,7 @@ async function publicDTO(r:{id:string;itemId:string;locale:string;payload:Prisma
  const linked=await db.contentRevision.findMany({where:{itemId:{in:[...p.contentIds,...p.exhibitIds]},locale:r.locale,status:'PUBLISHED',item:publicContentScope},select:{itemId:true}});const ids=new Set(linked.map(x=>x.itemId));
  const docIds=new Set(docs.map(d=>d.id));const fileIds=new Set(files.map(f=>f.id));
  const published=await db.contentRevision.findMany({where:{itemId:r.itemId,status:'PUBLISHED'},select:{locale:true},orderBy:{locale:'asc'}});
- return {id:r.itemId,slug:r.item.slug,kind:r.item.kind,branchId:r.item.branchId,isDemo:r.item.isDemo,locale:r.locale,availableLocales:published.map(v=>v.locale),updatedAt:r.updatedAt,payload:{...p,documentIds:p.documentIds.filter(id=>docIds.has(id)),fileIds:p.fileIds.filter(id=>fileIds.has(id)),contentIds:p.contentIds.filter(id=>ids.has(id)),exhibitIds:p.exhibitIds.filter(id=>ids.has(id))}};
+ return {...(r.item.kind==='BRANCH_PROFILE'?{mapAvailable:p.latitude!==undefined&&p.longitude!==undefined&&(!p.contactReview||p.contactReview.coordinates==='verified')}:{}),id:r.itemId,slug:r.item.slug,kind:r.item.kind,branchId:r.item.branchId,isDemo:r.item.isDemo,locale:r.locale,availableLocales:published.map(v=>v.locale),updatedAt:r.updatedAt,payload:{...p,documentIds:p.documentIds.filter(id=>docIds.has(id)),fileIds:p.fileIds.filter(id=>fileIds.has(id)),contentIds:p.contentIds.filter(id=>ids.has(id)),exhibitIds:p.exhibitIds.filter(id=>ids.has(id))}};
 }
 export async function publicContent(request:Request,slug?:string){
  const p=pageSchema.extend({locale:localeSchema.default('ru'),kind:kindSchema.optional(),branchId:idSchema.optional(),q:z.string().trim().max(100).default('')}).strict().parse(queryParams(request));
