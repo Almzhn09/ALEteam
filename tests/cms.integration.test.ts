@@ -34,7 +34,8 @@ before(async()=>{
  for(const [id,role,branch] of [['admin','SUPERADMIN',null],['editor','EDITOR',null],['writer','ARCHIVIST',null],['branch-a','BRANCH_ADMIN',branchOne],['branch-b','BRANCH_ADMIN',branchTwo],['analyst','ANALYST',null],['visitor',null,null]] as const){
   await db.user.create({data:{id:'cms-'+id,name:id,email:`cms-${id}@example.test`,emailVerified:true,accounts:{create:{id:randomUUID(),providerId:'credential',accountId:'cms-'+id,password:authPassword}}}});
  }
- for(const id of [branchOne,branchTwo])await db.archiveBranch.create({data:{id,code:id,name:id}});
+ // Public-path tests use visible branches; the visibility test explicitly hides/restores its branch.
+ for(const id of [branchOne,branchTwo])await db.archiveBranch.create({data:{id,code:id,name:id,isPublic:true}});
  for(const [id,role,branch] of [['admin','SUPERADMIN',null],['editor','EDITOR',null],['writer','ARCHIVIST',null],['branch-a','BRANCH_ADMIN',branchOne],['branch-b','BRANCH_ADMIN',branchTwo],['analyst','ANALYST',null]] as const)await db.staffAssignment.create({data:{userId:'cms-'+id,roleId:role,branchId:branch,scopeKey:branch??'*'}});
  execFileSync(process.execPath,['--import','tsx','prisma/seed.ts'],{env,stdio:'pipe'});
  app=spawn(process.execPath,['node_modules/next/dist/bin/next','start','--port','3086'],{env,stdio:'ignore'});
@@ -144,6 +145,7 @@ test('audit contains identifiers, never credentials or publication bodies',async
 });
 
 test('branch profiles require complete contacts, approval and the branch visibility switch',async()=>{
+ await db.archiveBranch.update({where:{id:branchOne},data:{isPublic:false}});
  const p={...payload('Учебный филиал'),address:'ДЕМО адрес',phone:'+7 000 0000000',email:'demo@example.test',hours:'ДЕМО график',latitude:49.0,longitude:82.0};
  const r=await call('/admin/content','POST',{slug:'cms-profile-'+randomUUID(),kind:'BRANCH_PROFILE',branchId:branchOne,locale:'ru',payload:p},writer);assert.equal(r.status,201);const item=(await r.json()).item;
  let revision=await transition(item.revisions[0],'IN_REVIEW',writer);revision=await transition(revision,'APPROVED');await transition(revision,'PUBLISHED');
@@ -155,6 +157,7 @@ test('branch profiles require complete contacts, approval and the branch visibil
  assert.equal((await call('/content/'+item.slug)).status,404);
 });
 test('withdrawn sources are removed from public exhibition references',async()=>{
+ await db.archiveBranch.update({where:{id:branchOne},data:{isPublic:true}});
  const source=await create('EXHIBIT');let r=await transition(source.revisions[0],'IN_REVIEW',writer);r=await transition(r,'APPROVED');r=await transition(r,'PUBLISHED');
  const response=await call('/admin/content','POST',{slug:'cms-exhibition-'+randomUUID(),kind:'EXHIBITION',branchId:branchOne,locale:'ru',payload:{...payload('Выставка'),exhibitIds:[source.id],documentIds:['demo-doc-01'],fileIds:['demo-scan-1']}},writer);assert.equal(response.status,201);const item=(await response.json()).item;
  let exhibition=await transition(item.revisions[0],'IN_REVIEW',writer);exhibition=await transition(exhibition,'APPROVED');await transition(exhibition,'PUBLISHED');

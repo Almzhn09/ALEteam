@@ -5,6 +5,7 @@ import path from 'node:path';
 import { db } from './db';
 import { ApiError, idSchema, json, pageSchema, queryParams } from './http';
 import { archiveLocale } from './archive-schema';
+import {publicDocumentWhere, publicDocumentSql} from './public-visibility';
 
 const filterText = z.string().trim().min(1).max(200);
 export const catalogSchema = pageSchema.extend({
@@ -22,7 +23,7 @@ export const catalogSchema = pageSchema.extend({
 const contains = (value: string) => `%${value.replace(/[\\%_]/g, '\\$&')}%`;
 export async function documentList(request: Request) {
   const p = catalogSchema.parse(queryParams(request));
-  const filter = Prisma.sql`d."isPublic" = true AND d."deletedAt" IS NULL AND t.locale = ${p.locale}
+  const filter = Prisma.sql`${publicDocumentSql} AND t.locale = ${p.locale}
     ${p.q ? Prisma.sql`AND (t."searchVector" @@ plainto_tsquery('simple', ${p.q})
       OR ${p.locale === 'ru' ? Prisma.sql`t."russianVector" @@ plainto_tsquery('russian', ${p.q})` : Prisma.sql`false`}
       OR t.title ILIKE ${contains(p.q)} OR d.reference ILIKE ${contains(p.q)}
@@ -59,7 +60,7 @@ export async function documentList(request: Request) {
 export async function publicDocument(id: string, request?: Request) {
   idSchema.parse(id);
   const {locale} = z.object({locale: archiveLocale.default('ru')}).strict().parse(request ? queryParams(request) : {});
-  const document = await db.document.findFirst({where: {id, isPublic: true, deletedAt: null}, select: {
+  const document = await db.document.findFirst({where: {id, ...publicDocumentWhere}, select: {
     id: true, reference: true, year: true, yearTo: true, type: true, isDemo: true, isPublic: true, fundId: true, createdAt: true,
     originalLanguage: true, leafCount: true, allowDigitalCopy: true,
     translations: {select: {locale: true, title: true, description: true, rights: true, sourceUrl: true, sourceNote: true,
@@ -76,7 +77,7 @@ export async function publicDocument(id: string, request?: Request) {
 export async function fileResponse(request: Request, id: string) {
   idSchema.parse(id);
   const params = z.object({ download: z.enum(['1']).optional() }).strict().parse(queryParams(request));
-  const file = await db.archiveFile.findFirst({ where: { id, isPublic: true, document: { isPublic: true, deletedAt:null, allowDigitalCopy:true } } });
+  const file = await db.archiveFile.findFirst({ where: { id, isPublic: true, document: { ...publicDocumentWhere, allowDigitalCopy:true } } });
   if (!file || (params.download && !file.downloadable)) throw new ApiError(404, 'NOT_FOUND', 'Файл не найден.');
   const allowed = ['application/pdf', 'image/png', 'image/jpeg'];
   if (!allowed.includes(file.mimeType) || file.size > 20 * 1024 * 1024) throw new ApiError(404, 'NOT_FOUND', 'Файл не найден.');

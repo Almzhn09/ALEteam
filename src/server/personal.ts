@@ -1,11 +1,12 @@
 import { z } from 'zod';
 import { db } from './db';
 import { ApiError, idSchema, json, pageSchema, queryParams, rateLimit, readJson, requireUser } from './http';
+import {publicDocumentWhere} from './public-visibility';
 
 export async function listFavorites(request: Request) {
   const user = await requireUser(request);
   const p = pageSchema.strict().parse(queryParams(request));
-  const where = { userId: user.id, document: { isPublic: true } };
+  const where = { userId: user.id, document: publicDocumentWhere };
   const [rows, total] = await db.$transaction([
     db.favorite.findMany({ where, include: { document: { select: { id: true, title: true, reference: true, year: true, type: true, isDemo: true } } },
       orderBy: [{ createdAt: 'desc' }, { documentId: 'asc' }], skip: (p.page - 1) * p.pageSize, take: p.pageSize }),
@@ -21,7 +22,7 @@ export async function saveFavorites(request: Request, documentId?: string) {
   const added = await db.$transaction(async tx => {
     // Serialize additions to enforce the per-account limit even under concurrent imports.
     await tx.$queryRaw`SELECT id FROM "User" WHERE id = ${user.id} FOR UPDATE`;
-    const visible = await tx.document.findMany({ where: { id: { in: [...new Set(ids)] }, isPublic: true }, select: { id: true } });
+    const visible = await tx.document.findMany({ where: { id: { in: [...new Set(ids)] }, ...publicDocumentWhere }, select: { id: true } });
     if (documentId && !visible.length) throw new ApiError(404, 'NOT_FOUND', 'Документ не найден.');
     const current = await tx.favorite.findMany({ where: { userId: user.id }, select: { documentId: true } });
     const additions = visible.filter(d => !current.some(f => f.documentId === d.id));

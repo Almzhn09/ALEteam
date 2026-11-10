@@ -24,7 +24,7 @@ const rows:unknown[]=[];
 async function call(route:string,method='GET',body?:unknown,cookie?:string){return fetch(origin+'/api'+route,{method,headers:{Origin:origin,...(body===undefined?{}:{'Content-Type':'application/json'}),...(cookie?{Cookie:cookie}:{})},body:body===undefined?undefined:JSON.stringify(body)});}
 async function ok(route:string,method='GET',body?:unknown,cookie?:string,status=200){const r=await call(route,method,body,cookie);assert.equal(r.status,status,`${method} ${route}`);return r.json();}
 async function clean(){
- const docs=await db.document.findMany({where:{fund:{branchId:prefix+'branch'}},select:{id:true,contentItemId:true}});const items=docs.flatMap(d=>d.contentItemId?[d.contentItemId]:[]);
+ const docs=await db.document.findMany({where:{fund:{branchId:prefix+'branch'}},select:{id:true,contentItemId:true}});const items=(await db.contentItem.findMany({where:{OR:[{id:{in:docs.flatMap(d=>d.contentItemId?[d.contentItemId]:[])}},{slug:{startsWith:prefix}}]},select:{id:true}})).map(i=>i.id);
  await db.archiveFile.deleteMany({where:{documentId:{in:docs.map(d=>d.id)}}});
  await db.document.deleteMany({where:{id:{in:docs.map(d=>d.id)}}});
  await db.editorialNotice.deleteMany({where:{revision:{itemId:{in:items}}}});await db.publicationEvent.deleteMany({where:{revision:{itemId:{in:items}}}});await db.contentRevision.deleteMany({where:{itemId:{in:items}}});await db.contentItem.deleteMany({where:{id:{in:items}}});
@@ -101,4 +101,47 @@ test('browser assistant exposes the interpreted catalog query and opens a real p
   await link.click();await page.waitForURL(origin+'/documents/'+documents.p60);await page.getByRole('heading',{level:1}).filter({hasText:'ДЕМО p60'}).waitFor();
   await writeFile('.local/semantic-catalog/browser.json',JSON.stringify({locale:'ru',filters:result.catalogQuery,sourceCount:result.sources.length,openedPublishedCard:true,syntheticData:true},null,2)+'\n');
  }finally{await browser.close();}
+});
+
+test('hiding a branch revokes catalog, files, OCR, CMS links, personal surfaces and assistant evidence together',async()=>{
+ const documentId=documents.p60,branchId=prefix+'branch',scanId='demo-scan-1';
+ const scan=await db.archiveFile.findUniqueOrThrow({where:{id:scanId}});
+ const commentId=prefix+'visibility-comment',notificationId=prefix+'visibility-notice';
+ const makeContent=async(slug:string,branch:string|null,extra={})=>{
+  const created=await ok('/admin/content','POST',{slug:prefix+slug.toLowerCase(),kind:'FAQ',branchId:branch,locale:'ru',isDemo:true,
+   payload:{title:slug,body:slug+' — original synthetic visibility fixture.',rights:'ALEteam CC0-1.0',sourceNote:'Original test fixture',...extra}},writer,201);
+  await publish(created.item.revisions[0]);return created.item;
+ };
+ try{
+  await db.archiveFile.update({where:{id:scanId},data:{documentId}});
+  await db.favorite.create({data:{userId:prefix+'ru',documentId}});
+  await db.comment.create({data:{id:commentId,documentId,authorId:prefix+'ru',body:'Original demo visibility comment',status:'PUBLISHED',reason:'LOCAL_RULE',moderationVersion:'test-fixture',idempotencyKey:randomUUID()}});
+  await db.notification.create({data:{id:notificationId,userId:prefix+'ru',eventKey:notificationId,kind:'MODERATION_DECISION',commentId,status:'PUBLISHED'}});
+  const item=await makeContent('Branchvisibilitymarker',branchId);
+  const global=await makeContent('Globalvisibilitymarker',null,{documentIds:[documentId],fileIds:[scanId],contentIds:[item.id]});
+  assert.equal((await ok('/documents?branchId='+branchId)).total,7);
+  for(const path of ['/files/'+scanId,'/files/'+scanId+'/ocr','/documents/'+documentId,'/content/'+item.slug])assert.equal((await call(path)).status,200,path);
+  assert.ok((await ok('/me/favorites','GET',undefined,readers.ru)).items.some((d:{id:string})=>d.id===documentId));
+  assert.ok((await ok('/me/notifications','GET',undefined,readers.ru)).items.some((d:{id:string})=>d.id===notificationId));
+  const snapshot=await retrieveSemanticCatalog(semanticCatalogPlan('DEMO-SEM-p60','ru'));assert.equal(snapshot.length,1);
+  await db.archiveBranch.update({where:{id:branchId},data:{isPublic:false}});
+  assert.equal((await ok('/documents?branchId='+branchId)).total,0,'hidden branch cannot remain searchable');
+  for(const path of ['/documents/'+documentId,'/documents/'+documentId+'/comments','/documents/'+documentId+'/similar','/files/'+scanId,'/files/'+scanId+'/ocr','/content/'+item.slug])assert.equal((await call(path)).status,404,path);
+  assert.equal((await ok('/content?branchId='+branchId)).total,0);
+  assert.ok((await ok('/funds')).items.every((d:{id:string})=>d.id!==fundId));
+  assert.ok((await ok('/me/favorites','GET',undefined,readers.ru)).items.every((d:{id:string})=>d.id!==documentId));
+  assert.ok((await ok('/me/comments','GET',undefined,readers.ru)).items.every((d:{id:string})=>d.id!==commentId));
+  assert.ok((await ok('/me/notifications','GET',undefined,readers.ru)).items.every((d:{id:string})=>d.id!==notificationId));
+  assert.equal((await call('/me/favorites/'+documentId,'PUT',{},readers.ru)).status,404);
+  assert.equal((await call('/comments/'+commentId+'/reports','POST',{reason:'Original synthetic report'},readers.ru)).status,404);
+  const embedded=(await ok('/content/'+global.slug)).item.payload;
+  for(const field of ['documentIds','fileIds','contentIds'])assert.deepEqual(embedded[field],[],field);
+  assert.equal(await revalidateCatalogSources(snapshot),false);
+  const answer=await ok('/assistant','POST',{question:'DEMO-SEM-p60',locale:'ru'},readers.ru);assert.equal(answer.noAnswer,true);assert.deepEqual(answer.sources,[]);
+  const cms=await ok('/assistant','POST',{question:'Branchvisibilitymarker',locale:'ru'},readers.ru);assert.ok(cms.sources.every((s:{kind:string})=>s.kind!=='cms'));
+  await mkdir('.local/semantic-catalog',{recursive:true});await writeFile('.local/semantic-catalog/visibility.json',JSON.stringify({syntheticData:true,hiddenBranchRevokedCatalog:true,filesAndOcrDenied:true,personalSurfacesFiltered:true,cmsReferencesFiltered:true,assistantSourcesRevalidated:true},null,2)+'\n');
+ }finally{
+  await db.archiveBranch.update({where:{id:branchId},data:{isPublic:true}});await db.archiveFile.update({where:{id:scanId},data:{documentId:scan.documentId}});
+  await db.favorite.deleteMany({where:{userId:prefix+'ru',documentId}});await db.notification.deleteMany({where:{id:notificationId}});await db.comment.deleteMany({where:{id:commentId}});
+ }
 });

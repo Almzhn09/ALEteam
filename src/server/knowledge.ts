@@ -1,5 +1,6 @@
 import semanticDictionary from '../../data/artur/semantic-dictionary.json';
 import type {ContentLocale} from '../contracts/cms';
+import {publicDocumentSql} from './public-visibility';
 import { Prisma } from '../generated/prisma/index.js';
 import { db } from './db';
 import { guides } from './guides';
@@ -82,7 +83,7 @@ export async function retrievePassages(question: string, version: 'expanded' | '
   const titleTerms=locale==='ru'?(intent.titleTerms.length?intent.titleTerms:intent.titleTerm?[intent.titleTerm]:[]):[];
   const from = version === 'legacy' ? (intent.years.length ? Math.min(...intent.years) : undefined) : intent.yearFrom;
   const to = version === 'legacy' ? (intent.years.length ? Math.max(...intent.years) : undefined) : intent.yearTo;
-  const filter = Prisma.sql`d."isPublic" = true AND d."deletedAt" IS NULL AND d."allowDigitalCopy" = true AND t.locale=${locale}
+  const filter = Prisma.sql`${publicDocumentSql} AND d."allowDigitalCopy" = true AND t.locale=${locale}
     ${intent.reference ? Prisma.sql`AND lower(d.reference) = lower(${intent.reference})` : Prisma.sql`AND (${terms} ${titleTerms.length ? Prisma.sql`OR (${Prisma.join(titleTerms.map(term => Prisma.sql`t.title ILIKE ${`%${term}%`}`), ' OR ')})` : Prisma.empty})`}
     ${from !== undefined ? Prisma.sql`AND d.year >= ${from}` : Prisma.empty}
     ${to !== undefined ? Prisma.sql`AND d.year <= ${to}` : Prisma.empty}`;

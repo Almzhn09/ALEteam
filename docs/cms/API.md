@@ -85,6 +85,8 @@ PAGE, FAQ, NEWS, COLLECTION, PERSON, EVENT, MEMOIR, EXHIBITION, EXHIBIT, BRANCH_
 
 Для BRANCH_PROFILE обязательны branchId, address, phone, email, hours, latitude, longitude. Филиал создаётся POST /admin/branches `{code,name,isDemo:true}` закрытым; PATCH того же ID `{code,name,isDemo:true,isPublic:true,expectedUpdatedAt}` переключает видимость. Публичный профиль требует и PUBLISHED, и открытого филиала.
 
+С 10 ноября открытый филиал требуется также для остальных привязанных к нему публичных CMS-материалов и их связей. Глобальные материалы branchId=null разрешаются собственной публикацией. Отзыв видимости фильтрует embedded documentIds/fileIds/contentIds/exhibitIds при чтении, не удаляя редакционную историю. [Проверка сквозного отзыва](../artur/full-tz-20261109/PUBLIC-VISIBILITY.md).
+
 GET /content?locale=kk&kind=NEWS&branchId=...&q=...&page=1&pageSize=20. q ищет в title (регистрозависимый поиск); фильтры category/date и произвольная сортировка пока отсутствуют. GET /content/:slug?locale=en не подменяет язык: при отсутствии перевода 404. GET /branches?locale=ru — только видимые опубликованные профили; параметр kind здесь запрещён. Ответ PublicContentItem содержит payload/locale/availableLocales/isDemo без authorId/reviewerId и приватных причин.
 
 Ссылки используют ID сущностей, не редакций. Публикация требует доступных документов/файлов и опубликованных материалов того же языка; exhibitIds допускает только EXHIBIT. Закрытый/снятый источник удаляется из публичных ссылок при чтении; порядок сохраняется. SETTING — только открытые текстовые настройки/ссылки, без ключей интеграций. Подключение меню/главной к этим записям — задача фронтенда.

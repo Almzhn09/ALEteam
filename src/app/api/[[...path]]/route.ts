@@ -9,6 +9,7 @@ import { documentList, fileResponse, publicDocument } from '@/server/catalog';
 import { createComment, decideComment, decisionHistory, listComments, moderationQueue, ownComments, reportComment } from '@/server/discussions';
 import { assistant } from '@/server/assistant';
 import { assistantQuality } from '@/server/corpus-health';
+import {publicBranchScope, publicDocumentWhere} from '@/server/public-visibility';
 import { getGuide, guides } from '@/server/guides';
 import { deleteFavorites, listFavorites, saveFavorites } from '@/server/personal';
 import { listNotifications, notificationSettings, readNotification } from '@/server/notifications';
@@ -95,7 +96,7 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
       try { await db.$queryRaw`SELECT 1`; return json({ status: 'ok', database: 'ok' }); }
       catch { return json({ status: 'unavailable', database: 'unavailable' }, 503); }
     }
-    if (route === 'funds' && method === 'GET') return json({ items: await db.fund.findMany({ where: { documents: { some: { isPublic: true } } }, orderBy: { id: 'asc' } }) });
+    if (route === 'funds' && method === 'GET') return json({ items: await db.fund.findMany({ where: { ...publicBranchScope, documents: { some: publicDocumentWhere } }, orderBy: { id: 'asc' } }) });
     if (route === 'documents' && method === 'GET') return documentList(request);
     if (path[0] === 'documents' && path.length === 2 && method === 'GET') return json({ item: await publicDocument(path[1],request) });
     if (path[0] === 'documents' && path.length === 3 && path[2] === 'similar' && method === 'GET') return similarDocuments(path[1]);

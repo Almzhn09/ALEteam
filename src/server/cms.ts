@@ -7,6 +7,7 @@ import { staffContext, audit } from './staff';
 import { allows } from './staff-policy';
 import { parseDocumentPayload } from './archive-schema';
 import { catalogLock, validateDocumentRevision, applyDocumentPublication } from './archive-publication';
+import {publicDocumentWhere, publicContentScope} from './public-visibility';
 export const localeSchema=z.enum(locales);
 export const kindSchema=z.enum(contentKinds);
 const safeUrl=z.string().url().max(2000).refine(value=>{const u=new URL(value);return ['http:','https:'].includes(u.protocol)&&!u.username&&!u.password;});
@@ -80,13 +81,12 @@ export async function editRevision(request:Request,id:string){
 }
 async function publicationLinks(tx:Prisma.TransactionClient,revision:{itemId:string;locale:string;payload:Prisma.JsonValue}){
  const p=contentPayload.parse(revision.payload);
- if(p.documentIds.length!==await tx.document.count({where:{id:{in:p.documentIds},isPublic:true}}))throw new ApiError(409,'UNAVAILABLE_SOURCE','Связанный документ недоступен.');
- if(p.fileIds.length!==await tx.archiveFile.count({where:{id:{in:p.fileIds},isPublic:true,document:{isPublic:true,allowDigitalCopy:true}}}))throw new ApiError(409,'UNAVAILABLE_FILE','Связанный файл недоступен.');
+ if(p.documentIds.length!==await tx.document.count({where:{id:{in:p.documentIds},...publicDocumentWhere}}))throw new ApiError(409,'UNAVAILABLE_SOURCE','Связанный документ недоступен.');
+ if(p.fileIds.length!==await tx.archiveFile.count({where:{id:{in:p.fileIds},isPublic:true,document:{...publicDocumentWhere,allowDigitalCopy:true}}}))throw new ApiError(409,'UNAVAILABLE_FILE','Связанный файл недоступен.');
  for(const id of [...p.contentIds,...p.exhibitIds]){
   if(id===revision.itemId)throw new ApiError(400,'SELF_REFERENCE','Материал не может ссылаться на себя.');
-  const r=await tx.contentRevision.findFirst({where:{itemId:id,locale:revision.locale,status:'PUBLISHED'},include:{item:true}});
-  const visibleBranch=r?.item.kind!=='BRANCH_PROFILE'||!!r.item.branchId&&!!(await tx.archiveBranch.findUnique({where:{id:r.item.branchId}}))?.isPublic;
-  if(!r||r.item.kind==='ARCHIVE_DOCUMENT'||!visibleBranch||p.exhibitIds.includes(id)&&r.item.kind!=='EXHIBIT')throw new ApiError(409,'UNAVAILABLE_SOURCE','Связанный материал недоступен.');
+  const r=await tx.contentRevision.findFirst({where:{itemId:id,locale:revision.locale,status:'PUBLISHED',item:publicContentScope},include:{item:true}});
+  if(!r||p.exhibitIds.includes(id)&&r.item.kind!=='EXHIBIT')throw new ApiError(409,'UNAVAILABLE_SOURCE','Связанный материал недоступен.');
  }
 }
 export async function transitionRevision(request:Request,id:string){
@@ -144,16 +144,16 @@ export async function revisionEvents(request:Request,id:string){
 async function publicDTO(r:{id:string;itemId:string;locale:string;payload:Prisma.JsonValue;updatedAt:Date;item:{slug:string;kind:string;isDemo:boolean;branchId:string|null}}){
  const p=contentPayload.parse(r.payload);
  // Source withdrawal also applies to embedded references; IDs are never expanded from a private record.
- const docs=await db.document.findMany({where:{id:{in:p.documentIds},isPublic:true},select:{id:true}});
- const files=await db.archiveFile.findMany({where:{id:{in:p.fileIds},isPublic:true,document:{isPublic:true,allowDigitalCopy:true}},select:{id:true}});
- const linked=await db.contentRevision.findMany({where:{itemId:{in:[...p.contentIds,...p.exhibitIds]},locale:r.locale,status:'PUBLISHED',item:{kind:{not:'ARCHIVE_DOCUMENT'},OR:[{kind:{not:'BRANCH_PROFILE'}},{branch:{isPublic:true}}]}},select:{itemId:true}});const ids=new Set(linked.map(x=>x.itemId));
+ const docs=await db.document.findMany({where:{id:{in:p.documentIds},...publicDocumentWhere},select:{id:true}});
+ const files=await db.archiveFile.findMany({where:{id:{in:p.fileIds},isPublic:true,document:{...publicDocumentWhere,allowDigitalCopy:true}},select:{id:true}});
+ const linked=await db.contentRevision.findMany({where:{itemId:{in:[...p.contentIds,...p.exhibitIds]},locale:r.locale,status:'PUBLISHED',item:publicContentScope},select:{itemId:true}});const ids=new Set(linked.map(x=>x.itemId));
  const docIds=new Set(docs.map(d=>d.id));const fileIds=new Set(files.map(f=>f.id));
  const published=await db.contentRevision.findMany({where:{itemId:r.itemId,status:'PUBLISHED'},select:{locale:true},orderBy:{locale:'asc'}});
  return {id:r.itemId,slug:r.item.slug,kind:r.item.kind,branchId:r.item.branchId,isDemo:r.item.isDemo,locale:r.locale,availableLocales:published.map(v=>v.locale),updatedAt:r.updatedAt,payload:{...p,documentIds:p.documentIds.filter(id=>docIds.has(id)),fileIds:p.fileIds.filter(id=>fileIds.has(id)),contentIds:p.contentIds.filter(id=>ids.has(id)),exhibitIds:p.exhibitIds.filter(id=>ids.has(id))}};
 }
 export async function publicContent(request:Request,slug?:string){
  const p=pageSchema.extend({locale:localeSchema.default('ru'),kind:kindSchema.optional(),branchId:idSchema.optional(),q:z.string().trim().max(100).default('')}).strict().parse(queryParams(request));
- const where:Prisma.ContentRevisionWhereInput={status:'PUBLISHED',locale:p.locale,item:{...(slug?{slug}:{}),kind:p.kind??{not:'ARCHIVE_DOCUMENT'},...(p.branchId?{branchId:p.branchId}:{}),OR:[{kind:{not:'BRANCH_PROFILE'}},{branch:{isPublic:true}}]},...(p.q?{payload:{path:['title'],string_contains:p.q}}:{})};
+ const where:Prisma.ContentRevisionWhereInput={status:'PUBLISHED',locale:p.locale,item:{...publicContentScope,...(slug?{slug}:{}),...(p.kind?{kind:p.kind}:{}),...(p.branchId?{branchId:p.branchId}:{})},...(p.q?{payload:{path:['title'],string_contains:p.q}}:{})};
  const[rows,total]=await db.$transaction([db.contentRevision.findMany({where,include:{item:true},orderBy:[{updatedAt:'desc'},{id:'asc'}],skip:(p.page-1)*p.pageSize,take:p.pageSize}),db.contentRevision.count({where})],{isolationLevel:'RepeatableRead'});
  const items=await Promise.all(rows.map(publicDTO));if(slug){if(!items.length)throw new ApiError(404,'NOT_FOUND','Публикация не найдена.');return json({item:items[0]});}return json({items,total,page:p.page,pageSize:p.pageSize,locale:p.locale});
 }

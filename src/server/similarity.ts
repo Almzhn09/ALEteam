@@ -1,6 +1,7 @@
 import { db } from './db';
 import { idSchema, json } from './http';
 import { publicDocument } from './catalog';
+import {publicDocumentWhere} from './public-visibility';
 export interface SimilarityRecord { id: string; title: string; description: string; fundId: string; type: string }
 const stop = /^(демо|демонстрационный|демонстрационная|демонстрационные|это|для|как|или|при|его|она|они|что|так|все|этот|этой|данный|также|только|был|была|были|год|года|году|история|материал|документ|запись|учебный|учебная|вымышленный|вымышленная|оригинальный|собственный|алеteam|aleteam)$/u;
 function tokens(text: string) { return (text.normalize('NFKC').toLowerCase().match(/[\p{L}]{3,}/gu) ?? []).filter(w => !stop.test(w)); }
@@ -28,6 +29,6 @@ export async function similarDocuments(id: string) {
   idSchema.parse(id);
   const target = await publicDocument(id);
   // Bounded prototype: no private text enters either the vocabulary or the rankings.
-  const candidates = await db.document.findMany({ where: { isPublic: true, id: { not: id } }, select: { id: true, title: true, description: true, fundId: true, type: true }, orderBy: { id: 'asc' }, take: 500 });
-  return json({ items: rankSimilar(target, candidates), method: 'tfidf-cosine-v1', candidateLimit: 500 });
+  const candidates = await db.document.findMany({ where: { ...publicDocumentWhere, allowDigitalCopy: true, id: { not: id } }, select: { id: true, title: true, description: true, fundId: true, type: true }, orderBy: { id: 'asc' }, take: 500 });
+  return json({ items: rankSimilar({...target, description: target.allowDigitalCopy ? target.description : ''}, candidates), method: 'tfidf-cosine-v1', candidateLimit: 500 });
 }

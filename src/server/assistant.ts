@@ -12,6 +12,7 @@ import {cmsAnswer,cmsQuestionContext} from './cms-grounding';
 import {semanticConversationPlan,requiresCatalogEvidence} from './semantic-catalog-plan';
 import {retrieveSemanticCatalog,revalidateCatalogSources,semanticCatalogAnswer,type CatalogPassage} from './semantic-catalog';
 import {englishSiteDialog} from './english-dialog';
+import {publicDocumentWhere} from './public-visibility';
 
 export const assistantInput = z.object({
   locale: z.enum(['ru','kk','en']).optional(),
@@ -49,7 +50,7 @@ export async function assistant(request: Request) {
   if(!await revalidateCatalogSources(selectedCatalog))throw new ApiError(503,'ASSISTANT_SOURCE_CHANGED','Публикация изменилась. Повторите вопрос.');
   const selectedCms=cmsPassages.filter(p=>ids.includes(p.id));
   if(!await revalidateCmsPassages(selectedCms,locale))throw new ApiError(503,'ASSISTANT_SOURCE_CHANGED','Публикация изменилась. Повторите вопрос.');
-  const documents = await db.document.findMany({ where: { id: { in: ids }, isPublic: true, deletedAt:null, allowDigitalCopy: true }, select: { id: true, title: true, isDemo: true,translations:{where:{locale:documentLocale},select:{title:true}} } });
+  const documents = await db.document.findMany({ where: { id: { in: ids }, ...publicDocumentWhere, allowDigitalCopy: true }, select: { id: true, title: true, isDemo: true,translations:{where:{locale:documentLocale},select:{title:true}} } });
   const sources = ids.map(id => {
     const catalog=selectedCatalog.find(p=>p.id===id);
     if(catalog)return {id:catalog.id,title:catalog.title,isDemo:catalog.isDemo,kind:'document',locale:catalog.locale,href:catalog.href,digitalCopyAllowed:catalog.digitalCopyAllowed};

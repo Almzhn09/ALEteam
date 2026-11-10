@@ -5,6 +5,7 @@ import { ApiError, idSchema, json, pageSchema, queryParams, rateLimit, readJson,
 import { publicDocument } from './catalog';
 import { moderate } from './services';
 import { notifyDecision, notifyReply } from './notifications';
+import {publicDocumentWhere} from './public-visibility';
 
 export const commentBody = z.object({ body: z.string().trim().min(1).max(2000), parentId: idSchema.optional() }).strict();
 const publicSelect = { id: true, parentId: true, body: true, createdAt: true, author: { select: { name: true } } } satisfies Prisma.CommentSelect;
@@ -51,7 +52,7 @@ export async function createComment(request: Request, documentId: string) {
 export async function ownComments(request: Request) {
   const user = await requireUser(request);
   const p = pageSchema.strict().parse(queryParams(request));
-  const where = { authorId: user.id, document: { isPublic: true } };
+  const where = { authorId: user.id, document: publicDocumentWhere };
   const [items, total] = await db.$transaction([
     db.comment.findMany({ where, select: { id: true, documentId: true, body: true, status: true, reason: true, createdAt: true }, orderBy: [{ createdAt: 'desc' }, { id: 'asc' }], take: p.pageSize, skip: (p.page - 1) * p.pageSize }),
     db.comment.count({ where }),
@@ -63,7 +64,7 @@ export async function reportComment(request: Request, id: string) {
   const user = await requireUser(request);
   const body = z.object({ reason: z.string().trim().min(3).max(500) }).strict().parse(await readJson(request));
   await rateLimit(`report:${user.id}`, 10, 60);
-  const comment = await db.comment.findFirst({ where: { id, status: 'PUBLISHED', document: { isPublic: true } } });
+  const comment = await db.comment.findFirst({ where: { id, status: 'PUBLISHED', document: publicDocumentWhere } });
   if (!comment) throw new ApiError(404, 'NOT_FOUND', 'Комментарий не найден.');
   const item = await db.report.upsert({ where: { commentId_reporterId: { commentId: id, reporterId: user.id } },
     create: { commentId: id, reporterId: user.id, reason: body.reason }, update: {}, select: { id: true, createdAt: true } });

@@ -44,7 +44,7 @@ before(async () => {
     id: 'catalog-' + who, name: who, email: `catalog-${who}@example.test`, emailVerified: true,
     accounts: {create: {id: randomUUID(), providerId: 'credential', accountId: 'catalog-' + who, password: hashed}},
   }});
-  for (const id of [branchOne, branchTwo]) await db.archiveBranch.create({data: {id, code: id, name: id}});
+  for (const id of [branchOne, branchTwo]) await db.archiveBranch.create({data: {id, code: id, name: id, isPublic: true}});
   for (const [who, roleId, branchId] of [['admin', 'SUPERADMIN', null], ['editor', 'EDITOR', null], ['writer', 'ARCHIVIST', null], ['branch-a', 'BRANCH_ADMIN', branchOne], ['branch-b', 'BRANCH_ADMIN', branchTwo]] as const) {
     await db.staffAssignment.create({data: {userId: 'catalog-' + who, roleId, branchId, scopeKey: branchId ?? '*'}});
   }
