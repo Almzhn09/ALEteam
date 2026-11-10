@@ -1,0 +1,53 @@
+{
+  "testedAt": "2026-11-10T17:44:19.535Z",
+  "checks": [
+    {
+      "name": "anonymous topic choices persist and opt-out restores editorial mode",
+      "passed": true
+    },
+    {
+      "name": "browser reading history is opt-in, bounded and removed on disable",
+      "passed": true
+    },
+    {
+      "name": "historical-name search preserves period/type filters and allows literal mode",
+      "passed": true
+    },
+    {
+      "name": "explanation uses actual OCR quotes and related links have source-backed reasons",
+      "passed": true
+    },
+    {
+      "name": "chronology works without coordinates and never invents a day",
+      "passed": true
+    },
+    {
+      "name": "published image preview is one leaf, switches to the master on zoom and is absent from original downloads",
+      "passed": true
+    },
+    {
+      "name": "subscription survives login return, delivers only new matches and can be removed",
+      "passed": true
+    },
+    {
+      "name": "research assistant displays server-generated steps and a typed catalog action",
+      "passed": true
+    },
+    {
+      "name": "opening a source keeps the chosen UI language and identifies the original content language",
+      "passed": true
+    },
+    {
+      "name": "new screens reflow in both themes, three languages and 150% text",
+      "passed": true
+    }
+  ],
+  "pageErrors": [],
+  "syntheticFixturesOnly": true,
+  "independentAccounts": true,
+  "video": "Actual Chromium CDP screencast of automated interactions; no audio.",
+  "limitations": [
+    "Automated acceptance does not establish historical truth or native translation quality.",
+    "Public HTTPS and manual assistive-technology review are separate."
+  ]
+}

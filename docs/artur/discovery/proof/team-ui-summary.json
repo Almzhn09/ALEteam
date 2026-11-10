@@ -1,0 +1,14 @@
+{
+  "testedAt": "2026-11-10T17:44:19.601Z",
+  "commit": "c6a17d197e630a6415454216ddb9675050c0b7ea",
+  "target": "real local production build; dedicated test PostgreSQL; synthetic editorial fixtures",
+  "checks": [
+    {
+      "name": "discovery",
+      "exitCode": 0
+    }
+  ],
+  "limitations": [
+    "Headless Chromium; simulated zoom; no native-language or human screen-reader acceptance."
+  ]
+}

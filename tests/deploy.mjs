@@ -301,7 +301,7 @@ try {
 }
 finally {
   for (const name of [restored, project]) {
-    try { compose(name, ['down','--volumes','--remove-orphans']); } catch { /* only this test run's unique projects are eligible for cleanup */ }
+    try { compose(name, ['--profile','workers','down','--volumes','--remove-orphans']); } catch { /* only this test run's unique projects are eligible for cleanup */ }
   }
   if (reservedVolume) docker(['volume','rm',reservedVolume]);
   await unlink(envFile).catch(()=>{});await unlink(restoreEnvFile).catch(()=>{});

@@ -1,0 +1,162 @@
+{
+  "testedAt": "2026-11-10T17:29:59.538Z",
+  "tool": "Lighthouse 13.6.0",
+  "target": "Local production Next.js build, dedicated test PostgreSQL, synthetic demo corpus, anonymous browser",
+  "runsPerRouteAndDevice": 1,
+  "reports": [
+    {
+      "name": "home",
+      "route": "/",
+      "device": "mobile",
+      "scores": {
+        "performance": 89,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 720.48265,
+      "cls": 0,
+      "tbtMs": 451.9999999999999,
+      "report": "home-mobile.report.html",
+      "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "publicDocuments": 23
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "device": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 203.1736,
+      "cls": 0.0002132422924607449,
+      "tbtMs": 0,
+      "report": "home-desktop.report.html",
+      "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "throttling": {
+        "rttMs": 40,
+        "throughputKbps": 10240,
+        "requestLatencyMs": 0,
+        "downloadThroughputKbps": 0,
+        "uploadThroughputKbps": 0,
+        "cpuSlowdownMultiplier": 1
+      },
+      "publicDocuments": 23
+    },
+    {
+      "name": "catalog",
+      "route": "/catalog",
+      "device": "mobile",
+      "scores": {
+        "performance": 95,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 2858.1336000000006,
+      "cls": 0.02982159205676058,
+      "tbtMs": 109,
+      "report": "catalog-mobile.report.html",
+      "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "publicDocuments": 23
+    },
+    {
+      "name": "catalog",
+      "route": "/catalog",
+      "device": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 719.4090000000001,
+      "cls": 0.0128398430959627,
+      "tbtMs": 0,
+      "report": "catalog-desktop.report.html",
+      "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "throttling": {
+        "rttMs": 40,
+        "throughputKbps": 10240,
+        "requestLatencyMs": 0,
+        "downloadThroughputKbps": 0,
+        "uploadThroughputKbps": 0,
+        "cpuSlowdownMultiplier": 1
+      },
+      "publicDocuments": 23
+    },
+    {
+      "name": "document",
+      "route": "/documents/demo-doc-01",
+      "device": "mobile",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 767.12565,
+      "cls": 0,
+      "tbtMs": 67,
+      "report": "document-mobile.report.html",
+      "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "publicDocuments": 23
+    },
+    {
+      "name": "document",
+      "route": "/documents/demo-doc-01",
+      "device": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 673.63525,
+      "cls": 0.001062549413042447,
+      "tbtMs": 14.000000000000114,
+      "report": "document-desktop.report.html",
+      "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "throttling": {
+        "rttMs": 40,
+        "throughputKbps": 10240,
+        "requestLatencyMs": 0,
+        "downloadThroughputKbps": 0,
+        "uploadThroughputKbps": 0,
+        "cpuSlowdownMultiplier": 1
+      },
+      "publicDocuments": 23
+    }
+  ],
+  "limitations": [
+    "Single observations, not a controlled benchmark or public hosting SLA.",
+    "Default simulated Lighthouse throttling; no physical device or production HTTPS test."
+  ]
+}

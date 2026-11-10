@@ -1,0 +1,114 @@
+{
+  "testedAt": "2026-11-10T17:56:02.278Z",
+  "target": "isolated local Docker projects, not a public deployment",
+  "checks": [
+    {
+      "name": "runtime is non-root and both images exclude environment files",
+      "passed": true
+    },
+    {
+      "name": "fresh Compose stack initializes schema, original assets and two accounts",
+      "passed": true
+    },
+    {
+      "name": "standalone runtime serves a PNG and persists an authenticated comment",
+      "passed": true
+    },
+    {
+      "name": "CMS creates independent reviewed translations and archive hierarchy in Compose",
+      "passed": true
+    },
+    {
+      "name": "standalone stages private bytes, independently publishes a file and commits metadata drafts",
+      "passed": true
+    },
+    {
+      "name": "standalone creates source-bound drafts and independently reviewed synthetic history",
+      "passed": true
+    },
+    {
+      "name": "new source, spreadsheet and discovery records are private and persist before backup",
+      "passed": true
+    },
+    {
+      "name": "optional workers profile runs bounded batches and stops without changing public visibility",
+      "passed": true
+    },
+    {
+      "name": "search and real PNG preview timing is recorded on the declared synthetic corpus",
+      "passed": true
+    },
+    {
+      "name": "standalone explanation keeps real OCR provenance, citations and original language fallback",
+      "passed": true
+    },
+    {
+      "name": "compiled standalone assistant retains chained date bounds and refuses contradictions",
+      "passed": true
+    },
+    {
+      "name": "database and app restart preserve the marker comment and file volume",
+      "passed": true
+    },
+    {
+      "name": "backup includes private database and files with an integrity manifest",
+      "passed": true
+    },
+    {
+      "name": "same-project, corrupted-backup and occupied-volume restore fail before changing resources",
+      "passed": true
+    },
+    {
+      "name": "restore to a fresh project recovers the marker, users and exact file bytes",
+      "passed": true
+    },
+    {
+      "name": "CMS roles, hierarchy, translations, private history and notices survive backup and restore",
+      "passed": true
+    },
+    {
+      "name": "catalog publication snapshots, translations and copy restrictions survive restore",
+      "passed": true
+    },
+    {
+      "name": "published and quarantined upload bytes plus import provenance survive restore exactly",
+      "passed": true
+    },
+    {
+      "name": "source-draft provenance and reviewed discovery history survive exact restore",
+      "passed": true
+    },
+    {
+      "name": "new discovery baselines, source bindings, original spreadsheet bytes and parsed previews survive restore",
+      "passed": true
+    },
+    {
+      "name": "favorites, notification preferences and reply events survive restart and restore",
+      "passed": true
+    }
+  ],
+  "measurements": [
+    {
+      "name": "catalog_search",
+      "requests": 12,
+      "p50Ms": 11.51,
+      "p95Ms": 22.26,
+      "publicDocuments": 21,
+      "corpus": "synthetic seeded demo plus this isolated workflow; not S09 funds",
+      "runtime": "Node 24 Linux Docker local loopback; sequential requests; includes full response bytes",
+      "browser": "Node fetch; Lighthouse not measured"
+    },
+    {
+      "name": "png_preview",
+      "requests": 12,
+      "p50Ms": 11.12,
+      "p95Ms": 16.37,
+      "publicDocuments": 21,
+      "corpus": "synthetic seeded demo plus this isolated workflow; not S09 funds",
+      "runtime": "Node 24 Linux Docker local loopback; sequential requests; includes full response bytes",
+      "browser": "Node fetch; Lighthouse not measured"
+    }
+  ],
+  "backupRetainedPrivately": true,
+  "temporaryEnvFilesRemoved": true
+}
