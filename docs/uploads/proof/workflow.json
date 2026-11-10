@@ -1,0 +1,18 @@
+{
+  "syntheticData": true,
+  "scopedCreationAndStrictMetadata": true,
+  "noAutomaticPublication": true,
+  "independentReviewAndExplicitPublish": true,
+  "realPngBytesVerified": true,
+  "realGeneratedPdfBytesVerified": true,
+  "failedChecksumAndSignatureStayPrivate": true,
+  "retryAndHumanRejection": true,
+  "restrictedCopiesAndHiddenBranchesEnforced": true,
+  "publishedChecksumRechecked": true,
+  "concurrentReceiveIsExclusive": true,
+  "expiredReceiverCannotOverwriteRetry": true,
+  "quotaAndAuditVerified": true,
+  "retainedStagedFiles": 8,
+  "noCompletedAttemptOrphans": true,
+  "revokedGrantIsImmediate": true
+}
