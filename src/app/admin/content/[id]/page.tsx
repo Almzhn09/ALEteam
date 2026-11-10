@@ -22,6 +22,8 @@ export default function ContentEditorPage({ params }: { params: Promise<{ id: st
   const [locale, setLocale] = useState<ContentLocale>('ru');
   const [form, setForm] = useState<ContentPayload>(emptyPayload);
   const [formKey, setFormKey] = useState('');
+  // Set after a 409: the next reload must not overwrite what the user typed.
+  const [keepDraft, setKeepDraft] = useState(false);
   const [preview, setPreview] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const [saved, setSaved] = useState(false);
@@ -42,6 +44,7 @@ export default function ContentEditorPage({ params }: { params: Promise<{ id: st
   useEffect(() => {
     const key = latest ? `${latest.id}:${latest.updatedAt}` : `new:${locale}`;
     if (key === formKey) return;
+    if (keepDraft && latest && formKey.startsWith(`${latest.id}:`)) { setFormKey(key); return; }
     setFormKey(key); setForm(latest ? { ...emptyPayload(), ...latest.payload } : emptyPayload()); setSaved(false);
   }, [latest, locale, formKey]);
 
@@ -61,10 +64,10 @@ export default function ContentEditorPage({ params }: { params: Promise<{ id: st
     try {
       if (editable) await apiSend(`/admin/revisions/${latest!.id}`, 'PATCH', { expectedUpdatedAt: latest!.updatedAt, payload: cleanPayload(form) });
       else await apiSend(`/admin/content/${item!.id}/revisions`, 'POST', { locale, payload: cleanPayload(form) });
-      setSaved(true); await load();
+      setKeepDraft(false); setSaved(true); await load();
     } catch (err) {
       setError(err);
-      if (err instanceof ApiClientError && err.status === 409) await load();
+      if (err instanceof ApiClientError && err.status === 409) { setKeepDraft(true); await load(); }
     } finally { setBusy(false); }
   }
   return <>
@@ -73,7 +76,7 @@ export default function ContentEditorPage({ params }: { params: Promise<{ id: st
     <div className="locale-tabs" role="group" aria-label={t('Язык редакции')}>
       {locales.map(l => {
         const rev = item.revisions.find(r => r.locale === l);
-        return <button key={l} type="button" className="btn btn-secondary btn-sm" aria-pressed={l === locale} onClick={() => { setLocale(l); setError(null); }}>{langName[l]}{rev ? <>&nbsp;<StateBadge status={rev.status} /></> : ` · ${t('нет')}`}</button>;
+        return <button key={l} type="button" className="btn btn-secondary btn-sm" aria-pressed={l === locale} onClick={() => { setLocale(l); setError(null); setKeepDraft(false); }}>{langName[l]}{rev ? <>&nbsp;<StateBadge status={rev.status} /></> : ` · ${t('нет')}`}</button>;
       })}
     </div>
     {latest && <RevisionWorkflow revision={latest} can={can} writePermission={writePermission} onChanged={load} />}
@@ -82,6 +85,8 @@ export default function ContentEditorPage({ params }: { params: Promise<{ id: st
       {latest && !editable && !canStartNew && <Notice tone="info"><p>{t('В этом состоянии редакцию изменить нельзя.')}</p></Notice>}
       <PayloadForm key={formKey} kind={item.kind} value={form} onChange={setForm} exhibits={exhibits} disabled={!editable && !canStartNew} />
       <FormError error={error} />
+      {keepDraft && <Notice tone="warn" live><p>{t('На сервере появилась более новая версия. Ваш текст остался в форме: сохраните его, чтобы заменить версию на сервере, или загрузите серверную версию.')}</p>
+        <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setKeepDraft(false); setFormKey(''); setError(null); }}>{t('Загрузить серверную версию')}</button></Notice>}
       {saved && <Notice tone="success" live><p>{t('Сохранено.')}</p></Notice>}
       <div className="row">
         {(editable || canStartNew) && <button type="submit" className="btn btn-primary" disabled={busy}>{busy ? t('Сохранение…') : editable ? t('Сохранить') : t('Создать новую редакцию')}</button>}

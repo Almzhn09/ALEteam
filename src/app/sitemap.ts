@@ -7,7 +7,7 @@ import { documentList } from '@/server/catalog';
 import { contentHref, listContent } from '@/server/public-read';
 
 export const dynamic = 'force-dynamic';
-const pages = ['/', '/catalog', '/exhibitions', '/memory', '/branches', '/news', '/about', '/help', '/timeline'];
+const pages = ['/', '/catalog', '/exhibitions', '/memory', '/branches', '/news', '/about', '/help', '/guide', '/timeline'];
 const kinds: ContentKind[] = ['PAGE', 'NEWS', 'COLLECTION', 'PERSON', 'EVENT', 'MEMOIR', 'EXHIBITION', 'BRANCH_PROFILE'];
 const MAX_DOCUMENT_PAGES = 20;
 

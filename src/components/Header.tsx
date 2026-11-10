@@ -7,6 +7,7 @@ import { useFavorites } from '@/lib/favorites';
 import { apiGet, errorText } from '@/lib/api';
 import { useI18n } from '@/lib/lang';
 import { DisplayPreferences, type DisplayTheme, type TextSize } from './DisplayPreferences';
+import { TourButton } from './Tour';
 import { LANGS, langName, type Lang } from '@/lib/i18n';
 
 const links = [
@@ -103,6 +104,7 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
         <div className="header-tools">
           <Suspense><LanguageSelect /></Suspense>
           <DisplayPreferences initialTheme={initialTheme} initialSize={initialSize} />
+          <TourButton />
         </div>
         <button ref={toggle} type="button" className="btn btn-secondary btn-sm menu-toggle" aria-expanded={open} aria-controls="site-nav" onClick={() => setOpen(v => !v)}>
           {open ? t('Закрыть') : t('Меню')}

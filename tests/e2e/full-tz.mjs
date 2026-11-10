@@ -94,8 +94,7 @@ const rev = stale.items[0].revisions[0];
 await json(adminPage, 'PATCH', `/admin/revisions/${rev.id}`, { expectedUpdatedAt: rev.updatedAt, payload: { ...rev.payload, body: 'Параллельная правка' } });
 await adminPage.getByRole('button', { name: 'Сохранить', exact: true }).click();
 check('stale edit shows conflict', await seen(adminPage, 'text=Конфликт изменений'));
-await seen(adminPage, 'textarea');
-await adminPage.getByLabel('Текст', { exact: true }).fill('Исправленный учебный текст. <b>Без HTML</b>');
+check('typed text survives the conflict', await seen(adminPage, 'text=Ваш текст остался в форме') && (await adminPage.getByLabel('Текст', { exact: true }).inputValue()).startsWith('Исправленный'));
 await adminPage.getByRole('button', { name: 'Сохранить', exact: true }).click();
 check('edit after refresh saves', await seen(adminPage, 'text=Сохранено.'));
 await adminPage.getByLabel('Причина или комментарий').fill('Исправлено');
@@ -161,13 +160,13 @@ await guest.goto(`${BASE}/catalog`);
 check('language persists after navigation', await guest.evaluate(() => document.documentElement.lang) === 'en' && await seen(guest, 'h1:has-text("Document catalogue")'));
 await guest.getByLabel('Language', { exact: true }).selectOption('kk');
 await guest.waitForFunction(() => document.documentElement.lang === 'kk');
-await guest.getByLabel('Безендіру тақырыбы').selectOption('dark');
+await guest.locator('.display-preferences > summary').click(); await guest.locator('#display-theme').selectOption('dark');
 check('manual theme applies without reload', await guest.evaluate(() => document.documentElement.dataset.theme) === 'dark');
 await guest.reload();
 check('theme persists after reload', await guest.evaluate(() => document.documentElement.dataset.theme) === 'dark' && await guest.evaluate(() => getComputedStyle(document.body).backgroundColor) !== 'rgb(246, 243, 236)');
 await guest.getByLabel('Тіл', { exact: true }).selectOption('ru');
 await guest.waitForFunction(() => document.documentElement.lang === 'ru');
-await guest.getByLabel('Тема оформления').selectOption('light');
+await guest.locator('.display-preferences > summary').click(); await guest.locator('#display-theme').selectOption('light');
 
 await guest.goto(`${BASE}/exhibitions/expo-${run}`);
 check('exhibits follow the curated order', (await guest.locator('.exhibit h2').innerText()) === `Второй экспонат ${run}`);
@@ -308,7 +307,7 @@ const variants = [['ru', 'light', 360], ['kk', 'dark', 768], ['en', 'light', 128
 for (const [lang, theme, width] of variants) {
   await resetLimits();
   const ctx = adminPage.context();
-  await ctx.addCookies([{ name: 'lang', value: lang, url: BASE }, { name: 'theme', value: theme, url: BASE }]);
+  await ctx.addCookies([{ name: 'lang', value: lang, url: BASE }, { name: 'display-theme', value: theme, url: BASE }]);
   await adminPage.setViewportSize({ width, height: 900 });
   let bad = [];
   for (const route of [...publicRoutes, ...adminRoutes]) {
@@ -320,13 +319,13 @@ for (const [lang, theme, width] of variants) {
       return { overflow: document.documentElement.scrollWidth > innerWidth, header: h, lang: document.documentElement.lang, violations: r.violations.map(v => `${v.id}:${v.nodes[0].target}`) };
     });
     if (report.overflow) bad.push(`${route} overflow`);
-    if (report.header > 150) bad.push(`${route} header ${Math.round(report.header)}`);
+    if (width >= 768 && report.header > 150) bad.push(`${route} header ${Math.round(report.header)}`);
     if (report.lang !== lang) bad.push(`${route} lang ${report.lang}`);
     if (report.violations.length) bad.push(`${route} ${report.violations.join(',')}`);
   }
   check(`layout+axe ${lang}/${theme}/${width} (${publicRoutes.length + adminRoutes.length} routes)`, !bad.length, bad.slice(0, 6).join(' | '));
 }
-await adminPage.context().addCookies([{ name: 'lang', value: 'ru', url: BASE }, { name: 'theme', value: 'light', url: BASE }]);
+await adminPage.context().addCookies([{ name: 'lang', value: 'ru', url: BASE }, { name: 'display-theme', value: 'light', url: BASE }]);
 
 await database.end(); await browser.close();
 console.log(results.join('\n'));

@@ -30,6 +30,7 @@ export async function Footer() {
             <li><Link href="/branches">{t('Филиалы и подразделения')}</Link></li>
             <li><Link href="/news">{t('Новости и события')}</Link></li>
             <li><Link href="/help">{t('Справка и частые вопросы')}</Link></li>
+            <li><Link href="/guide">{t('Как пользоваться сайтом')}</Link></li>
             <li><Link href="/about">{t('Об архиве и помощь')}</Link></li>
           </ul>
         </section>

@@ -24,6 +24,8 @@ export default function DocumentEditor({ params }: { params: Promise<{ id: strin
   const [locale, setLocale] = useState<ContentLocale>('ru');
   const [form, setForm] = useState(emptyDoc);
   const [formKey, setFormKey] = useState('');
+  // Set after a 409: the next reload must not overwrite what the user typed.
+  const [keepDraft, setKeepDraft] = useState(false);
   const [cases, setCases] = useState<{ id: string; label: string }[]>([]);
   const [notes, setNotes] = useState('');
   const [error, setError] = useState<unknown>(null);
@@ -41,6 +43,7 @@ export default function DocumentEditor({ params }: { params: Promise<{ id: strin
   useEffect(() => {
     const key = latest ? `${latest.id}:${latest.updatedAt}` : `new:${locale}`;
     if (key === formKey) return;
+    if (keepDraft && latest && formKey.startsWith(`${latest.id}:`)) { setFormKey(key); return; }
     setFormKey(key); setForm(latest?.payload ? formFrom(latest.payload) : emptyDoc); setSaved('');
   }, [latest, locale, formKey]);
 
@@ -54,8 +57,8 @@ export default function DocumentEditor({ params }: { params: Promise<{ id: strin
   const structural = locale === 'ru';
   async function act(work: () => Promise<unknown>, message: string) {
     setBusy(true); setError(null); setSaved('');
-    try { await work(); setSaved(message); await load(); }
-    catch (err) { setError(err); if (err instanceof ApiClientError && err.status === 409) await load(); }
+    try { await work(); setKeepDraft(false); setSaved(message); await load(); }
+    catch (err) { setError(err); if (err instanceof ApiClientError && err.status === 409) { setKeepDraft(true); await load(); } }
     finally { setBusy(false); }
   }
   function save(e: FormEvent) {
@@ -69,13 +72,15 @@ export default function DocumentEditor({ params }: { params: Promise<{ id: strin
     <div className="row" style={{ gap: 'var(--space-2)' }}><h1 style={{ margin: 0 }}>{doc.title}</h1><DemoBadge show={doc.isDemo} /></div>
     <p className="small muted" style={{ margin: 0 }}><span className="mono">{doc.reference}</span> · {doc.deletedAt ? t('В корзине') : doc.isPublic ? t('Опубликован') : t('Закрыт')}{doc.isPublic && <> · <Link href={`/documents/${doc.id}`}>{t('Открыть на сайте')}</Link></>}</p>
     <div className="locale-tabs" role="group" aria-label={t('Язык редакции')}>
-      {locales.map(l => { const r = revisions.find(x => x.locale === l); return <button key={l} type="button" className="btn btn-secondary btn-sm" aria-pressed={l === locale} onClick={() => { setLocale(l); setError(null); }}>{langName[l]}{r ? <>&nbsp;<StateBadge status={r.status} /></> : ` · ${t('нет')}`}</button>; })}
+      {locales.map(l => { const r = revisions.find(x => x.locale === l); return <button key={l} type="button" className="btn btn-secondary btn-sm" aria-pressed={l === locale} onClick={() => { setLocale(l); setError(null); setKeepDraft(false); }}>{langName[l]}{r ? <>&nbsp;<StateBadge status={r.status} /></> : ` · ${t('нет')}`}</button>; })}
     </div>
     {latest && <RevisionWorkflow revision={latest} can={can} writePermission="catalog.write" onChanged={load} />}
     <form className="stack" onSubmit={save} noValidate>
       <DocumentFields key={formKey} value={form} onChange={setForm} structural={structural} cases={cases} disabled={!editable && !canStartNew} />
       {structural && <label className="row" style={{ gap: 'var(--space-2)' }}><input type="checkbox" checked={form.allowDigitalCopy} disabled={!editable && !canStartNew} onChange={e => setForm(f => ({ ...f, allowDigitalCopy: e.target.checked }))} /> {t('Разрешить публичный показ цифровой копии')}</label>}
       <FormError error={error} />
+      {keepDraft && <Notice tone="warn" live><p>{t('На сервере появилась более новая версия. Ваш текст остался в форме: сохраните его, чтобы заменить версию на сервере, или загрузите серверную версию.')}</p>
+        <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setKeepDraft(false); setFormKey(''); setError(null); }}>{t('Загрузить серверную версию')}</button></Notice>}
       {saved && <Notice tone="success" live><p>{saved}</p></Notice>}
       {(editable || canStartNew) && <div><button type="submit" className="btn btn-primary" disabled={busy}>{busy ? t('Сохранение…') : editable ? t('Сохранить') : t('Создать новую редакцию')}</button></div>}
     </form>
