@@ -1,0 +1,93 @@
+{
+  "syntheticData": true,
+  "scopedReport": {
+    "measuredAt": "2026-11-10T07:57:17.875Z",
+    "scope": {
+      "branchIds": [
+        "artur-ai-branch"
+      ],
+      "publicBranchesOnly": true
+    },
+    "reviewAfterDays": 180,
+    "reviewPolicy": "proposed-technical-threshold",
+    "content": {
+      "items": 2,
+      "demoItems": 2,
+      "restrictedCopies": 0,
+      "reviewDueItems": 1,
+      "invalidPublications": 0,
+      "locales": {
+        "ru": {
+          "published": 2,
+          "missing": 0
+        },
+        "kk": {
+          "published": 0,
+          "missing": 2
+        },
+        "en": {
+          "published": 0,
+          "missing": 2
+        }
+      }
+    },
+    "catalog": {
+      "items": 0,
+      "demoItems": 0,
+      "restrictedCopies": 0,
+      "reviewDueItems": 0,
+      "invalidPublications": 0,
+      "locales": {
+        "ru": {
+          "published": 0,
+          "missing": 0
+        },
+        "kk": {
+          "published": 0,
+          "missing": 0
+        },
+        "en": {
+          "published": 0,
+          "missing": 0
+        }
+      }
+    },
+    "recommendations": [
+      {
+        "action": "review-missing-translations",
+        "corpus": "content",
+        "locale": "kk",
+        "count": 2,
+        "owner": "translator-editor",
+        "method": "corpus-rule",
+        "requiresHumanReview": true
+      },
+      {
+        "action": "review-missing-translations",
+        "corpus": "content",
+        "locale": "en",
+        "count": 2,
+        "owner": "translator-editor",
+        "method": "corpus-rule",
+        "requiresHumanReview": true
+      },
+      {
+        "action": "verify-publication-age",
+        "corpus": "content",
+        "count": 1,
+        "owner": "editor",
+        "method": "corpus-rule",
+        "requiresHumanReview": true
+      }
+    ],
+    "traffic": {
+      "status": "not-connected",
+      "searches": null,
+      "emptyResults": null
+    },
+    "modelContribution": "none-in-corpus-report"
+  },
+  "foreignScopeDenied": true,
+  "revocationApplied": true,
+  "textAndVisitorDataAbsent": true
+}

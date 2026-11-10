@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "sourceType": "synthetic",
+  "policyApprovalVerified": false,
+  "measuredAt": "2026-11-09T00:00:00.000Z",
+  "periodConvention": "[start,end)",
+  "minimumGroup": 5,
+  "emptyResultThreshold": 0.3,
+  "thresholdStatus": "proposed",
+  "measurements": [
+    {
+      "topicId": "catalog",
+      "periodStart": "2026-11-01",
+      "periodEnd": "2026-11-08",
+      "searches": 20,
+      "emptyResults": 8,
+      "stalePages": 2,
+      "status": "measured"
+    },
+    {
+      "topicId": "exhibitions",
+      "periodStart": "2026-11-01",
+      "periodEnd": "2026-11-08",
+      "searches": 10,
+      "emptyResults": 0,
+      "stalePages": 0,
+      "status": "measured"
+    },
+    {
+      "topicId": "favorites",
+      "periodStart": "2026-11-01",
+      "periodEnd": "2026-11-08",
+      "status": "suppressed"
+    }
+  ],
+  "unmeasuredTopics": [
+    "archive-branches",
+    "news",
+    "comments",
+    "notifications",
+    "ocr",
+    "sources",
+    "account-help"
+  ],
+  "recommendations": [
+    {
+      "action": "review-search-and-guide",
+      "owner": "Артур",
+      "basis": "8/20 searches had no results",
+      "topicId": "catalog",
+      "periodStart": "2026-11-01",
+      "periodEnd": "2026-11-08",
+      "method": "aggregate-rule",
+      "requiresHumanReview": true
+    },
+    {
+      "action": "verify-stale-content",
+      "owner": "Редактор",
+      "basis": "2 pages flagged for review",
+      "topicId": "catalog",
+      "periodStart": "2026-11-01",
+      "periodEnd": "2026-11-08",
+      "method": "aggregate-rule",
+      "requiresHumanReview": true
+    }
+  ],
+  "method": "aggregate-rule",
+  "modelContribution": "optional upstream local topic routing; no model generates these recommendations",
+  "reportSha256": "89676dffd3bb528e4b9a3af35b84bd8112616157d72fb94962d7c49ce45e7c84"
+}

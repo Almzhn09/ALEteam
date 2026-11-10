@@ -1,0 +1,110 @@
+{
+  "recordedAt": "2026-11-10T07:59:26.540291+00:00",
+  "codeCommit": "14b6fb7d23e851c92be391efd54e6a00bdfdfedf",
+  "target": "Production Next.js build; real temporary PostgreSQL and Chromium; synthetic owned data; no mock API",
+  "checks": {
+    "npm test": {
+      "passed": 289,
+      "total": 289
+    },
+    "npm run typecheck": {
+      "exitCode": 0
+    },
+    "npm run i18n:check": {
+      "keys": 410,
+      "translated": 410,
+      "missing": 0
+    },
+    "npm run build": {
+      "exitCode": 0
+    },
+    "npm run report:quality": {
+      "exitCode": 0
+    },
+    "npm run evaluate:semantic": {
+      "exitCode": 0
+    },
+    "npm run test:integration": {
+      "passed": 21,
+      "total": 21,
+      "failed": 0
+    },
+    "npm run test:cms": {
+      "passed": 14,
+      "total": 14,
+      "failed": 0
+    },
+    "npm run test:catalog": {
+      "passed": 12,
+      "total": 12,
+      "failed": 0
+    },
+    "npm run test:cms-assistant": {
+      "passed": 12,
+      "total": 12,
+      "failed": 0
+    },
+    "npm run test:semantic": {
+      "passed": 32,
+      "total": 32,
+      "failed": 0
+    },
+    "npm run test:release": {
+      "passed": 13,
+      "total": 13,
+      "screens": 54
+    }
+  },
+  "cleanup": {
+    "results": [
+      {
+        "command": "npm run test:integration",
+        "exitCode": 0,
+        "log": "test-integration.log"
+      },
+      {
+        "command": "npm run test:cms",
+        "exitCode": 0,
+        "log": "test-cms.log"
+      },
+      {
+        "command": "npm run test:catalog",
+        "exitCode": 0,
+        "log": "test-catalog.log"
+      },
+      {
+        "command": "npm run test:cms-assistant",
+        "exitCode": 0,
+        "log": "test-cms-assistant.log"
+      },
+      {
+        "command": "npm run test:semantic",
+        "exitCode": 0,
+        "log": "test-semantic.log"
+      },
+      {
+        "command": "npm run test:release",
+        "exitCode": 0,
+        "log": "test-release.log"
+      }
+    ],
+    "dedicatedDatabase": true,
+    "containerRemoved": true
+  },
+  "sha256": {
+    "src/server/corpus-health.ts": "543ed0fb2ec8d676d98a9c7869a26c1eef505486a763d123e031824adc6a4f40",
+    "src/server/aggregate-quality-report.ts": "6ceaf43d148a77bee53c9dd0f24866e3022b54ab99458c55362732a39ab5273d",
+    "src/contracts/assistant-quality.ts": "a8852b9374378f6d373de42aa3fe28419851838f0a64bca726bd0aef34d38fa0",
+    "src/server/assistant.ts": "2af4d7ae36ea0530db01bebe6a5d4783500638fb197c991b913fc0cfb3f9163f",
+    "src/app/api/[[...path]]/route.ts": "82a3ef5c9b7070f8006c2af546ecfce27bb89cbff67580963e165133aeb4ba87",
+    "scripts/report-assistant-quality.ts": "9a5c0194395176db3315ee88d5617de0c1877a9dd27a016a13626a0b2a0f0e92",
+    "scripts/capture-review.ts": "12e52dc63b5cb1ae4ec9900645f94e93553cbf89a5f7f39a5ce62216ed1b08ce"
+  },
+  "limitations": [
+    "No visitor event collection or claimed archive policy approval. Live traffic fields are null/not-connected.",
+    "Corpus review age is a proposed technical threshold, not proof of wrong facts or retention/legal policy.",
+    "Analyst UI is assigned to Alinur; final frontend commit is not available in the fetched GitHub branches.",
+    "Synthetic input and developer-written checks do not prove real archive scale, rights, native-language review or public HTTPS deployment.",
+    "Local successful checks do not imply GitHub Actions passed or independent team acceptance."
+  ]
+}
