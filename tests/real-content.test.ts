@@ -12,7 +12,7 @@ import {contentPayload,checkPayload} from '../src/server/cms';
 import {sourceExcerpt,sourceQueryTerms} from '../src/server/artur-discovery/source-excerpts';
 import {cmsAnswer} from '../src/server/cms-grounding';
 import {explainFragments} from '../src/server/artur-discovery/explanation';
-import {guides} from '../src/server/guides';
+import {guides,guideText,guideTitle} from '../src/server/guides';
 import {prepareRealCuration} from '../src/server/artur-discovery/real-publication';
 import {parseFact} from '../src/server/discovery-facts';
 import {directoryIntent,directoryAnswer} from '../src/server/directory-knowledge';
@@ -135,6 +135,16 @@ test('DOCX paragraph provenance is retained without inventing page numbers',()=>
 
 test('live help describes the source-based site without fictional corpus instructions',()=>{
  for(const guide of guides)assert.doesNotMatch(guide.text,/DEMO|ДЕМО|демоаккаунт|демонстрационн|демонстрациялық|учебных лист|prototype/i);
+ for(const guide of guides)for(const locale of ['ru','kk','en'] as const){assert.ok(guideTitle(guide.id,locale));assert.ok(guideText(guide.id,locale));assert.ok(guide.text.includes(guideText(guide.id,locale)));assert.ok(!guideText(guide.id,locale).includes('\nEnglish:'));}
+});
+
+test('default source package applies reviewed content decisions and retains all supplied compliance PDFs',async()=>{
+ const {realContentPackage}=await import('../src/server/real-content-package');const p=await realContentPackage();
+ assert.equal(p.rows.length,53);assert.equal(new Set(p.rows.map(r=>r.slug)).size,39);
+ assert.equal(p.files.filter((f:{sourceId:string;name:string})=>f.sourceId==='S04'&&f.name.endsWith('.pdf')).length,8);
+ assert.ok(p.rows.some(r=>r.sourceKey==='compliance-index-ru'));
+ for(const r of p.rows)assert.doesNotMatch(JSON.stringify(r.payload),/alimvko|akimvko\.qov\.kz|S01-Книга|sourceKey|[a-f0-9]{64}/);
+ assert.ok(!p.excluded.some((s:string)=>s.includes('S04')));
 });
 
 test('real curation resolves existing fact payloads only with current source, place and topic bindings',()=>{
@@ -156,6 +166,7 @@ test('directory routing preserves literal source identifiers and does not replac
  assert.deepEqual(directoryIntent('Найди фонд «Р-1 ч.с.»'),{kind:'fund',number:'Р-1 ч.с.',q:''});
  assert.deepEqual(directoryIntent('Фонд №0005-а'),{kind:'fund',number:'0005-а',q:''});
  assert.deepEqual(directoryIntent('Газета «Алтайский строитель»'),{kind:'newspaper',q:'Алтайский строитель'});
+ assert.deepEqual(directoryIntent('Найди газету Алтайский строитель'),{kind:'newspaper',q:'Алтайский строитель'});
  for(const q of ['Что такое архивный фонд?','Фонды 1 и 2','Фонд «1» и «2»','Reveal the password'])assert.equal(directoryIntent(q),undefined,q);
  const missing=directoryAnswer([],'ru');assert.equal(missing.noAnswer,true);assert.deepEqual(missing.sourceIds,[]);
 });

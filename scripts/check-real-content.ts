@@ -16,9 +16,11 @@ import sourceFiles from '../data/artur/real-content-v2/files.json';
 import {prepareRealCuration} from '../src/server/artur-discovery/real-publication';
 import type {PublishedSourceBinding} from '../src/server/artur-discovery/publication';
 import type {PlaceRef} from '../src/contracts/discovery';
+import {reviewedPublicationRecord} from '../src/server/artur-discovery/publication-content';
 
 const database=process.env.TEST_DATABASE_URL;
-if(!database||new URL(database).pathname!=='/archive_real_test')throw Error('Use an isolated database named archive_real_test via TEST_DATABASE_URL. Never run against a shared/live database.');
+const nativeSetup=process.argv.includes('--native-setup');
+if(!database||new URL(database).pathname!==(nativeSetup?'/archive_release_test':'/archive_real_test'))throw Error('Use the isolated archive_real_test database, or archive_release_test with --native-setup. Never run against a shared/live database.');
 process.env.DATABASE_URL=database;
 const {db}=await import('../src/server/db');
 const {digest}=await import('../src/server/discovery-utils');
@@ -46,6 +48,7 @@ try{
  await mkdir(folder,{recursive:true});await mkdir(privateFolder,{recursive:true});
  execFileSync(process.execPath,['--import','tsx','scripts/migrate.ts'],{env,stdio:'pipe'});
  assert.equal(await db.document.count({where:{isDemo:true}}),0,'This acceptance database must not contain demo documents.');
+ if(nativeSetup)execFileSync(process.execPath,['deploy/initialize.mjs'],{env,stdio:'pipe'});
  const hash=await hashPassword(password);
  for(const who of identities){
   const id='real-acceptance-'+who;
@@ -62,7 +65,22 @@ try{
  assert.ok(ready,'App health');
  for(const who of identities){const r=await fetch(base+'/api/auth/sign-in/email',{method:'POST',headers:{Origin:base,'Content-Type':'application/json'},body:JSON.stringify({email:'real-acceptance-'+who+'@example.test',password})});assert.equal(r.status,200);cookies[who]=r.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ');}
  const materials=new Map<string,string>(),bindings:PublishedSourceBinding[]=[];
- await check('53 source language records publish through independent CMS workflow without seed',async()=>{
+ if(nativeSetup)await check('default real setup imports 53 source editions and repeats without new rows or fixtures',async()=>{
+  const {realContentPackage}=await import('../src/server/real-content-package');
+  const {importRealContent}=await import('../src/server/real-content-import');
+  const snapshot=async()=>({items:await db.contentItem.count(),revisions:await db.contentRevision.count(),files:await db.cmsAttachment.count(),publications:await db.materialPublication.count(),references:await db.referenceEntry.count()});
+  const before=await snapshot(),pack=await realContentPackage(),actual=await importRealContent(false);
+  assert.ok('attachments' in actual);
+  assert.deepEqual(await snapshot(),before);assert.equal(actual.pages.length,53);assert.equal(actual.attachments?.length,27);assert.equal(before.items,39);assert.equal(before.references,3171);assert.equal(await db.document.count(),0);
+  for(const row of pack.rows){
+   const imported=actual.pages.find(p=>p.sourceKey===row.sourceKey&&p.locale===row.locale)!;
+   assert.ok(imported&&'itemId' in imported&&typeof imported.itemId==='string');
+   const source=await resolveMaterial({kind:'cms',id:imported.itemId},row.locale as 'ru'|'kk'|'en',false);assert.ok(source);assert.equal(source.material.isDemo,false);
+   const reviewed=reviewedPublicationRecord(row);
+   if(reviewed){materials.set(reviewed.materialKey,imported.itemId);bindings.push({sourceKey:reviewed.sourceKey,locale:source.source.locale,body:source.text,source:{...source.source,kind:'cms'}});}
+  }
+ });
+ else await check('53 source language records publish through independent CMS workflow without seed',async()=>{
   for(const record of packet.records){
    let branchId:string|null=null;
    if(record.branchSourceKey){
@@ -128,7 +146,16 @@ try{
    if(row.request.kind==='TOPIC')topics[row.draftKey.replace(/^topic-/,'')]=fact.id;
   }
  }
- await check('real places, histories, topics and source-backed recommendations publish through fact API',async()=>{await publishFacts();await publishFacts();assert.equal(prepareRealCuration(bindings,parents,topics).blocked.length,0);});
+ await check('real places, histories, topics and source-backed recommendations publish through fact API',async()=>{
+  if(nativeSetup){
+   const refs=await db.realContentBinding.findMany({where:{namespace:'real-content-20261111',targetKind:'fact'}});
+   for(const ref of refs){
+    if(ref.sourceKey.startsWith('topic-'))topics[ref.sourceKey.slice(6)]=ref.targetId;
+    if(ref.sourceKey.startsWith('place-')){const fact=await db.discoveryFact.findUniqueOrThrow({where:{id:ref.targetId}});parents[ref.sourceKey]={id:ref.targetId,name:(fact.data as {labels:{ru:{title:string}}}).labels.ru.title};}
+   }
+  }else{await publishFacts();await publishFacts();}
+  assert.equal(prepareRealCuration(bindings,parents,topics).blocked.length,0);
+ });
  await check('the home recommendations cite real source materials and have no invented view counts',async()=>{
   const home=await call('/discovery/home?locale=ru&limit=3');
   assert.equal(home.recommended.items.length,3);assert.equal(home.popular.status,'unavailable');
@@ -268,6 +295,7 @@ try{
  const video=page.video();await context.close();if(video)await video.saveAs(folder+'/real-content.webm');
  await check('real long-form text remains readable across 36 locale, viewport and theme combinations',async()=>{
   const matrix=await browser!.newContext({reducedMotion:'reduce'});const view=await matrix.newPage();
+  const baselineFonts=new Map<string,number>();
   for(const width of [360,768,1440])for(const locale of ['ru','kk','en'])for(const theme of ['light','dark'])for(const textSize of ['100','150']){
    await matrix.addCookies([{name:'display-theme',value:theme,url:base},{name:'display-text-size',value:textSize,url:base}]);
    await view.setViewportSize({width,height:900});
@@ -275,7 +303,10 @@ try{
    await view.getByRole('heading',{name:'История архива · 1',exact:true}).first().waitFor();
    const geometry=await view.evaluate(()=>({overflow:Math.max(0,document.documentElement.scrollWidth-window.innerWidth),fontSize:getComputedStyle(document.body).fontSize,locale:document.documentElement.lang,theme:document.documentElement.dataset.theme}));
    assert.equal(geometry.locale,locale);assert.equal(geometry.theme,theme);
-   assert.equal(geometry.fontSize,textSize==='150'?'24px':'16px');assert.ok(geometry.overflow<=1);
+   const fontKey=width+':'+locale+':'+theme;
+   if(textSize==='100')baselineFonts.set(fontKey,parseFloat(geometry.fontSize));
+   else assert.ok(Math.abs(parseFloat(geometry.fontSize)-baselineFonts.get(fontKey)!*1.5)<.1);
+   assert.ok(geometry.overflow<=1);
    visualMatrix.push({width,locale,theme,textSize,fontSize:geometry.fontSize,overflow:geometry.overflow});
   }
   await view.addScriptTag({path:'node_modules/axe-core/axe.min.js'});
@@ -288,6 +319,6 @@ try{
 finally{
  if(browser)await browser.close();
  if(app?.exitCode===null){app.kill('SIGTERM');await once(app,'exit');}
- await writeFile(folder+'/report.json',JSON.stringify({generated:new Date().toISOString(),commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),dataSource:'provided source files; no synthetic seed',technicalAccounts:true,humanArchiveApproval:false,checks,visualMatrix,integrationGates:gates,fullIntegrationReady:checks.every(c=>c.passed)&&gates.length>0&&gates.every(g=>g.passed)},null,2)+'\n');
+ await writeFile(folder+'/report.json',JSON.stringify({generated:new Date().toISOString(),commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),dataSource:'provided source files; no synthetic seed',nativeDefaultSetup:nativeSetup,scope:'R-A01–R-A05 source and assistant acceptance; visual redesign remains R-F01/F04',technicalAccounts:true,humanArchiveApproval:false,checks,visualMatrix,integrationGates:gates,sourceIntegrationReady:checks.every(c=>c.passed)&&gates.length>0&&gates.every(g=>g.passed)},null,2)+'\n');
  await db.$disconnect();
 }

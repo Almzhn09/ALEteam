@@ -26,6 +26,8 @@ export function directoryIntent(question:string):DirectoryIntent|undefined{
  if(paper){
   const quoted=/[«"“]([^»"”]{1,100})[»"”]/u.exec(question);
   if(quoted)return {kind:'newspaper',q:quoted[1]};
+  const tail=question.slice(paper.index+paper[0].length).trim().replace(/[?.!]+$/u,'');
+  if(tail.length<=100&&!/^(?:хранятся|есть|имеются|are|do|stored|сақта)/iu.test(tail))return {kind:'newspaper',q:tail};
  }
  return;
 }
