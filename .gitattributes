@@ -9,3 +9,5 @@ deploy/Caddyfile text eol=lf
 *.md text eol=lf
 # Preserve uploaded originals, extracted transcriptions and their recorded SHA-256 byte for byte.
 sources/** -text
+# Raw evidence snapshots retain CRLF/whitespace and are not source-code patches.
+sources/**/pages/*.html binary

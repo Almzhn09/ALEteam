@@ -1,0 +1,453 @@
+{
+  "version": 2,
+  "files": [
+    {
+      "key": "S02:История архива.docx",
+      "sourceId": "S02",
+      "sourceMember": null,
+      "path": "sources/archive-20261110/originals/История архива.docx",
+      "filename": "История архива.docx",
+      "sha256": "a7fe9a0dc02c62f2143fbc55c9c677cbbad7b1b05eb981be6ab4addf544aac59",
+      "bytes": 11424,
+      "textPath": "sources/archive-20261110/text/S02--История архива.docx.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S05:Контакты.docx",
+      "sourceId": "S05",
+      "sourceMember": null,
+      "path": "sources/archive-20261110/originals/Контакты.docx",
+      "filename": "Контакты.docx",
+      "sha256": "b9fdc6060ab279171e66736178a75452191ca8b6abc69c0c61065eeb1a77df65",
+      "bytes": 7614,
+      "textPath": "sources/archive-20261110/text/S05--Контакты.docx.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S07:Структура.docx",
+      "sourceId": "S07",
+      "sourceMember": null,
+      "path": "sources/archive-20261110/originals/Структура.docx",
+      "filename": "Структура.docx",
+      "sha256": "a8678998fada92018f8fe49802e927e248cb942f05939438a8397b5689e72275",
+      "bytes": 10069,
+      "textPath": "sources/archive-20261110/text/S07--Структура.docx.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S03:Календарь памятных дат/календарь 2022 год каз рус.docx",
+      "sourceId": "S03",
+      "sourceMember": "Календарь памятных дат/календарь 2022 год каз рус.docx",
+      "path": "sources/archive-publication-20261111/attachments/календарь 2022 год каз рус.docx",
+      "filename": "календарь 2022 год каз рус.docx",
+      "sha256": "5bc0722597c928f41e7d3c495ccd4547bfdf13fae635161700402fdd5717e2fe",
+      "bytes": 30048,
+      "textPath": "sources/archive-20261110/text/S03--календарь 2022 год каз рус.docx.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S03:Календарь памятных дат/календарь 2023 год каз рус.docx",
+      "sourceId": "S03",
+      "sourceMember": "Календарь памятных дат/календарь 2023 год каз рус.docx",
+      "path": "sources/archive-publication-20261111/attachments/календарь 2023 год каз рус.docx",
+      "filename": "календарь 2023 год каз рус.docx",
+      "sha256": "f8633fbfa4063d3a209f07f9c7d2709e2544ef2ab5bef2e7b922a1ce6895b90f",
+      "bytes": 25204,
+      "textPath": "sources/archive-20261110/text/S03--календарь 2023 год каз рус.docx.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S03:Календарь памятных дат/календарь 2024 год каз рус.docx",
+      "sourceId": "S03",
+      "sourceMember": "Календарь памятных дат/календарь 2024 год каз рус.docx",
+      "path": "sources/archive-publication-20261111/attachments/календарь 2024 год каз рус.docx",
+      "filename": "календарь 2024 год каз рус.docx",
+      "sha256": "7920a24940ec1336233e53d71cd9edf0d3c8159b4b57c31be0e7012d3dab3747",
+      "bytes": 27625,
+      "textPath": "sources/archive-20261110/text/S03--календарь 2024 год каз рус.docx.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S03:Календарь памятных дат/календарь 2025 год каз рус.docx",
+      "sourceId": "S03",
+      "sourceMember": "Календарь памятных дат/календарь 2025 год каз рус.docx",
+      "path": "sources/archive-publication-20261111/attachments/календарь 2025 год каз рус.docx",
+      "filename": "календарь 2025 год каз рус.docx",
+      "sha256": "c549d827022b99c09beca17997b55cfe150e09d2bc1e1c2eb671514705bba488",
+      "bytes": 28872,
+      "textPath": "sources/archive-20261110/text/S03--календарь 2025 год каз рус.docx.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S03:Календарь памятных дат/календарь 2026 год каз рус.docx",
+      "sourceId": "S03",
+      "sourceMember": "Календарь памятных дат/календарь 2026 год каз рус.docx",
+      "path": "sources/archive-publication-20261111/attachments/календарь 2026 год каз рус.docx",
+      "filename": "календарь 2026 год каз рус.docx",
+      "sha256": "744855e8e0971656ab407ea04a3734b4f6d03c258c79dd93a8ad6b4bba9a9ec7",
+      "bytes": 25558,
+      "textPath": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S04:Комплаенс служба/Информация каз.docx",
+      "sourceId": "S04",
+      "sourceMember": "Комплаенс служба/Информация каз.docx",
+      "path": "sources/archive-publication-20261111/attachments/Информация каз.docx",
+      "filename": "Информация каз.docx",
+      "sha256": "fc6b6566ee2882489cd15a127ecd2602fe5dd75cacfddc277500b49725455657",
+      "bytes": 18488,
+      "textPath": "sources/archive-20261110/text/S04--Информация каз.docx.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S04:Комплаенс служба/Информация о работе комплаенс службы.docx",
+      "sourceId": "S04",
+      "sourceMember": "Комплаенс служба/Информация о работе комплаенс службы.docx",
+      "path": "sources/archive-publication-20261111/attachments/Информация о работе комплаенс службы.docx",
+      "filename": "Информация о работе комплаенс службы.docx",
+      "sha256": "2fbcf5f47f56418c9f9771883ac13c177b122fe856f08677de5be59fb2837577",
+      "bytes": 15471,
+      "textPath": "sources/archive-20261110/text/S04--Информация о работе комплаенс службы.docx.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S04:Комплаенс служба/О проведении внутреннего анализа коррупционных рисков.docx",
+      "sourceId": "S04",
+      "sourceMember": "Комплаенс служба/О проведении внутреннего анализа коррупционных рисков.docx",
+      "path": "sources/archive-publication-20261111/attachments/О проведении внутреннего анализа коррупционных рисков.docx",
+      "filename": "О проведении внутреннего анализа коррупционных рисков.docx",
+      "sha256": "78f3e6133fb9ff85981b91471f14d4ab8addc23c2fc6eb9f31fb0d4be2eb5177",
+      "bytes": 13812,
+      "textPath": "sources/archive-20261110/text/S04--О проведении внутреннего анализа коррупционных рисков.docx.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S04:Комплаенс служба/Сыбайлас жемқорлық тәуекелдеріне ішкі талдау жүргізу туралы.docx",
+      "sourceId": "S04",
+      "sourceMember": "Комплаенс служба/Сыбайлас жемқорлық тәуекелдеріне ішкі талдау жүргізу туралы.docx",
+      "path": "sources/archive-publication-20261111/attachments/Сыбайлас жемқорлық тәуекелдеріне ішкі талдау жүргізу туралы.docx",
+      "filename": "Сыбайлас жемқорлық тәуекелдеріне ішкі талдау жүргізу туралы.docx",
+      "sha256": "33220f353090468249c80179cdc15c99a519db06e36b930f46fc0329e115317c",
+      "bytes": 13981,
+      "textPath": "sources/archive-20261110/text/S04--Сыбайлас жемқорлық тәуекелдеріне ішкі талдау жүргізу туралы.docx.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S06:Постановление обл акимата 142.pdf",
+      "sourceId": "S06",
+      "sourceMember": null,
+      "path": "sources/archive-20261110/originals/Постановление обл акимата 142.pdf",
+      "filename": "Постановление обл акимата 142.pdf",
+      "sha256": "a0d390105cb014504b83f3fa7208e9254bad2cbb7bb12bbe8f5d066bf4caf7dd",
+      "bytes": 1349711,
+      "textPath": "sources/archive-20261110/text/S06--Постановление обл акимата 142.pdf.txt",
+      "textQuality": "machine_unverified",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S04:Комплаенс служба/Аналитическая справка ВАКР 2026.pdf",
+      "sourceId": "S04",
+      "sourceMember": "Комплаенс служба/Аналитическая справка ВАКР 2026.pdf",
+      "path": "sources/archive-publication-20261111/attachments/Аналитическая справка ВАКР 2026.pdf",
+      "filename": "Аналитическая справка ВАКР 2026.pdf",
+      "sha256": "fe0975c5428359f8c78c7787bfbe65e932f008f15037a2d208544a27f89ae640",
+      "bytes": 10695055,
+      "textPath": "sources/archive-20261110/text/S04--Аналитическая справка ВАКР 2026.pdf.txt",
+      "textQuality": "machine_unverified",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S04:Комплаенс служба/Аналитикалық анықтама СЖТІТ 2026.pdf",
+      "sourceId": "S04",
+      "sourceMember": "Комплаенс служба/Аналитикалық анықтама СЖТІТ 2026.pdf",
+      "path": "sources/archive-publication-20261111/attachments/Аналитикалық анықтама СЖТІТ 2026.pdf",
+      "filename": "Аналитикалық анықтама СЖТІТ 2026.pdf",
+      "sha256": "33e5247b84e6a237f8af354c21dda28ed785b429880b65fd5a111130e55612e5",
+      "bytes": 13888667,
+      "textPath": "sources/archive-20261110/text/S04--Аналитикалық анықтама СЖТІТ 2026.pdf.txt",
+      "textQuality": "machine_unverified",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S04:Комплаенс служба/Перечень должностей.pdf",
+      "sourceId": "S04",
+      "sourceMember": "Комплаенс служба/Перечень должностей.pdf",
+      "path": "sources/archive-publication-20261111/attachments/Перечень должностей.pdf",
+      "filename": "Перечень должностей.pdf",
+      "sha256": "73ef6b499f789b52fb6b32247724f7f0fb3e06568e2f1313b9237b98290d1158",
+      "bytes": 243773,
+      "textPath": "sources/archive-20261110/text/S04--Перечень должностей.pdf.txt",
+      "textQuality": "machine_unverified",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S04:Комплаенс служба/Перечень должностей каз.pdf",
+      "sourceId": "S04",
+      "sourceMember": "Комплаенс служба/Перечень должностей каз.pdf",
+      "path": "sources/archive-publication-20261111/attachments/Перечень должностей каз.pdf",
+      "filename": "Перечень должностей каз.pdf",
+      "sha256": "a2e51204036a00b059299599a4a344cd67b8386ba0fbf798ffb51958ad4ece3d",
+      "bytes": 247132,
+      "textPath": "sources/archive-20261110/text/S04--Перечень должностей каз.pdf.txt",
+      "textQuality": "machine_unverified",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S04:Комплаенс служба/План мероприятий рус.pdf",
+      "sourceId": "S04",
+      "sourceMember": "Комплаенс служба/План мероприятий рус.pdf",
+      "path": "sources/archive-publication-20261111/attachments/План мероприятий рус.pdf",
+      "filename": "План мероприятий рус.pdf",
+      "sha256": "0dae7a7694c8a2c7607e874cf037fc3f5b05c8132ea9ab2d645f34bd3e72c73e",
+      "bytes": 1920838,
+      "textPath": "sources/archive-20261110/text/S04--План мероприятий рус.pdf.txt",
+      "textQuality": "machine_unverified",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S04:Комплаенс служба/План мероприятий каз.pdf",
+      "sourceId": "S04",
+      "sourceMember": "Комплаенс служба/План мероприятий каз.pdf",
+      "path": "sources/archive-publication-20261111/attachments/План мероприятий каз.pdf",
+      "filename": "План мероприятий каз.pdf",
+      "sha256": "63b2717c252f8f743702c44352570da6f9f13ea3b899d3a3d616a28c7dfcf620",
+      "bytes": 1985135,
+      "textPath": "sources/archive-20261110/text/S04--План мероприятий каз.pdf.txt",
+      "textQuality": "machine_unverified",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S04:Комплаенс служба/Положение об антикор..pdf",
+      "sourceId": "S04",
+      "sourceMember": "Комплаенс служба/Положение об антикор..pdf",
+      "path": "sources/archive-publication-20261111/attachments/Положение об антикор..pdf",
+      "filename": "Положение об антикор..pdf",
+      "sha256": "c884e438c91dc5bb3653b3f72c3f89130f24d612fd7476fb06cb58329ce77434",
+      "bytes": 5536588,
+      "textPath": "sources/archive-20261110/text/S04--Положение об антикор..pdf.txt",
+      "textQuality": "machine_unverified",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S04:Комплаенс служба/Сыбайлас жемқорлыққа қарсы комплаене қызметі туралы ереже.pdf",
+      "sourceId": "S04",
+      "sourceMember": "Комплаенс служба/Сыбайлас жемқорлыққа қарсы комплаене қызметі туралы ереже.pdf",
+      "path": "sources/archive-publication-20261111/attachments/Сыбайлас жемқорлыққа қарсы комплаене қызметі туралы ереже.pdf",
+      "filename": "Сыбайлас жемқорлыққа қарсы комплаене қызметі туралы ереже.pdf",
+      "sha256": "ceab9f738c6ca0224a015fa30ca74971d2e1a8f0c82c7fecc3e2f5fb183b813d",
+      "bytes": 1597580,
+      "textPath": "sources/archive-20261110/text/S04--Сыбайлас жемқорлыққа қарсы комплаене қызметі туралы ереже.pdf.txt",
+      "textQuality": "machine_unverified",
+      "access": {
+        "view": true,
+        "download": true
+      },
+      "note": "Use existing file policy; no fictitious ArchiveDocument parent."
+    },
+    {
+      "key": "S09:linked/S09-link-1.docx",
+      "sourceId": "S09",
+      "path": "sources/archive-20261110/linked/S09-link-1.docx",
+      "filename": "S09-link-1.docx",
+      "sha256": "876e74ae28c0c31dffc66d61dfb35cc664d1cf8c5efc890d7169bc6bd65ee862",
+      "bytes": 214596,
+      "sourceUrl": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%B3%D0%B0%D0%B7%D0%B5%D1%82%D1%8B%20%D0%B7%D0%B0%201935-2017.docx",
+      "textQuality": "source_table",
+      "access": {
+        "view": true,
+        "download": true
+      }
+    },
+    {
+      "key": "S09:linked/S09-link-2.xlsb",
+      "sourceId": "S09",
+      "path": "sources/archive-20261110/linked/S09-link-2.xlsb",
+      "filename": "S09-link-2.xlsb",
+      "sha256": "cf9c63b4e00009738fed27c53f08736349dd7e7f93b17faec2a1574e75aeb3eb",
+      "bytes": 345863,
+      "sourceUrl": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%A4%D0%BE%D0%BD%D0%B4%D1%8B%20%D0%B3%D0%BE%D1%81%D0%B0%D1%80%D1%85%D0%B8%D0%B2%D0%B0%20%D0%92%D0%9A%D0%9E%20%D0%BD%D0%B0%202018%D0%B3..xlsb",
+      "textQuality": "source_table",
+      "access": {
+        "view": true,
+        "download": true
+      }
+    },
+    {
+      "key": "S09:linked/S09-link-3.xlsb",
+      "sourceId": "S09",
+      "path": "sources/archive-20261110/linked/S09-link-3.xlsb",
+      "filename": "S09-link-3.xlsb",
+      "sha256": "470631d78a74a459f8b009e1698f077087883733cca90f128a23bee45191bd21",
+      "bytes": 41148,
+      "sourceUrl": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%BF%D0%B0%D1%80%D1%82%20%D1%84%D0%BE%D0%BD%D0%B4%D1%8B%20%D0%B3%D0%BE%D1%81%D0%B0%D1%80%D1%85%D0%B8%D0%B2%D0%B0%20%D0%92%D0%9A%D0%9E%20%D0%BD%D0%B0%202018%D0%B3..xlsb",
+      "textQuality": "source_table",
+      "access": {
+        "view": true,
+        "download": true
+      }
+    },
+    {
+      "key": "R01",
+      "sourceId": "R01",
+      "path": "sources/archive-reference-20261110/originals/R01-prices.pdf",
+      "filename": "R01-prices.pdf",
+      "sha256": "6480e6fd39bbf0f48c7c8396028da57d29cbec405c44a83a3ede7d575fad3b8f",
+      "bytes": 1636084,
+      "textPath": "sources/archive-reference-20261110/text/R01-prices.pdf.txt",
+      "textQuality": "machine_unverified",
+      "access": {
+        "view": true,
+        "download": true
+      }
+    },
+    {
+      "key": "R02",
+      "sourceId": "R02",
+      "path": "sources/archive-reference-20261110/originals/R02-reading-room.doc",
+      "filename": "R02-reading-room.doc",
+      "sha256": "9c59d080f00106e46c9f58c6ffb3bdf1a5879aab131143dab8b74110dacd7299",
+      "bytes": 52736,
+      "textPath": "sources/archive-reference-20261110/text/R02-reading-room.doc.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      }
+    },
+    {
+      "key": "R03",
+      "sourceId": "R03",
+      "path": "sources/archive-reference-20261110/originals/R03-services-law-2018.docx",
+      "filename": "R03-services-law-2018.docx",
+      "sha256": "788714faa0f8fc3122bfcf527fda457f54c8a9a9b0d9c18f7790f4d0340abc10",
+      "bytes": 54968,
+      "textPath": "sources/archive-reference-20261110/text/R03-services-law-2018.docx.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      }
+    },
+    {
+      "key": "R04",
+      "sourceId": "R04",
+      "path": "sources/archive-reference-20261110/originals/R04-service-rules-2020.doc",
+      "filename": "R04-service-rules-2020.doc",
+      "sha256": "58e5c26e8944adfdfc4ca4049ea90406a5b58f4145a78f25556317938a3749de",
+      "bytes": 199680,
+      "textPath": "sources/archive-reference-20261110/text/R04-service-rules-2020.doc.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      }
+    },
+    {
+      "key": "R05",
+      "sourceId": "R05",
+      "path": "sources/archive-reference-20261110/originals/R05-services-report-2025.docx",
+      "filename": "R05-services-report-2025.docx",
+      "sha256": "c0877f7195dde84095f9b7df5e74bcd2b1ef7732afde30d2f5fcb858f6ef4ad0",
+      "bytes": 25309,
+      "textPath": "sources/archive-reference-20261110/text/R05-services-report-2025.docx.txt",
+      "textQuality": "source_text",
+      "access": {
+        "view": true,
+        "download": true
+      }
+    }
+  ]
+}
