@@ -1,3 +1,6 @@
+import {directory} from '@/server/reference-directory';
+import {adminDirectories} from '@/server/reference-import';
+import {materialSearch} from '@/server/material-search';
 import {filePreviews} from '@/server/file-import-preview';
 import {fileText} from '@/server/authorized-file-text';
 import {navigation,navigationDraft} from '@/server/navigation';
@@ -82,6 +85,11 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
       const material=await resolveMaterial({kind:path[2] as 'document'|'cms',id:path[3]},p.locale);
       if(!material)throw new ApiError(404,'NOT_FOUND','Материал не найден.');return json({item:material.material,source:material.source});
     }
+    if(route==='search'&&method==='GET')return materialSearch(request);
+    if(path[0]==='directories'&&['funds','newspapers'].includes(path[1])&&method==='GET'&&path.length<=3)return directory(request,path[1]==='funds'?'fund':'newspaper',path[2]==='export'?undefined:path[2],path[2]==='export');
+    if(route==='admin/directories'&&method==='GET')return adminDirectories(request);
+    if(route==='admin/directories/import'&&method==='POST')return adminDirectories(request);
+    if(path[0]==='admin'&&path[1]==='directories'&&path.length===4&&path[3]==='visibility'&&method==='POST')return adminDirectories(request,path[2]);
     if(route==='navigation'&&method==='GET')return navigation(request);
     if(route==='admin/navigation'&&method==='POST')return navigationDraft(request);
     if(route==='discovery/home'&&method==='GET')return home(request);
