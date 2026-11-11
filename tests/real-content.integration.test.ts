@@ -113,6 +113,11 @@ test('prepared photographs use complete originals and the existing private revie
  const revision=await db.contentRevision.findUniqueOrThrow({where:{id:parent.revisionId}});
  await db.contentRevision.update({where:{id:revision.id},data:{status:'ARCHIVED'}});
  await assert.rejects(()=>publishSourceImages(true),/SOURCE_IMAGE_PARENT_REVIEW_REQUIRED/);
- await db.contentRevision.update({where:{id:revision.id},data:{status:'PUBLISHED',updatedAt:revision.updatedAt}});
- proof.checks.push('prepared photos: strict original hashes, separate technical review, idempotence, no incomplete image or withdrawn/archived-parent bypass');
+ const managed=await db.realContentBinding.findUniqueOrThrow({where:{namespace_sourceKey_locale:{namespace:'real-content-20261111',sourceKey:'history-1',locale:'ru'}}});
+ const next=await db.contentRevision.create({data:{itemId:revision.itemId,locale:revision.locale,version:revision.version+1,payload:revision.payload!,status:'PUBLISHED',authorId:revision.authorId,reviewerId:revision.reviewerId}});
+ await db.realContentBinding.update({where:{id:managed.id},data:{data:{...managed.data as object,revisionId:next.id}}});
+ const updatedParent=await publishSourceImages(true);
+ assert.ok(updatedParent.blocked.some(blocked=>blocked.id===file.sourceId&&blocked.reason==='WITHDRAWN'));
+ assert.equal(await db.cmsAttachment.count({where:{revisionId:next.id,expectedSha256:file.sha256}}),0);
+ proof.checks.push('prepared photos: strict original hashes, separate technical review, idempotence, no incomplete image or withdrawn/archived-parent/version-change bypass');
 });

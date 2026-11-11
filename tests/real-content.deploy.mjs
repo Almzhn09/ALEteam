@@ -15,6 +15,8 @@ const serialize=x=>Object.entries(x).map(([k,v])=>k+'='+v).join('\n')+'\n';await
 const prefix=name=>['compose','--env-file',name===project?sourceEnv:restoreEnv,'-f','deploy/compose.yaml','--project-name',name];
 const environment=name=>({...process.env,...(name===project?config:second)});const compose=(name,args)=>docker([...prefix(name),...args],environment(name));
 const checks=[],measurements=[];let snapshot;
+const imageManifest=JSON.parse(await readFile('sources/archive-visual-20261111/manifest.json','utf8'));
+const readyPhotos=imageManifest.images.filter(image=>image.origin==='official_archive_site'&&image.decoderValidation.status==='complete_decode');
 async function check(name,fn){await fn();checks.push({name,passed:true});console.log('PASS '+name);}
 async function ready(origin){for(let i=0;i<100;i++){try{if((await fetch(origin+'/api/health',{signal:AbortSignal.timeout(1000)})).ok)return;}catch{}await delay(200);}throw Error('HTTP_READINESS_FAILED');}
 async function get(origin,path){const r=await fetch(origin+'/api'+path);assert.equal(r.status,200,path);return r.json();}
@@ -29,12 +31,12 @@ try{
  await check('standalone includes the locally served font and a decodable real editorial photo',async()=>{
   const origin=config.BETTER_AUTH_URL,home=await fetch(origin+'/');assert.equal(home.status,200);const html=await home.text();assert.ok(html.includes('hero-title'));
   for(const name of ['latin','cyrillic','cyrillic-ext']){const file='fonts/noto-sans-'+name+'.woff2',r=await fetch(origin+'/'+file);assert.equal(r.status,200);const bytes=Buffer.from(await r.arrayBuffer());assert.equal(createHash('sha256').update(bytes).digest('hex'),createHash('sha256').update(await readFile('public/'+file)).digest('hex'));}
-  const photo=html.match(/src="([^"]*\/_next\/image\?[^"]*)"/);assert.ok(photo,'Actual editorial photo rendered');const image=await fetch(origin+photo[1].replaceAll('&amp;','&'));assert.equal(image.status,200);assert.ok(image.headers.get('content-type')?.startsWith('image/'));assert.ok((await image.arrayBuffer()).byteLength>1000);
+  const photo=html.match(/src="(\/api\/material-files\/[a-zA-Z0-9_-]+)"/);assert.ok(photo,'Verified CMS photograph rendered');const image=await fetch(origin+photo[1]);assert.equal(image.status,200);assert.ok(image.headers.get('content-type')?.startsWith('image/'));assert.match(image.headers.get('cache-control')||'',/no-store/);const imageSha=createHash('sha256').update(Buffer.from(await image.arrayBuffer())).digest('hex');assert.ok(readyPhotos.some(photo=>photo.sha256===imageSha));
  });
  let fileId,previewId,expectedSha;
  await check('standalone runtime serves original DOCX, S06 page-4 preview and measured page-aware OCR with source-bound explanations',async()=>{
   const origin=config.BETTER_AUTH_URL,history=(await get(origin,'/content/archive-history-1')).item;
-  const refs=await get(origin,'/discovery/materials/cms/'+history.id+'/attachments');fileId=refs.items.find(f=>f.variant==='master').id;expectedSha=refs.items.find(f=>f.id===fileId).sha256;
+  const refs=await get(origin,'/discovery/materials/cms/'+history.id+'/attachments');fileId=refs.items.find(f=>f.variant==='master'&&f.mimeType.includes('wordprocessingml')).id;expectedSha=refs.items.find(f=>f.id===fileId).sha256;
   const file=await fetch(origin+'/api/material-files/'+fileId);assert.equal(file.status,200);assert.equal(createHash('sha256').update(Buffer.from(await file.arrayBuffer())).digest('hex'),expectedSha);
   const text=(await get(origin,'/material-files/'+fileId+'/text')).item;assert.equal(text.isOcr,false);assert.ok(text.fragments[0].paragraph);
   const explanation=await fetch(origin+'/api/discovery/materials/cms/'+history.id+'/explanation',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify({locale:'ru'})});assert.equal(explanation.status,200);assert.equal((await explanation.json()).status,'ready');
@@ -43,7 +45,7 @@ try{
  });
  await check('re-running real setup is idempotent and never re-enables fixtures',async()=>{
   compose(project,['run','--rm','--no-deps','setup']);await ready(config.BETTER_AUTH_URL);assert.deepEqual(await corpus(config.BETTER_AUTH_URL),snapshot);
-  assert.equal(compose(project,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "CmsAttachment"']),'27');
+  assert.equal(compose(project,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "CmsAttachment"']),String(27+readyPhotos.length));
   assert.equal(compose(project,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "MaterialPublication"']),'53');
  });
  await check('an existing Docker site upgrades with an identity-bound backup and immutable source history',async()=>{

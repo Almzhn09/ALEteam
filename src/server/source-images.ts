@@ -26,6 +26,8 @@ export async function publishSourceImages(apply=false){
  for(const image of ready){
   const bytes=await readFile(image.path);if(bytes.length!==image.bytes||createHash('sha256').update(bytes).digest('hex')!==image.sha256)throw Error('SOURCE_IMAGE_HASH_CHANGED');
   let row=await db.cmsAttachment.findFirst({where:{revisionId:revision.id,expectedSha256:image.sha256},orderBy:{createdAt:'desc'}});
+  const priorDecision=await db.cmsAttachment.findFirst({where:{revision:{itemId:binding.targetId},expectedSha256:image.sha256,state:{in:['WITHDRAWN','REJECTED']}}});
+  if(priorDecision&&row?.state!=='PUBLISHED'){blocked.push({id:image.id,reason:priorDecision.state});continue;}
   // An editor's rejection/withdrawal or unfinished upload is never overridden.
   if(row&&row.state!=='PUBLISHED'&&(row.uploaderId!==uploaderId||!['QUARANTINED','APPROVED'].includes(row.state))){blocked.push({id:image.id,reason:row.state});continue;}
   if(!row){
