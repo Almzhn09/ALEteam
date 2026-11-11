@@ -4,11 +4,11 @@ import { use, useCallback, useEffect, useState, type FormEvent } from 'react';
 import { locales, type ContentLocale, type ContentPayload, type ContentRevision, type Page, type StaffContentItem } from '@/contracts/cms';
 import { ApiClientError, apiGet, apiSend } from '@/lib/api';
 import { useI18n } from '@/lib/lang';
-import { langName } from '@/lib/i18n';
+import { langName } from '@/lib/i18n-core';
 import { DemoBadge, ErrorNotice, Loading, Notice } from '@/components/ui';
 import { FormError, useStaff } from '../../AdminShell';
-import { CmsAttachments } from '../CmsAttachments';
 import { PayloadForm, RevisionWorkflow, StateBadge, cleanPayload, emptyPayload, kindLabel } from '../../editorial';
+import { CmsAttachments } from '../Attachments';
 
 const EDITABLE = ['DRAFT', 'CHANGES_REQUESTED'];
 const FINISHED = ['PUBLISHED', 'ARCHIVED'];
@@ -96,11 +96,11 @@ export default function ContentEditorPage({ params }: { params: Promise<{ id: st
         <button type="button" className="btn btn-secondary" aria-expanded={preview} onClick={() => setPreview(v => !v)}>{t('Предпросмотр')}</button>
       </div>
     </form>
-    {latest && <CmsAttachments itemId={item.id} branchId={item.branchId} revision={latest} revisions={item.revisions} />}
     {preview && <section className="card" aria-label={t('Предпросмотр')} lang={locale}>
       <p className="small muted">{t('Так текст увидит посетитель. Это не публикация.')}</p>
       <h2>{form.title}</h2><p className="pre-wrap">{form.body}</p>
       <p className="small muted" style={{ margin: 0 }}>{t('Права')}: {form.rights}{form.sourceNote ? ` · ${form.sourceNote}` : ''}</p>
     </section>}
+    {item.kind !== 'SETTING' && <CmsAttachments itemId={item.id} branchId={item.branchId} revision={latest} />}
   </>;
 }

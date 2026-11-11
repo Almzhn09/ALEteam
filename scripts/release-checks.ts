@@ -51,8 +51,11 @@ try {
   await step('home search reaches real catalog and combined filters', async () => {
     await author.goto(base); await author.getByLabel('Что вы ищете', { exact: true }).fill('библиотека');
     await author.locator('.hero-search button[type=submit]').click();
-    await author.waitForURL(/\/catalog\?q=/); await author.getByText('Найдено:').waitFor();
+    // R-F02: the home search covers site materials, archive documents and directories; each hit says what it is.
+    await author.waitForURL(/\/search\?q=/); await author.getByText('Найдено:').waitFor();
     assert.match(await author.locator('main').innerText(), /Найдено:\s*4/);
+    assert.equal(await author.locator('.search-hit .kind-document').count(), 4);
+    await author.goto(`${base}/catalog?q=${encodeURIComponent('библиотека')}`); await author.getByText('Найдено:').waitFor();
     await author.getByLabel('Тип документа', { exact: true }).selectOption('LETTER');
     await author.waitForURL(/type=LETTER/); await author.locator('a[href="/documents/demo-doc-01"]').first().waitFor();
   });
@@ -101,7 +104,7 @@ try {
     await author.goto(base + '/assistant'); await author.locator('[data-assistant-mode]').first().waitFor();
     const previous = await author.locator('[data-assistant-mode]').count();
     await ask('Что такое архивный фонд?', previous + 1);
-    await author.locator('.sources a[href="/about#guide-fund"]').click(); await author.waitForURL(/\/about#guide-fund$/); await author.locator('#guide-fund').waitFor();
+    await author.locator('.sources a[href="/help#guide-fund"]').click(); await author.waitForURL(/\/help#guide-fund$/); await author.locator('#guide-fund').waitFor();
     await author.goto(base + '/assistant'); await author.locator('[data-assistant-mode]').first().waitFor(); const stored = await author.locator('[data-assistant-mode]').count();
     await ask('Свидетельство Иванова', stored + 1); await author.getByText('В материалах архива ответа не найдено').waitFor();
   });

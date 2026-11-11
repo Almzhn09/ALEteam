@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useId, useState, type FormEvent } from 'react';
 import type { ArchiveUploadDTO, UploadMime, UploadState } from '@/contracts/uploads';
 import { apiGet, apiPutBytes, apiSend } from '@/lib/api';
+import { formatBytes, sha256Hex as sha256 } from '@/lib/file-hash';
 import { useI18n } from '@/lib/lang';
 import { ErrorNotice, Loading, Notice } from '@/components/ui';
 import { FormError, useStaff } from '../AdminShell';
@@ -23,11 +24,6 @@ const parserLabel: Record<string, string> = {
 };
 interface Inspection { state: string; attempts?: number; failureCode?: string | null; previewFileId?: string | null }
 
-async function sha256(file: Blob) {
-  const digest = await crypto.subtle.digest('SHA-256', await file.arrayBuffer());
-  return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('');
-}
-const formatBytes = (n: number) => n >= 1048576 ? `${(n / 1048576).toFixed(1)} MiB` : `${Math.max(1, Math.round(n / 1024))} KiB`;
 
 export function UploadStateBadge({ state }: { state: UploadState }) {
   const { t } = useI18n();

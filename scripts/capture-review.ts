@@ -53,7 +53,7 @@ try {
   await page.goto(origin + '/assistant');
   const question = page.getByLabel('Ваш вопрос', {exact: true});
   await question.fill('Что такое архивный фонд?'); await question.press('Enter');
-  await page.locator('.sources a[href="/about#guide-fund"]').waitFor();
+  await page.locator('.sources a[href="/help#guide-fund"]').waitFor();
   await shot('04-assistant-ru-desktop.png', '/assistant');
   const mobile = await browser.newContext({viewport: {width: 390, height: 844}, colorScheme: 'light'});
   await mobile.addCookies([{name: 'lang', value: 'kk', url: origin}]);

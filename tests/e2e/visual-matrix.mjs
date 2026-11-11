@@ -8,7 +8,13 @@ const OUT = process.env.OUT ?? '.local/visual/';
 mkdirSync(OUT, { recursive: true });
 const axeSource = readFileSync('node_modules/axe-core/axe.min.js', 'utf8');
 const doc = process.env.DOC_ID ?? 'demo-doc-01';
-const routes = [['home', '/'], ['catalog', '/catalog?q=%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B0'], ['document', `/documents/${doc}`], ['guide', '/guide'], ['help', '/help'], ['branches', '/branches'], ['news', '/news'], ['places', '/places']];
+// CORPUS=real checks the published real corpus (R-F05); the default keeps the fixture routes of COL-F07.
+const real = process.env.CORPUS === 'real';
+const routes = real
+  ? [['home', '/'], ['search', '/search?q=%D0%B0%D1%80%D1%85%D0%B8%D0%B2'], ['about', '/about'], ['history', '/materials/archive-history-1'], ['calendar', '/materials/archive-calendar-2026'],
+    ['decree', '/materials/archive-branch-decree-142'], ['funds', '/directories/funds'], ['newspapers', '/directories/newspapers?q=%D0%B3%D0%B0%D0%B7%D0%B5%D1%82%D0%B0'], ['services', '/services'], ['branches', '/branches'], ['help', '/help'], ['places', '/places']]
+  : [['home', '/'], ['catalog', '/catalog?q=%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B0'], ['document', `/documents/${doc}`], ['guide', '/guide'], ['help', '/help'], ['branches', '/branches'], ['news', '/news'], ['places', '/places']];
+const explainPath = real ? '/materials/archive-branch-decree-142' : `/documents/${doc}`;
 // [width, theme, text size, language, zoom]: zoom 2 halves the CSS viewport at double pixel density.
 const variants = [
   [360, 'light', '100', 'ru', 1], [390, 'light', '100', 'ru', 1], [360, 'dark', '100', 'kk', 1], [768, 'light', '100', 'en', 1], [768, 'dark', '100', 'ru', 1],
@@ -17,6 +23,8 @@ const variants = [
 
 // Geometry: overlapping or touching controls, content wider than the viewport, misaligned container edges.
 function measure() {
+  // Measured from the top: a sticky header over scrolled content is not an overlap of the layout itself.
+  window.scrollTo(0, 0);
   const vw = document.documentElement.clientWidth;
   const visible = el => { const r = el.getBoundingClientRect(); const cs = getComputedStyle(el); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && !el.closest('[hidden], dialog:not([open]), .leaflet-container, .visually-hidden') && !(el.closest('.thumbs, .table-wrap') && el.parentElement.closest('.thumbs, .table-wrap').scrollWidth > el.parentElement.closest('.thumbs, .table-wrap').clientWidth && (el.getBoundingClientRect().right > el.closest('.thumbs, .table-wrap').getBoundingClientRect().right + 1)) && !el.closest('details:not([open]) > :not(summary)') && (!document.querySelector('dialog[open]') || el.closest('dialog[open]')) && (!document.querySelector('.nav-wrap[data-open="true"]') || el.closest('.site-header')); };
   const controls = [...document.querySelectorAll('a.btn, button, select, input:not([type=hidden]), summary, .nav a, .tabs a, .pagination a')].filter(visible);
@@ -53,12 +61,13 @@ function measure() {
 const browser = await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH,headless:true,args:['--no-sandbox']}:{ channel: process.env.BROWSER_CHANNEL ?? 'msedge' });
 const log = [];
 for (const [width, theme, size, lang, zoom] of variants) {
-  const ctx = await browser.newContext({ viewport: { width: width / zoom, height: 900 / zoom }, deviceScaleFactor: zoom });
+  // Dark variants also emulate reduced motion, so both motion modes are covered.
+  const ctx = await browser.newContext({ viewport: { width: width / zoom, height: 900 / zoom }, deviceScaleFactor: zoom, reducedMotion: theme === 'dark' ? 'reduce' : 'no-preference' });
   await ctx.addCookies([{ name: 'lang', value: lang, url: BASE }, { name: 'display-theme', value: theme, url: BASE }, { name: 'display-text-size', value: size, url: BASE }]);
   const page = await ctx.newPage();
   const label = `${width}-${theme}-${size}-${lang}${zoom > 1 ? '-zoom200' : ''}`;
   for (const [id, path] of routes) {
-    await page.goto(BASE + path, { waitUntil: 'load' });
+    await page.goto(BASE + path, { waitUntil: 'networkidle' });
     await page.evaluate(() => document.fonts.ready); await page.waitForTimeout(700);
     const m = await page.evaluate(measure);
     await page.addScriptTag({ content: axeSource });
@@ -84,7 +93,7 @@ for (const [width, theme, size, lang, zoom] of variants) {
   await page.goto(BASE + '/'); await page.waitForSelector('#recommendations-title');
   const rec = page.locator('section[aria-labelledby="recommendations-title"] details > summary');
   if (await rec.count()) { await rec.first().click(); await page.waitForTimeout(300); await page.screenshot({ path: `${OUT}recommend-open-${label}.png`, fullPage: true }); log.push({ page: 'recommend-open', width, theme, textSize: size, lang, zoom, file: `recommend-open-${label}.png`, ...(await page.evaluate(measure)), axe: [] }); }
-  await page.goto(BASE + `/documents/${doc}`);
+  await page.goto(BASE + explainPath, { waitUntil: 'networkidle' });
   const explain = page.locator('[aria-controls="document-explanation"]');
   if (await explain.count()) { await explain.click(); await page.waitForSelector('#document-explanation [role=status], #document-explanation blockquote', { timeout: 10000 }).catch(() => {}); await page.screenshot({ path: `${OUT}explain-open-${label}.png`, fullPage: true }); log.push({ page: 'explain-open', width, theme, textSize: size, lang, zoom, file: `explain-open-${label}.png`, ...(await page.evaluate(measure)), axe: [] }); }
   if (width / zoom < 1200) {

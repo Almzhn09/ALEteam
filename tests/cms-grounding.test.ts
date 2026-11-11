@@ -12,9 +12,9 @@ test('missing English CMS translation never becomes a Russian quote',()=>{
  const r=cmsAnswer([],'en');assert.equal(r.noAnswer,true);assert.deepEqual(r.sourceIds,[]);assert.match(r.answer,/this language/);
 });
 test('session-stored CMS URLs cannot escape the known local public endpoint',()=>{
- assert.equal(assistantSourceLink(passage),passage.href);
+ assert.equal(assistantSourceLink(passage),'/materials/reviewed?contentLang=en');
  for(const href of ['javascript:alert(1)','https://outside.invalid','//outside.invalid','/api/admin/content/private','/api/content/test?locale=en&admin=true','/api/content/../private?locale=en'])assert.equal(assistantSourceLink({...passage,href}),'/assistant');
- assert.equal(assistantSourceLink({kind:'guide',id:'guide-search'}),'/about#guide-search');
+ assert.equal(assistantSourceLink({kind:'guide',id:'guide-search'}),'/help#guide-search');
 });
 test('query terms are bounded plain tokens, not SQL wildcard syntax',()=>{
  assert.deepEqual(cmsQueryTerms("%_; DROP TABLE"),['drop','table']);

@@ -4,7 +4,7 @@ import { useEffect, useId, useState, type FormEvent } from 'react';
 import { contentKinds, locales, type ContentKind, type ContentLocale, type ContentPayload, type Page, type StaffContentItem } from '@/contracts/cms';
 import { apiGet, apiSend } from '@/lib/api';
 import { useI18n } from '@/lib/lang';
-import { langName } from '@/lib/i18n';
+import { langName } from '@/lib/i18n-core';
 import { FormError, useStaff } from '../../AdminShell';
 import { PayloadForm, cleanPayload, emptyPayload, kindLabel } from '../../editorial';
 
