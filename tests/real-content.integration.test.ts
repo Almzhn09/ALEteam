@@ -7,6 +7,7 @@ import {mkdir,writeFile} from 'node:fs/promises';
 import {once} from 'node:events';
 import {setTimeout as delay} from 'node:timers/promises';
 import {hashPassword} from 'better-auth/crypto';
+import imageManifest from '../sources/archive-visual-20261111/manifest.json';
 const url=process.env.TEST_DATABASE_URL;if(!url||!new URL(url).pathname.endsWith('_test'))throw Error('Dedicated _test DB required');process.env.DATABASE_URL=url;process.env.FILE_STORAGE_ROOT='.local/real-content/test-files';
 const {db}=await import('../src/server/db');const {importRealContent}=await import('../src/server/real-content-import');const {syntheticWithdrawal}=await import('../src/server/retire-synthetic');
 const origin='http://localhost:3122',password=randomBytes(32).toString('hex'),env={...process.env,DATABASE_URL:url,BETTER_AUTH_URL:origin,BETTER_AUTH_SECRET:randomBytes(32).toString('hex'),ALLOW_DEMO_SEED:'1',DEMO_AUTHOR_PASSWORD:password,DEMO_MODERATOR_PASSWORD:password,ASSISTANT_MODE:'local-model'};
@@ -91,4 +92,27 @@ test('R-B03 CMS upload uses scoped immutable bytes and independent review; no fi
  row=(await ok('/admin/material-files/'+row.id+'/publish','POST',{expectedUpdatedAt:row.updatedAt,reason:'Explicit file publication'},admin)).item;assert.equal(row.state,'PUBLISHED');assert.equal((await call('/material-files/'+row.id)).status,200);
  await ok('/admin/material-files/'+row.id+'/withdraw','POST',{expectedUpdatedAt:row.updatedAt,reason:'Withdrawal verification'},admin);assert.equal((await call('/material-files/'+row.id)).status,404);assert.equal((await call('/material-files/'+row.id+'/text')).status,404);
  proof.checks.push('CMS upload create/PUT/private quarantine/independent review/publish/withdraw; wrong scope/path/self-approval rejected');
+});
+
+test('prepared photographs use complete originals and the existing private review workflow; repeat and withdrawal preserve editor decisions',async()=>{
+ const {publishSourceImages}=await import('../src/server/source-images');
+ const count=await db.cmsAttachment.count(),preview=await publishSourceImages(false);
+ assert.equal(await db.cmsAttachment.count(),count);assert.ok(preview.ready.length>0);
+ const first=await publishSourceImages(true);assert.equal(first.items.length,preview.ready.length);
+ const parent=page('history-1'),attachments=await ok('/discovery/materials/cms/'+parent.itemId+'/attachments');
+ for(const image of first.items){
+  assert.ok(attachments.items.some((file:any)=>file.id===image.id&&file.sha256===image.sha256));
+  const row=await db.cmsAttachment.findUniqueOrThrow({where:{id:image.id}});assert.notEqual(row.uploaderId,row.reviewerId);assert.equal(row.state,'PUBLISHED');
+  const response=await call('/material-files/'+row.id);assert.equal(response.status,200);assert.equal(createHash('sha256').update(Buffer.from(await response.arrayBuffer())).digest('hex'),row.expectedSha256);
+ }
+ const incomplete=imageManifest.images.filter(image=>image.decoderValidation.status==='incomplete_source');
+ for(const image of incomplete){assert.ok(first.blocked.some(blocked=>blocked.id===image.id));assert.ok(!attachments.items.some((file:any)=>file.sha256===image.sha256));}
+ const after=await db.cmsAttachment.count();await publishSourceImages(true);assert.equal(await db.cmsAttachment.count(),after);
+ const file=first.items[0];await db.cmsAttachment.update({where:{id:file.id},data:{state:'WITHDRAWN'}});
+ const repeated=await publishSourceImages(true);assert.ok(repeated.blocked.some(blocked=>blocked.reason==='WITHDRAWN'));assert.equal(await db.cmsAttachment.count(),after);assert.equal((await call('/material-files/'+file.id)).status,404);
+ const revision=await db.contentRevision.findUniqueOrThrow({where:{id:parent.revisionId}});
+ await db.contentRevision.update({where:{id:revision.id},data:{status:'ARCHIVED'}});
+ await assert.rejects(()=>publishSourceImages(true),/SOURCE_IMAGE_PARENT_REVIEW_REQUIRED/);
+ await db.contentRevision.update({where:{id:revision.id},data:{status:'PUBLISHED',updatedAt:revision.updatedAt}});
+ proof.checks.push('prepared photos: strict original hashes, separate technical review, idempotence, no incomplete image or withdrawn/archived-parent bypass');
 });

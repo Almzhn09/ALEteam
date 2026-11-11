@@ -3,17 +3,13 @@
 // recognised by the SHA-256 of the original. Captions and alt texts are dictionary keys (RU source).
 export interface Visual { id: string; sha256: string; width: number; height: number; caption: string; alt: string; credit: string; sourceUrl: string }
 
-export const visuals: Visual[] = [
-  { id: 'archive-next-generation-ridder', sha256: '0df4b138555a57e1bd3a15288361a2e3ec739e5e025ec36125d6cf37989f3eb2', width: 960, height: 1280,
-    caption: 'Проект «Архив и будущее поколение», Риддерский филиал, 18 сентября 2026 года.', alt: 'Посетители слушают рассказ сотрудника у стендов по истории Риддера.',
-    credit: 'Государственный архив Восточно-Казахстанской области', sourceUrl: 'http://e-arhiv.vko.gov.kz/ru/Page/Index/52812' },
-  { id: 'thematic-exhibition-altay', sha256: 'f6a84b8dc208388b33ac570bd89c84be2ba7c175232c5aaf0a96e1899a4a0443', width: 960, height: 1280,
-    caption: 'Тематическая выставка к юбилею Надежды Халиловой в филиале района Алтай, 4 сентября 2026 года.', alt: 'Выступление перед посетителями на тематической выставке в филиале района Алтай.',
-    credit: 'Государственный архив Восточно-Казахстанской области', sourceUrl: 'http://e-arhiv.vko.gov.kz/ru/Page/Index/52811' },
-  { id: 'open-day-altay', sha256: 'f7e21d3e70ce0b5b4a43899ab7352d7f322c9424e307debd50f64cab33b547b9', width: 1254, height: 1254,
-    caption: 'Афиша дня открытых дверей в филиале района Алтай, 21 сентября 2026 года.', alt: 'Двуязычная афиша дня открытых дверей филиала района Алтай.',
-    credit: 'Государственный архив Восточно-Казахстанской области', sourceUrl: 'http://e-arhiv.vko.gov.kz/ru/Page/Index/52813' },
-];
+import manifest from '../../sources/archive-visual-20261111/manifest.json';
+
+// The validated source manifest is authoritative. Replacing an incomplete transfer must not leave a stale UI hash.
+export const visuals: Visual[] = manifest.images.flatMap(image=>{
+  if(!image.sourceUrl||image.decoderValidation.status!=='complete_decode')return [];
+  return [{id:image.id,sha256:image.sha256,width:image.width,height:image.height,caption:image.caption,alt:image.alt,credit:image.credit,sourceUrl:image.sourceUrl}];
+});
 
 /** Which image may lead which page: the manifest's `usage` (the poster is a past event, so it never leads a page). */
 export const visualSlots = {
