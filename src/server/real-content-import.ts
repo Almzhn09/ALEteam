@@ -4,6 +4,7 @@ import {Prisma,type ContentRevision} from '../generated/prisma/index.js';
 import {ApiError} from './http';
 import {canonicalHash} from './catalog-import-schema';
 import {realContentPackage,type RealPage} from './real-content-package';
+import {prepareSourceDraftRows} from './source-drafts';
 import {createCmsDraft,appendCmsDraft} from './cms-drafts';
 import {applyCmsTransition,contentPayload} from './cms';
 import {importReferencePackage} from './reference-import';
@@ -39,8 +40,9 @@ async function ensurePage(row:RealPage,namespace:string){
  const legacy=await db.sourceDraftBinding.findUnique({where:{namespace_sourceKey_locale:{namespace:'archive-20261110',sourceKey:row.sourceKey,locale:row.locale}},include:{item:true,revision:true}});
  if(legacy){
   const old=contentPayload.parse(legacy.revision.payload),original=(legacy.original as any)?.request?.payload;
-  const knownBody=original?.body??row.payload.body;
-  if(legacy.item.isDemo||!['DRAFT','PUBLISHED'].includes(legacy.revision.status)||old.body!==knownBody)throw new ApiError(409,'SOURCE_IMPORT_CONFLICT','Данные изменились. Обновите страницу и повторите.');
+  const expected=original?contentPayload.parse(original):prepareSourceDraftRows({package:'archive-20261110',mode:'branches',mappings:[{sourceKey:row.sourceKey,slug:legacy.item.slug,...(legacy.item.branchId?{branchId:legacy.item.branchId}:{})}]}).map(r=>r.payload)[0];
+  if(legacy.item.isDemo||legacy.item.kind!==row.kind||!['DRAFT','PUBLISHED'].includes(legacy.revision.status)||hash(old)!==hash(expected))throw new ApiError(409,'SOURCE_IMPORT_CONFLICT','Данные изменились. Обновите страницу и повторите.');
+  if(legacy.item.branchId){const branch=await db.archiveBranch.findUniqueOrThrow({where:{id:legacy.item.branchId}});if(!branch.isPublic){const documents=await db.document.count({where:{isPublic:true,deletedAt:null,fund:{branchId:branch.id}}}),otherPublications=await db.contentRevision.count({where:{status:'PUBLISHED',item:{branchId:branch.id,id:{not:legacy.itemId}}}});if(documents||otherPublications)throw new ApiError(409,'BRANCH_VISIBILITY_REVIEW_REQUIRED','Данные изменились. Обновите страницу и повторите.');}}
   itemId=legacy.itemId;slug=legacy.item.slug;
   if(legacy.revision.status==='DRAFT')revision=await db.contentRevision.update({where:{id:legacy.revision.id},data:{payload:row.payload,authorId,reviewerId:null}});
   else revision=await db.$transaction(tx=>appendCmsDraft(tx,itemId,row.locale,row.payload,authorId));
@@ -49,7 +51,7 @@ async function ensurePage(row:RealPage,namespace:string){
   const existing=await db.contentItem.findUnique({where:{slug}});if(existing){const own=await db.realContentBinding.count({where:{namespace,targetKind:'cms',targetId:existing.id}});if(!own||existing.isDemo||existing.branchId!==row.branchId||existing.kind!==row.kind)throw new ApiError(409,'SOURCE_IMPORT_CONFLICT','Данные изменились. Обновите страницу и повторите.');itemId=existing.id;revision=await db.$transaction(tx=>appendCmsDraft(tx,itemId,row.locale,row.payload,authorId));}else{const item=await db.$transaction(tx=>createCmsDraft(tx,{slug,kind:row.kind,branchId:row.branchId,isDemo:false,locale:row.locale,payload:row.payload},authorId));itemId=item.id;revision=item.revisions[0];}
  }
  const recorded=await db.realContentBinding.create({data:{namespace,sourceKey:row.sourceKey,locale:row.locale,targetKind:'cms',targetId:itemId,inputHash,outputHash:hash(row.payload),data:{revisionId:revision.id,slug,reviewType:'automated-source-integrity',original:row.original as Prisma.InputJsonValue}}});
- revision=await publishRevision(revision);if(row.branchId)await db.archiveBranch.update({where:{id:row.branchId},data:{isPublic:true,isDemo:false}});
+ revision=await publishRevision(revision);const targetBranchId=legacy?.item.branchId??row.branchId;if(targetBranchId)await db.archiveBranch.update({where:{id:targetBranchId},data:{isPublic:true,isDemo:false}});
  return {itemId,revision,state:'published',slug};
 }
 async function ensureFact(namespace:string,key:string,kind:FactKind,data:unknown,sources:unknown,parentId:string|null=null){
