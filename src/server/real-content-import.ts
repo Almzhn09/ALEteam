@@ -1,6 +1,7 @@
 import {readFile} from 'node:fs/promises';
+import pg from 'pg';
 import {db} from './db';
-import {Prisma,type ContentRevision} from '../generated/prisma/index.js';
+import {Prisma,type ContentRevision,type RealContentBinding} from '../generated/prisma/index.js';
 import {ApiError} from './http';
 import {canonicalHash} from './catalog-import-schema';
 import {realContentPackage,type RealPage} from './real-content-package';
@@ -34,10 +35,45 @@ async function publishRevision(revision:ContentRevision){
   current=await db.$transaction(async tx=>{const full=await tx.contentRevision.findUniqueOrThrow({where:{id:current.id},include:{item:true}});return applyCmsTransition(tx,full,{status,expectedUpdatedAt:full.updatedAt.toISOString(),reason},{user:{id:status==='IN_REVIEW'?authorId:reviewerId},grants});});
  }return current;
 }
+function importConflict():never {throw new ApiError(409,'SOURCE_IMPORT_CONFLICT','Источник изменён редактором, отозван или имеет незавершённую редакцию. Требуется сверка.');}
+function bindingVersions(binding:RealContentBinding):Prisma.InputJsonValue[]{const data=binding.data as Prisma.InputJsonObject;return Array.isArray(data.versions)?data.versions as Prisma.InputJsonValue[]:[];}
+async function checkedManagedPage(binding:RealContentBinding,row:RealPage,client:Prisma.TransactionClient=db){
+ const revision=await client.contentRevision.findUniqueOrThrow({where:{id:(binding.data as {revisionId:string}).revisionId},include:{item:{include:{branch:true}}}});
+ const latest=await client.contentRevision.findFirst({where:{itemId:binding.targetId,locale:row.locale},orderBy:{version:'desc'}});
+ if(hash(revision.payload)!==binding.outputHash||latest?.id!==revision.id||revision.authorId!==authorId||revision.reviewerId&&revision.reviewerId!==reviewerId||revision.item.isDemo||revision.item.kind!==row.kind)importConflict();
+ if(binding.inputHash!==hash(row)&&(revision.status!=='PUBLISHED'||revision.item.branch&&!revision.item.branch.isPublic))importConflict();
+ return revision;
+}
+async function preflightManagedPages(rows:RealPage[],namespace:string){
+ // Detect an editor's conflict anywhere in the managed corpus before publishing another page.
+ const bindings=await db.realContentBinding.findMany({where:{namespace,targetKind:'cms'}});
+ const replacing:string[]=[];
+ for(const row of rows){const binding=bindings.find(b=>b.sourceKey===row.sourceKey&&b.locale===row.locale);if(binding){const revision=await checkedManagedPage(binding,row);if(binding.inputHash!==hash(row))replacing.push(revision.id);}}
+ if(replacing.length){
+  const owned=await db.realContentBinding.findMany({where:{namespace,targetKind:'attachment'},select:{targetId:true}});
+  const files=await db.cmsAttachment.findMany({where:{id:{in:owned.map(b=>b.targetId)},revisionId:{in:replacing}}});
+  if(files.some(f=>f.state!=='PUBLISHED'||f.uploaderId!==authorId||f.reviewerId!==reviewerId))importConflict();
+ }
+ const facts=await db.realContentBinding.findMany({where:{namespace,targetKind:'fact'}});
+ for(const binding of facts){const fact=await db.discoveryFact.findUniqueOrThrow({where:{id:binding.targetId}});if(hash(fact.data)!==binding.outputHash||fact.authorId!==authorId||fact.branchId!==null||fact.reviewerId!==reviewerId)importConflict();}
+}
 async function ensurePage(row:RealPage,namespace:string){
  const key={namespace_sourceKey_locale:{namespace,sourceKey:row.sourceKey,locale:row.locale}};
  const inputHash=hash(row),binding=await db.realContentBinding.findUnique({where:key});
- if(binding){const data=binding.data as {revisionId:string};const revision=await db.contentRevision.findUniqueOrThrow({where:{id:data.revisionId}});if(binding.inputHash!==inputHash||hash(revision.payload)!==binding.outputHash)throw new ApiError(409,'SOURCE_IMPORT_CONFLICT','Данные изменились. Обновите страницу и повторите.');return {itemId:binding.targetId,revision:await publishRevision(revision),state:revision.status==='ARCHIVED'?'withdrawn':'unchanged',slug:(await db.contentItem.findUniqueOrThrow({where:{id:binding.targetId}})).slug};}
+ if(binding){
+  const checked=await checkedManagedPage(binding,row);
+  if(binding.inputHash===inputHash)return {itemId:binding.targetId,revision:await publishRevision(checked),state:checked.status==='ARCHIVED'?'withdrawn':'unchanged',slug:checked.item.slug};
+  // Only an untouched, still public edition owned by this importer can be upgraded.
+  // Human drafts, withdrawal, closed branches and changed metadata require review.
+  const revision=await db.$transaction(async tx=>{
+   await tx.$queryRaw`SELECT id FROM "ContentItem" WHERE id=${binding.targetId} FOR UPDATE`;
+   const current=await checkedManagedPage(binding,row,tx);
+   const next=await appendCmsDraft(tx,binding.targetId,row.locale,row.payload,authorId);
+   await tx.realContentBinding.update({where:{id:binding.id,inputHash:binding.inputHash},data:{inputHash,outputHash:hash(row.payload),data:{...binding.data as Prisma.InputJsonObject,revisionId:next.id,versions:[...bindingVersions(binding),{revisionId:current.id,inputHash:binding.inputHash,outputHash:binding.outputHash}]}}});
+   return next;
+  });
+  return {itemId:binding.targetId,revision:await publishRevision(revision),state:'updated',slug:checked.item.slug};
+ }
  let revision:ContentRevision;let itemId:string;let slug=row.slug;
  const legacy=await db.sourceDraftBinding.findUnique({where:{namespace_sourceKey_locale:{namespace:'archive-20261110',sourceKey:row.sourceKey,locale:row.locale}},include:{item:true,revision:true}});
  if(legacy){
@@ -58,7 +94,21 @@ async function ensurePage(row:RealPage,namespace:string){
 }
 async function ensureFact(namespace:string,key:string,kind:FactKind,data:unknown,sources:unknown,parentId:string|null=null){
  const inputHash=hash({kind,data,sources,parentId}),where={namespace_sourceKey_locale:{namespace,sourceKey:key,locale:'ru'}};const binding=await db.realContentBinding.findUnique({where});
- if(binding){const row=await db.discoveryFact.findUniqueOrThrow({where:{id:binding.targetId}});if(binding.inputHash!==inputHash||hash(row.data)!==binding.outputHash)throw new ApiError(409,'SOURCE_IMPORT_CONFLICT','Данные изменились. Обновите страницу и повторите.');return row;}
+ if(binding){
+  const row=await db.discoveryFact.findUniqueOrThrow({where:{id:binding.targetId}});
+  if(hash(row.data)!==binding.outputHash||row.authorId!==authorId||row.reviewerId!==reviewerId||row.kind!==kind||row.branchId!==null)importConflict();
+  if(binding.inputHash===inputHash)return row;
+  if(row.status!=='VERIFIED')importConflict();
+  const parsed=parseFact(kind,data);
+  return db.$transaction(async tx=>{
+   await tx.$executeRaw`SELECT pg_advisory_xact_lock(782032105)`;
+   const current=await tx.discoveryFact.findUniqueOrThrow({where:{id:row.id}});if(current.updatedAt.getTime()!==row.updatedAt.getTime())importConflict();
+   if(!await resolveEvidence(sources,tx))throw Error('SOURCE_EVIDENCE_CHANGED');await validateFact(kind,parsed,parentId,tx);
+   const updated=await tx.discoveryFact.update({where:{id:row.id},data:{data:parsed as Prisma.InputJsonObject,sources:sources as Prisma.InputJsonValue,parentId}});
+   await tx.realContentBinding.update({where:{id:binding.id,inputHash:binding.inputHash},data:{inputHash,outputHash:hash(parsed),data:{...binding.data as Prisma.InputJsonObject,versions:[...bindingVersions(binding),{inputHash:binding.inputHash,outputHash:binding.outputHash,data:row.data,sources:row.sources,parentId:row.parentId}]}}});
+   await tx.auditEvent.create({data:{actorId:reviewerId,action:'SOURCE_FACT_TECHNICALLY_UPDATED',entityId:row.id}});return updated;
+  });
+ }
  const parsed=parseFact(kind,data);return db.$transaction(async tx=>{
   if(!await resolveEvidence(sources,tx))throw Error('SOURCE_EVIDENCE_CHANGED');await validateFact(kind,parsed,parentId,tx);
   const draft=await tx.discoveryFact.create({data:{kind,data:parsed as Prisma.InputJsonObject,sources:sources as Prisma.InputJsonValue,parentId,authorId}});
@@ -68,26 +118,40 @@ async function ensureFact(namespace:string,key:string,kind:FactKind,data:unknown
  });
 }
 async function ensureAttachment(namespace:string,key:string,page:{itemId:string;revision:ContentRevision},file:any){
- const where={namespace_sourceKey_locale:{namespace,sourceKey:'file-'+key,locale:page.revision.locale}},inputHash=hash([file.sha256,page.revision.id,file.publicationPages??null,file.ocrSha256??null]);const existing=await db.realContentBinding.findUnique({where});
- if(existing){if(existing.inputHash!==inputHash)throw Error('SOURCE_ATTACHMENT_CONFLICT');let current=await db.cmsAttachment.findUniqueOrThrow({where:{id:existing.targetId}});if(current.storageKey)await readStagedUpload({...current,storageKey:current.storageKey},process.env.FILE_STORAGE_ROOT||'.local/files');if(current.state==='QUARANTINED')current=await approveCmsAttachment(current.id,reviewerId);if(current.state==='APPROVED')current=await publishCmsAttachment(current.id,reviewerId);return current;}
- const bytes=await readFile('sources/archive-public-20261111/'+file.path),mime=file.name.toLowerCase().endsWith('.docx')?docxMime:'application/pdf';
- const staged=await stageUpload(new Request('http://import.invalid/',{method:'PUT',body:new Uint8Array(bytes)}),{bytes:file.bytes,sha256:file.sha256,mime:mime as UploadMime},process.env.FILE_STORAGE_ROOT||'.local/files');
- let row=await db.cmsAttachment.create({data:{revisionId:page.revision.id,name:file.name,mimeType:mime,expectedBytes:file.bytes,expectedSha256:file.sha256,storageKey:staged.storageKey,state:'QUARANTINED',uploaderId:authorId,rights:'Предоставленный оригинал; публикация в проекте по поручению пользователя.',sourceNote:file.member,sourceLabel:file.name,sourceVersion:'Предоставленный оригинал'}});
- await db.realContentBinding.create({data:{namespace,sourceKey:'file-'+key,locale:page.revision.locale,targetKind:'attachment',targetId:row.id,inputHash,outputHash:file.sha256,data:{sourceId:file.sourceId,masterSha256:file.sha256,member:file.member}}});
- if(file.publicationPages)await processCmsAttachment(row.id,{previewPage:file.publicationPages[0]});
- row=await approveCmsAttachment(row.id,reviewerId);
+ const where={namespace_sourceKey_locale:{namespace,sourceKey:'file-'+key,locale:page.revision.locale}},inputHash=hash([file.sha256,page.revision.id,file.publicationPages??null,file.ocrSha256??null]);
+ const existing=await db.realContentBinding.findUnique({where});let row;
+ if(existing){
+  row=await db.cmsAttachment.findUniqueOrThrow({where:{id:existing.targetId}});
+  if(row.storageKey)await readStagedUpload({...row,storageKey:row.storageKey},process.env.FILE_STORAGE_ROOT||'.local/files');
+  if(existing.inputHash!==inputHash){
+   if(row.revisionId===page.revision.id||row.expectedSha256!==file.sha256||row.state!=='PUBLISHED'||row.uploaderId!==authorId||row.reviewerId!==reviewerId)importConflict();
+   row=undefined;
+  }
+ }
+ if(!row){
+  const bytes=await readFile('sources/archive-public-20261111/'+file.path),mime=file.name.toLowerCase().endsWith('.docx')?docxMime:'application/pdf';
+  const staged=await stageUpload(new Request('http://import.invalid/',{method:'PUT',body:new Uint8Array(bytes)}),{bytes:file.bytes,sha256:file.sha256,mime:mime as UploadMime},process.env.FILE_STORAGE_ROOT||'.local/files');
+  row=await db.$transaction(async tx=>{
+   const created=await tx.cmsAttachment.create({data:{revisionId:page.revision.id,name:file.name,mimeType:mime,expectedBytes:file.bytes,expectedSha256:file.sha256,storageKey:staged.storageKey,state:'QUARANTINED',uploaderId:authorId,rights:'Предоставленный оригинал; публикация в проекте по поручению пользователя.',sourceNote:file.member,sourceLabel:file.name,sourceVersion:'Предоставленный оригинал'}});
+   const metadata={sourceId:file.sourceId,masterSha256:file.sha256,member:file.member,...(existing?{versions:[...bindingVersions(existing),{targetId:existing.targetId,inputHash:existing.inputHash,outputHash:existing.outputHash}]}:{})};
+   await tx.realContentBinding.upsert({where,create:{namespace,sourceKey:'file-'+key,locale:page.revision.locale,targetKind:'attachment',targetId:created.id,inputHash,outputHash:file.sha256,data:metadata},update:{targetId:created.id,inputHash,outputHash:file.sha256,data:metadata}});return created;
+  });
+ }
+ // An interrupted import resumes all processing stages before publishing. Withdrawn files stay withdrawn.
+ if(!['QUARANTINED','APPROVED'].includes(row.state))return row;
+ if(file.publicationPages)row=await processCmsAttachment(row.id,{previewPage:file.publicationPages[0]});
+ if(row.state==='QUARANTINED')row=await approveCmsAttachment(row.id,reviewerId);
  if(file.sourceId==='S06'){
   const ocr=JSON.parse(await readFile('sources/archive-public-20261111/ocr-s06.json','utf8'));if(ocr.sourceSha256!==row.expectedSha256)throw Error('OCR_SOURCE_CHANGED');
   const words=ocr.pages.reduce((n:number,p:any)=>n+p.words,0),confidence=words?ocr.pages.reduce((n:number,p:any)=>n+(p.confidence??0)*p.words,0)/words/100:undefined;
   const fragments=ocr.pages.filter((p:any)=>p.text.trim()).map((p:any)=>({page:p.page,text:p.text,confidence:p.confidence===null?null:p.confidence/100,corrected:false}));
-  await db.cmsAttachment.update({where:{id:row.id},data:{parsed:{...row.parsed as Prisma.InputJsonObject,fragments,publicationPages:file.publicationPages,ocr:{used:true,quality:'unreviewed',engine:ocr.engine,...(confidence!==undefined?{confidence}:{})}}}});
+  row=await db.cmsAttachment.update({where:{id:row.id,state:'APPROVED',updatedAt:row.updatedAt},data:{parsed:{...row.parsed as Prisma.InputJsonObject,fragments,publicationPages:file.publicationPages,ocr:{used:true,quality:'unreviewed',engine:ocr.engine,...(confidence!==undefined?{confidence}:{})}}}});
  }
- row=await publishCmsAttachment(row.id,reviewerId);
- return row;
+ return publishCmsAttachment(row.id,reviewerId);
 }
-export async function importRealContent(dryRun=true){
+async function importRealContentUnlocked(dryRun=true){
  const pack=await realContentPackage();if(dryRun)return {dryRun,digest:pack.digest,pages:pack.rows.map(r=>({sourceKey:r.sourceKey,locale:r.locale,slug:r.slug,kind:r.kind})),files:pack.files.map((f:any)=>({sourceId:f.sourceId,name:f.name,sha256:f.sha256})),directories:await importReferencePackage(authorId,true),excluded:pack.excluded};
- await actors();const pages=[];
+ await preflightManagedPages(pack.rows,pack.namespace);await actors();const pages=[];
  for(const row of pack.rows){const published=await ensurePage(row,pack.namespace);pages.push({...published,sourceKey:row.sourceKey,locale:row.locale,payload:row.payload});}
  const directories=await importReferencePackage(authorId,false),attachments=[];
  for(const page of pages){if(page.revision.status!=='PUBLISHED')continue;
@@ -120,4 +184,15 @@ export async function importRealContent(dryRun=true){
  if(decree&&contact)for(const page of pages.filter(p=>p.sourceKey.startsWith('S01-')))await ensureFact(pack.namespace,'link-decree-'+page.sourceKey,'LINK',{from:{kind:'cms',id:decree.itemId},to:{kind:'cms',id:page.itemId},reason:'same_event'},[bindings.find(b=>b.sourceKey==='branch-decree-142')!.source,bindings.find(b=>b.sourceKey===page.sourceKey)!.source]);
  await db.realContentBinding.upsert({where:{namespace_sourceKey_locale:{namespace:pack.namespace,sourceKey:'__release__',locale:'none'}},create:{namespace:pack.namespace,sourceKey:'__release__',locale:'none',targetKind:'release',targetId:pack.namespace,inputHash:pack.digest,outputHash:pack.digest,data:{completed:true}},update:{inputHash:pack.digest,outputHash:pack.digest,data:{completed:true}}});
  return {dryRun:false,digest:pack.digest,technicalReview:{actors:[authorId,reviewerId],kind:'automated source-integrity stages; not an archive signature'},pages:pages.map(p=>({sourceKey:p.sourceKey,locale:p.locale,itemId:p.itemId,revisionId:p.revision.id,state:p.state,slug:p.slug})),attachments:attachments.map(a=>({id:a.id,revisionId:a.revisionId,sha256:a.expectedSha256,state:a.state})),directories,facts:facts.length,topics:topics.length,blockedFacts:prepared.blocked,excluded:pack.excluded};
+}
+
+export async function importRealContent(dryRun=true){
+ if(dryRun)return importRealContentUnlocked(true);
+ const lock=new pg.Client({connectionString:process.env.DATABASE_URL});await lock.connect();
+ try{
+  const {rows}=await lock.query('SELECT pg_try_advisory_lock(782032114) AS acquired');
+  if(!rows[0].acquired)throw new ApiError(409,'SOURCE_IMPORT_BUSY','Другой импорт источников уже выполняется.');
+  try{return await importRealContentUnlocked(false);}
+  finally{await lock.query('SELECT pg_advisory_unlock(782032114)');}
+ }finally{await lock.end();}
 }

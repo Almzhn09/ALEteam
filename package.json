@@ -59,6 +59,7 @@
     "content:real:prepare": "python3 scripts/prepare-real-publication.py && python3 scripts/prepare-real-curation.py",
     "check:real-content": "node --env-file-if-exists=.env --import tsx scripts/check-real-content.ts",
     "test:real-content": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/real-content.integration.test.ts",
+    "test:real-content-upgrade": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/real-content-upgrade.integration.test.ts",
     "content:preview": "node --env-file-if-exists=.env --import tsx scripts/real-content.ts",
     "content:apply": "node --env-file-if-exists=.env --import tsx scripts/real-content.ts --apply"
   },
