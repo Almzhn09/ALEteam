@@ -7,6 +7,7 @@ import files from '../data/artur/real-content-v2/files.json';
 import curation from '../data/artur/real-content-v2/curation.json';
 import cases from '../data/artur/real-content-v2/acceptance-cases.json';
 import images from '../sources/archive-visual-20261111/manifest.json';
+import compared from '../data/artur/real-content-v2/verified-excerpts.json';
 import {contentPayload,checkPayload} from '../src/server/cms';
 import {sourceExcerpt,sourceQueryTerms} from '../src/server/artur-discovery/source-excerpts';
 import {cmsAnswer} from '../src/server/cms-grounding';
@@ -47,6 +48,21 @@ test('all prepared attachments and selected images retain the actual source hash
   if('pageSnapshot' in image){
    const b=await readFile(image.pageSnapshot!);
    assert.equal(createHash('sha256').update(b).digest('hex'),image.pageSha256);
+  }
+ }
+});
+
+test('prepared source comparisons retain exact text offsets or an explicitly identified original PDF page',async()=>{
+ for(const row of compared.records){
+  assert.equal(row.confidence,null);
+  if('textPath' in row&&row.textPath){
+   const bytes=await readFile(row.textPath),text=bytes.toString('utf8');
+   assert.equal(createHash('sha256').update(bytes).digest('hex'),row.textSha256);
+   assert.equal(text.slice(row.offset!,row.offset!+row.quote.length),row.quote);
+  }else{
+   assert.equal(row.basis,'visual_transcription');assert.equal(row.page,4);
+   assert.equal(createHash('sha256').update(await readFile(row.originalPath!)).digest('hex'),row.sourceSha256);
+   assert.ok(row.proofImage);
   }
  }
 });

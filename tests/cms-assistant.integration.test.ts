@@ -60,7 +60,8 @@ test('real Russian history fits create, edit and new-revision requests within th
  const item=await create('Историямаркер','ru','PAGE',null,{...p,title:'Историямаркер'});
  const revision=item.revisions[0];
  const edited=await call('/admin/revisions/'+revision.id,'PATCH',{expectedUpdatedAt:revision.updatedAt,payload:p},writer);
- assert.equal(edited.status,200);assert.equal((await edited.json()).item.payload.body,p.body);
+ assert.equal(edited.status,200);const editedItem=(await edited.json()).item;assert.equal(editedItem.payload.body,p.body);
+ await publish(editedItem);
  const next=await call('/admin/content/'+item.id+'/revisions','POST',{locale:'ru',payload:p},writer);
  assert.equal(next.status,201);assert.equal((await next.json()).item.payload.body,p.body);
 });

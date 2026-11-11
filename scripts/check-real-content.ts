@@ -27,6 +27,7 @@ const port=process.env.REAL_CONTENT_PORT??'3121',base='http://localhost:'+port;
 const folder='docs/artur/real-content-v2/proof',privateFolder='.local/real-content';
 const env={...process.env,DATABASE_URL:database,BETTER_AUTH_URL:base,ALLOW_DEMO_SEED:'0',ASSISTANT_MODE:'local-model',ASSISTANT_SERVICE_URL:'',NEXT_PUBLIC_API_MOCK:'0'};
 const checks:{name:string;passed:boolean;detail?:string}[]=[],gates:{name:string;passed:boolean;detail:string}[]=[];
+const visualMatrix:{width:number;locale:string;theme:string;textSize:string;fontSize:string;overflow:number}[]=[];
 let app:ChildProcess|undefined;
 const password=randomBytes(32).toString('hex');
 const identities=['writer','reviewer','publisher','reader'] as const;
@@ -170,16 +171,34 @@ try{
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),'No horizontal page overflow at 360/150%.');
   await page.screenshot({path:folder+'/history-mobile-dark-150.png',fullPage:true});
   await page.goto(base+'/');await page.getByRole('link',{name:'История архива · 1',exact:true}).first().waitFor();
+  const obsoleteCopy=(await page.locator('body').innerText()).includes('Материалы с меткой ДЕМО');
+  gates.push({name:'public source-based copy',passed:!obsoleteCopy,detail:obsoleteCopy?'The old footer still describes fictional materials; R-F02 must apply the supplied ui-copy.json.':'No obsolete fictional-material footer found.'});
   await page.screenshot({path:folder+'/home-mobile-real.png',fullPage:true});
   assert.deepEqual(errors,[]);
  });
  const video=page.video();await context.close();if(video)await video.saveAs(folder+'/real-content.webm');
+ await check('real long-form text remains readable across 36 locale, viewport and theme combinations',async()=>{
+  const matrix=await browser!.newContext({reducedMotion:'reduce'});const view=await matrix.newPage();
+  for(const width of [360,768,1440])for(const locale of ['ru','kk','en'])for(const theme of ['light','dark'])for(const textSize of ['100','150']){
+   await matrix.addCookies([{name:'display-theme',value:theme,url:base},{name:'display-text-size',value:textSize,url:base}]);
+   await view.setViewportSize({width,height:900});
+   await view.goto(base+'/materials/archive-history-1?contentLang=ru&lang='+locale);
+   await view.getByRole('heading',{name:'История архива · 1',exact:true}).first().waitFor();
+   const geometry=await view.evaluate(()=>({overflow:Math.max(0,document.documentElement.scrollWidth-window.innerWidth),fontSize:getComputedStyle(document.body).fontSize,locale:document.documentElement.lang,theme:document.documentElement.dataset.theme}));
+   assert.equal(geometry.locale,locale);assert.equal(geometry.theme,theme);
+   assert.equal(geometry.fontSize,textSize==='150'?'24px':'16px');assert.ok(geometry.overflow<=1);
+   visualMatrix.push({width,locale,theme,textSize,fontSize:geometry.fontSize,overflow:geometry.overflow});
+  }
+  await view.addScriptTag({path:'node_modules/axe-core/axe.min.js'});
+  const violations=await view.evaluate(async()=>{const result=await (window as unknown as {axe:{run:()=>Promise<{violations:{id:string;impact:string}[]}>}}).axe.run();return result.violations.filter(v=>v.impact==='critical').map(v=>v.id);});
+  assert.deepEqual(violations,[]);await matrix.close();
+ });
  await browser.close();browser=undefined;
  console.log('Own checks passed. Integration gates: '+gates.filter(g=>g.passed).length+'/'+gates.length+'.');
 }catch(error){checks.push({name:'acceptance failure',passed:false,detail:error instanceof Error?error.message:String(error)});throw error;}
 finally{
  if(browser)await browser.close();
  if(app?.exitCode===null){app.kill('SIGTERM');await once(app,'exit');}
- await writeFile(folder+'/report.json',JSON.stringify({generated:new Date().toISOString(),commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),dataSource:'provided source files; no synthetic seed',technicalAccounts:true,humanArchiveApproval:false,checks,integrationGates:gates,fullIntegrationReady:checks.every(c=>c.passed)&&gates.length>0&&gates.every(g=>g.passed)},null,2)+'\n');
+ await writeFile(folder+'/report.json',JSON.stringify({generated:new Date().toISOString(),commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),dataSource:'provided source files; no synthetic seed',technicalAccounts:true,humanArchiveApproval:false,checks,visualMatrix,integrationGates:gates,fullIntegrationReady:checks.every(c=>c.passed)&&gates.length>0&&gates.every(g=>g.passed)},null,2)+'\n');
  await db.$disconnect();
 }

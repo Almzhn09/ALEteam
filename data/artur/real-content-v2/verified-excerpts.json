@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "purpose": "Short source comparisons for explanations; importing and review still use current file permissions and workflow.",
+  "records": [
+    {
+      "id": "history-founded",
+      "sourceId": "S02",
+      "sourceSha256": "a7fe9a0dc02c62f2143fbc55c9c677cbbad7b1b05eb981be6ab4addf544aac59",
+      "textPath": "sources/archive-20261110/text/S02--История архива.docx.txt",
+      "textSha256": "752bdbe469e558be73e14f526028b933cf372ea2a2f08b241fee69961e9ac3e0",
+      "quote": "Государственный архив Восточно-Казахстанской области образован в 1940 году с подчинением архивному отделению управления народного комиссариата внутренних дел Казахской ССР по Восточно-Казахстанской области.",
+      "offset": 15,
+      "basis": "exact_source_text",
+      "confidence": null,
+      "decision": "READY_FOR_EXISTING_REVIEW",
+      "note": "Exact provided text, not a claim of a phone call or current legal validation."
+    },
+    {
+      "id": "office-hours",
+      "sourceId": "S05",
+      "sourceSha256": "b9fdc6060ab279171e66736178a75452191ca8b6abc69c0c61065eeb1a77df65",
+      "textPath": "sources/archive-20261110/text/S05--Контакты.docx.txt",
+      "textSha256": "ae50e7ec7822927a76778144d82bff4b28b21d7c8a52ef49d9c590120f5447e2",
+      "quote": "Время работы: понедельник-пятница 8.00 – 17.00",
+      "offset": 413,
+      "basis": "exact_source_text",
+      "confidence": null,
+      "decision": "READY_FOR_EXISTING_REVIEW",
+      "note": "Exact provided text, not a claim of a phone call or current legal validation."
+    },
+    {
+      "id": "reading-hours",
+      "sourceId": "S05",
+      "sourceSha256": "b9fdc6060ab279171e66736178a75452191ca8b6abc69c0c61065eeb1a77df65",
+      "textPath": "sources/archive-20261110/text/S05--Контакты.docx.txt",
+      "textSha256": "ae50e7ec7822927a76778144d82bff4b28b21d7c8a52ef49d9c590120f5447e2",
+      "quote": "Время работы читального зала: понедельник-пятница 9.00-16.00",
+      "offset": 460,
+      "basis": "exact_source_text",
+      "confidence": null,
+      "decision": "READY_FOR_EXISTING_REVIEW",
+      "note": "Exact provided text, not a claim of a phone call or current legal validation."
+    },
+    {
+      "id": "decree-title",
+      "sourceId": "S06",
+      "sourceSha256": "a0d390105cb014504b83f3fa7208e9254bad2cbb7bb12bbe8f5d066bf4caf7dd",
+      "originalPath": "sources/archive-20261110/originals/Постановление обл акимата 142.pdf",
+      "page": 4,
+      "quote": "О некоторых вопросах архивных учреждений\nВосточно-Казахстанской области",
+      "basis": "visual_transcription",
+      "proofImage": "sources/archive-visual-20261111/originals/decree-142-page-4.png",
+      "comparison": "Codex compared the rendered provided PDF, 11 November 2026; no archive employee approval claimed.",
+      "confidence": null,
+      "decision": "READY_FOR_EXISTING_REVIEW",
+      "note": "Handwritten date/number read from original; full machine OCR remains unreviewed."
+    },
+    {
+      "id": "decree-date",
+      "sourceId": "S06",
+      "sourceSha256": "a0d390105cb014504b83f3fa7208e9254bad2cbb7bb12bbe8f5d066bf4caf7dd",
+      "originalPath": "sources/archive-20261110/originals/Постановление обл акимата 142.pdf",
+      "page": 4,
+      "quote": "2 июня 2026 года",
+      "basis": "visual_transcription",
+      "proofImage": "sources/archive-visual-20261111/originals/decree-142-page-4.png",
+      "comparison": "Codex compared the rendered provided PDF, 11 November 2026; no archive employee approval claimed.",
+      "confidence": null,
+      "decision": "READY_FOR_EXISTING_REVIEW",
+      "note": "Handwritten date/number read from original; full machine OCR remains unreviewed."
+    },
+    {
+      "id": "decree-number",
+      "sourceId": "S06",
+      "sourceSha256": "a0d390105cb014504b83f3fa7208e9254bad2cbb7bb12bbe8f5d066bf4caf7dd",
+      "originalPath": "sources/archive-20261110/originals/Постановление обл акимата 142.pdf",
+      "page": 4,
+      "quote": "142",
+      "basis": "visual_transcription",
+      "proofImage": "sources/archive-visual-20261111/originals/decree-142-page-4.png",
+      "comparison": "Codex compared the rendered provided PDF, 11 November 2026; no archive employee approval claimed.",
+      "confidence": null,
+      "decision": "READY_FOR_EXISTING_REVIEW",
+      "note": "Handwritten date/number read from original; full machine OCR remains unreviewed."
+    }
+  ]
+}
