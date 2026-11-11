@@ -34,6 +34,7 @@ test('source bundle upgrades tolerate editorial README changes while rejecting c
   const source=path.join(temporary,'sources/archive-20261110'),storage=path.join(temporary,'private');await mkdir(path.join(source,'originals'),{recursive:true});
   await writeFile(path.join(source,'manifest.json'),'{}');await writeFile(path.join(source,'originals/source.txt'),'immutable source');await writeFile(path.join(source,'README.md'),'Initial editorial notes');
   const command=()=>execFileSync(process.execPath,[path.resolve('scripts/persist-source-bundle.mjs')],{cwd:temporary,env:{...process.env,FILE_STORAGE_ROOT:storage},stdio:'pipe'});
+  for(const extra of ['archive-public-20261111','archive-reference-20261110']){await mkdir(path.join(temporary,'sources',extra),{recursive:true});await writeFile(path.join(temporary,'sources',extra,'manifest.json'),'{}');}
   command();await writeFile(path.join(source,'README.md'),'Corrected editorial notes');command();assert.equal(await readFile(path.join(storage,'source-bundles/archive-20261110/originals/source.txt'),'utf8'),'immutable source');
   await writeFile(path.join(source,'originals/source.txt'),'unexpected replacement');assert.throws(command);assert.equal(await readFile(path.join(storage,'source-bundles/archive-20261110/originals/source.txt'),'utf8'),'immutable source');
  }finally{await rm(temporary,{recursive:true,force:true});}

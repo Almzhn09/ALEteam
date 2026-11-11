@@ -3,7 +3,8 @@ import {mkdir,readdir,readFile,copyFile,realpath,lstat} from 'node:fs/promises';
 import {constants} from 'node:fs';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
-const name='archive-20261110',source=path.resolve('sources',name),storage=path.resolve(process.env.FILE_STORAGE_ROOT||'.local/files');
+for(const name of ['archive-20261110','archive-public-20261111','archive-reference-20261110']){
+const source=path.resolve('sources',name),storage=path.resolve(process.env.FILE_STORAGE_ROOT||'.local/files');
 await mkdir(storage,{recursive:true,mode:0o700});const root=await realpath(storage);
 const destination=path.join(root,'source-bundles',name);await mkdir(destination,{recursive:true,mode:0o700});
 const base=await realpath(destination);if(!base.startsWith(root+path.sep))throw Error('Unsafe source destination');
@@ -24,3 +25,5 @@ async function visit(relative=''){
  }
 }
 await visit();console.log(JSON.stringify({privateSourceBundle:name,filesVerified:count,publicFilesCreated:0}));
+
+}

@@ -15,7 +15,7 @@ async function freePort() {
 }
 const port = await freePort(); const restorePort = await freePort();
 const config = { DEPLOY_DOMAIN: '', DEPLOY_HTTP_PORT: String(port), BETTER_AUTH_URL: `http://localhost:${port}`,
-  POSTGRES_ADMIN_PASSWORD: secret(), APP_DB_PASSWORD: secret(), BETTER_AUTH_SECRET: secret(), ALLOW_DEMO_SEED: '1',
+  POSTGRES_ADMIN_PASSWORD: secret(), APP_DB_PASSWORD: secret(), BETTER_AUTH_SECRET: secret(), ALLOW_DEMO_SEED: '1', ARCHIVE_CONTENT_MODE:'fixtures',SYNTHETIC_FIXTURE_DATABASE:'1',
   DEMO_AUTHOR_PASSWORD: secret(), DEMO_MODERATOR_PASSWORD: secret(), STAFF_ADMIN_EMAIL: 'docker-staff@example.test', STAFF_ADMIN_NAME: 'Docker staff', STAFF_ADMIN_PASSWORD: secret(), MODERATION_MODE: 'local', ASSISTANT_MODE: 'retrieval', ARCHIVE_LLM_API_KEY: '', ARCHIVE_LLM_MODEL: '' };
 const restoreConfig = { ...config, DEPLOY_HTTP_PORT: String(restorePort), BETTER_AUTH_URL: `http://localhost:${restorePort}`, ALLOW_DEMO_SEED: '0' };
 const envFile = `${folder}/source.env`; const restoreEnvFile = `${folder}/restore.env`;

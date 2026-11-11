@@ -81,6 +81,8 @@ jobs:
           CHROMIUM_PATH="$browser_path" npm run test:release
       - name: Discovery transport, subscriptions, source and spreadsheet adapters
         run: npm run test:discovery
+      - name: Real-source publication, safe cleanup, attachments and complete registries
+        run: npm run test:real-content
       - name: Integrated team UI, discovery journey and spacing matrix
         shell: bash
         run: |
@@ -100,6 +102,7 @@ jobs:
             .local/uploads
             .local/imports
             .local/discovery
+            .local/real-content/http-proof.json
             .local/team-ui/summary.json
             .local/team-ui/discovery/report.json
             .local/team-ui/discovery/*.png
@@ -117,11 +120,15 @@ jobs:
         run: docker build --target tools -t aleteam-tools:local .
       - name: Check persistence, backup and restore in isolated projects
         run: node tests/deploy.mjs
+      - name: Real default corpus, repeat and backup restore
+        run: node tests/real-content.deploy.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: docker-validation-report
-          path: .local/deploy-validation.json
+          path: |
+            .local/deploy-validation.json
+            .local/real-content/docker-proof.json
   ocr:
     runs-on: ubuntu-latest
     steps:
