@@ -1,0 +1,68 @@
+{
+  "testedAt": "2026-11-11T06:33:50.636Z",
+  "checks": [
+    {
+      "name": "fresh default Compose imports the real corpus without fictional seed or Python runtime",
+      "passed": true
+    },
+    {
+      "name": "standalone runtime serves original DOCX, S06 page-4 preview and measured page-aware OCR with source-bound explanations",
+      "passed": true
+    },
+    {
+      "name": "re-running real setup is idempotent and never re-enables fixtures",
+      "passed": true
+    },
+    {
+      "name": "real source search and actual source preview timings are measured",
+      "passed": true
+    },
+    {
+      "name": "private backup includes all real tables, source originals, parsed OCR and derivatives",
+      "passed": true
+    },
+    {
+      "name": "restore into a new project preserves real provenance, visibility and identical original bytes",
+      "passed": true
+    }
+  ],
+  "measurements": [
+    {
+      "name": "real_material_search",
+      "requests": 10,
+      "p50Ms": 117.36,
+      "p95Ms": 322.29,
+      "corpus": {
+        "cmsItems": 39,
+        "publishedEditions": 53,
+        "fundGroups": 1705,
+        "newspaperRows": 1466
+      },
+      "runtime": "Node 24 Docker non-root, local loopback sequential fetch; full response bytes",
+      "lighthouse": false
+    },
+    {
+      "name": "real_source_preview",
+      "requests": 10,
+      "p50Ms": 18.39,
+      "p95Ms": 32.43,
+      "corpus": {
+        "cmsItems": 39,
+        "publishedEditions": 53,
+        "fundGroups": 1705,
+        "newspaperRows": 1466
+      },
+      "runtime": "Node 24 Docker non-root, local loopback sequential fetch; full response bytes",
+      "lighthouse": false
+    }
+  ],
+  "corpus": {
+    "content": 35,
+    "documents": 0,
+    "branches": 13,
+    "funds": 1705,
+    "newspapers": 1466
+  },
+  "temporaryEnvFilesRemoved": true,
+  "backupRetainedPrivately": true
+}

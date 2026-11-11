@@ -11,6 +11,8 @@ import {importReferencePackage} from './reference-import';
 import {resolveMaterial,resolveEvidence} from './discovery-materials';
 import {parseFact,validateFact,type FactKind} from './discovery-facts';
 import {prepareDiscoveryFacts,type PublishedSourceBinding} from './artur-discovery/publication';
+import {prepareRealCuration} from './artur-discovery/real-publication';
+import editorialTopics from '../../data/artur/discovery/topics.json';
 import {stageUpload,readStagedUpload} from './upload-storage';
 import {approveCmsAttachment,publishCmsAttachment,processCmsAttachment,docxMime} from './cms-attachments';
 import type {UploadMime} from '../contracts/uploads';
@@ -70,7 +72,7 @@ async function ensureAttachment(namespace:string,key:string,page:{itemId:string;
  if(existing){if(existing.inputHash!==inputHash)throw Error('SOURCE_ATTACHMENT_CONFLICT');let current=await db.cmsAttachment.findUniqueOrThrow({where:{id:existing.targetId}});if(current.storageKey)await readStagedUpload({...current,storageKey:current.storageKey},process.env.FILE_STORAGE_ROOT||'.local/files');if(current.state==='QUARANTINED')current=await approveCmsAttachment(current.id,reviewerId);if(current.state==='APPROVED')current=await publishCmsAttachment(current.id,reviewerId);return current;}
  const bytes=await readFile('sources/archive-public-20261111/'+file.path),mime=file.name.toLowerCase().endsWith('.docx')?docxMime:'application/pdf';
  const staged=await stageUpload(new Request('http://import.invalid/',{method:'PUT',body:new Uint8Array(bytes)}),{bytes:file.bytes,sha256:file.sha256,mime:mime as UploadMime},process.env.FILE_STORAGE_ROOT||'.local/files');
- let row=await db.cmsAttachment.create({data:{revisionId:page.revision.id,name:file.name,mimeType:mime,expectedBytes:file.bytes,expectedSha256:file.sha256,storageKey:staged.storageKey,state:'QUARANTINED',uploaderId:authorId,rights:'Предоставленный оригинал; публикация в проекте по поручению пользователя.',sourceNote:file.sourceId+'; '+file.member,sourceLabel:file.name,sourceVersion:file.sourceId+' / '+file.sha256.slice(0,16)}});
+ let row=await db.cmsAttachment.create({data:{revisionId:page.revision.id,name:file.name,mimeType:mime,expectedBytes:file.bytes,expectedSha256:file.sha256,storageKey:staged.storageKey,state:'QUARANTINED',uploaderId:authorId,rights:'Предоставленный оригинал; публикация в проекте по поручению пользователя.',sourceNote:file.member,sourceLabel:file.name,sourceVersion:'Предоставленный оригинал'}});
  await db.realContentBinding.create({data:{namespace,sourceKey:'file-'+key,locale:page.revision.locale,targetKind:'attachment',targetId:row.id,inputHash,outputHash:file.sha256,data:{sourceId:file.sourceId,masterSha256:file.sha256,member:file.member}}});
  if(file.publicationPages)await processCmsAttachment(row.id,{previewPage:file.publicationPages[0]});
  row=await approveCmsAttachment(row.id,reviewerId);
@@ -96,18 +98,24 @@ export async function importRealContent(dryRun=true){
   if(page.sourceKey==='branch-decree-142')files=pack.files.filter((f:any)=>f.sourceId==='S06');
   if(page.sourceKey.startsWith('calendar-'))files=pack.files.filter((f:any)=>f.sourceId==='S03'&&f.name.includes(page.sourceKey.split('-')[1]));
   if(page.sourceKey.startsWith('compliance-file-'))files=pack.files.filter((f:any)=>page.sourceKey==='compliance-file-'+f.sha256.slice(0,16));
-  if(page.sourceKey==='compliance-14'||page.sourceKey==='compliance-15')files=pack.files.filter((f:any)=>f.sourceId==='S04'&&f.name===(page.sourceKey==='compliance-14'?'Информация каз.docx':'Информация о работе комплаенс службы.docx'));
+  const notices:Record<string,string>={'compliance-14':'Информация каз.docx','compliance-15':'Информация о работе комплаенс службы.docx','compliance-16':'О проведении внутреннего анализа коррупционных рисков.docx','compliance-17':'Сыбайлас жемқорлық тәуекелдеріне ішкі талдау жүргізу туралы.docx'};
+  if(notices[page.sourceKey])files=pack.files.filter((f:any)=>f.sourceId==='S04'&&f.name===notices[page.sourceKey]);
   for(const file of files)attachments.push(await ensureAttachment(pack.namespace,page.sourceKey+'-'+file.sha256,page,file));
  }
  const bindings:PublishedSourceBinding[]=[];for(const page of pages){const material=await resolveMaterial({kind:'cms',id:page.itemId},page.locale as 'ru'|'kk'|'en',false);if(material)bindings.push({sourceKey:page.sourceKey,locale:page.locale as 'ru'|'kk'|'en',body:String(page.payload.body),source:material.source as PublishedSourceBinding['source']});}
  const facts=[],parents:Record<string,{id:string;name:string}>={};
  let prepared=prepareDiscoveryFacts(bindings);for(const request of prepared.ready.filter(r=>r.request.kind==='PLACE')){const row=await ensureFact(pack.namespace,request.draftKey,'PLACE',request.request.data,request.request.sources);const data=row.data as any;parents[request.draftKey]={id:row.id,name:data.labels.ru.title};facts.push(row);}
  prepared=prepareDiscoveryFacts(bindings,parents);for(const request of prepared.ready.filter(r=>r.request.kind!=='PLACE'))facts.push(await ensureFact(pack.namespace,request.draftKey,request.request.kind,request.request.data,request.request.sources,request.request.parentId??null));
- const topics=[];const definitions=[['archives','История архива','history-1'],['cities','История городов','calendar-2026-ru'],['calendar','Календарь памятных дат','calendar-2026-ru'],['newspapers','Газеты','newspaper-directory-info'],['compliance','Комплаенс','compliance-15']];
- for(const [key,title,sourceKey]of definitions){const source=bindings.find(b=>b.sourceKey===sourceKey);if(!source)continue;const row=await ensureFact(pack.namespace,'topic-'+key,'TOPIC',{labels:{ru:{title}}},[source.source]);topics.push({key,row});}
+ const topics=[];const definitions=[['archives','История архива','history-1'],['cities','История городов','calendar-2026-ru'],['calendar','Календарь памятных дат','calendar-2026-ru'],['newspapers','Газеты','newspaper-directory-info'],['compliance','Комплаенс','compliance-15'],['education','Школы и образование','calendar-2026-ru'],['industry','Промышленность','calendar-2025-ru'],['people','Люди региона','calendar-2026-ru']];
+ const extraTopicLabels:Record<string,Record<string,string>>={calendar:{ru:'Календарь памятных дат',kk:'Атаулы күндер күнтізбесі',en:'Commemorative dates'},compliance:{ru:'Комплаенс',kk:'Комплаенс қызметі',en:'Compliance'}};
+ for(const [key,title,sourceKey]of definitions){const source=bindings.find(b=>b.sourceKey===sourceKey);if(!source)continue;const translated=editorialTopics.records.find(t=>t.id===key)?.labels??extraTopicLabels[key]??{ru:title};const labels=Object.fromEntries(Object.entries(translated).map(([locale,title])=>[locale,{title}]));const row=await ensureFact(pack.namespace,'topic-'+key,'TOPIC',{labels},[source.source]);topics.push({key,row});}
  const topicFor=(key:string)=>key.startsWith('calendar-')?'calendar':key.includes('newspaper')?'newspapers':key.includes('compliance')?'compliance':'archives';
  pages.sort((a,b)=>{const order=['history-1','calendar-2026-ru','fund-directory-info'];const ai=order.indexOf(a.sourceKey),bi=order.indexOf(b.sourceKey);return (ai<0?100:ai)-(bi<0?100:bi);});
  let index=0;for(const page of pages.filter(p=>p.locale==='ru')){const source=bindings.find(b=>b.sourceKey===page.sourceKey&&b.locale===page.locale);if(!source)continue;const topic=topics.find(t=>t.key===topicFor(page.sourceKey))??topics[0];await ensureFact(pack.namespace,'editorial-'+page.sourceKey,'EDITORIAL',{material:{kind:'cms',id:page.itemId},topicId:topic.row.id,order:index++},[source.source]);}
+ const aliases=[['fund-directory-info','fonds-guide'],['branch-decree-142','decree-142-ru']];
+ const curatedBindings=[...bindings,...aliases.flatMap(([from,to])=>{const source=bindings.find(b=>b.sourceKey===from&&b.locale==='ru');return source?[{...source,sourceKey:to}]:[];})];
+ const curated=prepareRealCuration(curatedBindings,parents,Object.fromEntries(topics.map(t=>[t.key,t.row.id])));
+ for(const row of curated.ready.filter(r=>r.request.kind==='EDITORIAL'||r.request.kind==='LINK'))await ensureFact(pack.namespace,'curated-'+row.draftKey,row.request.kind,row.request.data,row.request.sources);
  const decree=pages.find(p=>p.sourceKey==='branch-decree-142'),contact=bindings.find(b=>b.sourceKey==='contacts');
  if(decree&&contact)for(const page of pages.filter(p=>p.sourceKey.startsWith('S01-')))await ensureFact(pack.namespace,'link-decree-'+page.sourceKey,'LINK',{from:{kind:'cms',id:decree.itemId},to:{kind:'cms',id:page.itemId},reason:'same_event'},[bindings.find(b=>b.sourceKey==='branch-decree-142')!.source,bindings.find(b=>b.sourceKey===page.sourceKey)!.source]);
  await db.realContentBinding.upsert({where:{namespace_sourceKey_locale:{namespace:pack.namespace,sourceKey:'__release__',locale:'none'}},create:{namespace:pack.namespace,sourceKey:'__release__',locale:'none',targetKind:'release',targetId:pack.namespace,inputHash:pack.digest,outputHash:pack.digest,data:{completed:true}},update:{inputHash:pack.digest,outputHash:pack.digest,data:{completed:true}}});

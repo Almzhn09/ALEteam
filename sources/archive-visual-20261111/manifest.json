@@ -22,7 +22,22 @@
       "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52813",
       "pageSnapshot": "sources/archive-visual-20261111/pages/52813.html",
       "pageSha256": "f47616686a74ae85556e6c6e465ceb6dfb55e55979a3749692120bc6d1560319",
-      "origin": "official_archive_site"
+      "origin": "official_archive_site",
+      "localized": {
+        "ru": {
+          "alt": "Двуязычная афиша дня открытых дверей филиала района Алтай.",
+          "caption": "Афиша дня открытых дверей в филиале района Алтай, 21 сентября 2026 года."
+        },
+        "kk": {
+          "alt": "Алтай ауданы филиалының ашық есік күніне арналған екітілді афиша.",
+          "caption": "Алтай ауданы филиалының ашық есік күні, 2026 жылғы 21 қыркүйек."
+        },
+        "en": {
+          "alt": "Bilingual poster for the Altay district archive branch open day.",
+          "caption": "Altay district branch open day, 21 September 2026."
+        }
+      },
+      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/state/zirian/photo_2026-09-17_16-34-20.jpg"
     },
     {
       "id": "archive-next-generation-ridder",
@@ -44,7 +59,22 @@
       "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52812",
       "pageSnapshot": "sources/archive-visual-20261111/pages/52812.html",
       "pageSha256": "77652f8861e9e78bab457dc8b9e37320f4147601cf1a347a1e9fd63281a2849a",
-      "origin": "official_archive_site"
+      "origin": "official_archive_site",
+      "localized": {
+        "ru": {
+          "alt": "Посетители слушают рассказ сотрудника у стендов по истории Риддера.",
+          "caption": "Проект «Архив и будущее поколение», Риддерский филиал, 18 сентября 2026 года."
+        },
+        "kk": {
+          "alt": "Келушілер Риддер тарихына арналған стендтер жанында архив қызметкерін тыңдап отыр.",
+          "caption": "«Архив және болашақ ұрпақ» жобасы, Риддер филиалы, 2026 жылғы 18 қыркүйек."
+        },
+        "en": {
+          "alt": "Visitors listen to an archive employee beside displays about Ridder’s history.",
+          "caption": "Archive and the Future Generation project, Ridder branch, 18 September 2026."
+        }
+      },
+      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/state/ridder/884bbc46-061f-40b5-84c7-2465b22acbd5.jpg"
     },
     {
       "id": "thematic-exhibition-altay",
@@ -66,7 +96,22 @@
       "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52811",
       "pageSnapshot": "sources/archive-visual-20261111/pages/52811.html",
       "pageSha256": "af4e661cd5a702ead5bc99d0592e3e66ff06927001367a6677292009920732a4",
-      "origin": "official_archive_site"
+      "origin": "official_archive_site",
+      "localized": {
+        "ru": {
+          "alt": "Выступление перед посетителями на тематической выставке в филиале района Алтай.",
+          "caption": "Тематическая выставка к юбилею Надежды Халиловой в филиале района Алтай, 4 сентября 2026 года."
+        },
+        "kk": {
+          "alt": "Алтай ауданы филиалындағы тақырыптық көрмеде келушілерге сөз сөйлеу.",
+          "caption": "Надежда Халилованың мерейтойына арналған көрме, Алтай ауданы филиалы, 2026 жылғы 4 қыркүйек."
+        },
+        "en": {
+          "alt": "A talk to visitors during a thematic exhibition at the Altay district branch.",
+          "caption": "Exhibition marking Nadezhda Khalilova’s anniversary, Altay district branch, 4 September 2026."
+        }
+      },
+      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/state/ajaguz/photo_2026-09-04_15-33-39.jpg"
     },
     {
       "id": "decree-142-page-4",
@@ -89,7 +134,21 @@
       "sourcePath": "sources/archive-20261110/originals/Постановление обл акимата 142.pdf",
       "sourcePage": 4,
       "origin": "rendered_user_pdf",
-      "renderCommand": "pdftoppm -f 4 -singlefile -scale-to 1600 -png <S06.pdf> <output>"
+      "renderCommand": "pdftoppm -f 4 -singlefile -scale-to 1600 -png <S06.pdf> <output>",
+      "localized": {
+        "ru": {
+          "alt": "Первая страница русской части постановления №142 о филиалах архива.",
+          "caption": "Постановление акимата ВКО от 2 июня 2026 года №142, страница 4."
+        },
+        "kk": {
+          "alt": "Архив филиалдары туралы №142 қаулының орысша бөлігінің бірінші беті.",
+          "caption": "ШҚО әкімдігінің 2026 жылғы 2 маусымдағы №142 қаулысы, 4-бет."
+        },
+        "en": {
+          "alt": "First page of the Russian section of Resolution No. 142 about archive branches.",
+          "caption": "East Kazakhstan regional akimat Resolution No. 142, 2 June 2026, page 4."
+        }
+      }
     }
   ]
 }

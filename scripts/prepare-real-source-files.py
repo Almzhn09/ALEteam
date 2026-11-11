@@ -10,6 +10,10 @@ def save(source,member,data):
  else:target.write_bytes(data)
  records.append(dict(**({'publicationPages':[4,5,6]}if source['id']=='S06'else{}),sourceId=source['id'],archiveSha256=source['sha256'],member=member,name=pathlib.Path(member).name,path=rel,sha256=digest,bytes=len(data)))
 public_compliance={'Информация о работе комплаенс службы.docx','Информация каз.docx','План мероприятий каз.pdf','План мероприятий рус.pdf','Перечень должностей каз.pdf','Перечень должностей.pdf','Положение об антикор..pdf','Сыбайлас жемқорлыққа қарсы комплаене қызметі туралы ереже.pdf'}
+# The supplied compliance notice explicitly says the analysis documents are posted
+# on the archive information site. "Internal analysis" is their subject, not a
+# blanket instruction to withhold user-provided public documents.
+public_compliance.update({'Аналитическая справка ВАКР 2026.pdf','Аналитикалық анықтама СЖТІТ 2026.pdf','О проведении внутреннего анализа коррупционных рисков.docx','Сыбайлас жемқорлық тәуекелдеріне ішкі талдау жүргізу туралы.docx'})
 for source in manifest['sources']:
  original=root/source['original'];data=original.read_bytes();assert sha(data)==source['sha256']
  if source['id'] in ['S02','S05','S06','S07']:save(source,source['file'],data)
@@ -33,5 +37,5 @@ if (out/'ocr-s06.json').exists():
  for r in records:
   if r['sourceId']=='S06':
    assert ocr['sourceSha256']==r['sha256'];r['ocrSha256']=sha(ocr_bytes)
-(out/'manifest.json').write_text(json.dumps({'version':1,'records':records,'excluded':['S01 original contains unrelated VPN sheet; publish only selected contact fields','S04 internal risk-analysis attachments and internal personnel details','S08 development specification; not public archive content'],'review':'Technical allowlist for user-authorized project publication; not an archive signature'},ensure_ascii=False,indent=2)+'\n')
-print('Preserved',len(records),'allowlisted source files; no S01/VPN or internal-risk originals copied')
+(out/'manifest.json').write_text(json.dumps({'version':1,'records':records,'excluded':['S01 original contains unrelated VPN sheet; publish only selected contact fields','S08 development specification; not public archive content'],'review':'Technical allowlist for user-authorized project publication; not an archive signature'},ensure_ascii=False,indent=2)+'\n')
+print('Preserved',len(records),'allowlisted source files; S01/VPN and development specification remain excluded')

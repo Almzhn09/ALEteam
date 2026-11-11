@@ -21,7 +21,7 @@ async function get(origin,path){const r=await fetch(origin+'/api'+path);assert.e
 async function corpus(origin){return {content:(await get(origin,'/content?pageSize=50')).total,documents:(await get(origin,'/documents')).total,branches:(await get(origin,'/branches?pageSize=50')).total,funds:(await get(origin,'/directories/funds')).total,newspapers:(await get(origin,'/directories/newspapers')).total};}
 try{
  await check('fresh default Compose imports the real corpus without fictional seed or Python runtime',async()=>{
-  compose(project,['up','-d','--wait','--no-build','app']);await ready(config.BETTER_AUTH_URL);snapshot=await corpus(config.BETTER_AUTH_URL);assert.deepEqual(snapshot,{content:33,documents:0,branches:13,funds:1705,newspapers:1466});
+  compose(project,['up','-d','--wait','--no-build','app']);await ready(config.BETTER_AUTH_URL);snapshot=await corpus(config.BETTER_AUTH_URL);assert.deepEqual(snapshot,{content:35,documents:0,branches:13,funds:1705,newspapers:1466});
   const en=await get(config.BETTER_AUTH_URL,'/content?locale=en');assert.equal(en.total,3);
   const contents=await get(config.BETTER_AUTH_URL,'/content?pageSize=50');assert.ok(contents.items.every(c=>c.isDemo===false));assert.ok(!JSON.stringify(contents).includes('DEMO-'));
   const uid=compose(project,['exec','-T','app','node','-e','console.log(process.getuid())']);assert.equal(uid,'1000');
@@ -38,11 +38,11 @@ try{
  });
  await check('re-running real setup is idempotent and never re-enables fixtures',async()=>{
   compose(project,['run','--rm','--no-deps','setup']);await ready(config.BETTER_AUTH_URL);assert.deepEqual(await corpus(config.BETTER_AUTH_URL),snapshot);
-  assert.equal(compose(project,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "CmsAttachment"']),'23');
-  assert.equal(compose(project,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "MaterialPublication"']),'49');
+  assert.equal(compose(project,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "CmsAttachment"']),'27');
+  assert.equal(compose(project,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "MaterialPublication"']),'53');
  });
  await check('real source search and actual source preview timings are measured',async()=>{
-  for(const [name,path]of [['real_material_search','/api/search?scope=cms&q='+encodeURIComponent('архив')],['real_source_preview','/api/material-files/'+previewId]]){const times=[];for(let i=0;i<10;i++){const start=performance.now();const r=await fetch(config.BETTER_AUTH_URL+path);assert.equal(r.status,200);await r.arrayBuffer();times.push(performance.now()-start);}times.sort((a,b)=>a-b);measurements.push({name,requests:10,p50Ms:Math.round(times[4]*100)/100,p95Ms:Math.round(times[9]*100)/100,corpus:{cmsItems:36,publishedEditions:49,fundGroups:1705,newspaperRows:1466},runtime:'Node 24 Docker non-root, local loopback sequential fetch; full response bytes',lighthouse:false});}
+  for(const [name,path]of [['real_material_search','/api/search?scope=cms&q='+encodeURIComponent('архив')],['real_source_preview','/api/material-files/'+previewId]]){const times=[];for(let i=0;i<10;i++){const start=performance.now();const r=await fetch(config.BETTER_AUTH_URL+path);assert.equal(r.status,200);await r.arrayBuffer();times.push(performance.now()-start);}times.sort((a,b)=>a-b);measurements.push({name,requests:10,p50Ms:Math.round(times[4]*100)/100,p95Ms:Math.round(times[9]*100)/100,corpus:{cmsItems:39,publishedEditions:53,fundGroups:1705,newspaperRows:1466},runtime:'Node 24 Docker non-root, local loopback sequential fetch; full response bytes',lighthouse:false});}
  });
  await check('private backup includes all real tables, source originals, parsed OCR and derivatives',async()=>{
   execFileSync(process.execPath,['deploy/backup.mjs','--project',project,'--env',sourceEnv,'--directory',folder+'/backup'],{env:environment(project),stdio:'pipe'});const manifest=JSON.parse(await readFile(folder+'/backup/manifest.json'));assert.equal(manifest.files.length,2);assert.ok(manifest.files.every(f=>f.size>0));

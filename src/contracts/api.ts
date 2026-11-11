@@ -48,5 +48,5 @@ export interface AssistantAnswer {
   researchLimitations?:string[];
   catalogQuery?: CatalogFilters;
   answer: string; noAnswer: boolean; mode: 'retrieval' | 'llm' | 'local-model' | 'external';
-  sources: { id: string; title: string; isDemo: boolean; kind: 'document' | 'guide' | 'cms'; locale?: 'ru' | 'kk' | 'en'; digitalCopyAllowed?: boolean; href: string }[];
+  sources: { id: string; title: string; isDemo: boolean; kind: 'document' | 'guide' | 'cms' | 'fund' | 'newspaper'; locale?: 'ru' | 'kk' | 'en'; digitalCopyAllowed?: boolean; href: string }[];
 }

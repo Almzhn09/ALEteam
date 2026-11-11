@@ -8,6 +8,7 @@ import ctypes as C
 import hashlib
 import json
 import re
+from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'data/artur/real-content-v2'
@@ -109,7 +110,13 @@ def add(key, group, section, source_ids, locale, payload, file_keys=(), branch=N
     assert 0 < len(payload['body']) <= 10000
     assert not re.search('DEMO-|ДЕМОНСТРАЦИОННЫЙ МАТЕРИАЛ', payload['body'])
     source_rights = ('Материал официального сайта Государственного архива ВКО; ссылка и сохранённая редакция указаны у источника.' if all(s.startswith('R') for s in source_ids) else rights)
-    payload = dict(payload, rights=source_rights, sourceNote='; '.join(source_ids) + '. Источниковые материалы архива.')
+    source_names = list(dict.fromkeys(f['filename'] for f in files if f['key'] in file_keys))
+    if not source_names:
+        source_names = [SOURCES[s]['file'] for s in source_ids if s in SOURCES]
+    source_note = '; '.join(source_names)
+    if branch:
+        source_note += ', лист «Книга», строка ' + branch.split('-')[-1]
+    payload = dict(payload, rights=source_rights, sourceNote=source_note + '. Материалы архива.')
     records.append({'sourceKey': key, 'materialKey': group, 'section': section,
                     'decision': 'PUBLISH', 'sourceIds': source_ids,
                     'contentSha256': sha(payload['body'].encode()),
@@ -188,14 +195,14 @@ for row in branch_rows:
 links = json.loads((SRC / 'linked-fetch.json').read_text())
 for row in links:
     key = 'S09:' + row['path']; path = SRC / row['path']; data = path.read_bytes(); assert sha(data) == row['sha256']
-    files.append({'key': key, 'sourceId': 'S09', 'path': str(path.relative_to(ROOT)), 'filename': Path(row['path']).name, 'sha256': row['sha256'], 'bytes': len(data), 'sourceUrl': row['url'], 'textQuality': 'source_table', 'access': {'view': True, 'download': True}})
+    files.append({'key': key, 'sourceId': 'S09', 'path': str(path.relative_to(ROOT)), 'filename': Path(unquote(urlsplit(row['url']).path)).name, 'sha256': row['sha256'], 'bytes': len(data), 'sourceUrl': row['url'], 'textQuality': 'source_table', 'access': {'view': True, 'download': True}})
 add('fonds-guide', 'archive-fonds-guide', 'fonds', ['S09'], 'ru', {'title': 'Фонды и газетные издания', 'body': 'Справочники фондов содержат учётные номера и названия, в том числе исторические. Отдельный перечень описывает хранение газет. Это справочные сведения, а не цифровые копии архивных дел.\n\nВ названиях ссылок указан 2026 год, но имена фондовых выгрузок относятся к 2018 году; газетный перечень прямо указывает состояние на 1 января 2018 года. Версия сохраняется по исходнику.', 'tags': ['fonds', 'newspapers']}, ['S09:' + r['path'] for r in links])
 
 refroot = ROOT / 'sources/archive-reference-20261110'
 refs = json.loads((refroot / 'manifest.json').read_text())['files']
 for f in refs:
     p = refroot / f['original']; data = p.read_bytes(); assert sha(data) == f['sha256']
-    files.append({'key': f['id'], 'sourceId': f['id'], 'path': str(p.relative_to(ROOT)), 'filename': p.name, 'sha256': f['sha256'], 'bytes': len(data), 'textPath': str((refroot / f['text']).relative_to(ROOT)), 'textQuality': 'machine_unverified' if p.suffix == '.pdf' else 'source_text', 'access': {'view': True, 'download': True}})
+    files.append({'key': f['id'], 'sourceId': f['id'], 'path': str(p.relative_to(ROOT)), 'filename': Path(unquote(urlsplit(f['sourceUrl']).path)).name, 'label': f['label'], 'sourceUrl': f['sourceUrl'], 'sha256': f['sha256'], 'bytes': len(data), 'textPath': str((refroot / f['text']).relative_to(ROOT)), 'textQuality': 'machine_unverified' if p.suffix == '.pdf' else 'source_text', 'access': {'view': True, 'download': True}})
 for row in json.loads((ROOT / 'data/artur/discovery/reference-page-drafts.json').read_text())['records']:
     for locale, p in [(row['create']['locale'], row['create']['payload'])] + [(t['locale'], t['payload']) for t in row['translations']]:
         ids = re.findall(r'R0\d', p['sourceNote']); ids = list(dict.fromkeys(ids))

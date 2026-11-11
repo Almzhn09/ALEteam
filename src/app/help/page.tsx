@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Breadcrumbs, DemoBadge } from '@/components/ui';
 import { getLang, getT } from '@/lib/i18n-server';
 import { languageAlternates } from '@/lib/seo';
-import { guides } from '@/server/guides';
+import { guides, guideText, guideTitle } from '@/server/guides';
 import { listContent } from '@/server/public-read';
 
 export async function generateMetadata() {
@@ -29,8 +29,8 @@ export default async function HelpPage() {
       <section className="stack" aria-labelledby="guides-title">
         <h2 id="guides-title">{t('Справочные статьи')}</h2>
         <div className="guide-grid">
-          {guides.map(guide => <article key={guide.id} id={guide.id} lang="ru" className="card card-flat anchor-target">
-            <h3>{guide.title}</h3><p>{guide.text}</p>
+          {guides.map(guide => <article key={guide.id} id={guide.id} lang={lang} className="card card-flat anchor-target">
+            <h3>{guideTitle(guide.id, lang)}</h3><p>{guideText(guide.id, lang)}</p>
           </article>)}
         </div>
       </section>

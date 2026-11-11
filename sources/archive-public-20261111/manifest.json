@@ -58,6 +58,24 @@
     {
       "sourceId": "S04",
       "archiveSha256": "1bdb30b95094faeb2d00db8d1a1f12a8c07382c78fa818e4a5a03a0e78f03834",
+      "member": "Комплаенс служба/Аналитикалық анықтама СЖТІТ 2026.pdf",
+      "name": "Аналитикалық анықтама СЖТІТ 2026.pdf",
+      "path": "files/33e5247b84e6a237f8af354c21dda28ed785b429880b65fd5a111130e55612e5.pdf",
+      "sha256": "33e5247b84e6a237f8af354c21dda28ed785b429880b65fd5a111130e55612e5",
+      "bytes": 13888667
+    },
+    {
+      "sourceId": "S04",
+      "archiveSha256": "1bdb30b95094faeb2d00db8d1a1f12a8c07382c78fa818e4a5a03a0e78f03834",
+      "member": "Комплаенс служба/Аналитическая справка ВАКР 2026.pdf",
+      "name": "Аналитическая справка ВАКР 2026.pdf",
+      "path": "files/fe0975c5428359f8c78c7787bfbe65e932f008f15037a2d208544a27f89ae640.pdf",
+      "sha256": "fe0975c5428359f8c78c7787bfbe65e932f008f15037a2d208544a27f89ae640",
+      "bytes": 10695055
+    },
+    {
+      "sourceId": "S04",
+      "archiveSha256": "1bdb30b95094faeb2d00db8d1a1f12a8c07382c78fa818e4a5a03a0e78f03834",
       "member": "Комплаенс служба/Информация каз.docx",
       "name": "Информация каз.docx",
       "path": "files/fc6b6566ee2882489cd15a127ecd2602fe5dd75cacfddc277500b49725455657.docx",
@@ -72,6 +90,15 @@
       "path": "files/2fbcf5f47f56418c9f9771883ac13c177b122fe856f08677de5be59fb2837577.docx",
       "sha256": "2fbcf5f47f56418c9f9771883ac13c177b122fe856f08677de5be59fb2837577",
       "bytes": 15471
+    },
+    {
+      "sourceId": "S04",
+      "archiveSha256": "1bdb30b95094faeb2d00db8d1a1f12a8c07382c78fa818e4a5a03a0e78f03834",
+      "member": "Комплаенс служба/О проведении внутреннего анализа коррупционных рисков.docx",
+      "name": "О проведении внутреннего анализа коррупционных рисков.docx",
+      "path": "files/78f3e6133fb9ff85981b91471f14d4ab8addc23c2fc6eb9f31fb0d4be2eb5177.docx",
+      "sha256": "78f3e6133fb9ff85981b91471f14d4ab8addc23c2fc6eb9f31fb0d4be2eb5177",
+      "bytes": 13812
     },
     {
       "sourceId": "S04",
@@ -121,6 +148,15 @@
     {
       "sourceId": "S04",
       "archiveSha256": "1bdb30b95094faeb2d00db8d1a1f12a8c07382c78fa818e4a5a03a0e78f03834",
+      "member": "Комплаенс служба/Сыбайлас жемқорлық тәуекелдеріне ішкі талдау жүргізу туралы.docx",
+      "name": "Сыбайлас жемқорлық тәуекелдеріне ішкі талдау жүргізу туралы.docx",
+      "path": "files/33220f353090468249c80179cdc15c99a519db06e36b930f46fc0329e115317c.docx",
+      "sha256": "33220f353090468249c80179cdc15c99a519db06e36b930f46fc0329e115317c",
+      "bytes": 13981
+    },
+    {
+      "sourceId": "S04",
+      "archiveSha256": "1bdb30b95094faeb2d00db8d1a1f12a8c07382c78fa818e4a5a03a0e78f03834",
       "member": "Комплаенс служба/Сыбайлас жемқорлыққа қарсы комплаене қызметі туралы ереже.pdf",
       "name": "Сыбайлас жемқорлыққа қарсы комплаене қызметі туралы ереже.pdf",
       "path": "files/ceab9f738c6ca0224a015fa30ca74971d2e1a8f0c82c7fecc3e2f5fb183b813d.pdf",
@@ -163,7 +199,6 @@
   ],
   "excluded": [
     "S01 original contains unrelated VPN sheet; publish only selected contact fields",
-    "S04 internal risk-analysis attachments and internal personnel details",
     "S08 development specification; not public archive content"
   ],
   "review": "Technical allowlist for user-authorized project publication; not an archive signature"

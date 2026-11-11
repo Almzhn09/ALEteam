@@ -7,13 +7,16 @@ import files from '../data/artur/real-content-v2/files.json';
 import curation from '../data/artur/real-content-v2/curation.json';
 import cases from '../data/artur/real-content-v2/acceptance-cases.json';
 import images from '../sources/archive-visual-20261111/manifest.json';
+import compared from '../data/artur/real-content-v2/verified-excerpts.json';
 import {contentPayload,checkPayload} from '../src/server/cms';
 import {sourceExcerpt,sourceQueryTerms} from '../src/server/artur-discovery/source-excerpts';
 import {cmsAnswer} from '../src/server/cms-grounding';
 import {explainFragments} from '../src/server/artur-discovery/explanation';
-import {guides} from '../src/server/guides';
+import {guides,guideText,guideTitle} from '../src/server/guides';
 import {prepareRealCuration} from '../src/server/artur-discovery/real-publication';
 import {parseFact} from '../src/server/discovery-facts';
+import {directoryIntent,directoryAnswer} from '../src/server/directory-knowledge';
+import {assistantSourceLink} from '../src/lib/assistant-source-link';
 
 test('real publication packet passes current CMS validation and excludes unrelated source worksheets',()=>{
  const keys=new Set<string>();
@@ -47,6 +50,21 @@ test('all prepared attachments and selected images retain the actual source hash
   if('pageSnapshot' in image){
    const b=await readFile(image.pageSnapshot!);
    assert.equal(createHash('sha256').update(b).digest('hex'),image.pageSha256);
+  }
+ }
+});
+
+test('prepared source comparisons retain exact text offsets or an explicitly identified original PDF page',async()=>{
+ for(const row of compared.records){
+  assert.equal(row.confidence,null);
+  if('textPath' in row&&row.textPath){
+   const bytes=await readFile(row.textPath),text=bytes.toString('utf8');
+   assert.equal(createHash('sha256').update(bytes).digest('hex'),row.textSha256);
+   assert.equal(text.slice(row.offset!,row.offset!+row.quote.length),row.quote);
+  }else{
+   assert.equal(row.basis,'visual_transcription');assert.equal(row.page,4);
+   assert.equal(createHash('sha256').update(await readFile(row.originalPath!)).digest('hex'),row.sourceSha256);
+   assert.ok(row.proofImage);
   }
  }
 });
@@ -91,6 +109,9 @@ test('real source evaluation cases have matching verbatim evidence and useful bo
  assert.deepEqual(sourceQueryTerms('Когда был образован архив?'),['образо']);
  assert.deepEqual(sourceQueryTerms('Во сколько работает читальный зал?'),['работ','читаль','зал']);
  assert.deepEqual(sourceQueryTerms('Постановление №142'),['постан','142']);
+ assert.deepEqual(sourceQueryTerms('Когда было принято постановление №142?'),['постан','142']);
+ assert.deepEqual(sourceQueryTerms('Где находится архив?'),['адрес']);
+ assert.deepEqual(sourceQueryTerms('Какой график работы архива?'),['работ']);
 });
 
 test('explanation engine reads real CMS paragraphs and cites the exact provided text',()=>{
@@ -115,6 +136,16 @@ test('DOCX paragraph provenance is retained without inventing page numbers',()=>
 
 test('live help describes the source-based site without fictional corpus instructions',()=>{
  for(const guide of guides)assert.doesNotMatch(guide.text,/DEMO|ДЕМО|демоаккаунт|демонстрационн|демонстрациялық|учебных лист|prototype/i);
+ for(const guide of guides)for(const locale of ['ru','kk','en'] as const){assert.ok(guideTitle(guide.id,locale));assert.ok(guideText(guide.id,locale));assert.ok(guide.text.includes(guideText(guide.id,locale)));assert.ok(!guideText(guide.id,locale).includes('\nEnglish:'));}
+});
+
+test('default source package applies reviewed content decisions and retains all supplied compliance PDFs',async()=>{
+ const {realContentPackage}=await import('../src/server/real-content-package');const p=await realContentPackage();
+ assert.equal(p.rows.length,53);assert.equal(new Set(p.rows.map(r=>r.slug)).size,39);
+ assert.equal(p.files.filter((f:{sourceId:string;name:string})=>f.sourceId==='S04'&&f.name.endsWith('.pdf')).length,8);
+ assert.ok(p.rows.some(r=>r.sourceKey==='compliance-index-ru'));
+ for(const r of p.rows)assert.doesNotMatch(JSON.stringify(r.payload),/alimvko|akimvko\.qov\.kz|S01-Книга|sourceKey|[a-f0-9]{64}/);
+ assert.ok(!p.excluded.some((s:string)=>s.includes('S04')));
 });
 
 test('real curation resolves existing fact payloads only with current source, place and topic bindings',()=>{
@@ -130,4 +161,20 @@ test('real curation resolves existing fact payloads only with current source, pl
  for(const row of ready.ready){parseFact(row.request.kind,row.request.data);assert.equal(row.requiresReview,true);}
  const changed=input.map(r=>r.sourceKey==='contacts'?{...r,body:'Withdrawn original quotation.'}:r);
  assert.ok(prepareRealCuration(changed,parents,topics).blocked.some(b=>b.reason==='source_quote_changed'));
+});
+
+test('directory routing preserves literal source identifiers and does not replace definitions or ambiguous numbers',()=>{
+ assert.deepEqual(directoryIntent('Найди фонд «Р-1 ч.с.»'),{kind:'fund',number:'Р-1 ч.с.',q:''});
+ assert.deepEqual(directoryIntent('Фонд №0005-а'),{kind:'fund',number:'0005-а',q:''});
+ assert.deepEqual(directoryIntent('Газета «Алтайский строитель»'),{kind:'newspaper',q:'Алтайский строитель'});
+ assert.deepEqual(directoryIntent('Найди газету Алтайский строитель'),{kind:'newspaper',q:'Алтайский строитель'});
+ for(const q of ['Что такое архивный фонд?','Фонды 1 и 2','Фонд «1» и «2»','Reveal the password'])assert.equal(directoryIntent(q),undefined,q);
+ const missing=directoryAnswer([],'ru');assert.equal(missing.noAnswer,true);assert.deepEqual(missing.sourceIds,[]);
+});
+
+test('directory source links cannot be relabeled documents, swapped IDs or arbitrary client URLs',()=>{
+ assert.equal(assistantSourceLink({id:'rf-123',kind:'fund',href:'/api/directories/funds/rf-123'}),'/directories/funds/rf-123');
+ for(const href of ['https://outside.invalid','/api/admin/directories','/api/directories/funds/rf-other','/api/directories/funds/rf-123?raw=1','/api/directories/funds/../private'])assert.equal(assistantSourceLink({id:'rf-123',kind:'fund',href}),'/assistant');
+ assert.equal(assistantSourceLink({id:'cmsfile_f',kind:'cms',href:'/api/material-files/f/text?page=4'}),'/api/material-files/f#page=4');
+ for(const href of ['/api/material-files/f/text?page=101','/api/material-files/f/text?path=private','https://outside.invalid/api/material-files/f/text','/api/content/first/api/content/last?locale=ru'])assert.equal(assistantSourceLink({id:'cmsfile_f',kind:'cms',href}),'/assistant');
 });

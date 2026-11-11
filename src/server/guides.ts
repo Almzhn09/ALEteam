@@ -59,3 +59,11 @@ const originals = [
 ];
 export const guides = originals.map(g => ({...g,titleEn:englishGuideTitles[g.id],text:g.text+(englishGuides[g.id]?`\nEnglish: ${englishGuides[g.id]}`:'')}));
 export function getGuide(id:string){return guides.find(g=>g.id===id);}
+export function guideText(id:string,locale:'ru'|'kk'|'en'){
+ const guide=getGuide(id);if(!guide)return '';
+ if(locale==='en')return englishGuides[id]??'';
+ if(locale==='kk')return guide.text.split('\nҚазақша: ')[1]?.split('\nEnglish: ')[0]??'';
+ return guide.text.split('\nҚазақша: ')[0];
+}
+const kazakhGuideTitles:Record<string,string>={'guide-fund':'Архивтік қор','guide-reference':'Архивтік шифр','guide-search':'Іздеу','guide-comments':'Пікірлер','guide-favorites':'Таңдаулылар','guide-notifications':'Хабарландырулар','guide-ocr':'Мәтінді тану','guide-sources':'Дереккөздер','guide-site':'Сайт мүмкіндіктері','guide-login':'Кіру','guide-download':'Файлдар'};
+export function guideTitle(id:string,locale:'ru'|'kk'|'en'){return locale==='kk'?kazakhGuideTitles[id]??'':locale==='en'?getGuide(id)?.titleEn??'':getGuide(id)?.title??'';}
