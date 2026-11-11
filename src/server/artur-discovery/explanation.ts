@@ -2,12 +2,15 @@ import {createHash} from 'node:crypto';
 import {z} from 'zod';
 import {unsafeInstructions} from '../assistant-safety';
 import {sourceRefSchema,type EngineLocale,type EngineSourceRef} from './types';
-const fragment=z.object({id:z.string().min(1).max(120),text:z.string().max(12000),page:z.number().int().positive().max(100000).optional(),quality:z.enum(['verified','ocr']),confidence:z.number().min(0).max(1).optional()}).strict();
+const fragment=z.object({id:z.string().min(1).max(120),text:z.string().max(12000),page:z.number().int().positive().max(100000).optional(),paragraph:z.number().int().positive().max(100000).optional(),quality:z.enum(['verified','ocr']),confidence:z.number().min(0).max(1).optional()}).strict();
 const readable=z.object({source:sourceRefSchema,publication:z.enum(['published','draft','withdrawn']),metadataAllowed:z.boolean(),digitalCopyAllowed:z.boolean(),branchVisible:z.boolean(),deleted:z.boolean(),fragments:z.array(fragment).max(200)}).strict();
 export type ReadableSnapshot=z.infer<typeof readable>;
-export interface ExplanationCitation {fragmentId:string;page?:number;quote:string;start:number;end:number;fragmentSha256:string}
+export interface ExplanationCitation {fragmentId:string;page?:number;paragraph?:number;quote:string;start:number;end:number;fragmentSha256:string}
 export interface ExplanationResult {status:'ready'|'restricted'|'unavailable'|'no_text'|'low_quality'|'unsupported';mode:'extractive';automatic:true;source?:EngineSourceRef;sourceRevision?:string;textFingerprint?:string;summary?:string;citations:ExplanationCitation[];terms:{term:string;meaning:string;editorial:true}[];limitations:string[]}
 export const glossary=[
+ {pattern:/(?<!\p{L})(?:комплаенс\p{L}*|compliance)(?!\p{L})/giu,meaning:{ru:'Комплаенс — работа по соблюдению правил и требований. Назначение и полномочия конкретной службы указаны в её положении.',kk:'Комплаенс — ережелер мен талаптарды сақтау жұмысы. Нақты қызметтің міндеттері мен өкілеттіктері оның ережесінде көрсетіледі.',en:'Compliance is work to follow applicable rules and requirements. The specific service’s responsibilities are set out in its regulation.'}},
+ {pattern:/(?<!\p{L})(?:постановлени\p{L}*|қаулы\p{L}*|resolution)(?!\p{L})/giu,meaning:{ru:'Постановление — акт органа власти. Дату, номер и предмет читайте в оригинале; документ о филиалах не является прейскурантом.',kk:'Қаулы — мемлекеттік органның актісі. Датасын, нөмірі мен тақырыбын түпнұсқадан қараңыз; филиалдар туралы құжат прейскурант емес.',en:'A resolution is an act of a public authority. Read its date, number and subject in the original; a resolution about branches is not a price list.'}},
+ {pattern:/(?<!\p{L})(?:филиал\p{L}*|branch)(?!\p{L})/giu,meaning:{ru:'Филиал — подразделение организации. Его адрес и контакты могут отличаться от центрального учреждения.',kk:'Филиал — ұйымның бөлімшесі. Оның мекенжайы мен байланысы орталық мекемеден өзгеше болуы мүмкін.',en:'A branch is a division of an organization. Its address and contact details may differ from the central institution.'}},
  {pattern:/(?<!\p{L})(?:архивн\p{L}* фонд\p{L}*|архивтік қор\p{L}*|archival fonds)(?!\p{L})/giu,meaning:{ru:'Архивный фонд — связанная группа документов одного учреждения, человека или семьи. Название фонда помогает понять происхождение материала.',kk:'Архивтік қор — бір мекеме, тұлға немесе отбасы қалыптастырған өзара байланысты құжаттар тобы.',en:'An archival fonds is a related group of records created by an institution, person or family.'}},
  {pattern:/(?<!\p{L})(?:опис(?:ь|и|ей|ям|ями|ях)|тізімдеме\p{L}*|inventory)(?!\p{L})/giu,meaning:{ru:'Опись — перечень единиц хранения с учётными номерами и описаниями. Она помогает найти нужное дело внутри фонда.',kk:'Тізімдеме — есептік нөмірлері мен сипаттамалары бар сақтау бірліктерінің тізімі; қор ішінен істі табуға көмектеседі.',en:'An inventory lists archival units with their reference numbers and descriptions, helping locate a file within a fonds.'}},
  {pattern:/(?<!\p{L})(?:архивн\p{L}* шифр\p{L}*|архивтік шифр\p{L}*|archival reference)(?!\p{L})/giu,meaning:{ru:'Архивный шифр — обозначение для поиска и цитирования документа. Его записывают точно, сохраняя буквы, знаки и ведущие нули.',kk:'Архивтік шифр құжатты табуға және оған сілтеме жасауға арналған. Әріптері, белгілері мен бастапқы нөлдері дәл сақталады.',en:'An archival reference identifies a record for retrieval and citation. Preserve its letters, punctuation and leading zeros exactly.'}},
@@ -34,7 +37,7 @@ export function explainFragments(input:unknown,locale:EngineLocale,options:{expe
  if(options.expectedRevision!==undefined&&options.expectedRevision!==doc.source.revision)throw Error('SOURCE_REVISION_CHANGED');
  const length=doc.fragments.reduce((n,f)=>n+f.text.length,0);if(length>120000)throw Error('EXPLANATION_TEXT_TOO_LARGE');
  if(new Set(doc.fragments.map(f=>f.id)).size!==doc.fragments.length)throw Error('DUPLICATE_FRAGMENT_ID');
- const textFingerprint=createHash('sha256').update(JSON.stringify(doc.fragments.map(f=>[f.id,f.page??null,f.quality,f.confidence??null,f.text]))).digest('hex');
+ const textFingerprint=createHash('sha256').update(JSON.stringify(doc.fragments.map(f=>[f.id,f.page??null,f.quality,f.confidence??null,f.text,...(f.paragraph?[f.paragraph]:[]) ]))).digest('hex');
  if(options.expectedFingerprint!==undefined&&options.expectedFingerprint!==textFingerprint)throw Error('SOURCE_TEXT_CHANGED');
  if(!doc.fragments.some(f=>f.text.trim()))return {...base,...source,textFingerprint,status:'no_text'};
  const quality=doc.fragments.filter(f=>f.quality==='verified'||f.confidence!==undefined&&f.confidence>=.85);
@@ -52,7 +55,7 @@ export function explainFragments(input:unknown,locale:EngineLocale,options:{expe
  const unique=new Set<string>();const citations:ExplanationCitation[]=[];
  for(const s of snippets){const quote=s.quote.slice(0,900).trim();if(unique.has(quote))continue;unique.add(quote);
   const start=s.f.text.indexOf(quote,s.start);if(start<0)throw Error('INVALID_EXCERPT');
-  citations.push({fragmentId:s.f.id,...(s.f.page?{page:s.f.page}:{}),quote,start,end:start+quote.length,fragmentSha256:createHash('sha256').update(s.f.text).digest('hex')});if(citations.length===3)break;
+  citations.push({fragmentId:s.f.id,...(s.f.page?{page:s.f.page}:{}),...(s.f.paragraph?{paragraph:s.f.paragraph}:{}),quote,start,end:start+quote.length,fragmentSha256:createHash('sha256').update(s.f.text).digest('hex')});if(citations.length===3)break;
  }
  if(!citations.length)return {...base,...source,textFingerprint,status:'unsupported'};
  const terms:ExplanationResult['terms']=[];

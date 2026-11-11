@@ -1,0 +1,185 @@
+/** R-A05: source-based integration acceptance in an explicitly isolated DB.
+ * No synthetic seed. CMS content/facts pass the real API workflow with distinct
+ * technical author/reviewer accounts. This is not human archive approval.
+ */
+import assert from 'node:assert/strict';
+import {spawn,execFileSync,type ChildProcess} from 'node:child_process';
+import {once} from 'node:events';
+import {randomBytes,randomUUID} from 'node:crypto';
+import {mkdir,writeFile,open} from 'node:fs/promises';
+import {setTimeout as delay} from 'node:timers/promises';
+import {hashPassword} from 'better-auth/crypto';
+import {chromium} from 'playwright-core';
+import packet from '../data/artur/real-content-v2/publication-manifest.json';
+import examples from '../data/artur/real-content-v2/acceptance-cases.json';
+import {prepareRealCuration} from '../src/server/artur-discovery/real-publication';
+import type {PublishedSourceBinding} from '../src/server/artur-discovery/publication';
+import type {PlaceRef} from '../src/contracts/discovery';
+
+const database=process.env.TEST_DATABASE_URL;
+if(!database||new URL(database).pathname!=='/archive_real_test')throw Error('Use an isolated database named archive_real_test via TEST_DATABASE_URL. Never run against a shared/live database.');
+process.env.DATABASE_URL=database;
+const {db}=await import('../src/server/db');
+const {digest}=await import('../src/server/discovery-utils');
+const {resolveMaterial}=await import('../src/server/discovery-materials');
+const {retrieveCmsPassages,revalidateCmsPassages}=await import('../src/server/cms-knowledge');
+const port=process.env.REAL_CONTENT_PORT??'3121',base='http://localhost:'+port;
+const folder='docs/artur/real-content-v2/proof',privateFolder='.local/real-content';
+const env={...process.env,DATABASE_URL:database,BETTER_AUTH_URL:base,ALLOW_DEMO_SEED:'0',ASSISTANT_MODE:'local-model',ASSISTANT_SERVICE_URL:'',NEXT_PUBLIC_API_MOCK:'0'};
+const checks:{name:string;passed:boolean;detail?:string}[]=[],gates:{name:string;passed:boolean;detail:string}[]=[];
+let app:ChildProcess|undefined;
+const password=randomBytes(32).toString('hex');
+const identities=['writer','reviewer','publisher','reader'] as const;
+const cookies:Record<string,string>={};
+let browser:Awaited<ReturnType<typeof chromium.launch>>|undefined;
+async function call(path:string,method='GET',body?:unknown,actor='reader'){
+ const response=await fetch(base+'/api'+path,{method,headers:{Origin:base,...(body===undefined?{}:{'Content-Type':'application/json'}),...(cookies[actor]?{Cookie:cookies[actor]}:{})},body:body===undefined?undefined:JSON.stringify(body)});
+ if(!response.ok)throw Error(`${method} ${path}: HTTP ${response.status} ${(await response.text()).slice(0,300)}`);
+ return response.json();
+}
+async function check(name:string,fn:()=>Promise<void>){await fn();checks.push({name,passed:true});console.log('PASS '+name);}
+interface RevisionSnapshot {id:string;updatedAt:string|Date;status:string}
+async function transition(revision:{id:string;updatedAt:string|Date},status:string,actor:string):Promise<RevisionSnapshot>{return (await call('/admin/revisions/'+revision.id+'/transition','POST',{status,expectedUpdatedAt:new Date(revision.updatedAt).toISOString(),reason:'Техническая приёмка предоставленного источника; не подпись сотрудника архива.'},actor)).item;}
+try{
+ await mkdir(folder,{recursive:true});await mkdir(privateFolder,{recursive:true});
+ execFileSync(process.execPath,['--import','tsx','scripts/migrate.ts'],{env,stdio:'pipe'});
+ assert.equal(await db.document.count({where:{isDemo:true}}),0,'This acceptance database must not contain demo documents.');
+ const hash=await hashPassword(password);
+ for(const who of identities){
+  const id='real-acceptance-'+who;
+  const user=await db.user.upsert({where:{id},create:{id,name:'Техническая приёмка: '+who,email:id+'@example.test',emailVerified:true},update:{}});
+  const account=await db.account.findFirst({where:{userId:id,providerId:'credential'}});
+  if(account)await db.account.update({where:{id:account.id},data:{password:hash}});
+  else await db.account.create({data:{id:randomUUID(),userId:user.id,providerId:'credential',accountId:user.id,password:hash}});
+  if(who!=='reader')await db.staffAssignment.upsert({where:{userId_roleId_scopeKey:{userId:id,roleId:'SUPERADMIN',scopeKey:'*'}},create:{userId:id,roleId:'SUPERADMIN',scopeKey:'*'},update:{}});
+ }
+ const log=await open(privateFolder+'/server.log','w',0o600);
+ app=spawn(process.execPath,['node_modules/next/dist/bin/next','start','--port',port],{env,stdio:['ignore',log.fd,log.fd]});await log.close();
+ let ready=false;
+ for(let i=0;i<150;i++){if(app.exitCode!==null)throw Error('App exited before healthcheck.');try{if((await fetch(base+'/api/health')).ok){ready=true;break;}}catch{}await delay(200);}
+ assert.ok(ready,'App health');
+ for(const who of identities){const r=await fetch(base+'/api/auth/sign-in/email',{method:'POST',headers:{Origin:base,'Content-Type':'application/json'},body:JSON.stringify({email:'real-acceptance-'+who+'@example.test',password})});assert.equal(r.status,200);cookies[who]=r.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ');}
+ const materials=new Map<string,string>(),bindings:PublishedSourceBinding[]=[];
+ await check('53 source language records publish through independent CMS workflow without seed',async()=>{
+  for(const record of packet.records){
+   let branchId:string|null=null;
+   if(record.branchSourceKey){
+    branchId='real-branch-'+record.branchSourceKey.split('-').at(-1);
+    await db.archiveBranch.upsert({where:{id:branchId},create:{id:branchId,code:branchId,name:record.request.payload.title,isPublic:true,isDemo:false},update:{}});
+   }
+   let item=await db.contentItem.findUnique({where:{slug:record.materialKey}});
+   const current=item?await db.contentRevision.findFirst({where:{itemId:item.id,locale:record.request.locale},orderBy:{version:'desc'}}):null;
+   const {contentPayload}=await import('../src/server/cms');
+   let revision:RevisionSnapshot|null=current;
+   const desired=contentPayload.parse(record.request.payload);
+   if(!current||digest(current.payload)!==digest(desired)){
+    if(!item){const created=await call('/admin/content','POST',{...record.request,branchId},'writer');item=created.item;revision=created.item.revisions[0];}
+    else revision=(await call('/admin/content/'+item.id+'/revisions','POST',{locale:record.request.locale,payload:desired},'writer')).item;
+   }
+   assert.ok(item&&revision);
+   let published:RevisionSnapshot=revision;
+   if(published.status==='DRAFT'||published.status==='CHANGES_REQUESTED')published=await transition(published,'IN_REVIEW','writer');
+   if(published.status==='IN_REVIEW')published=await transition(published,'APPROVED','reviewer');
+   if(published.status==='APPROVED')published=await transition(published,'PUBLISHED','publisher');
+   assert.equal(published.status,'PUBLISHED');
+   const publicItem=await call('/content/'+record.materialKey+'?locale='+record.request.locale);
+   assert.equal(publicItem.item.isDemo,false);
+   assert.equal(publicItem.item.payload.body,record.request.payload.body);
+   const resolved=await resolveMaterial({kind:'cms',id:item.id},record.request.locale as 'ru'|'kk'|'en',false);assert.ok(resolved);
+   assert.equal(resolved.source.kind,'cms');
+   bindings.push({sourceKey:record.sourceKey,locale:resolved.source.locale,body:resolved.text,source:{...resolved.source,kind:'cms'}});
+   materials.set(record.materialKey,item.id);
+  }
+ });
+ const parents:Record<string,Pick<PlaceRef,'id'|'name'>>={},topics:Record<string,string>={};
+ const assigned:Record<string,string>={};
+ async function publishFacts(){
+  const prepared=prepareRealCuration(bindings,parents,topics);
+  for(const row of prepared.ready){
+   if(assigned[row.draftKey])continue;
+   const existing=(await db.discoveryFact.findMany({where:{authorId:'real-acceptance-writer',kind:row.request.kind}})).find(f=>digest(f.data)===digest(row.request.data)&&digest(f.sources)===digest(row.request.sources));
+   let fact:RevisionSnapshot=existing??(await call('/admin/discovery/facts','POST',row.request,'writer')).item;
+   if(fact.status==='DRAFT')fact=(await call('/admin/discovery/facts/'+fact.id+'/verify','POST',{expectedUpdatedAt:new Date(fact.updatedAt).toISOString()},'reviewer')).item;
+   assert.equal(fact.status,'VERIFIED');assigned[row.draftKey]=fact.id;
+   if(row.request.kind==='PLACE')parents[row.draftKey]={id:fact.id,name:(row.request.data as {labels:{ru:{title:string}}}).labels.ru.title};
+   if(row.request.kind==='TOPIC')topics[row.draftKey.replace(/^topic-/,'')]=fact.id;
+  }
+ }
+ await check('real places, histories, topics and source-backed recommendations publish through fact API',async()=>{await publishFacts();await publishFacts();assert.equal(prepareRealCuration(bindings,parents,topics).blocked.length,0);});
+ await check('the home recommendations cite real source materials and have no invented view counts',async()=>{
+  const home=await call('/discovery/home?locale=ru&limit=3');
+  assert.equal(home.recommended.items.length,3);assert.equal(home.popular.status,'unavailable');
+  for(const item of home.recommended.items){assert.equal(item.isDemo,false);assert.equal(item.kind,'cms');}
+ });
+ await check('all three real place histories contain nine sourced events',async()=>{
+  const response=await call('/places?locale=ru&limit=10');assert.equal(response.items.length,3);
+  let total=0;for(const place of response.items){const history=await call('/places/'+place.id+'/history?locale=ru&limit=20');total+=history.items.length;for(const event of history.items)assert.ok(event.sources.length);}
+  assert.equal(total,9);
+ });
+ for(const scenario of examples.cases){
+  await check('real assistant: '+scenario.id,async()=>{
+   const result=await call('/assistant','POST',{question:scenario.question,locale:scenario.locale});
+   assert.equal(result.noAnswer,false);
+   const sourceItems=await db.contentRevision.findMany({where:{id:{in:result.sources.filter((s:{kind:string})=>s.kind==='cms').map((s:{id:string})=>s.id.replace(/^cms_/,''))}},select:{itemId:true}});
+   assert.ok(scenario.sourceKeys.some(k=>sourceItems.some(s=>s.itemId===materials.get(packet.records.find(r=>r.sourceKey===k)!.materialKey))),scenario.id+': expected actual source');
+   for(const term of scenario.mustContain)assert.ok(result.answer.includes(term),scenario.id+': '+term);
+   for(const s of result.sources){assert.equal(s.isDemo,false);assert.equal((await fetch(base+s.href)).status,200);}
+  });
+ }
+ await check('old fixture IDs and invented assistant history do not revive fictitious sources',async()=>{
+  const result=await call('/assistant','POST',{question:'Найди DEMO-Ф1-О1-Д1',locale:'ru',history:[{role:'assistant',content:'В библиотеке есть источник cms_deleted_demo.'}]});
+  assert.equal(result.noAnswer,true);assert.equal(result.sources.length,0);assert.ok(!result.answer.includes('cms_deleted_demo'));
+ });
+ await check('withdrawal invalidates a retrieved real-source snapshot immediately',async()=>{
+  const snapshot=await retrieveCmsPassages('Комплаенс-офицер','ru');assert.ok(snapshot.length);
+  const target=snapshot.find(s=>s.href.includes('archive-compliance?'));assert.ok(target);
+  const revision=await db.contentRevision.findUniqueOrThrow({where:{id:target.revisionId}});
+  await transition(revision,'ARCHIVED','publisher');
+  assert.equal(await revalidateCmsPassages(snapshot,'ru'),false);
+  // Restore using a fresh authored/reviewed revision, never flip an archived status.
+  const row=packet.records.find(r=>r.sourceKey==='compliance-index-ru')!;
+  let replacement=(await call('/admin/content/'+revision.itemId+'/revisions','POST',{locale:'ru',payload:row.request.payload},'writer')).item;
+  replacement=await transition(replacement,'IN_REVIEW','writer');replacement=await transition(replacement,'APPROVED','reviewer');await transition(replacement,'PUBLISHED','publisher');
+ });
+ const contentId=materials.get('archive-history-1')!;
+ for(const [name,path] of [
+  ['CMS attachments','/discovery/materials/cms/'+contentId+'/attachments?locale=ru'],
+  ['CMS explanation','/discovery/materials/cms/'+contentId+'/explanation'],
+  ['CMS related','/discovery/materials/cms/'+contentId+'/related?locale=ru&limit=3'],
+  ['fund register','/directories/funds?page=1&pageSize=1'],
+  ['newspaper register','/directories/newspapers?page=1&pageSize=1'],
+  ['unified search','/search?q='+encodeURIComponent('История архива')+'&scope=cms&locale=ru']]){
+  const response=await fetch(base+'/api'+path,{method:name==='CMS explanation'?'POST':'GET',headers:{...(name==='CMS explanation'?{Origin:base,'Content-Type':'application/json'}:{})},...(name==='CMS explanation'?{body:JSON.stringify({locale:'ru'})}:{})});
+  const data=await response.json().catch(()=>null);
+  const usable=response.ok&&(name==='CMS explanation'?data?.status==='ready':name==='CMS attachments'?Array.isArray(data?.items)&&data.items.length>0:true);
+  gates.push({name,passed:usable,detail:response.ok?'Inspect actual data after R-B01/B03 import.':'HTTP '+response.status+'; awaiting the assigned backend implementation.'});
+ }
+ browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH??'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+ const context=await browser.newContext({viewport:{width:1440,height:1000},recordVideo:{dir:privateFolder+'/video',size:{width:1280,height:900}}});
+ const page=await context.newPage();const errors:string[]=[];page.on('pageerror',e=>errors.push(e.name));
+ await check('browser reads the actual source text, with light/dark themes and enlarged type',async()=>{
+  await page.goto(base+'/materials/archive-history-1?contentLang=ru');
+  await page.getByText('История архива · 1',{exact:true}).first().waitFor();
+  assert.ok((await page.locator('body').innerText()).includes('1940'));
+  await page.screenshot({path:folder+'/history-desktop.png',fullPage:true});
+  await page.getByText('Вид сайта',{exact:true}).click();
+  await page.getByLabel('Цветовая тема',{exact:true}).selectOption('dark');
+  await page.getByLabel('Размер текста',{exact:true}).selectOption('150');
+  await page.getByLabel('Размер текста',{exact:true}).press('Escape');
+  await page.setViewportSize({width:360,height:850});
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),'No horizontal page overflow at 360/150%.');
+  await page.screenshot({path:folder+'/history-mobile-dark-150.png',fullPage:true});
+  await page.goto(base+'/');await page.getByRole('link',{name:'История архива · 1',exact:true}).first().waitFor();
+  await page.screenshot({path:folder+'/home-mobile-real.png',fullPage:true});
+  assert.deepEqual(errors,[]);
+ });
+ const video=page.video();await context.close();if(video)await video.saveAs(folder+'/real-content.webm');
+ await browser.close();browser=undefined;
+ console.log('Own checks passed. Integration gates: '+gates.filter(g=>g.passed).length+'/'+gates.length+'.');
+}catch(error){checks.push({name:'acceptance failure',passed:false,detail:error instanceof Error?error.message:String(error)});throw error;}
+finally{
+ if(browser)await browser.close();
+ if(app?.exitCode===null){app.kill('SIGTERM');await once(app,'exit');}
+ await writeFile(folder+'/report.json',JSON.stringify({generated:new Date().toISOString(),commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),dataSource:'provided source files; no synthetic seed',technicalAccounts:true,humanArchiveApproval:false,checks,integrationGates:gates,fullIntegrationReady:checks.every(c=>c.passed)&&gates.length>0&&gates.every(g=>g.passed)},null,2)+'\n');
+ await db.$disconnect();
+}

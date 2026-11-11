@@ -45,11 +45,11 @@ export const arturDiscoveryEngines:DiscoveryEngines={
  explainFragments(input,context){
   // COL-B03 has already checked card/copy/OCR rights; unreviewed OCR still cannot be called verified here.
   const result=explainFragments({source:engineSource(input.source),publication:'published',metadataAllowed:true,digitalCopyAllowed:true,branchVisible:true,deleted:false,
-   fragments:input.fragments.map(f=>({id:f.id,text:f.text,...(f.page?{page:f.page}:{}),quality:!input.ocr.used||input.ocr.quality==='reviewed'?'verified':'ocr',...(input.ocr.used?(input.ocr.quality==='reviewed'?{confidence:1}:input.ocr.quality==='unreviewed'&&input.ocr.confidence!==undefined?{confidence:input.ocr.confidence}:{}):{})}))},context.locale);
+   fragments:input.fragments.map(f=>({id:f.id,text:f.text,...(f.page?{page:f.page}:{}),...('paragraph' in f&&typeof f.paragraph==='number'?{paragraph:f.paragraph}:{}),quality:!input.ocr.used||input.ocr.quality==='reviewed'?'verified':'ocr',...(input.ocr.used?(input.ocr.quality==='reviewed'?{confidence:1}:input.ocr.quality==='unreviewed'&&input.ocr.confidence!==undefined?{confidence:input.ocr.confidence}:{}):{})}))},context.locale);
   if(!['ready','no_text','low_quality','unsupported'].includes(result.status))throw Error('INVALID_AUTHORIZED_TEXT_STATE');
   return {status:result.status as 'ready'|'no_text'|'low_quality'|'unsupported',mode:result.status==='ready'?'extractive':null,sourceRevision:input.source.revision,
    ...(result.summary?{summary:result.summary}:{}),terms:result.terms.map(t=>({term:t.term,explanation:t.meaning,fragmentIds:result.citations.filter(c=>c.quote.toLowerCase().includes(t.term.toLowerCase())).map(c=>c.fragmentId)})),
-   citations:result.citations.map(c=>({fragmentId:c.fragmentId,quote:c.quote,source:{...input.source,fragment:{id:c.fragmentId,...(c.page?{page:c.page}:{}),start:c.start,end:c.end}}})),limitations:result.limitations};
+   citations:result.citations.map(c=>({fragmentId:c.fragmentId,quote:c.quote,source:{...input.source,fragment:{id:c.fragmentId,...(c.page?{page:c.page}:{}),...(c.paragraph?{paragraph:c.paragraph}:{}),start:c.start,end:c.end}}})),limitations:result.limitations};
  },
  planResearch(input,context){
   const plan=semanticCatalogPlan(input.question,context.locale);const result=planResearch(input.question,context.locale,{...plan,filters:{...plan.filters,...input.filters,locale:context.locale}});

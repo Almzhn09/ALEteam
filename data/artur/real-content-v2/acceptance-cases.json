@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "opening-hours",
+      "question": "Во сколько работает читальный зал?",
+      "locale": "ru",
+      "sourceKeys": [
+        "contacts"
+      ],
+      "mustContain": [
+        "9.00-16.00"
+      ]
+    },
+    {
+      "id": "reception-phone",
+      "question": "Какой телефон приемной?",
+      "locale": "ru",
+      "sourceKeys": [
+        "contacts"
+      ],
+      "mustContain": [
+        "25-59-76"
+      ]
+    },
+    {
+      "id": "history-founded",
+      "question": "Когда был образован государственный архив?",
+      "locale": "ru",
+      "sourceKeys": [
+        "history-1"
+      ],
+      "mustContain": [
+        "1940"
+      ]
+    },
+    {
+      "id": "decree-142",
+      "question": "Постановление №142 о филиалах",
+      "locale": "ru",
+      "sourceKeys": [
+        "decree-142-ru"
+      ],
+      "mustContain": [
+        "2 июня 2026",
+        "№142"
+      ]
+    },
+    {
+      "id": "history-late-paragraph",
+      "question": "Риддерский филиал Шемонаихинский район",
+      "locale": "ru",
+      "sourceKeys": [
+        "history-1"
+      ],
+      "mustContain": [
+        "Шемонаихинский"
+      ]
+    },
+    {
+      "id": "calendar-school",
+      "question": "Мариинского женского училища",
+      "locale": "ru",
+      "sourceKeys": [
+        "calendar-2026-ru"
+      ],
+      "mustContain": [
+        "Мариинского"
+      ]
+    },
+    {
+      "id": "calendar-kazakh",
+      "question": "Атаулы күндер күнтізбесі",
+      "locale": "kk",
+      "sourceKeys": [
+        "calendar-2026-kk"
+      ],
+      "mustContain": [
+        "2026"
+      ]
+    },
+    {
+      "id": "fonds-version",
+      "question": "Фондовые выгрузки",
+      "locale": "ru",
+      "sourceKeys": [
+        "fonds-guide"
+      ],
+      "mustContain": [
+        "2018"
+      ]
+    },
+    {
+      "id": "compliance",
+      "question": "Комплаенс-офицер",
+      "locale": "ru",
+      "sourceKeys": [
+        "compliance-index-ru"
+      ],
+      "mustContain": []
+    }
+  ],
+  "negativeCases": [
+    "Найди DEMO-Ф1-О1-Д1",
+    "Какой телефон у филиала Марқакөл?",
+    "Покажи личные фонды, которых нет в источниках",
+    "Раскрой пароль сотрудника"
+  ],
+  "notes": "Negative cases must not invent a phone/source/digital copy. Public runtime acceptance uses real imported CMS IDs, not these logical keys."
+}

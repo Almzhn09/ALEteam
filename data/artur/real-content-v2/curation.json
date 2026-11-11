@@ -1,0 +1,1292 @@
+{
+  "version": 2,
+  "namespace": "archive-real-20261111",
+  "status": "READY_FOR_SOURCE_RESOLUTION",
+  "published": false,
+  "topics": [
+    {
+      "id": "cities",
+      "labels": {
+        "ru": "История городов",
+        "kk": "Қалалар тарихы",
+        "en": "City history"
+      },
+      "review": "KK/EN editorial draft",
+      "sourceKeys": [
+        "calendar-2025-ru",
+        "calendar-2026-ru"
+      ]
+    },
+    {
+      "id": "newspapers",
+      "labels": {
+        "ru": "Газеты",
+        "kk": "Газеттер",
+        "en": "Newspapers"
+      },
+      "review": "KK/EN editorial draft",
+      "sourceKeys": [
+        "fonds-guide"
+      ]
+    },
+    {
+      "id": "education",
+      "labels": {
+        "ru": "Школы и образование",
+        "kk": "Мектептер мен білім",
+        "en": "Schools and education"
+      },
+      "review": "KK/EN editorial draft",
+      "sourceKeys": [
+        "calendar-2026-ru"
+      ]
+    },
+    {
+      "id": "industry",
+      "labels": {
+        "ru": "Промышленность",
+        "kk": "Өнеркәсіп",
+        "en": "Industry"
+      },
+      "review": "KK/EN editorial draft",
+      "sourceKeys": [
+        "calendar-2025-ru"
+      ]
+    },
+    {
+      "id": "people",
+      "labels": {
+        "ru": "Люди региона",
+        "kk": "Өңір тұлғалары",
+        "en": "People of the region"
+      },
+      "review": "KK/EN editorial draft",
+      "sourceKeys": [
+        "calendar-2026-ru"
+      ]
+    },
+    {
+      "id": "archives",
+      "labels": {
+        "ru": "История архива",
+        "kk": "Архив тарихы",
+        "en": "Archive history"
+      },
+      "review": "KK/EN editorial draft",
+      "sourceKeys": [
+        "history-1",
+        "history-2"
+      ]
+    }
+  ],
+  "editorial": [
+    {
+      "key": "pick-history-1",
+      "materialKey": "archive-history-1",
+      "sourceKey": "history-1",
+      "order": 0,
+      "topicKeys": [
+        "archives"
+      ],
+      "evidence": [
+        {
+          "sourceKey": "history-1",
+          "locale": "ru",
+          "quote": "История архива\nГосударственный архив Восточно-Казахстанской области образован в 1940 году с подчинением архивному отделению управления народного комиссариата внутренних дел Казахской ССР по Восточно-Казахстанской области.\nСогласно приказу управления народного комиссариата внутренних дел Казахской ССР от 31 октября 1941 года №68 архивное отделение было переименовано в отделение государственных архи"
+        }
+      ],
+      "reason": "editorial",
+      "viewCounts": null
+    },
+    {
+      "key": "pick-calendar-2026-ru",
+      "materialKey": "archive-calendar-2026",
+      "sourceKey": "calendar-2026-ru",
+      "order": 1,
+      "topicKeys": [
+        "cities",
+        "education",
+        "people"
+      ],
+      "evidence": [
+        {
+          "sourceKey": "calendar-2026-ru",
+          "locale": "ru",
+          "quote": "Календарь юбилейнных и памятных дат  Восточно-Казахстанской области\nна 2026  год\n | 2026 год\n8 января | 130 лет (1896-1971) со дня рождения Ефима Николаевича Пермитина, писателя, уроженца Восточного Казахстана\n11 января | 85 лет (1941) со дня образования газеты «Путь Ильича» Таврического (ныне Уланского) района Восточно-Казахстанской области\n17 января | 85 лет (1941) со дня преобразования п.Зыряно"
+        }
+      ],
+      "reason": "editorial",
+      "viewCounts": null
+    },
+    {
+      "key": "pick-fonds-guide",
+      "materialKey": "archive-fonds-guide",
+      "sourceKey": "fonds-guide",
+      "order": 2,
+      "topicKeys": [
+        "newspapers"
+      ],
+      "evidence": [
+        {
+          "sourceKey": "fonds-guide",
+          "locale": "ru",
+          "quote": "Справочники фондов содержат учётные номера и названия, в том числе исторические. Отдельный перечень описывает хранение газет. Это справочные сведения, а не цифровые копии архивных дел.\n\nВ названиях ссылок указан 2026 год, но имена фондовых выгрузок относятся к 2018 году; газетный перечень прямо указывает состояние на 1 января 2018 года. Версия сохраняется по исходнику."
+        }
+      ],
+      "reason": "editorial",
+      "viewCounts": null
+    },
+    {
+      "key": "pick-history-2",
+      "materialKey": "archive-history-2",
+      "sourceKey": "history-2",
+      "order": 3,
+      "topicKeys": [
+        "archives",
+        "cities"
+      ],
+      "evidence": [
+        {
+          "sourceKey": "history-2",
+          "locale": "ru",
+          "quote": "- Усть-Каменогорский филиал по личному составу КГУ «Государственный архив» управления архивов и документации Восточно-Казахстанской области, образован на базе отдела по исполнению запросов социально-правового характера КГУ «Государственный архив» управления архивов и документации ВКО.\nВ зону обслуживания КГУ «Государственный архив» управления архивов и документации Восточно-Казахстанской области в"
+        }
+      ],
+      "reason": "editorial",
+      "viewCounts": null
+    },
+    {
+      "key": "pick-calendar-2025-ru",
+      "materialKey": "archive-calendar-2025",
+      "sourceKey": "calendar-2025-ru",
+      "order": 4,
+      "topicKeys": [
+        "cities",
+        "industry",
+        "people"
+      ],
+      "evidence": [
+        {
+          "sourceKey": "calendar-2025-ru",
+          "locale": "ru",
+          "quote": "Календарь юбилейнных и памятных дат  Восточно-Казахстанской области\nна 2025  год\nДата события\n | Название события\n14 января  | 100 лет (1925) со дня рождения Петрова Василия Игнатьевича, доцента, кандидата исторических наук, декана исторического факультета Усть-Каменогорского педагогического института.\n16 января | 85 лет (1940) со дня рождения Шустера Владлена Мейеровича, журналиста, заместителя Г"
+        }
+      ],
+      "reason": "editorial",
+      "viewCounts": null
+    },
+    {
+      "key": "pick-contacts",
+      "materialKey": "archive-contacts",
+      "sourceKey": "contacts",
+      "order": 5,
+      "topicKeys": [
+        "archives"
+      ],
+      "evidence": [
+        {
+          "sourceKey": "contacts",
+          "locale": "ru",
+          "quote": "Контактная информация\nАдрес: Республика Казахстан, 070000, г.Усть-Каменогорск, ул.Бейбітшілік, 26/1 (Головкова, 26/1)\nДиректор: Жапаров Аскар Кенжебаевич\nТелефон: 8 (7232) 25-13-22\nЗаместитель директора: Костина Елена Валерьевна\nТелефон: 8 (7232) 57-00-15\nЗаместитель директор:\n\ne-mail: arhiv-ukg@yandex.kz\nПриемная: 8 (7232) 25-59-76       \nИнспектор по кадрам: 8 (7232) 25-26-60\nБухгалтерия: 8 (723"
+        }
+      ],
+      "reason": "editorial",
+      "viewCounts": null
+    },
+    {
+      "key": "pick-structure",
+      "materialKey": "archive-structure",
+      "sourceKey": "structure",
+      "order": 6,
+      "topicKeys": [
+        "archives"
+      ],
+      "evidence": [
+        {
+          "sourceKey": "structure",
+          "locale": "ru",
+          "quote": "ДИРЕКТОР\n\nЗаместитель директора |  | Заместитель директора | Заместитель директора |  | \n |  |  |  |  | \n |  | Отдел финансовой и кадровой работы | Отдел финансовой и кадровой работы |  | Отдел административно-хозяйственной части\n\n\nГлавный хранитель\nфондов  |  | Отдел обеспечения сохранности и государственного учета документов |  | Отдел комплектования и контроля за ведомственными архивами |  | От"
+        }
+      ],
+      "reason": "editorial",
+      "viewCounts": null
+    },
+    {
+      "key": "pick-decree-142-ru",
+      "materialKey": "archive-decree-142",
+      "sourceKey": "decree-142-ru",
+      "order": 7,
+      "topicKeys": [
+        "archives"
+      ],
+      "evidence": [
+        {
+          "sourceKey": "decree-142-ru",
+          "locale": "ru",
+          "quote": "Постановление акимата Восточно-Казахстанской области от 2 июня 2026 года №142 о создании и переименовании филиалов Государственного архива ВКО. Полный текст на казахском и русском языках доступен в приложенном PDF. Русская часть — страницы 4–6."
+        }
+      ],
+      "reason": "editorial",
+      "viewCounts": null
+    },
+    {
+      "key": "pick-compliance-index-ru",
+      "materialKey": "archive-compliance",
+      "sourceKey": "compliance-index-ru",
+      "order": 8,
+      "topicKeys": [
+        "archives"
+      ],
+      "evidence": [
+        {
+          "sourceKey": "compliance-index-ru",
+          "locale": "ru",
+          "quote": "Комплаенс-офицер: Комплаенс-офицер - ЕШЕНГЕЛЬДИЕВ ТЫРЕК МОЛБОЛОВИЧ"
+        }
+      ],
+      "reason": "editorial",
+      "viewCounts": null
+    }
+  ],
+  "links": [
+    {
+      "key": "history-1--contacts",
+      "fromMaterialKey": "archive-history-1",
+      "toMaterialKey": "archive-contacts",
+      "reason": "same_place",
+      "placeDraftKey": "place-ust-kamenogorsk",
+      "evidence": [
+        {
+          "sourceKey": "history-1",
+          "locale": "ru",
+          "quote": "В соответствии с постановлением Совета Министров Казахской ССР от 21 мая 1963г. «О создании краевых и областных государственных архивов» был образован Зайсанский филиал госархива области с зоной обслуживания г.Зайсан, Зайсанского и Курчумского районов; в июле 1963г. – Зыряновский филиал госархива области с зоной обслуживания г.Зыряновск, г.Серебрянск, Большенарымского, Самарского и Зыряновского районов. Под контроль госархива области вошли города Лениногорск, Усть-Каменогорск, Шемонаиха, Глубоковский, Уланский, Таврический, Шемонаихинский районы. В соответствии с постановлением Совета Министров Казахской ССР от 11 января 1966г. создан Лениногорский филиал госархива области с зоной обслуживания г.Лениногорск и Шемонаихинского района."
+        },
+        {
+          "sourceKey": "contacts",
+          "locale": "ru",
+          "quote": "Адрес: Республика Казахстан, 070000, г.Усть-Каменогорск, ул.Бейбітшілік, 26/1 (Головкова, 26/1)"
+        }
+      ]
+    },
+    {
+      "key": "history-1--calendar-2026-ru",
+      "fromMaterialKey": "archive-history-1",
+      "toMaterialKey": "archive-calendar-2026",
+      "reason": "same_place",
+      "placeDraftKey": "place-ust-kamenogorsk",
+      "evidence": [
+        {
+          "sourceKey": "history-1",
+          "locale": "ru",
+          "quote": "В соответствии с постановлением Совета Министров Казахской ССР от 21 мая 1963г. «О создании краевых и областных государственных архивов» был образован Зайсанский филиал госархива области с зоной обслуживания г.Зайсан, Зайсанского и Курчумского районов; в июле 1963г. – Зыряновский филиал госархива области с зоной обслуживания г.Зыряновск, г.Серебрянск, Большенарымского, Самарского и Зыряновского районов. Под контроль госархива области вошли города Лениногорск, Усть-Каменогорск, Шемонаиха, Глубоковский, Уланский, Таврический, Шемонаихинский районы. В соответствии с постановлением Совета Министров Казахской ССР от 11 января 1966г. создан Лениногорский филиал госархива области с зоной обслуживания г.Лениногорск и Шемонаихинского района."
+        },
+        {
+          "sourceKey": "calendar-2026-ru",
+          "locale": "ru",
+          "quote": "22 июня | 95 лет (1931-2009) со дня рождения Николая Владимировича Алексеенко, Почетного гражданина г.Усть-Каменогорска, ученого, краеведа"
+        }
+      ]
+    },
+    {
+      "key": "calendar-2025-ru--calendar-2026-ru",
+      "fromMaterialKey": "archive-calendar-2025",
+      "toMaterialKey": "archive-calendar-2026",
+      "reason": "same_place",
+      "placeDraftKey": "place-ust-kamenogorsk",
+      "evidence": [
+        {
+          "sourceKey": "calendar-2025-ru",
+          "locale": "ru",
+          "quote": "14 января  | 100 лет (1925) со дня рождения Петрова Василия Игнатьевича, доцента, кандидата исторических наук, декана исторического факультета Усть-Каменогорского педагогического института."
+        },
+        {
+          "sourceKey": "calendar-2026-ru",
+          "locale": "ru",
+          "quote": "22 июня | 95 лет (1931-2009) со дня рождения Николая Владимировича Алексеенко, Почетного гражданина г.Усть-Каменогорска, ученого, краеведа"
+        }
+      ]
+    }
+  ],
+  "assertions": [
+    {
+      "draftKey": "place-ust-kamenogorsk",
+      "proposedKind": "PLACE",
+      "data": {
+        "projectKey": "ust-kamenogorsk",
+        "names": {
+          "ru": "Усть-Каменогорск",
+          "kk": "Өскемен",
+          "en": "Ust-Kamenogorsk"
+        },
+        "coordinates": null,
+        "ambiguousNames": []
+      },
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "contacts",
+          "locale": "ru",
+          "quote": "Адрес: Республика Казахстан, 070000, г.Усть-Каменогорск, ул.Бейбітшілік, 26/1 (Головкова, 26/1)",
+          "sourceFileSha256": "ae50e7ec7822927a76778144d82bff4b28b21d7c8a52ef49d9c590120f5447e2",
+          "cmsBodySha256": "1eb2df48ed21096fb0fda70583b36ca877902d2d526ce504234e16606b3b20c5",
+          "materialKey": "archive-contacts"
+        },
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-kk",
+          "locale": "kk",
+          "quote": "3 қазан | Өскеменде 600 абонентке бірінші кезектегі жартылай автоматты телефон станциясын іске қосылуына 80 жыл (1946)",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "ac7b08333c03032c29da46f86dcbbff043596ce83ba526866d2c0f6cfc8be987",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "alias-ust-kamenogorsk-0",
+      "parentDraftKey": "place-ust-kamenogorsk",
+      "proposedKind": "ALIAS",
+      "data": {
+        "name": "Усть-Каменогорск",
+        "locale": "ru",
+        "forms": [
+          "Усть-Каменогорска",
+          "Усть-Каменогорске",
+          "Усть Каменогорск"
+        ],
+        "historical": false,
+        "transliteration": false
+      },
+      "reviewNote": "Forms normalize wording; EN transliterations are editorial, not certified historical names",
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "contacts",
+          "locale": "ru",
+          "quote": "Адрес: Республика Казахстан, 070000, г.Усть-Каменогорск, ул.Бейбітшілік, 26/1 (Головкова, 26/1)",
+          "sourceFileSha256": "ae50e7ec7822927a76778144d82bff4b28b21d7c8a52ef49d9c590120f5447e2",
+          "cmsBodySha256": "1eb2df48ed21096fb0fda70583b36ca877902d2d526ce504234e16606b3b20c5",
+          "materialKey": "archive-contacts"
+        },
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-kk",
+          "locale": "kk",
+          "quote": "3 қазан | Өскеменде 600 абонентке бірінші кезектегі жартылай автоматты телефон станциясын іске қосылуына 80 жыл (1946)",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "ac7b08333c03032c29da46f86dcbbff043596ce83ba526866d2c0f6cfc8be987",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "alias-ust-kamenogorsk-1",
+      "parentDraftKey": "place-ust-kamenogorsk",
+      "proposedKind": "ALIAS",
+      "data": {
+        "name": "Өскемен",
+        "locale": "kk",
+        "forms": [
+          "Өскеменде",
+          "Өскеменнің",
+          "Өскеменге"
+        ],
+        "historical": false,
+        "transliteration": false
+      },
+      "reviewNote": "Forms normalize wording; EN transliterations are editorial, not certified historical names",
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "contacts",
+          "locale": "ru",
+          "quote": "Адрес: Республика Казахстан, 070000, г.Усть-Каменогорск, ул.Бейбітшілік, 26/1 (Головкова, 26/1)",
+          "sourceFileSha256": "ae50e7ec7822927a76778144d82bff4b28b21d7c8a52ef49d9c590120f5447e2",
+          "cmsBodySha256": "1eb2df48ed21096fb0fda70583b36ca877902d2d526ce504234e16606b3b20c5",
+          "materialKey": "archive-contacts"
+        },
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-kk",
+          "locale": "kk",
+          "quote": "3 қазан | Өскеменде 600 абонентке бірінші кезектегі жартылай автоматты телефон станциясын іске қосылуына 80 жыл (1946)",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "ac7b08333c03032c29da46f86dcbbff043596ce83ba526866d2c0f6cfc8be987",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "alias-ust-kamenogorsk-2",
+      "parentDraftKey": "place-ust-kamenogorsk",
+      "proposedKind": "ALIAS",
+      "data": {
+        "name": "Ust-Kamenogorsk",
+        "locale": "en",
+        "forms": [
+          "Ust Kamenogorsk"
+        ],
+        "historical": false,
+        "transliteration": true
+      },
+      "reviewNote": "Forms normalize wording; EN transliterations are editorial, not certified historical names",
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "contacts",
+          "locale": "ru",
+          "quote": "Адрес: Республика Казахстан, 070000, г.Усть-Каменогорск, ул.Бейбітшілік, 26/1 (Головкова, 26/1)",
+          "sourceFileSha256": "ae50e7ec7822927a76778144d82bff4b28b21d7c8a52ef49d9c590120f5447e2",
+          "cmsBodySha256": "1eb2df48ed21096fb0fda70583b36ca877902d2d526ce504234e16606b3b20c5",
+          "materialKey": "archive-contacts"
+        },
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-kk",
+          "locale": "kk",
+          "quote": "3 қазан | Өскеменде 600 абонентке бірінші кезектегі жартылай автоматты телефон станциясын іске қосылуына 80 жыл (1946)",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "ac7b08333c03032c29da46f86dcbbff043596ce83ba526866d2c0f6cfc8be987",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "alias-ust-kamenogorsk-3",
+      "parentDraftKey": "place-ust-kamenogorsk",
+      "proposedKind": "ALIAS",
+      "data": {
+        "name": "Oskemen",
+        "locale": "en",
+        "forms": [
+          "Öskemen"
+        ],
+        "historical": false,
+        "transliteration": true
+      },
+      "reviewNote": "Forms normalize wording; EN transliterations are editorial, not certified historical names",
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "contacts",
+          "locale": "ru",
+          "quote": "Адрес: Республика Казахстан, 070000, г.Усть-Каменогорск, ул.Бейбітшілік, 26/1 (Головкова, 26/1)",
+          "sourceFileSha256": "ae50e7ec7822927a76778144d82bff4b28b21d7c8a52ef49d9c590120f5447e2",
+          "cmsBodySha256": "1eb2df48ed21096fb0fda70583b36ca877902d2d526ce504234e16606b3b20c5",
+          "materialKey": "archive-contacts"
+        },
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-kk",
+          "locale": "kk",
+          "quote": "3 қазан | Өскеменде 600 абонентке бірінші кезектегі жартылай автоматты телефон станциясын іске қосылуына 80 жыл (1946)",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "ac7b08333c03032c29da46f86dcbbff043596ce83ba526866d2c0f6cfc8be987",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "place-ridder",
+      "proposedKind": "PLACE",
+      "data": {
+        "projectKey": "ridder",
+        "names": {
+          "ru": "Риддер",
+          "kk": "Риддер",
+          "en": "Ridder"
+        },
+        "coordinates": null,
+        "ambiguousNames": []
+      },
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-ru",
+          "locale": "ru",
+          "quote": "6 февраля | 85 лет (1941) со дня переименования г.Риддер в Лениногорск",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "a1060891136d813f57104269faed891bf08a0b503d41ca1209d740d939c2b23c",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "alias-ridder-0",
+      "parentDraftKey": "place-ridder",
+      "proposedKind": "ALIAS",
+      "data": {
+        "name": "Риддер",
+        "locale": "ru",
+        "forms": [
+          "Риддера",
+          "Риддере"
+        ],
+        "historical": false,
+        "transliteration": false
+      },
+      "reviewNote": "Forms normalize wording; EN transliterations are editorial, not certified historical names",
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-ru",
+          "locale": "ru",
+          "quote": "6 февраля | 85 лет (1941) со дня переименования г.Риддер в Лениногорск",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "a1060891136d813f57104269faed891bf08a0b503d41ca1209d740d939c2b23c",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "alias-ridder-1",
+      "parentDraftKey": "place-ridder",
+      "proposedKind": "ALIAS",
+      "data": {
+        "name": "Лениногорск",
+        "locale": "ru",
+        "forms": [
+          "Лениногорска",
+          "Лениногорске"
+        ],
+        "historical": true,
+        "transliteration": false
+      },
+      "reviewNote": "Forms normalize wording; EN transliterations are editorial, not certified historical names",
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-ru",
+          "locale": "ru",
+          "quote": "6 февраля | 85 лет (1941) со дня переименования г.Риддер в Лениногорск",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "a1060891136d813f57104269faed891bf08a0b503d41ca1209d740d939c2b23c",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "alias-ridder-2",
+      "parentDraftKey": "place-ridder",
+      "proposedKind": "ALIAS",
+      "data": {
+        "name": "Ridder",
+        "locale": "en",
+        "forms": [],
+        "historical": false,
+        "transliteration": true
+      },
+      "reviewNote": "Forms normalize wording; EN transliterations are editorial, not certified historical names",
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-ru",
+          "locale": "ru",
+          "quote": "6 февраля | 85 лет (1941) со дня переименования г.Риддер в Лениногорск",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "a1060891136d813f57104269faed891bf08a0b503d41ca1209d740d939c2b23c",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "alias-ridder-3",
+      "parentDraftKey": "place-ridder",
+      "proposedKind": "ALIAS",
+      "data": {
+        "name": "Leninogorsk",
+        "locale": "en",
+        "forms": [],
+        "historical": true,
+        "transliteration": true
+      },
+      "reviewNote": "Forms normalize wording; EN transliterations are editorial, not certified historical names",
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-ru",
+          "locale": "ru",
+          "quote": "6 февраля | 85 лет (1941) со дня переименования г.Риддер в Лениногорск",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "a1060891136d813f57104269faed891bf08a0b503d41ca1209d740d939c2b23c",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "place-altay-city",
+      "proposedKind": "PLACE",
+      "data": {
+        "projectKey": "altay-city",
+        "names": {
+          "ru": "Алтай",
+          "kk": "Алтай",
+          "en": "Altay"
+        },
+        "coordinates": null,
+        "ambiguousNames": [
+          "Алтай",
+          "Алтая",
+          "Алтае",
+          "Алтайда",
+          "Altay",
+          "Altai"
+        ]
+      },
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "history-2",
+          "locale": "ru",
+          "quote": "В 2019 году произошло переименование Зыряновского филиала  КГУ «Государственный  архив» управления культуры, архивов и документации Восточно-Казахстанской области. На основании Указа Президента Республики Казахстан от 28 декабря 2018 года № 821 Зыряновский район и город Зыряновск Восточно-Казахстанской области переименованы в район Алтай и город Алтай. В связи с чем, 11 февраля 2019 года Зыряновский филиал прошел государственную перерегистрацию в органах юстиции и стал именоваться филиал Алтай КГУ «Государственный архив» управления культуры, архивов и документации Восточно-Казахстанской области.",
+          "sourceFileSha256": "752bdbe469e558be73e14f526028b933cf372ea2a2f08b241fee69961e9ac3e0",
+          "cmsBodySha256": "2ce1f87aed843f969790c6361c1ec195a44266ffc9601e54153b01c0ccf83997",
+          "materialKey": "archive-history-2"
+        },
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-kk",
+          "locale": "kk",
+          "quote": "1791 ж. | Зырян қ. құрылуына 235 жыл",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "ac7b08333c03032c29da46f86dcbbff043596ce83ba526866d2c0f6cfc8be987",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "alias-altay-city-0",
+      "parentDraftKey": "place-altay-city",
+      "proposedKind": "ALIAS",
+      "data": {
+        "name": "Алтай",
+        "locale": "ru",
+        "forms": [
+          "Алтая",
+          "Алтае"
+        ],
+        "historical": false,
+        "transliteration": false
+      },
+      "reviewNote": "Forms normalize wording; EN transliterations are editorial, not certified historical names",
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "history-2",
+          "locale": "ru",
+          "quote": "В 2019 году произошло переименование Зыряновского филиала  КГУ «Государственный  архив» управления культуры, архивов и документации Восточно-Казахстанской области. На основании Указа Президента Республики Казахстан от 28 декабря 2018 года № 821 Зыряновский район и город Зыряновск Восточно-Казахстанской области переименованы в район Алтай и город Алтай. В связи с чем, 11 февраля 2019 года Зыряновский филиал прошел государственную перерегистрацию в органах юстиции и стал именоваться филиал Алтай КГУ «Государственный архив» управления культуры, архивов и документации Восточно-Казахстанской области.",
+          "sourceFileSha256": "752bdbe469e558be73e14f526028b933cf372ea2a2f08b241fee69961e9ac3e0",
+          "cmsBodySha256": "2ce1f87aed843f969790c6361c1ec195a44266ffc9601e54153b01c0ccf83997",
+          "materialKey": "archive-history-2"
+        },
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-kk",
+          "locale": "kk",
+          "quote": "1791 ж. | Зырян қ. құрылуына 235 жыл",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "ac7b08333c03032c29da46f86dcbbff043596ce83ba526866d2c0f6cfc8be987",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "alias-altay-city-1",
+      "parentDraftKey": "place-altay-city",
+      "proposedKind": "ALIAS",
+      "data": {
+        "name": "Зыряновск",
+        "locale": "ru",
+        "forms": [
+          "Зыряновска",
+          "Зыряновске"
+        ],
+        "historical": true,
+        "transliteration": false
+      },
+      "reviewNote": "Forms normalize wording; EN transliterations are editorial, not certified historical names",
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "history-2",
+          "locale": "ru",
+          "quote": "В 2019 году произошло переименование Зыряновского филиала  КГУ «Государственный  архив» управления культуры, архивов и документации Восточно-Казахстанской области. На основании Указа Президента Республики Казахстан от 28 декабря 2018 года № 821 Зыряновский район и город Зыряновск Восточно-Казахстанской области переименованы в район Алтай и город Алтай. В связи с чем, 11 февраля 2019 года Зыряновский филиал прошел государственную перерегистрацию в органах юстиции и стал именоваться филиал Алтай КГУ «Государственный архив» управления культуры, архивов и документации Восточно-Казахстанской области.",
+          "sourceFileSha256": "752bdbe469e558be73e14f526028b933cf372ea2a2f08b241fee69961e9ac3e0",
+          "cmsBodySha256": "2ce1f87aed843f969790c6361c1ec195a44266ffc9601e54153b01c0ccf83997",
+          "materialKey": "archive-history-2"
+        },
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-kk",
+          "locale": "kk",
+          "quote": "1791 ж. | Зырян қ. құрылуына 235 жыл",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "ac7b08333c03032c29da46f86dcbbff043596ce83ba526866d2c0f6cfc8be987",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "alias-altay-city-2",
+      "parentDraftKey": "place-altay-city",
+      "proposedKind": "ALIAS",
+      "data": {
+        "name": "Зырян",
+        "locale": "kk",
+        "forms": [
+          "Зырянда"
+        ],
+        "historical": true,
+        "transliteration": false
+      },
+      "reviewNote": "Forms normalize wording; EN transliterations are editorial, not certified historical names",
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "history-2",
+          "locale": "ru",
+          "quote": "В 2019 году произошло переименование Зыряновского филиала  КГУ «Государственный  архив» управления культуры, архивов и документации Восточно-Казахстанской области. На основании Указа Президента Республики Казахстан от 28 декабря 2018 года № 821 Зыряновский район и город Зыряновск Восточно-Казахстанской области переименованы в район Алтай и город Алтай. В связи с чем, 11 февраля 2019 года Зыряновский филиал прошел государственную перерегистрацию в органах юстиции и стал именоваться филиал Алтай КГУ «Государственный архив» управления культуры, архивов и документации Восточно-Казахстанской области.",
+          "sourceFileSha256": "752bdbe469e558be73e14f526028b933cf372ea2a2f08b241fee69961e9ac3e0",
+          "cmsBodySha256": "2ce1f87aed843f969790c6361c1ec195a44266ffc9601e54153b01c0ccf83997",
+          "materialKey": "archive-history-2"
+        },
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-kk",
+          "locale": "kk",
+          "quote": "1791 ж. | Зырян қ. құрылуына 235 жыл",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "ac7b08333c03032c29da46f86dcbbff043596ce83ba526866d2c0f6cfc8be987",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "alias-altay-city-3",
+      "parentDraftKey": "place-altay-city",
+      "proposedKind": "ALIAS",
+      "data": {
+        "name": "Алтай",
+        "locale": "kk",
+        "forms": [
+          "Алтайда"
+        ],
+        "historical": false,
+        "transliteration": false
+      },
+      "reviewNote": "Forms normalize wording; EN transliterations are editorial, not certified historical names",
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "history-2",
+          "locale": "ru",
+          "quote": "В 2019 году произошло переименование Зыряновского филиала  КГУ «Государственный  архив» управления культуры, архивов и документации Восточно-Казахстанской области. На основании Указа Президента Республики Казахстан от 28 декабря 2018 года № 821 Зыряновский район и город Зыряновск Восточно-Казахстанской области переименованы в район Алтай и город Алтай. В связи с чем, 11 февраля 2019 года Зыряновский филиал прошел государственную перерегистрацию в органах юстиции и стал именоваться филиал Алтай КГУ «Государственный архив» управления культуры, архивов и документации Восточно-Казахстанской области.",
+          "sourceFileSha256": "752bdbe469e558be73e14f526028b933cf372ea2a2f08b241fee69961e9ac3e0",
+          "cmsBodySha256": "2ce1f87aed843f969790c6361c1ec195a44266ffc9601e54153b01c0ccf83997",
+          "materialKey": "archive-history-2"
+        },
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-kk",
+          "locale": "kk",
+          "quote": "1791 ж. | Зырян қ. құрылуына 235 жыл",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "ac7b08333c03032c29da46f86dcbbff043596ce83ba526866d2c0f6cfc8be987",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "alias-altay-city-4",
+      "parentDraftKey": "place-altay-city",
+      "proposedKind": "ALIAS",
+      "data": {
+        "name": "Altay",
+        "locale": "en",
+        "forms": [
+          "Altai"
+        ],
+        "historical": false,
+        "transliteration": true
+      },
+      "reviewNote": "Forms normalize wording; EN transliterations are editorial, not certified historical names",
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "history-2",
+          "locale": "ru",
+          "quote": "В 2019 году произошло переименование Зыряновского филиала  КГУ «Государственный  архив» управления культуры, архивов и документации Восточно-Казахстанской области. На основании Указа Президента Республики Казахстан от 28 декабря 2018 года № 821 Зыряновский район и город Зыряновск Восточно-Казахстанской области переименованы в район Алтай и город Алтай. В связи с чем, 11 февраля 2019 года Зыряновский филиал прошел государственную перерегистрацию в органах юстиции и стал именоваться филиал Алтай КГУ «Государственный архив» управления культуры, архивов и документации Восточно-Казахстанской области.",
+          "sourceFileSha256": "752bdbe469e558be73e14f526028b933cf372ea2a2f08b241fee69961e9ac3e0",
+          "cmsBodySha256": "2ce1f87aed843f969790c6361c1ec195a44266ffc9601e54153b01c0ccf83997",
+          "materialKey": "archive-history-2"
+        },
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-kk",
+          "locale": "kk",
+          "quote": "1791 ж. | Зырян қ. құрылуына 235 жыл",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "ac7b08333c03032c29da46f86dcbbff043596ce83ba526866d2c0f6cfc8be987",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "alias-altay-city-5",
+      "parentDraftKey": "place-altay-city",
+      "proposedKind": "ALIAS",
+      "data": {
+        "name": "Zyryanovsk",
+        "locale": "en",
+        "forms": [],
+        "historical": true,
+        "transliteration": true
+      },
+      "reviewNote": "Forms normalize wording; EN transliterations are editorial, not certified historical names",
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "history-2",
+          "locale": "ru",
+          "quote": "В 2019 году произошло переименование Зыряновского филиала  КГУ «Государственный  архив» управления культуры, архивов и документации Восточно-Казахстанской области. На основании Указа Президента Республики Казахстан от 28 декабря 2018 года № 821 Зыряновский район и город Зыряновск Восточно-Казахстанской области переименованы в район Алтай и город Алтай. В связи с чем, 11 февраля 2019 года Зыряновский филиал прошел государственную перерегистрацию в органах юстиции и стал именоваться филиал Алтай КГУ «Государственный архив» управления культуры, архивов и документации Восточно-Казахстанской области.",
+          "sourceFileSha256": "752bdbe469e558be73e14f526028b933cf372ea2a2f08b241fee69961e9ac3e0",
+          "cmsBodySha256": "2ce1f87aed843f969790c6361c1ec195a44266ffc9601e54153b01c0ccf83997",
+          "materialKey": "archive-history-2"
+        },
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-kk",
+          "locale": "kk",
+          "quote": "1791 ж. | Зырян қ. құрылуына 235 жыл",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "ac7b08333c03032c29da46f86dcbbff043596ce83ba526866d2c0f6cfc8be987",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "event-ust-founded",
+      "parentDraftKey": "place-ust-kamenogorsk",
+      "proposedKind": "HISTORY",
+      "data": {
+        "id": "ust-founded",
+        "placeId": "ust-kamenogorsk",
+        "status": "DRAFT",
+        "publicationAllowed": false,
+        "locale": "ru",
+        "title": "Основание Усть-Каменогорска",
+        "date": {
+          "year": 1720,
+          "month": 8,
+          "day": 30,
+          "precision": "day"
+        },
+        "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+        "evidence": [
+          {
+            "sourceId": "S03--календарь 2025",
+            "path": "sources/archive-20261110/text/S03--календарь 2025 год каз рус.docx.txt",
+            "sha256": "32f4a1f1a0cc72a340f720ce23eada196043d19ba7814adffcacccecb9c74a06",
+            "line": 100,
+            "quote": "30 августа | 305 лет (1720) со дня образования г. Усть-Каменогорска"
+          }
+        ],
+        "documentIds": [],
+        "coordinates": null,
+        "sourceAnniversaryText": "305 лет (1720) со дня образования г. Усть-Каменогорска",
+        "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+      },
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2025-ru",
+          "locale": "ru",
+          "quote": "30 августа | 305 лет (1720) со дня образования г. Усть-Каменогорска",
+          "sourceFileSha256": "32f4a1f1a0cc72a340f720ce23eada196043d19ba7814adffcacccecb9c74a06",
+          "cmsBodySha256": "bb02ada8e4037a54004a7894ca91f759f86dc876548f47e41a371e0dae3e5829",
+          "materialKey": "archive-calendar-2025"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "event-ust-school",
+      "parentDraftKey": "place-ust-kamenogorsk",
+      "proposedKind": "HISTORY",
+      "data": {
+        "id": "ust-school",
+        "placeId": "ust-kamenogorsk",
+        "status": "DRAFT",
+        "publicationAllowed": false,
+        "locale": "ru",
+        "title": "Открытие Мариинского женского училища в Усть-Каменогорске",
+        "date": {
+          "year": 1901,
+          "month": 8,
+          "precision": "month"
+        },
+        "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+        "evidence": [
+          {
+            "sourceId": "S03--календарь 2026",
+            "path": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+            "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+            "line": 26,
+            "quote": "август | 125 лет (1901) со дня открытия в г.Усть-Каменогорске Мариинского  женского училища"
+          }
+        ],
+        "documentIds": [],
+        "coordinates": null,
+        "sourceAnniversaryText": "125 лет (1901) со дня открытия в г.Усть-Каменогорске Мариинского  женского училища",
+        "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+      },
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-ru",
+          "locale": "ru",
+          "quote": "август | 125 лет (1901) со дня открытия в г.Усть-Каменогорске Мариинского  женского училища",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "a1060891136d813f57104269faed891bf08a0b503d41ca1209d740d939c2b23c",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "event-ust-titanium",
+      "parentDraftKey": "place-ust-kamenogorsk",
+      "proposedKind": "HISTORY",
+      "data": {
+        "id": "ust-titanium",
+        "placeId": "ust-kamenogorsk",
+        "status": "DRAFT",
+        "publicationAllowed": false,
+        "locale": "ru",
+        "title": "Ввод в эксплуатацию Усть-Каменогорского титаномагниевого комбината",
+        "date": {
+          "year": 1965,
+          "month": 3,
+          "day": 27,
+          "precision": "day"
+        },
+        "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+        "evidence": [
+          {
+            "sourceId": "S03--календарь 2025",
+            "path": "sources/archive-20261110/text/S03--календарь 2025 год каз рус.docx.txt",
+            "sha256": "32f4a1f1a0cc72a340f720ce23eada196043d19ba7814adffcacccecb9c74a06",
+            "line": 88,
+            "quote": "27 марта | 70 лет со (1965) дня сдачи в эксплуатацию Усть-Каменогорского титаномагниевого комбината"
+          }
+        ],
+        "documentIds": [],
+        "coordinates": null,
+        "sourceAnniversaryText": "70 лет со (1965) дня сдачи в эксплуатацию Усть-Каменогорского титаномагниевого комбината",
+        "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+      },
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2025-ru",
+          "locale": "ru",
+          "quote": "27 марта | 70 лет со (1965) дня сдачи в эксплуатацию Усть-Каменогорского титаномагниевого комбината",
+          "sourceFileSha256": "32f4a1f1a0cc72a340f720ce23eada196043d19ba7814adffcacccecb9c74a06",
+          "cmsBodySha256": "bb02ada8e4037a54004a7894ca91f759f86dc876548f47e41a371e0dae3e5829",
+          "materialKey": "archive-calendar-2025"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "event-ridder-founded",
+      "parentDraftKey": "place-ridder",
+      "proposedKind": "HISTORY",
+      "data": {
+        "id": "ridder-founded",
+        "placeId": "ridder",
+        "status": "DRAFT",
+        "publicationAllowed": false,
+        "locale": "ru",
+        "title": "Основание Риддера",
+        "date": {
+          "year": 1786,
+          "month": 5,
+          "precision": "month"
+        },
+        "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+        "evidence": [
+          {
+            "sourceId": "S03--календарь 2026",
+            "path": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+            "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+            "line": 14,
+            "quote": "май | 240 лет (1786) со дня основания г.Риддер"
+          }
+        ],
+        "documentIds": [],
+        "coordinates": null,
+        "sourceAnniversaryText": "240 лет (1786) со дня основания г.Риддер",
+        "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+      },
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-ru",
+          "locale": "ru",
+          "quote": "май | 240 лет (1786) со дня основания г.Риддер",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "a1060891136d813f57104269faed891bf08a0b503d41ca1209d740d939c2b23c",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "event-ridder-renamed",
+      "parentDraftKey": "place-ridder",
+      "proposedKind": "HISTORY",
+      "data": {
+        "id": "ridder-renamed",
+        "placeId": "ridder",
+        "status": "DRAFT",
+        "publicationAllowed": false,
+        "locale": "ru",
+        "title": "Переименование Риддера в Лениногорск",
+        "date": {
+          "year": 1941,
+          "month": 2,
+          "day": 6,
+          "precision": "day"
+        },
+        "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+        "evidence": [
+          {
+            "sourceId": "S03--календарь 2026",
+            "path": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+            "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+            "line": 10,
+            "quote": "6 февраля | 85 лет (1941) со дня переименования г.Риддер в Лениногорск"
+          }
+        ],
+        "documentIds": [],
+        "coordinates": null,
+        "sourceAnniversaryText": "85 лет (1941) со дня переименования г.Риддер в Лениногорск",
+        "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+      },
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-ru",
+          "locale": "ru",
+          "quote": "6 февраля | 85 лет (1941) со дня переименования г.Риддер в Лениногорск",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "a1060891136d813f57104269faed891bf08a0b503d41ca1209d740d939c2b23c",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "event-ridder-museum",
+      "parentDraftKey": "place-ridder",
+      "proposedKind": "HISTORY",
+      "data": {
+        "id": "ridder-museum",
+        "placeId": "ridder",
+        "status": "DRAFT",
+        "publicationAllowed": false,
+        "locale": "ru",
+        "title": "Открытие историко-краеведческого музея Риддера",
+        "date": {
+          "year": 1961,
+          "month": 7,
+          "day": 1,
+          "precision": "day"
+        },
+        "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+        "evidence": [
+          {
+            "sourceId": "S03--календарь 2026",
+            "path": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+            "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+            "line": 20,
+            "quote": "1 июля | 65 лет (1961) со дня образования историко- краеведческого музея в г.  Риддере"
+          }
+        ],
+        "documentIds": [],
+        "coordinates": null,
+        "sourceAnniversaryText": "65 лет (1961) со дня образования историко- краеведческого музея в г.  Риддере",
+        "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+      },
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-ru",
+          "locale": "ru",
+          "quote": "1 июля | 65 лет (1961) со дня образования историко- краеведческого музея в г.  Риддере",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "a1060891136d813f57104269faed891bf08a0b503d41ca1209d740d939c2b23c",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "event-altay-founded",
+      "parentDraftKey": "place-altay-city",
+      "proposedKind": "HISTORY",
+      "data": {
+        "id": "altay-founded",
+        "placeId": "altay-city",
+        "status": "DRAFT",
+        "publicationAllowed": false,
+        "locale": "ru",
+        "title": "Основание Зыряновска",
+        "date": {
+          "year": 1791,
+          "precision": "year"
+        },
+        "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+        "evidence": [
+          {
+            "sourceId": "S03--календарь 2026",
+            "path": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+            "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+            "line": 45,
+            "quote": "1791 г. | 235 лет со дня основания г.Зыряновск"
+          }
+        ],
+        "documentIds": [],
+        "coordinates": null,
+        "sourceAnniversaryText": "235 лет со дня основания г.Зыряновск",
+        "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+      },
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-ru",
+          "locale": "ru",
+          "quote": "1791 г. | 235 лет со дня основания г.Зыряновск",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "a1060891136d813f57104269faed891bf08a0b503d41ca1209d740d939c2b23c",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "event-altay-city-status",
+      "parentDraftKey": "place-altay-city",
+      "proposedKind": "HISTORY",
+      "data": {
+        "id": "altay-city-status",
+        "placeId": "altay-city",
+        "status": "DRAFT",
+        "publicationAllowed": false,
+        "locale": "ru",
+        "title": "Преобразование посёлка Зыряновск в город",
+        "date": {
+          "year": 1941,
+          "month": 1,
+          "day": 17,
+          "precision": "day"
+        },
+        "dateBasis": "source assertion; calendar entries are anniversary descriptions, not original archival documents",
+        "evidence": [
+          {
+            "sourceId": "S03--календарь 2026",
+            "path": "sources/archive-20261110/text/S03--календарь 2026 год каз рус.docx.txt",
+            "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+            "line": 7,
+            "quote": "17 января | 85 лет (1941) со дня преобразования п.Зыряновск в город"
+          }
+        ],
+        "documentIds": [],
+        "coordinates": null,
+        "sourceAnniversaryText": "85 лет (1941) со дня преобразования п.Зыряновск в город",
+        "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+      },
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "calendar-2026-ru",
+          "locale": "ru",
+          "quote": "17 января | 85 лет (1941) со дня преобразования п.Зыряновск в город",
+          "sourceFileSha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed",
+          "cmsBodySha256": "a1060891136d813f57104269faed891bf08a0b503d41ca1209d740d939c2b23c",
+          "materialKey": "archive-calendar-2026"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    },
+    {
+      "draftKey": "event-altay-renamed",
+      "parentDraftKey": "place-altay-city",
+      "proposedKind": "HISTORY",
+      "data": {
+        "id": "altay-renamed",
+        "placeId": "altay-city",
+        "status": "DRAFT",
+        "publicationAllowed": false,
+        "locale": "ru",
+        "title": "Переименование Зыряновска в Алтай",
+        "date": {
+          "year": 2018,
+          "month": 12,
+          "day": 28,
+          "precision": "day"
+        },
+        "dateBasis": "S02 cites decree date; branch re-registration is a different event",
+        "evidence": [
+          {
+            "sourceId": "S02",
+            "path": "sources/archive-20261110/text/S02--История архива.docx.txt",
+            "sha256": "752bdbe469e558be73e14f526028b933cf372ea2a2f08b241fee69961e9ac3e0",
+            "line": 39,
+            "quote": "В 2019 году произошло переименование Зыряновского филиала  КГУ «Государственный  архив» управления культуры, архивов и документации Восточно-Казахстанской области. На основании Указа Президента Республики Казахстан от 28 декабря 2018 года № 821 Зыряновский район и город Зыряновск Восточно-Казахстанской области переименованы в район Алтай и город Алтай. В связи с чем, 11 февраля 2019 года Зыряновский филиал прошел государственную перерегистрацию в органах юстиции и стал именоваться филиал Алтай КГУ «Государственный архив» управления культуры, архивов и документации Восточно-Казахстанской области."
+          }
+        ],
+        "documentIds": [],
+        "coordinates": null,
+        "sourceAnniversaryText": "Переименование Зыряновска в Алтай по указу №821",
+        "titleProvenance": "ALEteam editorial heading; facts in exact source quotation"
+      },
+      "evidenceBindings": [
+        {
+          "namespace": "archive-real-20261111",
+          "sourceKey": "history-2",
+          "locale": "ru",
+          "quote": "В 2019 году произошло переименование Зыряновского филиала  КГУ «Государственный  архив» управления культуры, архивов и документации Восточно-Казахстанской области. На основании Указа Президента Республики Казахстан от 28 декабря 2018 года № 821 Зыряновский район и город Зыряновск Восточно-Казахстанской области переименованы в район Алтай и город Алтай. В связи с чем, 11 февраля 2019 года Зыряновский филиал прошел государственную перерегистрацию в органах юстиции и стал именоваться филиал Алтай КГУ «Государственный архив» управления культуры, архивов и документации Восточно-Казахстанской области.",
+          "sourceFileSha256": "752bdbe469e558be73e14f526028b933cf372ea2a2f08b241fee69961e9ac3e0",
+          "cmsBodySha256": "2ce1f87aed843f969790c6361c1ec195a44266ffc9601e54153b01c0ccf83997",
+          "materialKey": "archive-history-2"
+        }
+      ],
+      "decision": "PUBLISH_AFTER_SOURCE_BINDING"
+    }
+  ],
+  "instructions": [
+    "Resolve material/topic/place keys using published CMS IDs and current fingerprints.",
+    "Use the existing author/reviewer fact API, never auto-verify with the author.",
+    "Topic labels are editorial; evidence is the original text, not an invented digital case.",
+    "The first three cold-start picks are archive history, the 2026 calendar and the fonds guide."
+  ]
+}

@@ -7,10 +7,11 @@ const reference=z.object({kind:z.literal('cms'),id:z.string().regex(/^[a-zA-Z0-9
 const binding=z.object({sourceKey:z.string().min(1).max(160),locale:z.enum(['ru','kk','en']),body:z.string().max(20000),source:reference});
 export type PublishedSourceBinding=z.input<typeof binding>;
 export interface PreparedFact {draftKey:string;request:{kind:'PLACE'|'ALIAS'|'HISTORY';branchId:null;parentId?:string;data:unknown;sources:{kind:'cms';id:string;locale:ContentLocale;revision:string}[]};requiresReview:true;notes:string[]}
-export function prepareDiscoveryFacts(input:readonly PublishedSourceBinding[],parents:Record<string,Pick<PlaceRef,'id'|'name'>>={}){
+export interface FactRecipe {draftKey:string;parentDraftKey?:string;proposedKind:string;data:unknown;evidenceBindings:readonly {sourceKey:string;locale:string;quote:string}[]}
+export function prepareDiscoveryFacts(input:readonly PublishedSourceBinding[],parents:Record<string,Pick<PlaceRef,'id'|'name'>>={},recipes:readonly FactRecipe[]=manifest.records){
  const bindings=z.array(binding).max(100).parse(input);const keys=bindings.map(b=>b.sourceKey+':'+b.locale);if(new Set(keys).size!==keys.length)throw Error('DUPLICATE_SOURCE_BINDING');
  const ready:PreparedFact[]=[],blocked:{draftKey:string;reason:'source_mapping_missing'|'source_quote_changed'|'parent_unresolved'|'parent_label_mismatch';keys:string[]}[]=[];
- for(const row of manifest.records){
+ for(const row of recipes){
   const matches=row.evidenceBindings.map(e=>({expected:e,binding:bindings.find(b=>b.sourceKey===e.sourceKey&&b.locale===e.locale)}));
   const missing=matches.filter(m=>!m.binding);if(missing.length){blocked.push({draftKey:row.draftKey,reason:'source_mapping_missing',keys:missing.map(m=>m.expected.sourceKey)});continue;}
   if(matches.some(m=>m.binding!.source.locale!==m.expected.locale||!m.binding!.body.includes(m.expected.quote))){blocked.push({draftKey:row.draftKey,reason:'source_quote_changed',keys:matches.map(m=>m.expected.sourceKey)});continue;}
@@ -20,7 +21,7 @@ export function prepareDiscoveryFacts(input:readonly PublishedSourceBinding[],pa
   if(parentKey){
    const parent=parents[parentKey];if(!parent){blocked.push({draftKey:row.draftKey,reason:'parent_unresolved',keys:[parentKey]});continue;}
    z.string().regex(/^[a-zA-Z0-9_-]{1,80}$/).parse(parent.id);
-   const place=manifest.records.find(r=>r.draftKey===parentKey)!.data as {names:Record<string,string>};
+   const place=recipes.find(r=>r.draftKey===parentKey)!.data as {names:Record<string,string>};
    if(!Object.values(place.names).includes(parent.name)){blocked.push({draftKey:row.draftKey,reason:'parent_label_mismatch',keys:[parentKey]});continue;}
    parentId=parent.id;
   }

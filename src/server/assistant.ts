@@ -40,7 +40,7 @@ export async function assistant(request: Request) {
     if(!process.env.ASSISTANT_SERVICE_URL&&plan.handled&&!requiresCatalogEvidence(plan,input.question)&&!cmsPassages.length)catalogPassages=await retrieveSemanticCatalog(plan);
     result = assistantOutput.parse(process.env.ASSISTANT_SERVICE_URL
       ? await serviceRequest(process.env.ASSISTANT_SERVICE_URL, process.env.ASSISTANT_SERVICE_TOKEN, { ...input, maxOutputTokens: 500 }, 15000)
-      : cmsPassages.length ? cmsAnswer(cmsPassages,locale)
+      : cmsPassages.length ? cmsAnswer(cmsPassages,locale,cmsQuestionContext(input.question,input.history))
       : plan.handled ? semanticCatalogAnswer(catalogPassages,plan,local)
       : locale==='en' ? (local?englishSiteDialog(input.question,input.history):cmsAnswer([],locale))
       : local ? await answerSiteDialog(input.question, input.history,documentLocale)
