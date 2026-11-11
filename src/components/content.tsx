@@ -90,8 +90,9 @@ export function bodyBlocks(body: string): Block[] {
   return blocks.filter(b => b.type !== 'p' || b.text);
 }
 
-export function Body({ item }: { item: PublicContentItem }) {
+export function Body({ item, t }: { item: PublicContentItem; t?: Translate }) {
   const blocks = bodyBlocks(item.payload.body);
+  const firstTableIndex=blocks.findIndex(b=>b.type==='table');
   return <div className="prose body-text" lang={item.locale}>{blocks.map((b, i) => {
     if (b.type === 'p') return <p key={i} className="pre-wrap">{b.text}</p>;
     if (b.type === 'ul') return <ul key={i}>{b.items.map((t, j) => <li key={j}>{t}</li>)}</ul>;
@@ -99,7 +100,7 @@ export function Body({ item }: { item: PublicContentItem }) {
     const rows = b.rows.map(r => r.length === width ? r : [...r, ...Array(width - r.length).fill('')]);
     // Drop columns that are empty in every row (source tables keep layout spacers).
     const keep = Array.from({ length: width }, (_, c) => rows.some(r => r[c]));
-    return <div key={i} className="table-wrap body-table" tabIndex={0}><table className="table"><tbody>{rows.map((r, j) => <tr key={j}>{r.filter((_, c) => keep[c]).map((cell, c) => c === 0 ? <th key={c} scope="row">{cell}</th> : <td key={c}>{cell}</td>)}</tr>)}</tbody></table></div>;
+    return <div key={i}>{t&&i===firstTableIndex&&<p className="small muted">{t('Таблицу можно прокручивать по горизонтали.')}</p>}<div className="table-wrap body-table" tabIndex={0}><table className="table"><tbody>{rows.map((r, j) => <tr key={j}>{r.filter((_, c) => keep[c]).map((cell, c) => c === 0 ? <th key={c} scope="row">{cell}</th> : <td key={c}>{cell}</td>)}</tr>)}</tbody></table></div></div>;
   })}</div>;
 }
 

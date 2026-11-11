@@ -709,3 +709,8 @@ label.row > input[type="checkbox"], label.row > input[type="radio"] { flex: none
 @media (prefers-reduced-motion: no-preference) {
   .entry-card:hover, .year-card > a:hover, .material-card:hover { transform: translateY(-2px); }
 }
+
+@media (max-width: 479px) {
+  .brand { font-size: 1rem; }
+  .section-intro h1 { font-size: 1.6rem; }
+}

@@ -55,7 +55,7 @@ export async function ContentDetail({ slug, path, kinds, crumb, children,content
         </div>
         <h1 style={{ marginBottom: 0 }}>{p.title}</h1>
         {item.locale!==lang&&<p className="small muted">{t('Материал показан на языке источника.')}</p>}
-        <Body item={item} />
+        <Body item={item} t={t} />
         {children?.(item)}
       </article>
       <MaterialFiles materialId={item.id} contentLocale={item.locale} initialFiles={originals}/>

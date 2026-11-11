@@ -16,7 +16,7 @@ export default async function CompliancePage() {
         <h1>{t('Комплаенс')}</h1>
         <p className="lead">{t('Противодействие коррупции: положения, планы и информация.')}</p>
       </header>
-      {items.length ? <SectionCards items={items} t={t} headingLevel={2} /> : <p className="muted">{t('Материалы раздела пока не опубликованы.')}</p>}
+      {items.length ? <SectionCards items={items} t={t} headingLevel={2} showExcerpt={false} /> : <p className="muted">{t('Материалы раздела пока не опубликованы.')}</p>}
     </div>
   );
 }

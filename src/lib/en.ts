@@ -1103,5 +1103,6 @@ export const en: Record<string,string> = {
   "История": "History",
   "Почему этот материал?": "Why this material?",
   "На этой странице": "On this page",
-  "Читать материал": "Read material"
+  "Читать материал": "Read material",
+  "Таблицу можно прокручивать по горизонтали.": "Scroll horizontally to read the table."
 };

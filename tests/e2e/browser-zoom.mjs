@@ -13,7 +13,7 @@ for(const lang of['ru','kk','en'])for(const theme of['light','dark']){
   const settings=await ctx.newPage();await settings.goto('chrome://settings/appearance');await settings.evaluate(()=>new Promise(resolve=>chrome.settingsPrivate.setDefaultZoom(2,()=>resolve())));
   const zoom=await settings.evaluate(()=>new Promise(resolve=>chrome.settingsPrivate.getDefaultZoom(resolve)));assert.equal(zoom,2);await settings.close();
   await ctx.addCookies([{name:'lang',value:lang,url:base},{name:'display-theme',value:theme,url:base},{name:'display-text-size',value:'100',url:base}]);const p=await ctx.newPage();
-  for(const route of['/','/catalog?scope=cms','/catalog?scope=fund','/materials/archive-history-1?contentLang=ru','/guide']){
+  for(const route of['/','/catalog?scope=cms','/catalog?scope=fund','/materials/archive-history-1?contentLang=ru','/guide','/about','/calendar','/services','/directories/funds']){
    await p.goto(base+route);await p.evaluate(()=>document.fonts.ready);if(route.startsWith('/catalog'))await p.locator('.search-card').first().waitFor();if(route==='/')await p.locator('section[aria-labelledby="recommendations-title"] .result-list a').first().waitFor();
    const row=await p.evaluate(()=>({outerWidth,innerWidth,devicePixelRatio,overflow:Math.max(0,document.documentElement.scrollWidth-innerWidth)}));assert.equal(row.outerWidth,1440);assert.equal(row.innerWidth,720);assert.equal(row.devicePixelRatio,2);assert.equal(row.overflow,0,JSON.stringify({lang,theme,route,...row}));rows.push({lang,theme,route,browserZoom:zoom,...row});
    if(lang==='ru'&&['/','/catalog?scope=cms'].includes(route))await p.screenshot({path:out+'/'+(route==='/'?'home':'catalog')+'-'+theme+'-zoom200.png',fullPage:true});
