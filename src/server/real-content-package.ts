@@ -7,7 +7,7 @@ import {Prisma} from '../generated/prisma/index.js';
 import {reviewedPublicationPayload} from './artur-discovery/publication-content';
 import publication from '../../data/artur/real-content-v2/publication-manifest.json';
 const hash=(v:Buffer|string)=>createHash('sha256').update(v).digest('hex');
-export interface RealPage {sourceKey:string;slug:string;locale:string;kind:'PAGE'|'BRANCH_PROFILE';branchId:string|null;branchName?:string;payload:Prisma.InputJsonObject;legacyBody?:string;original:unknown}
+export interface RealPage {sourceKey:string;slug:string;locale:string;kind:'PAGE'|'BRANCH_PROFILE';branchId:string|null;branchName?:string;payload:Prisma.InputJsonObject;original:unknown}
 export async function realContentPackage(){
  const requests=JSON.parse(await readFile('data/archive-20261110/cms-draft-requests.json','utf8'));
  const branches=JSON.parse(await readFile('data/archive-20261110/branches.json','utf8'));
@@ -20,7 +20,7 @@ export async function realContentPackage(){
   if(r.sourceKey.startsWith('calendar-')){p.yearFrom=Number(r.sourceKey.split('-')[1]);p.yearTo=p.yearFrom;}
   if(r.sourceKey==='contacts'){p.address='Республика Казахстан, 070000, г. Усть-Каменогорск, ул. Бейбітшілік, 26/1 (Головкова, 26/1)';p.phone='8 (7232) 25-59-76';p.email='arhiv-ukg@yandex.kz';p.hours='Понедельник–пятница: архив 8:00–17:00; читальный зал 9:00–16:00';}
   if(p.contactReview){p.contactReview.address='verified';if(p.phone)p.contactReview.phone='verified';}
-  return {sourceKey:r.sourceKey,slug:r.slug,locale:r.locale,kind:r.kind,branchId:r.branchId,...(r.branchName?{branchName:r.branchName}:{}),payload:p as Prisma.InputJsonObject,legacyBody:p.body,original:r.original};
+  return {sourceKey:r.sourceKey,slug:r.slug,locale:r.locale,kind:r.kind,branchId:r.branchId,...(r.branchName?{branchName:r.branchName}:{}),payload:p as Prisma.InputJsonObject,original:r.original};
  });
  const decree=JSON.parse(await readFile('data/artur/discovery/branch-decree-review.json','utf8'));
  rows.push({sourceKey:'branch-decree-142',slug:'archive-branch-decree-142',locale:'ru',kind:'PAGE',branchId:null,payload:contentPayload.parse({title:decree.title,body:'Постановление акимата Восточно-Казахстанской области от 2 июня 2026 года №142 «О некоторых вопросах архивных учреждений Восточно-Казахстанской области». Приложение 1 содержит создание девяти филиалов, приложение 2 — переименование четырёх филиалов. Оригинал постановления приведён во вложении. Реквизиты прочитаны по изображению, автоматический OCR может содержать ошибки.',date:'2026-06-02',category:'branches',rights:'Предоставленный оригинал постановления.',sourceNote:'S06; реквизиты: визуальная сверка изображения помощником ALEteam, не юридическое заключение.'}) as Prisma.InputJsonObject,original:decree});
