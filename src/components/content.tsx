@@ -79,8 +79,9 @@ export function bodyBlocks(body: string): Block[] {
       const cells = line.split('|').map(c => c.trim());
       if (cells.every(c => !c)) continue;
       if (last?.type === 'table') last.rows.push(cells); else blocks.push({ type: 'table', rows: [cells] });
-    } else if (/^[-•–]\s+/.test(line)) {
-      const text = line.replace(/^[-•–]\s+/, '');
+    } else if (/^[-•–](\s+|(?=[«"A-ZА-ЯЁӘІҢҒҮҰҚӨҺ]))/u.test(line)) {
+      // "- item" and source lists written as "-Item" (a dash before a capital or quote; "-5" stays text).
+      const text = line.replace(/^[-•–]\s*/, '');
       if (last?.type === 'ul') last.items.push(text); else blocks.push({ type: 'ul', items: [text] });
     } else if (last?.type === 'p' && last.text && !/[.!?:;»)]$/.test(last.text) && line.length < 80 && last.text.length < 80) {
       last.text += '\n' + line;
@@ -98,7 +99,7 @@ export function Body({ item }: { item: PublicContentItem }) {
     const rows = b.rows.map(r => r.length === width ? r : [...r, ...Array(width - r.length).fill('')]);
     // Drop columns that are empty in every row (source tables keep layout spacers).
     const keep = Array.from({ length: width }, (_, c) => rows.some(r => r[c]));
-    return <div key={i} className="table-wrap body-table"><table className="table"><tbody>{rows.map((r, j) => <tr key={j}>{r.filter((_, c) => keep[c]).map((cell, c) => c === 0 ? <th key={c} scope="row">{cell}</th> : <td key={c}>{cell}</td>)}</tr>)}</tbody></table></div>;
+    return <div key={i} className="table-wrap body-table" tabIndex={0}><table className="table"><tbody>{rows.map((r, j) => <tr key={j}>{r.filter((_, c) => keep[c]).map((cell, c) => c === 0 ? <th key={c} scope="row">{cell}</th> : <td key={c}>{cell}</td>)}</tr>)}</tbody></table></div>;
   })}</div>;
 }
 

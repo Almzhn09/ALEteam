@@ -1,31 +1,21 @@
-'use client';
-// R-F02/R-F04: published files of a CMS material (/api/discovery/materials/cms/:id/attachments). Bytes are served
-// by /api/material-files with no-store, so a withdrawn file disappears on the next load; no copy is kept here.
-import { useEffect, useState } from 'react';
+// R-F02/R-F04: published files of a CMS material, rendered on the server through the same function as
+// /api/discovery/materials/cms/:id/attachments. Bytes are served by /api/material-files with no-store, so a withdrawn
+// file disappears on the next load; no copy is kept here and no client JavaScript is needed.
 import type { AttachmentRef } from '@/contracts/real-content';
-import { apiGet } from '@/lib/api';
-import { useI18n } from '@/lib/lang';
+import { getT } from '@/lib/i18n-server';
 import { visuals } from '@/lib/visuals';
-import { ErrorNotice } from './ui';
+import { materialAttachments } from '@/server/material-attachments';
 
 const typeName = (mime: string) => mime === 'application/pdf' ? 'PDF' : mime.includes('wordprocessingml') ? 'DOCX' : mime === 'image/png' ? 'PNG' : mime === 'image/jpeg' ? 'JPEG' : mime;
 const size = (n: number) => n >= 1048576 ? `${(n / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(n / 1024))} KB`;
 const isImage = (mime: string) => /^image\/(png|jpeg)$/.test(mime);
 
-export function MaterialAttachments({ id, locale }: { id: string; locale: string }) {
-  const { t } = useI18n();
-  const [items, setItems] = useState<AttachmentRef[] | null>(null);
-  const [error, setError] = useState<unknown>(null);
-  const [attempt, retry] = useState(0);
-  useEffect(() => {
-    const abort = new AbortController();
-    setError(null);
-    apiGet<{ items: AttachmentRef[] }>(`/discovery/materials/cms/${encodeURIComponent(id)}/attachments?locale=${locale}`, abort.signal)
-      .then(r => setItems(r.items), e => { if (e.name !== 'AbortError') { setError(e); setItems([]); } });
-    return () => abort.abort();
-  }, [id, locale, attempt]);
-  if (error) return <ErrorNotice error={error} onRetry={() => retry(a => a + 1)} />;
-  if (!items?.length) return null;
+export async function MaterialAttachments({ id, locale }: { id: string; locale: string }) {
+  const t = await getT();
+  let items: AttachmentRef[] = [];
+  try { items = await materialAttachments({ kind: 'cms', id }, (['ru', 'kk', 'en'].includes(locale) ? locale : 'ru') as 'ru' | 'kk' | 'en'); }
+  catch (error) { console.error('archive_material_files_failed', (error as Error).name); return null; }
+  if (!items.length) return null;
   const masters = items.filter(a => a.variant === 'master');
   const previewOf = (master: AttachmentRef) => items.find(a => a.variant === 'preview' && a.parentId === master.id);
   const images = masters.filter(a => isImage(a.mimeType));

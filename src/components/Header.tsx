@@ -9,7 +9,7 @@ import { useI18n } from '@/lib/lang';
 import { DisplayPreferences, type DisplayTheme, type TextSize } from './DisplayPreferences';
 import { TourButton } from './Tour';
 import { AssistantWidget } from './AssistantWidget';
-import { LANGS, langName, type Lang } from '@/lib/i18n';
+import { LANGS, langName, type Lang } from '@/lib/i18n-core';
 
 // Sections of the published corpus (R-F02). Empty legacy sections stay reachable by URL but are not advertised.
 const links = [

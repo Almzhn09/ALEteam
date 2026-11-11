@@ -1,18 +1,24 @@
 'use client';
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
-import { LANG_COOKIE, dateTimeFormatter, dayFormatter, translator, type Lang, type Translate } from './i18n';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { LANG_COOKIE, dateTimeFormatter, dayFormatter, makeTranslator, type Dictionary, type Lang, type Translate } from './i18n-core';
 
 interface LangApi { lang: Lang; t: Translate; formatDate(iso: string): string; formatDay(iso: string): string; setLang(lang: Lang): void }
 const LangContext = createContext<LangApi | null>(null);
 
-export function LangProvider({ initial, children }: { initial: Lang; children: ReactNode }) {
+/**
+ * The server passes the active language and only its dictionary (empty for Russian), so pages do not ship every
+ * translation. After a language switch the caller refreshes the route and the new dictionary arrives with it.
+ */
+export function LangProvider({ initial, dictionary, children }: { initial: Lang; dictionary: Dictionary; children: ReactNode }) {
   const [lang, setState] = useState<Lang>(initial);
+  useEffect(() => setState(initial), [initial]);
   const setLang = useCallback((next: Lang) => {
     document.cookie = `${LANG_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax`;
     document.documentElement.lang = next;
     setState(next);
   }, []);
-  const value = useMemo(() => ({ lang, t: translator(lang), formatDate: dateTimeFormatter(lang), formatDay: dayFormatter(lang), setLang }), [lang, setLang]);
+  // Until the refreshed dictionary arrives the previous one stays in use, so no text flips to Russian midway.
+  const value = useMemo(() => ({ lang, t: makeTranslator(dictionary), formatDate: dateTimeFormatter(lang), formatDay: dayFormatter(lang), setLang }), [lang, dictionary, setLang]);
   return <LangContext value={value}>{children}</LangContext>;
 }
 

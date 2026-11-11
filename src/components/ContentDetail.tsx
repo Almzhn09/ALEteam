@@ -2,7 +2,8 @@ import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
 import type { ContentKind, PublicContentItem,ContentLocale } from '@/contracts/cms';
 import { Body, Provenance, Related, RelatedLinks } from '@/components/content';
-import { ExplainDocument, RelatedMaterials } from '@/components/DiscoveryMaterials';
+import { ExplainDocument } from '@/components/DiscoveryMaterials';
+import { RelatedServer } from '@/components/RelatedServer';
 import { MaterialAttachments } from '@/components/MaterialAttachments';
 import { Share } from '@/components/Share';
 import { Breadcrumbs, DemoBadge } from '@/components/ui';
@@ -68,7 +69,7 @@ export async function ContentDetail({ slug, path, kinds, crumb, children,content
       {explainable && <ExplainDocument material={{ kind: 'cms', id: item.id }} />}
       <Related documents={links.documents} content={links.content} t={t} />
       <RelatedLinks links={p.links} t={t} />
-      <RelatedMaterials material={{ kind: 'cms', id: item.id }} />
+      <RelatedServer id={item.id} kind="cms" locale={lang} />
     </div>
   );
 }

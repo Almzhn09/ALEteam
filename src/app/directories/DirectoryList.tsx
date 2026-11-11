@@ -7,13 +7,15 @@ import { apiGet } from '@/lib/api';
 import { useI18n } from '@/lib/lang';
 import { FundRow, NewspaperRow } from '@/components/Registry';
 import { Breadcrumbs, ErrorNotice, Loading, Pagination } from '@/components/ui';
+import { directoryKey } from './shared';
 
 type Kind = 'funds' | 'newspapers';
-interface Result { items: (FundDirectoryEntry | NewspaperEntry)[]; total: number; page: number; pageSize: number; sourceVersions: RegistrySource[] }
+export interface Result { items: (FundDirectoryEntry | NewspaperEntry)[]; total: number; page: number; pageSize: number; sourceVersions: RegistrySource[] }
 const PAGE_SIZE = 20;
 
 /** Searchable, paginated reference directory; the address keeps q/page/sort so results can be shared. */
-export function DirectoryList({ kind }: { kind: Kind }) {
+// The server renders the first result page (initial + its query key), so the list is visible before hydration.
+export function DirectoryList({ kind, initial = null, initialKey = '' }: { kind: Kind; initial?: Result | null; initialKey?: string }) {
   const { t, formatDay } = useI18n();
   const params = useSearchParams();
   const router = useRouter();
@@ -21,19 +23,23 @@ export function DirectoryList({ kind }: { kind: Kind }) {
   const q = (params.get('q') ?? '').slice(0, 200);
   const page = Math.max(1, Number(params.get('page')) || 1);
   const sort = params.get('sort') === 'title' ? 'title' : 'source';
+  const key = directoryKey(q, page, sort);
   const [text, setText] = useState(q);
-  const [data, setData] = useState<Result | null>(null);
+  const [data, setData] = useState<Result | null>(initial && initialKey === key ? initial : null);
   const [error, setError] = useState<unknown>(null);
   const [attempt, retry] = useState(0);
+  const [served] = useState(initialKey);
   useEffect(() => setText(q), [q]);
   useEffect(() => {
+    if (attempt === 0 && key === served && initial) return;
     const abort = new AbortController();
     setError(null); setData(null);
     const query = new URLSearchParams({ page: String(page), pageSize: String(PAGE_SIZE), sort });
     if (q) query.set('q', q);
     apiGet<Result>(`/directories/${kind}?${query}`, abort.signal).then(setData, e => { if (e.name !== 'AbortError') setError(e); });
     return () => abort.abort();
-  }, [kind, q, page, sort, attempt]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [kind, key, attempt]);
   const href = (next: { q?: string; page?: number; sort?: string }) => {
     const query = new URLSearchParams();
     const nq = next.q ?? q; const ns = next.sort ?? sort; const np = next.page ?? 1;

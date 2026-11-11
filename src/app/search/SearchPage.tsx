@@ -12,6 +12,7 @@ import { FundRow, KindBadge, NewspaperRow } from '@/components/Registry';
 import { FollowTopic } from '@/components/TopicSubscriptions';
 import { Breadcrumbs, ErrorNotice, Loading, Pagination } from '@/components/ui';
 import { sampleQueries } from '@/lib/search-samples';
+import { searchKey } from './shared';
 
 const SCOPES = ['all', 'cms', 'fund', 'newspaper'] as const;
 type Scope = typeof SCOPES[number];
@@ -26,7 +27,8 @@ function snippetOf(text: string, q: string) {
   return (start > 0 ? '…' : '') + cut + (start + 240 < flat.length ? '…' : '');
 }
 
-export function SearchPage() {
+// The server renders the first result page (initial + initialKey), so results are in the first HTML.
+export function SearchPage({ initial = null, initialKey = '' }: { initial?: SearchResult | null; initialKey?: string }) {
   const { t, lang } = useI18n();
   const params = useSearchParams();
   const router = useRouter();
@@ -35,19 +37,23 @@ export function SearchPage() {
   const raw = params.get('scope');
   const scope: Scope = SCOPES.includes(raw as Scope) ? raw as Scope : 'all';
   const page = Math.max(1, Number(params.get('page')) || 1);
+  const key = searchKey(q, scope, page, lang);
   const [text, setText] = useState(q);
-  const [data, setData] = useState<SearchResult | null>(null);
+  const [data, setData] = useState<SearchResult | null>(initial && initialKey === key ? initial : null);
   const [error, setError] = useState<unknown>(null);
   const [attempt, retry] = useState(0);
+  const [served] = useState(initialKey);
   useEffect(() => setText(q), [q]);
   useEffect(() => {
     if (!q) { setData(null); setError(null); return; }
+    if (attempt === 0 && key === served && initial) return;
     const abort = new AbortController();
     setData(null); setError(null);
     const query = new URLSearchParams({ q, scope, locale: lang, page: String(page), pageSize: String(PAGE_SIZE) });
     apiGet<SearchResult>(`/search?${query}`, abort.signal).then(setData, e => { if (e.name !== 'AbortError') setError(e); });
     return () => abort.abort();
-  }, [q, scope, page, lang, attempt]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key, attempt]);
   const href = (next: { q?: string; scope?: Scope; page?: number }) => {
     const query = new URLSearchParams();
     const nq = next.q ?? q; const ns = next.scope ?? scope; const np = next.page ?? 1;

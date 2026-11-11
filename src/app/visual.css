@@ -177,3 +177,13 @@
 }
 @keyframes reveal-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* Narrow header: the tour button keeps its accessible name but shows only the "?" mark. */
+@media (max-width: 479px) {
+  .header-tools .tour-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .header-tools button:has(.help-mark) { min-width: 44px; justify-content: center; }
+}
+
+/* The explanation flows with the page at every width: a nested scroll area hid its own last sections. */
+.explanation-body { max-height: none; overflow: visible; }
+.body-table:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }

@@ -32,7 +32,7 @@ export function TourButton({ className = 'btn btn-secondary', label }: { classNa
   const titleId = `tour-title-${current.id}`;
   return <>
     <button ref={opener} type="button" className={className} aria-haspopup="dialog" onClick={start}>
-      <span aria-hidden="true" className="help-mark">?</span>{label ?? t('Как пользоваться')}
+      <span aria-hidden="true" className="help-mark">?</span><span className="tour-label">{label ?? t('Как пользоваться')}</span>
     </button>
     <dialog ref={dialog} className="tour" aria-labelledby={titleId} aria-describedby="tour-text"
       onClose={() => { setOpen(false); opener.current?.focus(); }}>

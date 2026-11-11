@@ -4,6 +4,7 @@ import { HomeDiscovery } from '@/components/HomeDiscovery';
 import { SectionHero } from '@/components/SectionHero';
 import { SectionIcon } from '@/components/SectionIcon';
 import { directoryTotals } from '@/lib/directories-server';
+import { homeDiscoveryInitial } from '@/lib/home-server';
 import { getLang, getT } from '@/lib/i18n-server';
 import { sections } from '@/lib/sections';
 import { firstHref } from '@/lib/sections-server';
@@ -16,8 +17,8 @@ export function generateMetadata() { return { alternates: languageAlternates('/'
 // Copy follows data/artur/real-content-v2/ui-copy.json; every list below is read from the published corpus.
 export default async function Home() {
   const [t, lang] = await Promise.all([getT(), getLang()]);
-  const [historyHref, contactsHref, totals, news, exhibitions] = await Promise.all([
-    firstHref(lang, 'history', '/about#history'), firstHref(lang, 'contacts', '/about#contacts'), directoryTotals(), listContent(lang, 'NEWS'), listContent(lang, 'EXHIBITION'),
+  const [historyHref, contactsHref, totals, news, exhibitions, discovery] = await Promise.all([
+    firstHref(lang, 'history', '/about#history'), firstHref(lang, 'contacts', '/about#contacts'), directoryTotals(), listContent(lang, 'NEWS'), listContent(lang, 'EXHIBITION'), homeDiscoveryInitial(lang),
   ]);
   const entries = [
     { ...sections.history, href: historyHref },
@@ -53,7 +54,7 @@ export default async function Home() {
         </ul>
       </section>
 
-      <HomeDiscovery />
+      <HomeDiscovery initial={discovery} />
 
       {(totals.funds !== null || totals.newspapers !== null) && <section className="figures reveal" aria-labelledby="figures-title">
         <div className="figures-text">

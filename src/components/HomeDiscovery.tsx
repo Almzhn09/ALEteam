@@ -8,19 +8,22 @@ import {useSession} from '@/lib/session';
 import {MaterialCards} from './DiscoveryMaterials';
 import {ErrorNotice,Loading} from './ui';
 const PREF='archive-interests-v1',HISTORY='archive-continue-v1',HISTORY_ENABLED='archive-continue-enabled-v1';
-interface Topic{id:string;title:string;contentLocale:string}
+export interface Topic{id:string;title:string;contentLocale:string}
 function storedTopics():{enabled:boolean;topicIds:string[]}{try{const p=JSON.parse(localStorage.getItem(PREF)??'null');if(typeof p?.enabled==='boolean'&&Array.isArray(p.topicIds)&&p.topicIds.length<=20&&p.topicIds.every((s:unknown)=>typeof s==='string'&&/^[a-zA-Z0-9_-]{1,80}$/.test(s)))return p;}catch{}return {enabled:false,topicIds:[]};}
 function historyIds():string[]{try{const ids=JSON.parse(localStorage.getItem(HISTORY)??'[]');return Array.isArray(ids)?ids.filter(s=>typeof s==='string'&&/^[a-zA-Z0-9_-]{1,80}$/.test(s)).slice(0,3):[];}catch{return [];}}
 export function RememberDocument({documentId}:{documentId:string}){
  useEffect(()=>{try{if(localStorage.getItem(HISTORY_ENABLED)==='1')localStorage.setItem(HISTORY,JSON.stringify([documentId,...historyIds().filter(id=>id!==documentId)].slice(0,3)));}catch{}},[documentId]);return null;
 }
-export function HomeDiscovery(){
- const {lang,t}=useI18n(),{user,state}=useSession();const [topics,setTopics]=useState<Topic[]>([]),[selected,setSelected]=useState<string[]>([]),[enabled,setEnabled]=useState(false),[saved,setSaved]=useState(false),[remember,setRemember]=useState(false),[recent,setRecent]=useState<MaterialRef[]>([]),[data,setData]=useState<DiscoveryHome|null>(null),[error,setError]=useState<unknown>(null),[busy,setBusy]=useState(false),[attempt,refresh]=useState(0);
- useEffect(()=>{if(state.status==='loading')return;const abort=new AbortController();setData(null);setError(null);setSaved(false);setSelected([]);setEnabled(false);setRecent([]);
+// initial: the editorial selection and topics rendered on the server for an anonymous reader. The client replaces
+// them only when this reader has personalisation switched on (account or this browser).
+export function HomeDiscovery({initial}:{initial?:{lang:string;topics:Topic[];home:DiscoveryHome}|null}={}){
+ const {lang,t}=useI18n(),{user,state}=useSession();const seeded=!!initial&&initial.lang===lang;const [topics,setTopics]=useState<Topic[]>(seeded?initial!.topics:[]),[selected,setSelected]=useState<string[]>([]),[enabled,setEnabled]=useState(false),[saved,setSaved]=useState(false),[remember,setRemember]=useState(false),[recent,setRecent]=useState<MaterialRef[]>([]),[data,setData]=useState<DiscoveryHome|null>(seeded?initial!.home:null),[error,setError]=useState<unknown>(null),[busy,setBusy]=useState(false),[attempt,refresh]=useState(0);
+ useEffect(()=>{if(state.status==='loading')return;const abort=new AbortController();const fromServer=!!initial&&initial.lang===lang&&attempt===0;if(!fromServer)setData(null);setError(null);setSaved(false);setSelected([]);setEnabled(false);setRecent([]);
   void(async()=>{try{
-   const all:Topic[]=[];let cursor:string|null=null;do{const page:CursorPage<Topic>=await apiGet('/discovery/topics?locale='+lang+'&limit=20'+(cursor?'&cursor='+encodeURIComponent(cursor):''),abort.signal);all.push(...page.items);cursor=page.nextCursor;}while(cursor&&all.length<200);if(abort.signal.aborted)return;setTopics(all);
+   const all:Topic[]=fromServer?initial!.topics:[];if(!fromServer){let cursor:string|null=null;do{const page:CursorPage<Topic>=await apiGet('/discovery/topics?locale='+lang+'&limit=20'+(cursor?'&cursor='+encodeURIComponent(cursor):''),abort.signal);all.push(...page.items);cursor=page.nextCursor;}while(cursor&&all.length<200);}if(abort.signal.aborted)return;setTopics(all);
    const pref=user?(await apiGet<{item:InterestSettings}>('/me/interests',abort.signal)).item:storedTopics();const active='enabled' in pref?pref.enabled:pref.personalizationEnabled;const ids=pref.topicIds.filter(id=>all.some(topic=>topic.id===id));if(abort.signal.aborted)return;setSelected(ids);setEnabled(active);
-   setData(await apiGet('/discovery/home?locale='+lang+'&limit=3'+(!user&&active&&ids.length?'&topicIds='+encodeURIComponent(ids.join(',')):''),abort.signal));
+   // The server copy is the editorial selection; a personalised reader gets their own one.
+   if(!fromServer||active)setData(await apiGet('/discovery/home?locale='+lang+'&limit=3'+(!user&&active&&ids.length?'&topicIds='+encodeURIComponent(ids.join(',')):''),abort.signal));
    const allowed=localStorage.getItem(HISTORY_ENABLED)==='1';setRemember(allowed);if(allowed){const recent=await Promise.all(historyIds().map(id=>apiGet<{item:MaterialRef}>(`/discovery/materials/document/${id}?locale=${lang}`,abort.signal).then(r=>r.item,()=>null)));if(!abort.signal.aborted)setRecent(recent.filter((r):r is MaterialRef=>!!r));}
   }catch(e){if(!abort.signal.aborted)setError(e);}})();return ()=>abort.abort();
  },[lang,user?.id,state.status,attempt]);

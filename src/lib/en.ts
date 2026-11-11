@@ -1029,4 +1029,8 @@ export const en: Record<string, string> = {
   'Файл (PDF, DOCX, PNG или JPEG, до 20 МиБ)': 'File (PDF, DOCX, PNG or JPEG, up to 20 MiB)',
   'Файл привязывается к этой редакции. Публикует его другой сотрудник после полного разбора и проверки прав; посетители видят файл только у опубликованной редакции.': 'The file is attached to this revision. Another staff member publishes it after full parsing and a rights check; visitors only see files of the published revision.',
   'Файлы других редакций': 'Files of other revisions',
+  'Файл не прошёл полный разбор: он повреждён, обрезан или имеет другой формат. Отклоните его и запросите полную копию.': 'The file failed full parsing: it is damaged, truncated or in another format. Reject it and request a complete copy.',
+  'Разбор файла не уложился в отведённое время. Повторите позже или запросите файл меньшего размера.': 'Parsing the file took too long. Try again later or request a smaller file.',
+  'Сейчас разбирается другой файл. Повторите через минуту.': 'Another file is being parsed. Try again in a minute.',
+  'Файл не принят': 'File not accepted',
 };

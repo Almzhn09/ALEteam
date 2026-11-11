@@ -4,7 +4,7 @@ import { use, useCallback, useEffect, useState, type FormEvent } from 'react';
 import { locales, type ContentLocale, type ContentPayload, type ContentRevision, type Page, type StaffContentItem } from '@/contracts/cms';
 import { ApiClientError, apiGet, apiSend } from '@/lib/api';
 import { useI18n } from '@/lib/lang';
-import { langName } from '@/lib/i18n';
+import { langName } from '@/lib/i18n-core';
 import { DemoBadge, ErrorNotice, Loading, Notice } from '@/components/ui';
 import { FormError, useStaff } from '../../AdminShell';
 import { PayloadForm, RevisionWorkflow, StateBadge, cleanPayload, emptyPayload, kindLabel } from '../../editorial';
