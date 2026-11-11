@@ -1,0 +1,259 @@
+{
+  "testedAt": "2026-11-11T05:57:02.785Z",
+  "base": "3869be7",
+  "branch": "backend/alimzhan-real-content-v2",
+  "status": "IMPLEMENTED; independent team acceptance remains",
+  "unit": {
+    "passed": 362,
+    "failed": 0
+  },
+  "httpSuites": [
+    {
+      "name": "base",
+      "passed": 21,
+      "failed": 0
+    },
+    {
+      "name": "cms",
+      "passed": 14,
+      "failed": 0
+    },
+    {
+      "name": "catalog",
+      "passed": 12,
+      "failed": 0
+    },
+    {
+      "name": "imports",
+      "passed": 9,
+      "failed": 0
+    },
+    {
+      "name": "uploads",
+      "passed": 11,
+      "failed": 0
+    },
+    {
+      "name": "cms-assistant",
+      "passed": 12,
+      "failed": 0
+    },
+    {
+      "name": "semantic",
+      "passed": 40,
+      "failed": 0
+    },
+    {
+      "name": "discovery",
+      "passed": 20,
+      "failed": 0
+    },
+    {
+      "name": "real-content",
+      "passed": 6,
+      "failed": 0
+    }
+  ],
+  "httpTotal": 145,
+  "productionBuild": "passed",
+  "typecheck": "passed",
+  "i18n": {
+    "keys": 754,
+    "translated": 754,
+    "missing": 0
+  },
+  "dependencyAudit": {
+    "productionAdvisories": 0
+  },
+  "workingCorpus": {
+    "cmsMaterials": 36,
+    "languageEditions": 49,
+    "branches": 13,
+    "originalSourceFiles": 17,
+    "revisionAttachments": 23,
+    "fundNumberGroups": 1705,
+    "newspaperHoldingsRows": 1466,
+    "syntheticPublicDocuments": 0,
+    "archivalDocumentsInvented": 0,
+    "retiredKnownFixtureDocuments": 20,
+    "userRecordsDeleted": 0
+  },
+  "docker": {
+    "real": [
+      {
+        "name": "fresh default Compose imports the real corpus without fictional seed or Python runtime",
+        "passed": true
+      },
+      {
+        "name": "standalone runtime serves original DOCX, S06 page-4 preview and measured page-aware OCR with source-bound explanations",
+        "passed": true
+      },
+      {
+        "name": "re-running real setup is idempotent and never re-enables fixtures",
+        "passed": true
+      },
+      {
+        "name": "real source search and actual source preview timings are measured",
+        "passed": true
+      },
+      {
+        "name": "private backup includes all real tables, source originals, parsed OCR and derivatives",
+        "passed": true
+      },
+      {
+        "name": "restore into a new project preserves real provenance, visibility and identical original bytes",
+        "passed": true
+      }
+    ],
+    "legacy": [
+      {
+        "name": "runtime is non-root and both images exclude environment files",
+        "passed": true
+      },
+      {
+        "name": "fresh Compose stack initializes schema, original assets and two accounts",
+        "passed": true
+      },
+      {
+        "name": "standalone runtime serves a PNG and persists an authenticated comment",
+        "passed": true
+      },
+      {
+        "name": "CMS creates independent reviewed translations and archive hierarchy in Compose",
+        "passed": true
+      },
+      {
+        "name": "standalone stages private bytes, independently publishes a file and commits metadata drafts",
+        "passed": true
+      },
+      {
+        "name": "standalone creates source-bound drafts and independently reviewed synthetic history",
+        "passed": true
+      },
+      {
+        "name": "new source, spreadsheet and discovery records are private and persist before backup",
+        "passed": true
+      },
+      {
+        "name": "optional workers profile runs bounded batches and stops without changing public visibility",
+        "passed": true
+      },
+      {
+        "name": "search and real PNG preview timing is recorded on the declared synthetic corpus",
+        "passed": true
+      },
+      {
+        "name": "standalone explanation keeps real OCR provenance, citations and original language fallback",
+        "passed": true
+      },
+      {
+        "name": "compiled standalone assistant retains chained date bounds and refuses contradictions",
+        "passed": true
+      },
+      {
+        "name": "database and app restart preserve the marker comment and file volume",
+        "passed": true
+      },
+      {
+        "name": "backup includes private database and files with an integrity manifest",
+        "passed": true
+      },
+      {
+        "name": "same-project, corrupted-backup and occupied-volume restore fail before changing resources",
+        "passed": true
+      },
+      {
+        "name": "restore to a fresh project recovers the marker, users and exact file bytes",
+        "passed": true
+      },
+      {
+        "name": "CMS roles, hierarchy, translations, private history and notices survive backup and restore",
+        "passed": true
+      },
+      {
+        "name": "catalog publication snapshots, translations and copy restrictions survive restore",
+        "passed": true
+      },
+      {
+        "name": "published and quarantined upload bytes plus import provenance survive restore exactly",
+        "passed": true
+      },
+      {
+        "name": "source-draft provenance and reviewed discovery history survive exact restore",
+        "passed": true
+      },
+      {
+        "name": "new discovery baselines, source bindings, original spreadsheet bytes and parsed previews survive restore",
+        "passed": true
+      },
+      {
+        "name": "favorites, notification preferences and reply events survive restart and restore",
+        "passed": true
+      }
+    ],
+    "measurements": [
+      {
+        "name": "real_material_search",
+        "requests": 10,
+        "p50Ms": 126.37,
+        "p95Ms": 460.05,
+        "corpus": {
+          "cmsItems": 36,
+          "publishedEditions": 49,
+          "fundGroups": 1705,
+          "newspaperRows": 1466
+        },
+        "runtime": "Node 24 Docker non-root, local loopback sequential fetch; full response bytes",
+        "lighthouse": false
+      },
+      {
+        "name": "real_source_preview",
+        "requests": 10,
+        "p50Ms": 17.4,
+        "p95Ms": 31.48,
+        "corpus": {
+          "cmsItems": 36,
+          "publishedEditions": 49,
+          "fundGroups": 1705,
+          "newspaperRows": 1466
+        },
+        "runtime": "Node 24 Docker non-root, local loopback sequential fetch; full response bytes",
+        "lighthouse": false
+      }
+    ],
+    "backupRetainedPrivately": true
+  },
+  "browser": {
+    "existingRegression": {
+      "checks": 13,
+      "auditedScreens": 54
+    },
+    "realWorkingPages": {
+      "passed": true,
+      "pages": [
+        "/",
+        "/materials/archive-contacts?contentLang=ru"
+      ],
+      "viewport": "1440x1000",
+      "realHomeRecommendation": true,
+      "sourceContactHours": true,
+      "screenshotFiles": [
+        "working-home.png",
+        "working-contacts.png"
+      ]
+    }
+  },
+  "limitations": [
+    "Holder/branch attribution not provided by source remains null; fund source filename2018 conflicts with label2026.",
+    "No personal-fund source was provided.",
+    "S01 original with VPN sheet and S04 internal analytical attachments are private; only selected public source fields/files are exposed.",
+    "OCR is measured but not a human transcription or probability of historical correctness.",
+    "Technical publication uses two explicitly automatic inactive service actors; no government signature or language/legal acceptance is claimed.",
+    "New frontend layouts and engine/content refinements remain with Alinur and Artur.",
+    "No public hosting/domain/external HTTPS or remote GitHub Actions result is claimed."
+  ],
+  "remoteCI": {
+    "observed": false,
+    "reason": "gh run list returned Forbidden from GitHub Actions API; local equivalent checks passed"
+  }
+}

@@ -1,6 +1,6 @@
 # R-B01–B05: минимальный совместимый контракт
 
-Основа3869be7; ветка backend/alimzhan-real-content-v2. Этот первый коммит фиксирует интерфейс, а не объявляет реализации готовыми. Итоговые проверки/примеры будут в этой папке.
+Основа3869be7; ветка backend/alimzhan-real-content-v2. Контракт реализован. [API](API.md), [запуск/перенос](OPERATIONS.md), [проверки](proof/VALIDATION.json), [выполненные ответы](proof/API-EXAMPLES.json). Исходная фиксация интерфейса сохранена в6a3cf4a.
 
 MaterialKey остаётся `{kind:document|cms,id}`. Справочники фондов и газет — отдельные сущности, без вымышленных Fund/Inventory/Case/Document. Browser-safe типы: src/contracts/real-content.ts.
 
