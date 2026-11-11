@@ -1,0 +1,170 @@
+{
+  "version": 1,
+  "records": [
+    {
+      "sourceId": "S02",
+      "archiveSha256": "a7fe9a0dc02c62f2143fbc55c9c677cbbad7b1b05eb981be6ab4addf544aac59",
+      "member": "История архива.docx",
+      "name": "История архива.docx",
+      "path": "files/a7fe9a0dc02c62f2143fbc55c9c677cbbad7b1b05eb981be6ab4addf544aac59.docx",
+      "sha256": "a7fe9a0dc02c62f2143fbc55c9c677cbbad7b1b05eb981be6ab4addf544aac59",
+      "bytes": 11424
+    },
+    {
+      "sourceId": "S03",
+      "archiveSha256": "63173799c069869a37104f3edf6529fa28364f2af8946922232960619ce1b077",
+      "member": "Календарь памятных дат/календарь 2022 год каз рус.docx",
+      "name": "календарь 2022 год каз рус.docx",
+      "path": "files/5bc0722597c928f41e7d3c495ccd4547bfdf13fae635161700402fdd5717e2fe.docx",
+      "sha256": "5bc0722597c928f41e7d3c495ccd4547bfdf13fae635161700402fdd5717e2fe",
+      "bytes": 30048
+    },
+    {
+      "sourceId": "S03",
+      "archiveSha256": "63173799c069869a37104f3edf6529fa28364f2af8946922232960619ce1b077",
+      "member": "Календарь памятных дат/календарь 2023 год каз рус.docx",
+      "name": "календарь 2023 год каз рус.docx",
+      "path": "files/f8633fbfa4063d3a209f07f9c7d2709e2544ef2ab5bef2e7b922a1ce6895b90f.docx",
+      "sha256": "f8633fbfa4063d3a209f07f9c7d2709e2544ef2ab5bef2e7b922a1ce6895b90f",
+      "bytes": 25204
+    },
+    {
+      "sourceId": "S03",
+      "archiveSha256": "63173799c069869a37104f3edf6529fa28364f2af8946922232960619ce1b077",
+      "member": "Календарь памятных дат/календарь 2024 год каз рус.docx",
+      "name": "календарь 2024 год каз рус.docx",
+      "path": "files/7920a24940ec1336233e53d71cd9edf0d3c8159b4b57c31be0e7012d3dab3747.docx",
+      "sha256": "7920a24940ec1336233e53d71cd9edf0d3c8159b4b57c31be0e7012d3dab3747",
+      "bytes": 27625
+    },
+    {
+      "sourceId": "S03",
+      "archiveSha256": "63173799c069869a37104f3edf6529fa28364f2af8946922232960619ce1b077",
+      "member": "Календарь памятных дат/календарь 2025 год каз рус.docx",
+      "name": "календарь 2025 год каз рус.docx",
+      "path": "files/c549d827022b99c09beca17997b55cfe150e09d2bc1e1c2eb671514705bba488.docx",
+      "sha256": "c549d827022b99c09beca17997b55cfe150e09d2bc1e1c2eb671514705bba488",
+      "bytes": 28872
+    },
+    {
+      "sourceId": "S03",
+      "archiveSha256": "63173799c069869a37104f3edf6529fa28364f2af8946922232960619ce1b077",
+      "member": "Календарь памятных дат/календарь 2026 год каз рус.docx",
+      "name": "календарь 2026 год каз рус.docx",
+      "path": "files/744855e8e0971656ab407ea04a3734b4f6d03c258c79dd93a8ad6b4bba9a9ec7.docx",
+      "sha256": "744855e8e0971656ab407ea04a3734b4f6d03c258c79dd93a8ad6b4bba9a9ec7",
+      "bytes": 25558
+    },
+    {
+      "sourceId": "S04",
+      "archiveSha256": "1bdb30b95094faeb2d00db8d1a1f12a8c07382c78fa818e4a5a03a0e78f03834",
+      "member": "Комплаенс служба/Информация каз.docx",
+      "name": "Информация каз.docx",
+      "path": "files/fc6b6566ee2882489cd15a127ecd2602fe5dd75cacfddc277500b49725455657.docx",
+      "sha256": "fc6b6566ee2882489cd15a127ecd2602fe5dd75cacfddc277500b49725455657",
+      "bytes": 18488
+    },
+    {
+      "sourceId": "S04",
+      "archiveSha256": "1bdb30b95094faeb2d00db8d1a1f12a8c07382c78fa818e4a5a03a0e78f03834",
+      "member": "Комплаенс служба/Информация о работе комплаенс службы.docx",
+      "name": "Информация о работе комплаенс службы.docx",
+      "path": "files/2fbcf5f47f56418c9f9771883ac13c177b122fe856f08677de5be59fb2837577.docx",
+      "sha256": "2fbcf5f47f56418c9f9771883ac13c177b122fe856f08677de5be59fb2837577",
+      "bytes": 15471
+    },
+    {
+      "sourceId": "S04",
+      "archiveSha256": "1bdb30b95094faeb2d00db8d1a1f12a8c07382c78fa818e4a5a03a0e78f03834",
+      "member": "Комплаенс служба/Перечень должностей каз.pdf",
+      "name": "Перечень должностей каз.pdf",
+      "path": "files/a2e51204036a00b059299599a4a344cd67b8386ba0fbf798ffb51958ad4ece3d.pdf",
+      "sha256": "a2e51204036a00b059299599a4a344cd67b8386ba0fbf798ffb51958ad4ece3d",
+      "bytes": 247132
+    },
+    {
+      "sourceId": "S04",
+      "archiveSha256": "1bdb30b95094faeb2d00db8d1a1f12a8c07382c78fa818e4a5a03a0e78f03834",
+      "member": "Комплаенс служба/Перечень должностей.pdf",
+      "name": "Перечень должностей.pdf",
+      "path": "files/73ef6b499f789b52fb6b32247724f7f0fb3e06568e2f1313b9237b98290d1158.pdf",
+      "sha256": "73ef6b499f789b52fb6b32247724f7f0fb3e06568e2f1313b9237b98290d1158",
+      "bytes": 243773
+    },
+    {
+      "sourceId": "S04",
+      "archiveSha256": "1bdb30b95094faeb2d00db8d1a1f12a8c07382c78fa818e4a5a03a0e78f03834",
+      "member": "Комплаенс служба/План мероприятий каз.pdf",
+      "name": "План мероприятий каз.pdf",
+      "path": "files/63b2717c252f8f743702c44352570da6f9f13ea3b899d3a3d616a28c7dfcf620.pdf",
+      "sha256": "63b2717c252f8f743702c44352570da6f9f13ea3b899d3a3d616a28c7dfcf620",
+      "bytes": 1985135
+    },
+    {
+      "sourceId": "S04",
+      "archiveSha256": "1bdb30b95094faeb2d00db8d1a1f12a8c07382c78fa818e4a5a03a0e78f03834",
+      "member": "Комплаенс служба/План мероприятий рус.pdf",
+      "name": "План мероприятий рус.pdf",
+      "path": "files/0dae7a7694c8a2c7607e874cf037fc3f5b05c8132ea9ab2d645f34bd3e72c73e.pdf",
+      "sha256": "0dae7a7694c8a2c7607e874cf037fc3f5b05c8132ea9ab2d645f34bd3e72c73e",
+      "bytes": 1920838
+    },
+    {
+      "sourceId": "S04",
+      "archiveSha256": "1bdb30b95094faeb2d00db8d1a1f12a8c07382c78fa818e4a5a03a0e78f03834",
+      "member": "Комплаенс служба/Положение об антикор..pdf",
+      "name": "Положение об антикор..pdf",
+      "path": "files/c884e438c91dc5bb3653b3f72c3f89130f24d612fd7476fb06cb58329ce77434.pdf",
+      "sha256": "c884e438c91dc5bb3653b3f72c3f89130f24d612fd7476fb06cb58329ce77434",
+      "bytes": 5536588
+    },
+    {
+      "sourceId": "S04",
+      "archiveSha256": "1bdb30b95094faeb2d00db8d1a1f12a8c07382c78fa818e4a5a03a0e78f03834",
+      "member": "Комплаенс служба/Сыбайлас жемқорлыққа қарсы комплаене қызметі туралы ереже.pdf",
+      "name": "Сыбайлас жемқорлыққа қарсы комплаене қызметі туралы ереже.pdf",
+      "path": "files/ceab9f738c6ca0224a015fa30ca74971d2e1a8f0c82c7fecc3e2f5fb183b813d.pdf",
+      "sha256": "ceab9f738c6ca0224a015fa30ca74971d2e1a8f0c82c7fecc3e2f5fb183b813d",
+      "bytes": 1597580
+    },
+    {
+      "sourceId": "S05",
+      "archiveSha256": "b9fdc6060ab279171e66736178a75452191ca8b6abc69c0c61065eeb1a77df65",
+      "member": "Контакты.docx",
+      "name": "Контакты.docx",
+      "path": "files/b9fdc6060ab279171e66736178a75452191ca8b6abc69c0c61065eeb1a77df65.docx",
+      "sha256": "b9fdc6060ab279171e66736178a75452191ca8b6abc69c0c61065eeb1a77df65",
+      "bytes": 7614
+    },
+    {
+      "publicationPages": [
+        4,
+        5,
+        6
+      ],
+      "sourceId": "S06",
+      "archiveSha256": "a0d390105cb014504b83f3fa7208e9254bad2cbb7bb12bbe8f5d066bf4caf7dd",
+      "member": "Постановление обл акимата 142.pdf",
+      "name": "Постановление обл акимата 142.pdf",
+      "path": "files/a0d390105cb014504b83f3fa7208e9254bad2cbb7bb12bbe8f5d066bf4caf7dd.pdf",
+      "sha256": "a0d390105cb014504b83f3fa7208e9254bad2cbb7bb12bbe8f5d066bf4caf7dd",
+      "bytes": 1349711,
+      "ocrSha256": "8c4d5141854d853cb53d31019d2a573bbfe6dceb4769689f16e76108198c9831"
+    },
+    {
+      "sourceId": "S07",
+      "archiveSha256": "a8678998fada92018f8fe49802e927e248cb942f05939438a8397b5689e72275",
+      "member": "Структура.docx",
+      "name": "Структура.docx",
+      "path": "files/a8678998fada92018f8fe49802e927e248cb942f05939438a8397b5689e72275.docx",
+      "sha256": "a8678998fada92018f8fe49802e927e248cb942f05939438a8397b5689e72275",
+      "bytes": 10069
+    }
+  ],
+  "excluded": [
+    "S01 original contains unrelated VPN sheet; publish only selected contact fields",
+    "S04 internal risk-analysis attachments and internal personnel details",
+    "S08 development specification; not public archive content"
+  ],
+  "review": "Technical allowlist for user-authorized project publication; not an archive signature"
+}

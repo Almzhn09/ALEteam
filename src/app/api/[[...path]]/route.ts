@@ -1,3 +1,4 @@
+import {materialAttachments} from '@/server/material-attachments';
 import {cmsAttachmentRefs,cmsFileResponse,cmsFileText,adminCmsAttachments,adminCmsFile} from '@/server/cms-attachments';
 import {directory} from '@/server/reference-directory';
 import {adminDirectories} from '@/server/reference-import';
@@ -83,7 +84,7 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
     if(path[0]==='discovery'&&path[1]==='materials'&&['document','cms'].includes(path[2])&&path.length===5){
       if(path[4]==='explanation'&&method==='POST')return explanation(request,path[3],path[2] as 'cms'|'document');
       if(path[4]==='related'&&method==='GET')return related(request,path[3],path[2] as 'cms'|'document');
-      if(path[4]==='attachments'&&method==='GET'){const p=z.object({locale:discoveryLocale.default('ru')}).strict().parse(queryParams(request));const material=await resolveMaterial({kind:path[2] as 'cms'|'document',id:path[3]},p.locale);if(!material)throw new ApiError(404,'NOT_FOUND','Материал не найден.');return json({items:path[2]==='cms'?await cmsAttachmentRefs(path[3],p.locale):[],source:material.source});}
+      if(path[4]==='attachments'&&method==='GET'){const p=z.object({locale:discoveryLocale.default('ru')}).strict().parse(queryParams(request));const material=await resolveMaterial({kind:path[2] as 'cms'|'document',id:path[3]},p.locale);if(!material)throw new ApiError(404,'NOT_FOUND','Материал не найден.');return json({items:await materialAttachments({kind:path[2] as 'cms'|'document',id:path[3]},p.locale),source:material.source});}
     }
     if(path[0]==='material-files'&&path.length===2&&method==='GET')return cmsFileResponse(request,path[1]);
     if(path[0]==='material-files'&&path.length===3&&path[2]==='text'&&method==='GET'){const p=z.object({page:z.coerce.number().int().min(1).max(100).optional()}).strict().parse(queryParams(request));return json({item:await cmsFileText(path[1],p.page)});}

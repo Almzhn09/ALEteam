@@ -48,7 +48,7 @@ export async function liveFacts(kind:FactKind){
  return result;
 }
 export function localLabel(labels:unknown,locale:ContentLocale){const value=labelsSchema.parse(labels),chosen=value[locale]?locale:value.ru?'ru':value.kk?'kk':'en';return {value:value[chosen]!,contentLocale:chosen,availableLocales:Object.keys(value).filter(k=>value[k as ContentLocale]) as ContentLocale[],translationStatus:chosen===locale?'published' as const:'original' as const};}
-async function validateFact(kind:FactKind,data:unknown,parentId:string|null,client:Parameters<typeof resolveEvidence>[1]){
+export async function validateFact(kind:FactKind,data:unknown,parentId:string|null,client:Parameters<typeof resolveEvidence>[1]){
  const parsed=parseFact(kind,data);
  if(['ALIAS','HISTORY'].includes(kind)){
   const parent=parentId?await client!.discoveryFact.findFirst({where:{id:parentId,kind:'PLACE',status:'VERIFIED',...publicBranchScope}}):null;

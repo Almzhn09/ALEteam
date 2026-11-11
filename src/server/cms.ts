@@ -3,6 +3,7 @@ import {resolveMaterial} from './discovery-materials';
 import {navigationSchema} from './navigation-schema';
 import {recordMaterialPublication} from './discovery-publications';
 import { z } from 'zod';
+import type {PublicationState} from '../contracts/cms';
 import { locales, contentKinds } from '../contracts/cms';
 import { db } from './db';
 import { Prisma } from '../generated/prisma/index.js';
@@ -106,6 +107,14 @@ export async function transitionRevision(request:Request,id:string){
  if(current.item.kind==='SETTING'&&!allows(c.grants,'settings.manage',null))throw new ApiError(403,'FORBIDDEN','Недостаточно прав сотрудника.');
  await rateLimit(`cms-transition:${c.user.id}`,60,60);
  const item=await db.$transaction(async tx=>{
+  return applyCmsTransition(tx,current,p,c);
+ });return json({item});
+}
+// Existing state machine, shared by authenticated HTTP and the explicit source-publication CLI.
+export async function applyCmsTransition(tx:Prisma.TransactionClient,current:Prisma.ContentRevisionGetPayload<{include:{item:true}}>,p:{status:PublicationState;expectedUpdatedAt:string;reason:string},c:{user:{id:string};grants:{permission:string;branchId:string|null}[]}){
+ const id=current.id,catalog=current.item.kind==='ARCHIVE_DOCUMENT';
+ const permission=p.status==='IN_REVIEW'?(catalog?'catalog.write':'content.write'):['APPROVED','CHANGES_REQUESTED'].includes(p.status)?'content.review':'content.publish';
+ if(!allows(c.grants,permission,current.item.branchId)||catalog&&permission!=='catalog.write'&&!allows(c.grants,'catalog.read',current.item.branchId)||current.item.kind==='SETTING'&&!allows(c.grants,'settings.manage',null))throw new ApiError(403,'FORBIDDEN','Недостаточно прав сотрудника.');
   if(catalog)await catalogLock(tx);
   await tx.$queryRaw`SELECT id FROM "ContentItem" WHERE id=${current.itemId} FOR UPDATE`;
   await tx.$queryRaw`SELECT id FROM "ContentRevision" WHERE id=${id} FOR UPDATE`;
@@ -138,7 +147,6 @@ export async function transitionRevision(request:Request,id:string){
   await audit(tx,c.user.id,`REVISION_${p.status}`,id);
   await tx.publicationEvent.create({data:{revisionId:id,actorId:c.user.id,fromStatus:r.status,toStatus:p.status,reason:p.reason}});
   return updated;
- });return json({item});
 }
 export async function editorialNotices(request:Request){
  const c=await staffContext(request);const p=pageSchema.strict().parse(queryParams(request));
