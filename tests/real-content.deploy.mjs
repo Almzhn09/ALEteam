@@ -46,6 +46,36 @@ try{
   assert.equal(compose(project,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "CmsAttachment"']),'27');
   assert.equal(compose(project,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "MaterialPublication"']),'53');
  });
+ await check('an existing Docker site upgrades with an identity-bound backup and immutable source history',async()=>{
+  const before=(await get(config.BETTER_AUTH_URL,'/content/archive-contacts')).item;
+  const oldFiles=await get(config.BETTER_AUTH_URL,'/discovery/materials/cms/'+before.id+'/attachments');
+  const oldMaster=oldFiles.items.find(f=>f.variant==='master');assert.ok(oldMaster);
+  // Simulate an untouched edition from a prior package in this disposable project only.
+  const simulate=`
+   const {db}=await import('./src/server/db.ts');
+   const {realContentPackage}=await import('./src/server/real-content-package.ts');
+   const {canonicalHash:hash}=await import('./src/server/catalog-import-schema.ts');
+   const fs=await import('node:fs/promises');
+   try{
+    const pack=await realContentPackage(),row=pack.rows.find(r=>r.sourceKey==='contacts');
+    const binding=await db.realContentBinding.findUniqueOrThrow({where:{namespace_sourceKey_locale:{namespace:pack.namespace,sourceKey:'contacts',locale:'ru'}}});
+    const payload={...row.payload,title:'Isolated prior package title'};
+    await db.contentRevision.update({where:{id:binding.data.revisionId},data:{payload}});
+    await db.realContentBinding.update({where:{id:binding.id},data:{inputHash:hash({...row,payload}),outputHash:hash(payload)}});
+    await db.realContentBinding.updateMany({where:{namespace:pack.namespace,sourceKey:'__release__'},data:{inputHash:hash('isolated prior release')}});
+    const file='/data/files/source-bundles/archive-public-20261111/manifest.json',manifest=JSON.parse(await fs.readFile(file,'utf8'));
+    manifest.review='Isolated prior manifest; deployment upgrade verification';await fs.writeFile(file,JSON.stringify(manifest));
+   }finally{await db.$disconnect();}`;
+  compose(project,['run','--rm','--no-deps','-T','setup','node','--import','tsx','--input-type=module','-e',simulate]);
+  execFileSync(process.execPath,['deploy/upgrade.mjs','--project',project,'--env',sourceEnv],{env:environment(project),stdio:'pipe'});
+  await ready(config.BETTER_AUTH_URL);const after=(await get(config.BETTER_AUTH_URL,'/content/archive-contacts')).item;
+  assert.equal(after.id,before.id);assert.equal(after.payload.title,before.payload.title);assert.notEqual(after.updatedAt,before.updatedAt);
+  assert.equal((await fetch(config.BETTER_AUTH_URL+oldMaster.href)).status,404);
+  const newFiles=await get(config.BETTER_AUTH_URL,'/discovery/materials/cms/'+before.id+'/attachments');assert.equal(newFiles.items.find(f=>f.variant==='master').sha256,oldMaster.sha256);
+  assert.deepEqual(await corpus(config.BETTER_AUTH_URL),snapshot);
+  const history=compose(project,['exec','-T','app','node','-e',`const fs=require('node:fs');console.log(fs.readdirSync('/data/files/source-bundles/archive-public-20261111/.manifest-history').length)`]);assert.ok(Number(history)>=2);
+  assert.equal(docker(['volume','ls','--filter','name='+project+'_upgrade_backup_','--format','{{.Name}}']),'');
+ });
  await check('real source search and actual source preview timings are measured',async()=>{
   for(const [name,path]of [['real_material_search','/api/search?scope=cms&q='+encodeURIComponent('архив')],['real_source_preview','/api/material-files/'+previewId]]){const times=[];for(let i=0;i<10;i++){const start=performance.now();const r=await fetch(config.BETTER_AUTH_URL+path);assert.equal(r.status,200);await r.arrayBuffer();times.push(performance.now()-start);}times.sort((a,b)=>a-b);measurements.push({name,requests:10,p50Ms:Math.round(times[4]*100)/100,p95Ms:Math.round(times[9]*100)/100,corpus:{cmsItems:39,publishedEditions:53,fundGroups:1705,newspaperRows:1466},runtime:'Node 24 Docker non-root, local loopback sequential fetch; full response bytes',lighthouse:false});}
  });
@@ -58,8 +88,8 @@ try{
   assert.equal(compose(restored,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "ReferenceEntry"']),'3171');
   for(const bundle of ['archive-20261110','archive-public-20261111','archive-reference-20261110']){const digest=compose(restored,['exec','-T','app','node','-e',`const fs=require('node:fs'),c=require('node:crypto');console.log(c.createHash('sha256').update(fs.readFileSync('/data/files/source-bundles/${bundle}/manifest.json')).digest('hex'))`]);assert.equal(digest,createHash('sha256').update(await readFile('sources/'+bundle+'/manifest.json')).digest('hex'));}
  });
-}catch(error){process.exitCode=1;let message=String(error.stderr??error.stack??error);for(const[k,v]of Object.entries(config))if(/PASSWORD|SECRET/.test(k))message=message.replaceAll(v,'[REDACTED]');await writeFile(folder+'/failure.log',message,{mode:0o600});console.log('FAIL real-content deployment; private redacted diagnosis '+folder+'/failure.log');}
+}catch(error){process.exitCode=1;let message=String(error.stderr??error.stack??error);for(const name of [project,restored])try{message+='\n'+compose(name,['logs','--no-color','setup','app']);}catch{}for(const[k,v]of Object.entries(config))if(/PASSWORD|SECRET/.test(k))message=message.replaceAll(v,'[REDACTED]');await writeFile(folder+'/failure.log',message,{mode:0o600});console.log('FAIL real-content deployment; private redacted diagnosis '+folder+'/failure.log');}
 finally{
  for(const name of [restored,project])try{compose(name,['--profile','workers','down','--volumes','--remove-orphans']);}catch{}
- await unlink(sourceEnv).catch(()=>{});await unlink(restoreEnv).catch(()=>{});await writeFile('.local/real-content/docker-proof.json',JSON.stringify({testedAt:new Date().toISOString(),checks,measurements,corpus:snapshot,temporaryEnvFilesRemoved:true,backupRetainedPrivately:true},null,2)+'\n');console.log('Real-content Docker checks '+checks.length+'/7');
+ await unlink(sourceEnv).catch(()=>{});await unlink(restoreEnv).catch(()=>{});await writeFile('.local/real-content/docker-proof.json',JSON.stringify({testedAt:new Date().toISOString(),checks,measurements,corpus:snapshot,temporaryEnvFilesRemoved:true,backupRetainedPrivately:true},null,2)+'\n');console.log('Real-content Docker checks '+checks.length+'/8');
 }

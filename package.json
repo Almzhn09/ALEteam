@@ -28,6 +28,7 @@
     "deploy:setup": "node deploy/setup.mjs",
     "deploy:backup": "node deploy/backup.mjs",
     "deploy:restore": "node deploy/restore.mjs",
+    "deploy:upgrade": "node deploy/upgrade.mjs",
     "ocr:setup": "node --use-env-proxy scripts/setup-ocr.mjs",
     "evaluate:ocr": "node --import tsx scripts/evaluate-ocr.ts",
     "evaluate:search": "node --env-file-if-exists=.env --import tsx scripts/evaluate-search.ts",
