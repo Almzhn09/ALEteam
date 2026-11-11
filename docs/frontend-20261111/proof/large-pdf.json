@@ -1,0 +1,23 @@
+{
+  "generated": "2026-11-11T18:45:38.503Z",
+  "platform": "linux",
+  "node": "v24.22.1",
+  "source": "Аналитикалық анықтама СЖТІТ 2026.pdf",
+  "bytes": 13888667,
+  "sha256": "33e5247b84e6a237f8af354c21dda28ed785b429880b65fd5a111130e55612e5",
+  "configuredTimeoutMs": 120000,
+  "elapsedMs": 10707,
+  "passed": true,
+  "parser": "pdfjs-6.5.438",
+  "pages": 17,
+  "fragments": 0,
+  "previewBytes": 385383,
+  "limits": {
+    "parallelWorkers": 2,
+    "nodeHeapMiB": 128,
+    "maxOutputMiB": 17,
+    "killSignal": "SIGKILL"
+  },
+  "databaseMutations": false,
+  "windowsValidated": false
+}

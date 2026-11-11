@@ -1,0 +1,96 @@
+{
+  "testedAt": "2026-11-11T19:20:55.156Z",
+  "commit": "91a4867e0e91847d8a2e4a8834482c4170b12f59",
+  "tool": "Lighthouse 13.6.0",
+  "target": "Local production Next.js with actual source corpus; anonymous browser; no seed",
+  "reports": [
+    {
+      "name": "home",
+      "route": "/",
+      "device": "mobile",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 1661.3306499999999,
+      "cls": 0,
+      "tbtMs": 91.5
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "device": "desktop",
+      "scores": {
+        "performance": 94,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 844.4566,
+      "cls": 0.0003827280580722817,
+      "tbtMs": 178.5
+    },
+    {
+      "name": "catalog",
+      "route": "/catalog?scope=cms",
+      "device": "mobile",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 735.7466,
+      "cls": 0,
+      "tbtMs": 131
+    },
+    {
+      "name": "catalog",
+      "route": "/catalog?scope=cms",
+      "device": "desktop",
+      "scores": {
+        "performance": 82,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 215.0053,
+      "cls": 0.0004312046217031484,
+      "tbtMs": 403.5000000000001
+    },
+    {
+      "name": "material",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "device": "mobile",
+      "scores": {
+        "performance": 81,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 855.6743,
+      "cls": 0,
+      "tbtMs": 770.0000000000001
+    },
+    {
+      "name": "material",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "device": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 253.239,
+      "cls": 0.0004541204097913706,
+      "tbtMs": 0
+    }
+  ],
+  "limitations": [
+    "One observation per route/device, default simulated Lighthouse throttling.",
+    "Not a physical-device benchmark, production HTTPS result or hosting SLA."
+  ]
+}

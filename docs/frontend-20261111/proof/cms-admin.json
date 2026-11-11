@@ -1,0 +1,17 @@
+{
+  "generated": "2026-11-11T19:16:00.324Z",
+  "target": "Isolated archive_visual_v2_test; real provided contacts DOCX; no seed",
+  "checks": [
+    "Writer uploads supplied DOCX through real browser form; independent review is required, no self-approval control.",
+    "Review requires rights confirmation; concurrent-version conflict is surfaced and typed reason survives refresh.",
+    "Independent reviewer approves and publishes the real original; public text carries paragraph provenance.",
+    "Withdraw through browser immediately revokes original and readable text.",
+    "Uploader retries an interrupted transfer and resends identical bytes without duplicate registration; reviewer can reject.",
+    "Anonymous browser cannot list private CMS attachment management data.",
+    "CMS editor and attachment controls fit 360px at 150% text without horizontal overflow."
+  ],
+  "technicalAccounts": true,
+  "publishedTestOriginalsWithdrawn": true,
+  "sourceMaterialUnchanged": true,
+  "testedSourceCommit": "91a4867e0e91847d8a2e4a8834482c4170b12f59"
+}
