@@ -109,6 +109,7 @@ test('real source evaluation cases have matching verbatim evidence and useful bo
  assert.deepEqual(sourceQueryTerms('Когда был образован архив?'),['образо']);
  assert.deepEqual(sourceQueryTerms('Во сколько работает читальный зал?'),['работ','читаль','зал']);
  assert.deepEqual(sourceQueryTerms('Постановление №142'),['постан','142']);
+ assert.deepEqual(sourceQueryTerms('Когда было принято постановление №142?'),['постан','142']);
  assert.deepEqual(sourceQueryTerms('Где находится архив?'),['адрес']);
  assert.deepEqual(sourceQueryTerms('Какой график работы архива?'),['работ']);
 });

@@ -195,6 +195,7 @@ try{
  await check('natural contact questions use provided hours and central contacts instead of guessing branch fields',async()=>{
   const hours=await call('/assistant','POST',{question:'Какой график работы архива?',locale:'ru'});assert.equal(hours.noAnswer,false);assert.ok(hours.answer.includes('8.00'));
   const address=await call('/assistant','POST',{question:'Где находится архив?',locale:'ru'});assert.equal(address.noAnswer,false);assert.ok(address.answer.includes('26/1'));
+  const decree=await call('/assistant','POST',{question:'Когда было принято постановление №142?',locale:'ru'});assert.equal(decree.noAnswer,false);assert.ok(decree.answer.includes('2 июня 2026'));assert.ok(decree.sources.every((s:{id:string})=>!s.id.startsWith('cmsfile_')));
  });
  await check('assistant cites a permitted original DOCX and withdrawal removes that file from answers',async()=>{
   const question='О проведении внутреннего анализа коррупционных рисков';

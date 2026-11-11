@@ -4,6 +4,8 @@
 export interface SourceExcerpt {text:string;start:number;end:number}
 const fillers=new Set('расскажи покажи найти найди какой какая какие какого каком когда где как что это про для архив архива сайт сайта пожалуйста ма ме туралы қандай қайда қалай мен the a an is are of on in at for about where what when how tell show please find document documents records record material materials information there any have has can may me my need help archive archives site website get do want документ документы документа документов материалы материал сведения информация есть можно нужно нужны нужен покажите расскажите құжат құжаттар құжаттарды мұрағат мұрағаттың ақпарат мәлімет керек бар был была было были году года год сколько этот этой этого этих хочу узнать пожалуйста you does did was were'.split(' '));
 export function sourceQueryTerms(question:string){
+ const act=/(?<!\p{L})(постановлен\p{L}*|приказ\p{L}*|қаулы\p{L}*|resolutions?|decrees?|orders?)\s*(?:№|номер|number|no\.)\s*(\d{1,10})(?!\d)/iu.exec(question);
+ if(act)return [act[1].toLowerCase().slice(0,6),act[2]];
  return [...new Set((question.toLowerCase().replace(/№/gu,' ').normalize('NFKC').match(/[\p{L}\p{N}]+/gu)??[])
   .filter(w=>w.length>=3&&!fillers.has(w))
   .map(w=>/^(?:наход|располож|местонахожд)/iu.test(w)?'адрес':/^связат/iu.test(w)?'контак':/^(?:работ|график|расписан|режим)/iu.test(w)?'работ':w.length>6?w.slice(0,6):w))].slice(0,8);

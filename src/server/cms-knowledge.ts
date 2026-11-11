@@ -27,7 +27,7 @@ export async function retrieveCmsPassages(question:string,locale:ContentLocale):
  const terms=cmsQueryTerms(question);if(!terms.length)return [];
  // Bind all text parameters; IDs/private payloads are not exposed to the model.
  const haystack=Prisma.sql`lower((r.payload->>'title') || ' ' || (r.payload->>'body') || ' ' || coalesce(r.payload->>'address','') || ' ' || coalesce(r.payload->>'phone','') || ' ' || coalesce(r.payload->>'email','') || ' ' || coalesce(r.payload->>'hours','') || CASE WHEN r.payload ? 'address' THEN ' адрес мекенжай address контакты байланыс contacts' ELSE '' END || CASE WHEN r.payload ? 'phone' THEN ' телефон phone контакты байланыс contacts' ELSE '' END || CASE WHEN r.payload ? 'email' THEN ' email электронная почта контакты байланыс contacts' ELSE '' END || CASE WHEN r.payload ? 'hours' THEN ' график часы работы жұмыс уақыты hours' ELSE '' END || CASE i.kind WHEN 'BRANCH_PROFILE' THEN ' филиал филиалы филиалдар бөлімше branch branches' WHEN 'NEWS' THEN ' новости жаңалықтар news' WHEN 'EXHIBITION' THEN ' выставка көрме exhibition' WHEN 'COLLECTION' THEN ' коллекция жинақ collection' ELSE '' END)`;
- const matches=terms.map(t=>Prisma.sql`${haystack} LIKE ${'%'+t+'%'}`);
+ const matches=terms.map(t=>/^\d+$/u.test(t)?Prisma.sql`${haystack} ~ ${'(^|[^0-9])'+t+'([^0-9]|$)'}`:Prisma.sql`${haystack} LIKE ${'%'+t+'%'}`);
  const config=locale==='ru'?'russian':'simple';
  const relevance=Prisma.sql`ts_rank_cd(setweight(to_tsvector(${config}::regconfig,r.payload->>'title'),'A') || setweight(to_tsvector(${config}::regconfig,r.payload->>'body'),'B'),plainto_tsquery(${config}::regconfig,${question.slice(0,1000)}))`;
  const ids=await db.$queryRaw<{id:string}[]>(Prisma.sql`
