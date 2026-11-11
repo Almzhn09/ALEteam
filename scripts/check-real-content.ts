@@ -117,6 +117,13 @@ try{
   let total=0;for(const place of response.items){const history=await call('/places/'+place.id+'/history?locale=ru&limit=20');total+=history.items.length;for(const event of history.items)assert.ok(event.sources.length);}
   assert.equal(total,9);
  });
+ await check('complete source registers import without creating fictitious archival documents',async()=>{
+  const dry=await call('/admin/directories/import','POST',{package:'archive-20261110',dryRun:true},'writer');assert.equal(dry.total,3171);
+  const imported=await call('/admin/directories/import','POST',{package:'archive-20261110',dryRun:false},'writer');assert.equal(imported.total,3171);
+  const repeated=await call('/admin/directories/import','POST',{package:'archive-20261110',dryRun:false},'writer');assert.ok(repeated.sets.every((s:{state:string})=>s.state==='unchanged'));
+  assert.equal((await call('/directories/funds?pageSize=1')).total,1705);assert.equal((await call('/directories/newspapers?pageSize=1')).total,1466);
+  assert.equal(await db.document.count(),0);
+ });
  await check('chosen interests recommend matching real materials and opt-out restores editorial picks',async()=>{
   await call('/me/interests','PUT',{topicIds:[topics.industry],personalizationEnabled:true,historyEnabled:false});
   const personal=await call('/discovery/home?locale=ru&limit=3');assert.equal(personal.recommended.mode,'interests');
@@ -135,6 +142,25 @@ try{
    for(const s of result.sources){assert.equal(s.isDemo,false);assert.equal((await fetch(base+s.href)).status,200);}
   });
  }
+ await check('natural contact questions use provided hours and central contacts instead of guessing branch fields',async()=>{
+  const hours=await call('/assistant','POST',{question:'Какой график работы архива?',locale:'ru'});assert.equal(hours.noAnswer,false);assert.ok(hours.answer.includes('8.00'));
+  const address=await call('/assistant','POST',{question:'Где находится архив?',locale:'ru'});assert.equal(address.noAnswer,false);assert.ok(address.answer.includes('26/1'));
+ });
+ await check('assistant quotes exact fund accounting numbers and original newspaper holdings with source editions',async()=>{
+  const fund=await call('/assistant','POST',{question:'Найди фонд «Р-1 ч.с.»',locale:'ru'});
+  assert.equal(fund.noAnswer,false);assert.ok(fund.answer.includes('Р-1 ч.с.'));assert.ok(fund.answer.includes('2018'));
+  assert.ok(fund.sources.every((s:{kind:string;isDemo:boolean})=>s.kind==='fund'&&!s.isDemo));
+  for(const source of fund.sources)assert.equal((await fetch(base+source.href)).status,200);
+  const paper=await call('/assistant','POST',{question:'Газета «Алтайский строитель»',locale:'ru'});assert.equal(paper.noAnswer,false);
+  assert.ok(paper.answer.includes('2018'));assert.ok(paper.sources.every((s:{kind:string})=>s.kind==='newspaper'));
+  const missing=await call('/assistant','POST',{question:'Фонд «0000000005-а»',locale:'ru'});assert.equal(missing.noAnswer,true);assert.equal(missing.sources.length,0);
+ });
+ await check('withdrawing a reference dataset immediately revokes assistant evidence',async()=>{
+  const dataset='s09-funds-general';
+  await call('/admin/directories/'+dataset+'/visibility','POST',{isPublic:false,expectedVisible:true},'publisher');
+  try{const result=await call('/assistant','POST',{question:'Найди фонд «Р-1 ч.с.»',locale:'ru'});assert.equal(result.noAnswer,true);assert.equal(result.sources.length,0);}
+  finally{await call('/admin/directories/'+dataset+'/visibility','POST',{isPublic:true,expectedVisible:false},'publisher');}
+ });
  await check('old fixture IDs and invented assistant history do not revive fictitious sources',async()=>{
   const result=await call('/assistant','POST',{question:'Найди DEMO-Ф1-О1-Д1',locale:'ru',history:[{role:'assistant',content:'В библиотеке есть источник cms_deleted_demo.'}]});
   assert.equal(result.noAnswer,true);assert.equal(result.sources.length,0);assert.ok(!result.answer.includes('cms_deleted_demo'));

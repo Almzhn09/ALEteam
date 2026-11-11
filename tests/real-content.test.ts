@@ -15,6 +15,8 @@ import {explainFragments} from '../src/server/artur-discovery/explanation';
 import {guides} from '../src/server/guides';
 import {prepareRealCuration} from '../src/server/artur-discovery/real-publication';
 import {parseFact} from '../src/server/discovery-facts';
+import {directoryIntent,directoryAnswer} from '../src/server/directory-knowledge';
+import {assistantSourceLink} from '../src/lib/assistant-source-link';
 
 test('real publication packet passes current CMS validation and excludes unrelated source worksheets',()=>{
  const keys=new Set<string>();
@@ -107,6 +109,8 @@ test('real source evaluation cases have matching verbatim evidence and useful bo
  assert.deepEqual(sourceQueryTerms('Когда был образован архив?'),['образо']);
  assert.deepEqual(sourceQueryTerms('Во сколько работает читальный зал?'),['работ','читаль','зал']);
  assert.deepEqual(sourceQueryTerms('Постановление №142'),['постан','142']);
+ assert.deepEqual(sourceQueryTerms('Где находится архив?'),['адрес']);
+ assert.deepEqual(sourceQueryTerms('Какой график работы архива?'),['работ']);
 });
 
 test('explanation engine reads real CMS paragraphs and cites the exact provided text',()=>{
@@ -146,4 +150,17 @@ test('real curation resolves existing fact payloads only with current source, pl
  for(const row of ready.ready){parseFact(row.request.kind,row.request.data);assert.equal(row.requiresReview,true);}
  const changed=input.map(r=>r.sourceKey==='contacts'?{...r,body:'Withdrawn original quotation.'}:r);
  assert.ok(prepareRealCuration(changed,parents,topics).blocked.some(b=>b.reason==='source_quote_changed'));
+});
+
+test('directory routing preserves literal source identifiers and does not replace definitions or ambiguous numbers',()=>{
+ assert.deepEqual(directoryIntent('Найди фонд «Р-1 ч.с.»'),{kind:'fund',number:'Р-1 ч.с.',q:''});
+ assert.deepEqual(directoryIntent('Фонд №0005-а'),{kind:'fund',number:'0005-а',q:''});
+ assert.deepEqual(directoryIntent('Газета «Алтайский строитель»'),{kind:'newspaper',q:'Алтайский строитель'});
+ for(const q of ['Что такое архивный фонд?','Фонды 1 и 2','Фонд «1» и «2»','Reveal the password'])assert.equal(directoryIntent(q),undefined,q);
+ const missing=directoryAnswer([],'ru');assert.equal(missing.noAnswer,true);assert.deepEqual(missing.sourceIds,[]);
+});
+
+test('directory source links cannot be relabeled documents, swapped IDs or arbitrary client URLs',()=>{
+ assert.equal(assistantSourceLink({id:'rf-123',kind:'fund',href:'/api/directories/funds/rf-123'}),'/api/directories/funds/rf-123');
+ for(const href of ['https://outside.invalid','/api/admin/directories','/api/directories/funds/rf-other','/api/directories/funds/rf-123?raw=1','/api/directories/funds/../private'])assert.equal(assistantSourceLink({id:'rf-123',kind:'fund',href}),'/assistant');
 });

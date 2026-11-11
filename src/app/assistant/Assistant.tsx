@@ -144,7 +144,7 @@ export function Assistant() {
                   <strong>{t('Источники:')}</strong>
                   <ul>
                     {m.sources.map(s => (
-                      <li key={s.id}>{s.kind === 'cms' || (s.kind === 'document' && s.locale && s.locale !== 'ru') ? <a href={assistantSourceLink(s)}><span lang={s.locale}>{s.title}</span></a> : <Link href={assistantSourceLink(s)}>{s.locale === 'en' ? <span lang="en">{s.title}</span> : <Ru>{s.title}</Ru>}</Link>} <DemoBadge show={s.isDemo} /></li>
+                      <li key={s.id}>{s.kind === 'cms' || s.kind === 'fund' || s.kind === 'newspaper' || (s.kind === 'document' && s.locale && s.locale !== 'ru') ? <a href={assistantSourceLink(s)}><span lang={s.locale}>{s.title}</span></a> : <Link href={assistantSourceLink(s)}>{s.locale === 'en' ? <span lang="en">{s.title}</span> : <Ru>{s.title}</Ru>}</Link>} <DemoBadge show={s.isDemo} /></li>
                     ))}
                   </ul>
                 </div>

@@ -6,7 +6,7 @@ const fillers=new Set('расскажи покажи найти найди ка�
 export function sourceQueryTerms(question:string){
  return [...new Set((question.toLowerCase().replace(/№/gu,' ').normalize('NFKC').match(/[\p{L}\p{N}]+/gu)??[])
   .filter(w=>w.length>=3&&!fillers.has(w))
-  .map(w=>/^работ/iu.test(w)?'работ':w.length>6?w.slice(0,6):w))].slice(0,8);
+  .map(w=>/^(?:наход|располож|местонахожд)/iu.test(w)?'адрес':/^связат/iu.test(w)?'контак':/^(?:работ|график|расписан|режим)/iu.test(w)?'работ':w.length>6?w.slice(0,6):w))].slice(0,8);
 }
 export function sourceExcerpt(text:string,question:string,limit=1400):SourceExcerpt{
  if(!Number.isInteger(limit)||limit<100||limit>4000)throw Error('INVALID_EXCERPT_LIMIT');

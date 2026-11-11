@@ -14,6 +14,7 @@ import {retrieveSemanticCatalog,revalidateCatalogSources,semanticCatalogAnswer,t
 import {englishSiteDialog} from './english-dialog';
 import {publicDocumentWhere} from './public-visibility';
 import {planResearch} from './artur-discovery/research';
+import {directoryIntent,retrieveDirectoryPassages,revalidateDirectoryPassages,directoryAnswer,type DirectoryPassage} from './directory-knowledge';
 import type {NameExpansion as TransportNameExpansion,ResearchStep,ResearchAction} from '../contracts/discovery';
 
 export const assistantInput = z.object({
@@ -31,15 +32,19 @@ export async function assistant(request: Request) {
   let result: z.infer<typeof assistantOutput>;
   let cmsPassages:CmsPassage[]=[];
   let catalogPassages:CatalogPassage[]=[];
+  let directoryPassages:DirectoryPassage[]=[];
   const documentLocale=input.locale??'ru';
   const plan=semanticConversationPlan(input.question,input.history,documentLocale,local);
   const locale=input.locale??(isKazakh(input.question)?'kk':'ru');
+  const directoryQuery=!plan.clarification&&!plan.filters.reference&&!plan.filters.inventoryNumber&&!plan.filters.caseNumber?directoryIntent(input.question):undefined;
   try {
     if(!process.env.ASSISTANT_SERVICE_URL&&plan.handled&&requiresCatalogEvidence(plan,input.question))catalogPassages=await retrieveSemanticCatalog(plan);
-    if(!process.env.ASSISTANT_SERVICE_URL&&(!plan.handled||!requiresCatalogEvidence(plan,input.question)))cmsPassages=await retrieveCmsPassages(cmsQuestionContext(input.question,input.history),locale);
+    if(!process.env.ASSISTANT_SERVICE_URL&&directoryQuery&&!catalogPassages.length)directoryPassages=await retrieveDirectoryPassages(directoryQuery);
+    if(!process.env.ASSISTANT_SERVICE_URL&&!directoryQuery&&(!plan.handled||!requiresCatalogEvidence(plan,input.question)))cmsPassages=await retrieveCmsPassages(cmsQuestionContext(input.question,input.history),locale);
     if(!process.env.ASSISTANT_SERVICE_URL&&plan.handled&&!requiresCatalogEvidence(plan,input.question)&&!cmsPassages.length)catalogPassages=await retrieveSemanticCatalog(plan);
     result = assistantOutput.parse(process.env.ASSISTANT_SERVICE_URL
       ? await serviceRequest(process.env.ASSISTANT_SERVICE_URL, process.env.ASSISTANT_SERVICE_TOKEN, { ...input, maxOutputTokens: 500 }, 15000)
+      : directoryQuery&&!catalogPassages.length ? directoryAnswer(directoryPassages,locale)
       : cmsPassages.length ? cmsAnswer(cmsPassages,locale,cmsQuestionContext(input.question,input.history))
       : plan.handled ? semanticCatalogAnswer(catalogPassages,plan,local)
       : locale==='en' ? (local?englishSiteDialog(input.question,input.history):cmsAnswer([],locale))
@@ -48,12 +53,16 @@ export async function assistant(request: Request) {
   } catch { unavailableAssistant(); }
   if ((!result.noAnswer && !result.sourceIds.length) || (result.noAnswer && result.sourceIds.length)) throw new ApiError(502, 'INVALID_ASSISTANT_RESPONSE', 'Ответ помощника не прошёл проверку источников.');
   const ids = [...new Set(result.sourceIds)];
+  const selectedDirectory=directoryPassages.filter(p=>ids.includes(p.id));
+  if(!await revalidateDirectoryPassages(selectedDirectory))throw new ApiError(503,'ASSISTANT_SOURCE_CHANGED','Публикация изменилась. Повторите вопрос.');
   const selectedCatalog=catalogPassages.filter(p=>ids.includes(p.id));
   if(!await revalidateCatalogSources(selectedCatalog))throw new ApiError(503,'ASSISTANT_SOURCE_CHANGED','Публикация изменилась. Повторите вопрос.');
   const selectedCms=cmsPassages.filter(p=>ids.includes(p.id));
   if(!await revalidateCmsPassages(selectedCms,locale))throw new ApiError(503,'ASSISTANT_SOURCE_CHANGED','Публикация изменилась. Повторите вопрос.');
   const documents = await db.document.findMany({ where: { id: { in: ids }, ...publicDocumentWhere, allowDigitalCopy: true }, select: { id: true, title: true, isDemo: true,translations:{where:{locale:documentLocale},select:{title:true}} } });
   const sources = ids.map(id => {
+    const directory=selectedDirectory.find(p=>p.id===id);
+    if(directory)return {id,title:directory.title,isDemo:false,kind:directory.kind,href:directory.href};
     const catalog=selectedCatalog.find(p=>p.id===id);
     if(catalog)return {id:catalog.id,title:catalog.title,isDemo:catalog.isDemo,kind:'document',locale:catalog.locale,href:catalog.href,digitalCopyAllowed:catalog.digitalCopyAllowed};
     const cms=selectedCms.find(p=>p.id===id);
@@ -68,5 +77,5 @@ export async function assistant(request: Request) {
   const researchActions:ResearchAction[]=research?.actions.map(a=>({type:'catalogSearch',filters:a.query}))??[];
   const researchSteps:ResearchStep[]=research?.steps.map(s=>({id:s.id,text:s.title+'. '+s.description,status:'suggested',sources:[],...(s.kind==='search'&&researchActions[0]?{action:researchActions[0]}:{})}))??[];
   const expansion:TransportNameExpansion|undefined=plan.nameExpansion?{mode:'expanded',applied:plan.nameExpansion.status==='resolved',variants:plan.nameExpansion.variants,entityIds:[],clarificationRequired:plan.nameExpansion.status==='ambiguous',sources:[]}:undefined;
-  return json({...(research?{researchSteps,actions:researchActions,researchLimitations:research.limitations}:{}),...(expansion?{nameExpansion:expansion,nameExpansionProvenance:{kind:'project_dictionary',sourceIds:[...new Set(plan.nameExpansion!.matches.flatMap(m=>m.sourceIds))]}}:{}), answer: result.answer, noAnswer: result.noAnswer, mode: result.mode ?? 'external', sources,...(plan.handled&&!plan.clarification&&!cmsPassages.length&&!process.env.ASSISTANT_SERVICE_URL?{catalogQuery:plan.filters}:{}) });
+  return json({...(research?{researchSteps,actions:researchActions,researchLimitations:research.limitations}:{}),...(expansion?{nameExpansion:expansion,nameExpansionProvenance:{kind:'project_dictionary',sourceIds:[...new Set(plan.nameExpansion!.matches.flatMap(m=>m.sourceIds))]}}:{}), answer: result.answer, noAnswer: result.noAnswer, mode: result.mode ?? 'external', sources,...(plan.handled&&!directoryQuery&&!plan.clarification&&!cmsPassages.length&&!process.env.ASSISTANT_SERVICE_URL?{catalogQuery:plan.filters}:{}) });
 }
