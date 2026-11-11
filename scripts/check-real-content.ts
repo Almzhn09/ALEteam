@@ -155,6 +155,7 @@ try{
    }
   }else{await publishFacts();await publishFacts();}
   assert.equal(prepareRealCuration(bindings,parents,topics).blocked.length,0);
+  for(const locale of ['ru','kk','en']){const result=await call('/discovery/topics?locale='+locale);assert.ok(result.items.length>=6);assert.ok(result.items.every((t:{contentLocale:string})=>t.contentLocale===locale));}
  });
  await check('the home recommendations cite real source materials and have no invented view counts',async()=>{
   const home=await call('/discovery/home?locale=ru&limit=3');

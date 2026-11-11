@@ -12,6 +12,7 @@ import {resolveMaterial,resolveEvidence} from './discovery-materials';
 import {parseFact,validateFact,type FactKind} from './discovery-facts';
 import {prepareDiscoveryFacts,type PublishedSourceBinding} from './artur-discovery/publication';
 import {prepareRealCuration} from './artur-discovery/real-publication';
+import editorialTopics from '../../data/artur/discovery/topics.json';
 import {stageUpload,readStagedUpload} from './upload-storage';
 import {approveCmsAttachment,publishCmsAttachment,processCmsAttachment,docxMime} from './cms-attachments';
 import type {UploadMime} from '../contracts/uploads';
@@ -106,7 +107,8 @@ export async function importRealContent(dryRun=true){
  let prepared=prepareDiscoveryFacts(bindings);for(const request of prepared.ready.filter(r=>r.request.kind==='PLACE')){const row=await ensureFact(pack.namespace,request.draftKey,'PLACE',request.request.data,request.request.sources);const data=row.data as any;parents[request.draftKey]={id:row.id,name:data.labels.ru.title};facts.push(row);}
  prepared=prepareDiscoveryFacts(bindings,parents);for(const request of prepared.ready.filter(r=>r.request.kind!=='PLACE'))facts.push(await ensureFact(pack.namespace,request.draftKey,request.request.kind,request.request.data,request.request.sources,request.request.parentId??null));
  const topics=[];const definitions=[['archives','История архива','history-1'],['cities','История городов','calendar-2026-ru'],['calendar','Календарь памятных дат','calendar-2026-ru'],['newspapers','Газеты','newspaper-directory-info'],['compliance','Комплаенс','compliance-15'],['education','Школы и образование','calendar-2026-ru'],['industry','Промышленность','calendar-2025-ru'],['people','Люди региона','calendar-2026-ru']];
- for(const [key,title,sourceKey]of definitions){const source=bindings.find(b=>b.sourceKey===sourceKey);if(!source)continue;const row=await ensureFact(pack.namespace,'topic-'+key,'TOPIC',{labels:{ru:{title}}},[source.source]);topics.push({key,row});}
+ const extraTopicLabels:Record<string,Record<string,string>>={calendar:{ru:'Календарь памятных дат',kk:'Атаулы күндер күнтізбесі',en:'Commemorative dates'},compliance:{ru:'Комплаенс',kk:'Комплаенс қызметі',en:'Compliance'}};
+ for(const [key,title,sourceKey]of definitions){const source=bindings.find(b=>b.sourceKey===sourceKey);if(!source)continue;const translated=editorialTopics.records.find(t=>t.id===key)?.labels??extraTopicLabels[key]??{ru:title};const labels=Object.fromEntries(Object.entries(translated).map(([locale,title])=>[locale,{title}]));const row=await ensureFact(pack.namespace,'topic-'+key,'TOPIC',{labels},[source.source]);topics.push({key,row});}
  const topicFor=(key:string)=>key.startsWith('calendar-')?'calendar':key.includes('newspaper')?'newspapers':key.includes('compliance')?'compliance':'archives';
  pages.sort((a,b)=>{const order=['history-1','calendar-2026-ru','fund-directory-info'];const ai=order.indexOf(a.sourceKey),bi=order.indexOf(b.sourceKey);return (ai<0?100:ai)-(bi<0?100:bi);});
  let index=0;for(const page of pages.filter(p=>p.locale==='ru')){const source=bindings.find(b=>b.sourceKey===page.sourceKey&&b.locale===page.locale);if(!source)continue;const topic=topics.find(t=>t.key===topicFor(page.sourceKey))??topics[0];await ensureFact(pack.namespace,'editorial-'+page.sourceKey,'EDITORIAL',{material:{kind:'cms',id:page.itemId},topicId:topic.row.id,order:index++},[source.source]);}
