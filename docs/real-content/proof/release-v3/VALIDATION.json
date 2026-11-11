@@ -1,0 +1,63 @@
+{
+  "testedAt": "2026-11-11T15:13:08.981Z",
+  "sourceCommit": "bd416d889677873fea4a4dc9f57c8a3f175f002d",
+  "integrationBase": "b85dfd29c1e99b99321e0edb16ad6310148c4558",
+  "tests": [
+    {
+      "name": "unit",
+      "passed": 376,
+      "failed": 0
+    },
+    {
+      "name": "real-content-http",
+      "passed": 6,
+      "failed": 0
+    },
+    {
+      "name": "managed-upgrade",
+      "passed": 7,
+      "failed": 0
+    }
+  ],
+  "docker": {
+    "real": 8,
+    "legacy": 21,
+    "failed": 0,
+    "scope": "isolated local Linux Docker projects; not public deployment"
+  },
+  "workingData": {
+    "publishedEditions": 53,
+    "cmsItems": 39,
+    "publicBranches": 13,
+    "currentAttachments": 27,
+    "uniqueOriginals": 21,
+    "fundGroups": 1705,
+    "newspaperRows": 1466,
+    "publicSyntheticDocuments": 0
+  },
+  "i18n": {
+    "keys": 953,
+    "translated": 953,
+    "missing": 0
+  },
+  "typescript": "passed",
+  "productionBuild": "passed (host and standalone Docker)",
+  "sourceVerification": "9 originals / 25 texts / 3 linked; 5 supplementary source originals",
+  "browser": "3 pages + public search/fund/OCR APIs; zero page errors and overflow at 1440px",
+  "nativeUpgrade": "49 to 53 from a private copy of the original working backup; repeated without duplicates; user records and previous material IDs preserved",
+  "remoteGitHubActions": "not observed",
+  "codeSha256": {
+    "src/server/real-content-import.ts": "28969795e574db1ed2ea7ff498804ce180b1538de6c7b91bfff6fb92ec11e25d",
+    "src/server/real-content-backup.ts": "f08fac29ae4d5a4887d40da16687a7b10a16e7e29dff8753fed32ce8274ca997",
+    "scripts/persist-source-bundle.mjs": "6f37ba19fc6ccd2b7581df6e78e52f3c38f523d834fef0ffea65a83b4bbd5631",
+    "deploy/upgrade.mjs": "7def817ecb13ae9fdbf63149d9f21d9510a72178fbda9b273729391b526629d2",
+    "deploy/backup.mjs": "73bd0c7859caf6aaadc11cf77fb05fabeebe7a0d3d2ceb296077ea1229538816",
+    "deploy/restore.mjs": "b9a0c27712a98e6c90764dba34fdd361ec9ff273ac2ef986864fa02dafabf311",
+    "deploy/docker.mjs": "5f47abbb4dc70692c1bc909dc3d3a26c118483b4ba2bfde1a43f2514bb574b31"
+  },
+  "images": {
+    "runtime": "sha256:d50e7cdb23afce19b7f3d33bddf869e2e1777a26096a22f881d692156388b6ee",
+    "tools": "sha256:2e1903cfaf41845371b364ab9ff4778a6e8d97be9e27f361e3b61ff86311eeac",
+    "note": "Application and tools built after final server changes; subsequent tested changes affect host backup helpers only."
+  }
+}
