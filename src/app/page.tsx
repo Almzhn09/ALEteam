@@ -7,6 +7,7 @@ import { languageAlternates } from '@/lib/seo';
 import { latestDocuments, listContent } from '@/server/public-read';
 import {HomeDiscovery} from '@/components/HomeDiscovery';
 import {ArchivePhoto} from '@/components/ArchivePhoto';
+import {homeDiscoveryInitial} from '@/lib/home-server';
 import editorial from '../../data/artur/real-content-v2/ui-copy.json';
 
 const quick = [
@@ -20,7 +21,7 @@ export function generateMetadata() { return { alternates: languageAlternates('/'
 export default async function Home() {
   const [t, lang] = await Promise.all([getT(), getLang()]);
   const copy=editorial[lang];
-  const [news, exhibitions, events, ownDocs] = await Promise.all([listContent(lang, 'NEWS'), listContent(lang, 'EXHIBITION'), listContent(lang, 'EVENT'), latestDocuments(lang, 4)]);
+  const [news, exhibitions, events, ownDocs, initialDiscovery] = await Promise.all([listContent(lang, 'NEWS'), listContent(lang, 'EXHIBITION'), listContent(lang, 'EVENT'), latestDocuments(lang, 4), homeDiscoveryInitial(lang)]);
   const docs = (ownDocs.length ? ownDocs : lang === 'ru' ? [] : await latestDocuments('ru', 3)).slice(0,3);
   const blocks = [
     { id: 'news', title: 'Новости и события', href: '/news', items: [...news].sort((a, b) => (b.payload.date ?? '').localeCompare(a.payload.date ?? '')).slice(0, 3) },
@@ -50,7 +51,7 @@ export default async function Home() {
     </section>
 
     <div className="container page home-page">
-      <HomeDiscovery/>
+      <HomeDiscovery initial={initialDiscovery}/>
       <section className="section" aria-labelledby="quick-title">
         <div className="section-heading"><p className="eyebrow">{t('Путеводитель')}</p><h2 id="quick-title">{t('Что вы хотите найти?')}</h2></div>
         <div className="quick-grid">

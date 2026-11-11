@@ -25,7 +25,11 @@ export async function Footer() {
         <section aria-labelledby="footer-nav">
           <h2 id="footer-nav">{t('Разделы')}</h2>
           <ul>
-            <li><Link href="/catalog">{t('Каталог документов')}</Link></li>
+            <li><Link href="/catalog">{t('Поиск по архиву')}</Link></li>
+            <li><Link href="/calendar">{t('Памятные даты')}</Link></li>
+            <li><Link href="/directories">{t('Справочники')}</Link></li>
+            <li><Link href="/services">{t('Услуги')}</Link></li>
+            <li><Link href="/places">{t('История места')}</Link></li>
             <li><Link href="/exhibitions">{t('Онлайн-выставки')}</Link></li>
             <li><Link href="/memory">{t('Большой архив памяти')}</Link></li>
             <li><Link href="/branches">{t('Филиалы и подразделения')}</Link></li>

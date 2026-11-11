@@ -29,7 +29,7 @@ test('new fixed acceptance questions have no exact overlap with either training 
  for(const file of ['training/data/router-train.jsonl','training/full-tz/data/router-train.jsonl']){const known=new Set((await readFile(file,'utf8')).trim().split('\n').map(s=>JSON.parse(s).question.toLowerCase().trim()));for(const c of cases)assert.ok(!known.has(c.question.toLowerCase().trim()),c.question);}
 });
 test('localized document source links remain local and cannot use arbitrary URLs',async()=>{
- const {assistantSourceLink}=await import('../src/lib/assistant-source-link');assert.equal(assistantSourceLink({id:'document-1',kind:'document',locale:'en',href:'/api/documents/document-1?locale=en'}),'/api/documents/document-1?locale=en');
+ const {assistantReadingLink:assistantSourceLink}=await import('../src/lib/assistant-source-link');assert.equal(assistantSourceLink({id:'document-1',kind:'document',locale:'en',href:'/api/documents/document-1?locale=en'}),'/documents/document-1?contentLang=en');
  for(const href of ['javascript:alert(1)','//other.invalid','/api/admin/catalog/documents','/api/documents/../private?locale=en'])assert.equal(assistantSourceLink({id:'document-1',kind:'document',locale:'en',href}),'/assistant');
 });
 test('Unicode normalization never rewrites accounting identifiers',()=>{

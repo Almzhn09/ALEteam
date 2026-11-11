@@ -13,6 +13,7 @@ export function assistantSourceLink(source:{id:string;kind:string;href?:string;l
 // checks above for messages restored from untrusted browser storage.
 export function assistantReadingLink(source:{id:string;kind:string;href?:string;locale?:string}){
  const href=assistantSourceLink(source);
+ if(source.kind==='guide')return href.replace(/^\/about#/,'/help#');
  const cms=href.match(/^\/api\/content\/([a-z0-9][a-z0-9-]{0,99})\?locale=(ru|kk|en)$/u);
  if(cms)return '/materials/'+cms[1]+'?contentLang='+cms[2];
  if((source.kind==='fund'||source.kind==='newspaper')&&href.startsWith('/api/directories/'))return '/catalog?scope='+source.kind+'&entry='+encodeURIComponent(source.id);

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { use, useCallback, useEffect, useState, type FormEvent } from 'react';
 import { locales, type ContentLocale, type PublicationState } from '@/contracts/cms';
 import { ApiClientError, apiGet, apiSend } from '@/lib/api';
-import { langName } from '@/lib/i18n';
+import { langName } from '@/lib/i18n-core';
 import { useI18n } from '@/lib/lang';
 import { DemoBadge, ErrorNotice, Loading, Notice } from '@/components/ui';
 import { FormError, useStaff } from '../../AdminShell';

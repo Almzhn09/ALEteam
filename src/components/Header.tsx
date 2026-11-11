@@ -9,11 +9,12 @@ import { useI18n } from '@/lib/lang';
 import { DisplayPreferences, type DisplayTheme, type TextSize } from './DisplayPreferences';
 import { TourButton } from './Tour';
 import { AssistantWidget } from './AssistantWidget';
-import { LANGS, langName, type Lang } from '@/lib/i18n';
+import { LANGS, langName, type Lang } from '@/lib/i18n-core';
 
 const links = [
-  { href: '/catalog', label: 'Каталог' },
-  { href: '/places', label: 'История места' },
+  { href: '/catalog', label: 'Поиск по архиву' },
+  { href: '/calendar', label: 'Памятные даты' },
+  { href: '/directories', label: 'Справочники' },
   { href: '/branches', label: 'Филиалы' },
   { href: '/about', label: 'Об архиве' },
   { href: '/help', label: 'Справка' },

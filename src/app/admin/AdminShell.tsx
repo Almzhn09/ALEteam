@@ -19,6 +19,7 @@ const sections = [
   { href: '/admin/catalog', label: 'Каталог', any: ['catalog.read'] },
   { href: '/admin/uploads', label: 'Файлы цифровых копий', any: ['catalog.read'] },
   { href: '/admin/imports', label: 'Импорт каталога', any: ['catalog.read'] },
+  { href: '/admin/directories', label: 'Справочники', any: ['catalog.read'] },
   { href: '/admin/branches', label: 'Филиалы', any: ['branches.manage'] },
   { href: '/admin/users', label: 'Сотрудники', any: ['staff.users.manage'] },
   { href: '/admin/roles', label: 'Роли и права', any: ['staff.roles.manage'] },
@@ -70,9 +71,14 @@ export function FormError({ error }: { error: unknown }) {
   const { t } = useI18n();
   if (!error) return null;
   const fields = error instanceof ApiClientError ? error.fields : undefined;
+  // File processing codes get an explanation a reviewer can act on instead of the generic validation message.
+  const code = error instanceof ApiClientError ? error.code : '';
+  const fileHint = code === 'FILE_PROCESSING_FAILED' ? t('Файл не прошёл полный разбор: он повреждён, обрезан или имеет другой формат. Отклоните его и запросите полную копию.')
+    : code === 'PROCESSING_TIMEOUT' ? t('Разбор файла не уложился в отведённое время. Повторите позже или запросите файл меньшего размера.')
+      : code === 'PROCESSING_BUSY' ? t('Сейчас разбирается другой файл. Повторите через минуту.') : '';
   return (
-    <Notice tone="error" title={error instanceof ApiClientError && error.status === 409 ? t('Конфликт изменений') : t('Не удалось сохранить')} live>
-      <p>{errorText(error, t)}</p>
+    <Notice tone="error" title={error instanceof ApiClientError && error.status === 409 ? t('Конфликт изменений') : fileHint ? t('Файл не принят') : t('Не удалось сохранить')} live>
+      <p>{fileHint || errorText(error, t)}</p>
       {fields?.length ? <ul style={{ margin: 0, paddingLeft: 'var(--space-5)' }}>{fields.map(f => <li key={`${f.path}${f.code}`}><code>{f.path || '—'}</code></li>)}</ul> : null}
     </Notice>
   );
