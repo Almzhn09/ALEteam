@@ -1,0 +1,169 @@
+{
+ "recordedAt": "2026-11-11T13:27:14.270Z",
+ "base": "http://localhost:3001",
+ "lighthouse": "13.6.0",
+ "browser": "Microsoft Edge (headless)",
+ "note": "local production server on the real corpus; not a hosted measurement",
+ "reports": [
+  {
+   "name": "home",
+   "route": "/",
+   "device": "mobile",
+   "run": 2,
+   "scores": {
+    "performance": 100,
+    "accessibility": 100,
+    "best-practices": 96,
+    "seo": 100
+   },
+   "lcpMs": 744,
+   "cls": 0,
+   "tbtMs": 80,
+   "allPerformance": [
+    100,
+    100,
+    100
+   ]
+  },
+  {
+   "name": "home",
+   "route": "/",
+   "device": "desktop",
+   "run": 2,
+   "scores": {
+    "performance": 100,
+    "accessibility": 100,
+    "best-practices": 96,
+    "seo": 100
+   },
+   "lcpMs": 187,
+   "cls": 0.0001972213399130838,
+   "tbtMs": 0,
+   "allPerformance": [
+    100,
+    100,
+    100
+   ]
+  },
+  {
+   "name": "search",
+   "route": "/search?q=%D0%B0%D1%80%D1%85%D0%B8%D0%B2",
+   "device": "mobile",
+   "run": 2,
+   "scores": {
+    "performance": 100,
+    "accessibility": 99,
+    "best-practices": 96,
+    "seo": 100
+   },
+   "lcpMs": 706,
+   "cls": 0,
+   "tbtMs": 53,
+   "allPerformance": [
+    95,
+    100,
+    100
+   ]
+  },
+  {
+   "name": "search",
+   "route": "/search?q=%D0%B0%D1%80%D1%85%D0%B8%D0%B2",
+   "device": "desktop",
+   "run": 2,
+   "scores": {
+    "performance": 95,
+    "accessibility": 99,
+    "best-practices": 96,
+    "seo": 100
+   },
+   "lcpMs": 326,
+   "cls": 0.0001972213399130838,
+   "tbtMs": 173,
+   "allPerformance": [
+    93,
+    95,
+    99
+   ]
+  },
+  {
+   "name": "material",
+   "route": "/materials/archive-history-1",
+   "device": "mobile",
+   "run": 1,
+   "scores": {
+    "performance": 85,
+    "accessibility": 100,
+    "best-practices": 96,
+    "seo": 100
+   },
+   "lcpMs": 1244,
+   "cls": 0,
+   "tbtMs": 578,
+   "allPerformance": [
+    77,
+    85,
+    85
+   ]
+  },
+  {
+   "name": "material",
+   "route": "/materials/archive-history-1",
+   "device": "desktop",
+   "run": 3,
+   "scores": {
+    "performance": 97,
+    "accessibility": 100,
+    "best-practices": 96,
+    "seo": 100
+   },
+   "lcpMs": 789,
+   "cls": 0.0001972213399130838,
+   "tbtMs": 127,
+   "allPerformance": [
+    95,
+    97,
+    99
+   ]
+  },
+  {
+   "name": "funds",
+   "route": "/directories/funds",
+   "device": "mobile",
+   "run": 2,
+   "scores": {
+    "performance": 85,
+    "accessibility": 99,
+    "best-practices": 96,
+    "seo": 100
+   },
+   "lcpMs": 1105,
+   "cls": 0,
+   "tbtMs": 576,
+   "allPerformance": [
+    73,
+    85,
+    86
+   ]
+  },
+  {
+   "name": "funds",
+   "route": "/directories/funds",
+   "device": "desktop",
+   "run": 1,
+   "scores": {
+    "performance": 95,
+    "accessibility": 99,
+    "best-practices": 96,
+    "seo": 100
+   },
+   "lcpMs": 333,
+   "cls": 0.0001972213399130838,
+   "tbtMs": 185,
+   "allPerformance": [
+    93,
+    95,
+    99
+   ]
+  }
+ ]
+}

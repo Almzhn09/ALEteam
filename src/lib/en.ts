@@ -1033,4 +1033,7 @@ export const en: Record<string, string> = {
   'Разбор файла не уложился в отведённое время. Повторите позже или запросите файл меньшего размера.': 'Parsing the file took too long. Try again later or request a smaller file.',
   'Сейчас разбирается другой файл. Повторите через минуту.': 'Another file is being parsed. Try again in a minute.',
   'Файл не принят': 'File not accepted',
+  'Архивные документы': 'Archival documents',
+  'Архивный документ': 'Archival document',
+  'Основные разделы': 'Main sections',
 };

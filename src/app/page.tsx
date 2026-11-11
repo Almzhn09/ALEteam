@@ -32,7 +32,7 @@ export default async function Home() {
   return (
     <div className="container page stack-xl home">
       <SectionHero title={t('Откройте историю Восточного Казахстана')} lead={t('История архива, памятные даты и справочники фондов — начните с интересующей темы.')} image="home">
-        <form className="hero-search" action="/search" method="get" role="search" aria-label={t('Поиск по сайту и справочникам')}>
+        <form className="hero-search" action="/search" method="get" role="search" aria-label={t('Поиск по архиву')}>
           <label htmlFor="hero-q" className="visually-hidden">{t('Что вы ищете')}</label>
           <input id="hero-q" name="q" className="input" type="search" maxLength={200} autoComplete="off" placeholder={t('Тема, имя или название фонда')} />
           <button type="submit" className="btn btn-primary">{t('Найти')}</button>
@@ -40,7 +40,7 @@ export default async function Home() {
       </SectionHero>
 
       <section aria-labelledby="sections-title">
-        <h2 id="sections-title" className="visually-hidden">{t('Разделы')}</h2>
+        <h2 id="sections-title" className="visually-hidden">{t('Основные разделы')}</h2>
         <ul className="entry-grid">
           {entries.map(entry => (
             <li key={entry.id} className="reveal">
@@ -80,7 +80,7 @@ export default async function Home() {
 
       <section className="info-band reveal" aria-labelledby="visit-title">
         <div>
-          <h2 id="visit-title" className="info-band-title">{t('Государственный архив Восточно-Казахстанской области')}</h2>
+          <h2 id="visit-title" className="info-band-title">{t('Часы работы')}</h2>
           <p>{t('Понедельник–пятница: архив 8:00–17:00; читальный зал 9:00–16:00.')}</p>
         </div>
         <div className="info-band-links">

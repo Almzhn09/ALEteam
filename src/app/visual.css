@@ -187,3 +187,4 @@
 /* The explanation flows with the page at every width: a nested scroll area hid its own last sections. */
 .explanation-body { max-height: none; overflow: visible; }
 .body-table:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.kind-document { background: var(--success-soft); color: var(--success); }

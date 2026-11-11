@@ -14,9 +14,9 @@ import { Breadcrumbs, ErrorNotice, Loading, Pagination } from '@/components/ui';
 import { sampleQueries } from '@/lib/search-samples';
 import { searchKey } from './shared';
 
-const SCOPES = ['all', 'cms', 'fund', 'newspaper'] as const;
+const SCOPES = ['all', 'cms', 'document', 'fund', 'newspaper'] as const;
 type Scope = typeof SCOPES[number];
-const scopeLabel: Record<Scope, string> = { all: 'Всё', cms: 'Материалы сайта', fund: 'Справочник фондов', newspaper: 'Перечень газет' };
+const scopeLabel: Record<Scope, string> = { all: 'Всё', cms: 'Материалы сайта', document: 'Архивные документы', fund: 'Справочник фондов', newspaper: 'Перечень газет' };
 const PAGE_SIZE = 20;
 
 function snippetOf(text: string, q: string) {
@@ -62,7 +62,8 @@ export function SearchPage({ initial = null, initialKey = '' }: { initial?: Sear
   };
   function submit(e: FormEvent) { e.preventDefault(); router.push(href({ q: text.trim(), page: 1 })); }
   const counts = data?.counts;
-  const countOf = (s: Scope) => !counts ? null : s === 'all' ? counts.materials + counts.funds + counts.newspapers : s === 'cms' ? counts.materials : s === 'fund' ? counts.funds : counts.newspapers;
+  // Site materials and archive documents are counted together by the API, so their tabs show no separate number.
+  const countOf = (s: Scope) => !counts ? null : s === 'all' ? counts.materials + counts.funds + counts.newspapers : s === 'fund' ? counts.funds : s === 'newspaper' ? counts.newspapers : null;
   return (
     <div className="container page stack-lg">
       <Breadcrumbs items={[{ label: t('Поиск') }]} />
@@ -90,7 +91,7 @@ export function SearchPage({ initial = null, initialKey = '' }: { initial?: Sear
                 <ul className="search-results">
                   {data.items.map(hit => hit.kind === 'material'
                     ? <li key={`m-${hit.material.kind}-${hit.material.id}`} className="search-hit">
-                      <div className="registry-head"><KindBadge kind="material" />{hit.material.translationStatus === 'original' && <span className="small muted">{t('Материал на языке источника')}</span>}</div>
+                      <div className="registry-head"><KindBadge kind={hit.material.kind === 'document' ? 'document' : 'material'} />{hit.material.translationStatus === 'original' && <span className="small muted">{t('Материал на языке источника')}</span>}</div>
                       <h3 className="registry-title"><Link href={materialLink(hit.material)} lang={hit.material.contentLocale}>{hit.material.title}</Link></h3>
                       {hit.snippet && <p className="small search-snippet" lang={hit.material.contentLocale}>{snippetOf(hit.snippet, q)}</p>}
                     </li>
@@ -98,7 +99,7 @@ export function SearchPage({ initial = null, initialKey = '' }: { initial?: Sear
                       : <NewspaperRow key={`n-${hit.id}`} entry={hit as NewspaperEntry} showKind />)}
                 </ul>
                 <Pagination page={page} pageSize={PAGE_SIZE} total={data.total} href={p => href({ page: p })} />
-                {scope !== 'fund' && scope !== 'newspaper' && <FollowTopic selection={{ filters: { q, scope: 'cms' } }} />}
+                {scope !== 'fund' && scope !== 'newspaper' && <FollowTopic selection={{ filters: { q, scope: scope === 'document' ? 'document' : scope === 'cms' ? 'cms' : 'all' } }} />}
               </>}
       </>}
     </div>

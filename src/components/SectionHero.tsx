@@ -9,7 +9,7 @@ export async function SectionHero({ title, lead, image, children, level = 1 }: {
   const H = level === 1 ? 'h1' : 'h2';
   const hint = t('(откроется в новой вкладке)');
   return (
-    <section className={`hero${visual ? ' hero-with-image' : ''}`} aria-labelledby="hero-title">
+    <section className={`hero${visual ? ' hero-with-image' : ''}`}>
       <div className="hero-text">
         <H id="hero-title" className="hero-title">{title}</H>
         <p className="hero-lead">{lead}</p>

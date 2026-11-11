@@ -149,7 +149,8 @@ check('news filters combine', await seen(guest, `a:has-text("${title}")`));
 await guest.goto(`${BASE}/news/${slug}`);
 check('body rendered as text, not HTML', (await guest.locator('article .pre-wrap').innerText()).includes('<b>Без HTML</b>'));
 await guest.goto(`${BASE}/news/${slug}?lang=en`);
-check('missing translation is declared', await seen(guest, 'h1:has-text("No translation")'));
+// R-F02: a missing translation opens the source language with an explicit marker, never a substituted text.
+check('missing translation is declared', await seen(guest, '.source-language:has-text("Material in its original language")') && (await guest.locator('h1').first().innerText()) === title);
 await guest.goto(`${BASE}/news/${slug}?lang=ru`);
 check('hreflang lists only published languages', await guest.locator('link[hreflang="ru"]').count() === 1 && await guest.locator('link[hreflang="en"]').count() === 0);
 

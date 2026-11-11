@@ -5,9 +5,9 @@ import Link from 'next/link';
 import type { FundDirectoryEntry, NewspaperEntry, RegistrySource } from '@/contracts/real-content';
 import { useI18n } from '@/lib/lang';
 
-export function KindBadge({ kind }: { kind: 'material' | 'fund' | 'newspaper' }) {
+export function KindBadge({ kind }: { kind: 'material' | 'document' | 'fund' | 'newspaper' }) {
   const { t } = useI18n();
-  const label = { material: 'Материал сайта', fund: 'Справочник фондов', newspaper: 'Перечень газет' }[kind];
+  const label = { material: 'Материал сайта', document: 'Архивный документ', fund: 'Справочник фондов', newspaper: 'Перечень газет' }[kind];
   return <span className={`badge kind-badge kind-${kind}`}>{t(label)}</span>;
 }
 
