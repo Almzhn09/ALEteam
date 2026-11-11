@@ -26,9 +26,29 @@ export async function dockerStream(args, { input, output, env = process.env } = 
   try {
     await new Promise((resolve, reject) => {
       const child = spawn('docker', args, { env, stdio: [source?.fd ?? 'ignore', destination?.fd ?? 'ignore', 'pipe'] });
-      child.stderr.resume(); // no SQL/user data or credentials are printed
+      // Retain a bounded private diagnostic; never print raw Docker output.
+      // Non-enumerable fields also keep a normal uncaught CLI error from
+      // dumping SQL, user data or credentials through Node's Error inspector.
+      const limit = 64 * 1024;
+      let stderr = Buffer.alloc(0), stderrTruncated = false;
+      child.stderr.on('data', chunk => {
+        const data = Buffer.from(chunk);
+        if (stderr.length + data.length > limit) stderrTruncated = true;
+        stderr = Buffer.concat([stderr, data]);
+        if (stderr.length > limit) stderr = Buffer.from(stderr.subarray(-limit));
+      });
       child.on('error', reject);
-      child.on('exit', code => code === 0 ? resolve() : reject(new Error(`Docker operation failed (${code})`)));
+      child.on('close', (code, signal) => {
+        if (code === 0) return resolve();
+        const error = new Error(`Docker operation failed (${code})`);
+        Object.defineProperties(error, {
+          stderr: { value: stderr },
+          stderrTruncated: { value: stderrTruncated },
+          status: { value: code },
+          signal: { value: signal },
+        });
+        reject(error);
+      });
     });
   } catch (error) { if (output) await unlink(output).catch(() => {}); throw error; }
   finally { await source?.close(); await destination?.close(); }

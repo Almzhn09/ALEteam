@@ -53,12 +53,37 @@ try{
   execFileSync(process.execPath,['deploy/backup.mjs','--project',project,'--env',sourceEnv,'--directory',folder+'/backup'],{env:environment(project),stdio:'pipe'});const manifest=JSON.parse(await readFile(folder+'/backup/manifest.json'));assert.equal(manifest.files.length,2);assert.ok(manifest.files.every(f=>f.size>0));
  });
  await check('restore into a new project preserves real provenance, visibility and identical original bytes',async()=>{
-  execFileSync(process.execPath,['deploy/restore.mjs','--project',restored,'--env',restoreEnv,'--directory',folder+'/backup'],{env:environment(restored),stdio:'pipe'});await ready(second.BETTER_AUTH_URL);assert.deepEqual(await corpus(second.BETTER_AUTH_URL),snapshot);
+  // Catch in the child so dockerStream's non-enumerable bounded diagnostic
+  // reaches the parent's private pipe without being printed to the console.
+  const captureRestore=`process.argv.splice(1,0,'deploy/restore.mjs');try { await import('./deploy/restore.mjs'); } catch (error) { process.stderr.write(JSON.stringify({name:error?.name,message:error?.message,code:error?.code,status:error?.status,signal:error?.signal,stack:error?.stack,stderr:Buffer.isBuffer(error?.stderr)?error.stderr.toString('utf8'):String(error?.stderr??''),stderrTruncated:error?.stderrTruncated})+'\\n');process.exitCode=1; }`;
+  execFileSync(process.execPath,['--input-type=module','-e',captureRestore,'--','--project',restored,'--env',restoreEnv,'--directory',folder+'/backup'],{env:environment(restored),stdio:'pipe'});await ready(second.BETTER_AUTH_URL);assert.deepEqual(await corpus(second.BETTER_AUTH_URL),snapshot);
   const file=await fetch(second.BETTER_AUTH_URL+'/api/material-files/'+fileId);assert.equal(file.status,200);assert.equal(createHash('sha256').update(Buffer.from(await file.arrayBuffer())).digest('hex'),expectedSha);assert.equal((await fetch(second.BETTER_AUTH_URL+'/api/material-files/'+previewId)).status,200);
   assert.equal(compose(restored,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "ReferenceEntry"']),'3171');
   for(const bundle of ['archive-20261110','archive-public-20261111','archive-reference-20261110']){const digest=compose(restored,['exec','-T','app','node','-e',`const fs=require('node:fs'),c=require('node:crypto');console.log(c.createHash('sha256').update(fs.readFileSync('/data/files/source-bundles/${bundle}/manifest.json')).digest('hex'))`]);assert.equal(digest,createHash('sha256').update(await readFile('sources/'+bundle+'/manifest.json')).digest('hex'));}
  });
-}catch(error){process.exitCode=1;let message=String(error.stderr??error.stack??error);for(const[k,v]of Object.entries(config))if(/PASSWORD|SECRET/.test(k))message=message.replaceAll(v,'[REDACTED]');await writeFile(folder+'/failure.log',message,{mode:0o600});console.log('FAIL real-content deployment; private redacted diagnosis '+folder+'/failure.log');}
+}catch(error){
+ process.exitCode=1;
+ // execFileSync can carry a useful stdout even when stderr is only the child
+ // stack. Keep each field, including an empty stderr, instead of losing them
+ // through a nullish fallback. This file is private and is never proof output.
+ const secrets=new Set(Object.entries({...process.env,...config,...second}).filter(([key,value])=>/PASSWORD|SECRET|TOKEN|API_KEY|CREDENTIAL/i.test(key)&&typeof value==='string'&&value.length).map(([,value])=>value));
+ const redact=value=>{let text=Buffer.isBuffer(value)?value.toString('utf8'):String(value??'');for(const secret of secrets)text=text.replaceAll(secret,'[REDACTED]');return text.replace(/(postgres(?:ql)?:\/\/)[^\s/@]+:[^\s@]+@/gi,'$1[REDACTED]@').replace(/(Bearer\s+)[A-Za-z0-9._~+\/-]+/gi,'$1[REDACTED]');};
+ const tail=value=>{const text=redact(value);return text.length>32768?'[earlier output omitted]\n'+text.slice(-32768):text;};
+ const diagnosis={completedChecks:checks.length,totalChecks:7,error:{name:error?.name,message:tail(error?.message??error),code:error?.code,status:error?.status,signal:error?.signal,stack:tail(error?.stack),stdout:tail(error?.stdout),stderr:tail(error?.stderr)},filesystem:null,projects:[]};
+ try{const {statfs}=await import('node:fs/promises');const fs=await statfs(process.cwd());diagnosis.filesystem={availableBytes:fs.bavail*fs.bsize,freeBytes:fs.bfree*fs.bsize,totalBytes:fs.blocks*fs.bsize};}catch(fsError){diagnosis.filesystem={error:tail(fsError?.code??fsError?.message)};}
+ // Capture remaining container state before finally removes our test projects.
+ // No inspect Config/Env or compose config is collected. A --rm one-off may
+ // already be gone; its absence is explicitly not proof of a successful step.
+ for(const name of [project,restored]){
+  const entry={project:name,containers:[],logs:''};
+  try{const ids=compose(name,['ps','-aq']).split('\n').filter(Boolean);for(const id of ids)entry.containers.push({id,state:tail(docker(['inspect','--format','{{json .State}}',id]))});}catch(stateError){entry.stateError=tail(stateError?.stderr??stateError?.message);}
+  try{entry.logs=tail(compose(name,['logs','--no-color','--tail','40','db','setup','app']));}catch(logError){entry.logError=tail(logError?.stderr??logError?.message);}
+  diagnosis.projects.push(entry);
+ }
+ diagnosis.limitations=['Streamed Docker stderr is bounded to its final64KiB and all diagnostic fields are redacted/capped; earlier output may be omitted. Missing container logs do not establish restore success.'];
+ await writeFile(folder+'/failure.log',redact(JSON.stringify(diagnosis,null,2))+'\n',{mode:0o600});
+ console.log('FAIL real-content deployment; private redacted diagnosis '+folder+'/failure.log');
+}
 finally{
  for(const name of [restored,project])try{compose(name,['--profile','workers','down','--volumes','--remove-orphans']);}catch{}
  await unlink(sourceEnv).catch(()=>{});await unlink(restoreEnv).catch(()=>{});await writeFile('.local/real-content/docker-proof.json',JSON.stringify({testedAt:new Date().toISOString(),checks,measurements,corpus:snapshot,temporaryEnvFilesRemoved:true,backupRetainedPrivately:true},null,2)+'\n');console.log('Real-content Docker checks '+checks.length+'/7');
