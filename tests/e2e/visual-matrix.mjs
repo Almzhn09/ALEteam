@@ -8,17 +8,17 @@ const OUT = process.env.OUT ?? '.local/visual/';
 mkdirSync(OUT, { recursive: true });
 const axeSource = readFileSync('node_modules/axe-core/axe.min.js', 'utf8');
 const doc = process.env.DOC_ID ?? 'demo-doc-01';
-const routes = [['home', '/'], ['catalog', '/catalog?q=%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B0'], ['document', `/documents/${doc}`], ['guide', '/guide'], ['help', '/help'], ['branches', '/branches'], ['news', '/news']];
+const routes = [['home', '/'], ['catalog', '/catalog?q=%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B0'], ['document', `/documents/${doc}`], ['guide', '/guide'], ['help', '/help'], ['branches', '/branches'], ['news', '/news'], ['places', '/places']];
 // [width, theme, text size, language, zoom]: zoom 2 halves the CSS viewport at double pixel density.
 const variants = [
-  [360, 'light', '100', 'ru', 1], [360, 'dark', '100', 'kk', 1], [768, 'light', '100', 'en', 1], [768, 'dark', '100', 'ru', 1],
+  [360, 'light', '100', 'ru', 1], [390, 'light', '100', 'ru', 1], [360, 'dark', '100', 'kk', 1], [768, 'light', '100', 'en', 1], [768, 'dark', '100', 'ru', 1],
   [1440, 'light', '100', 'ru', 1], [1440, 'dark', '100', 'kk', 1], [360, 'light', '150', 'ru', 1], [1440, 'dark', '150', 'en', 1], [1440, 'light', '100', 'ru', 2],
 ];
 
 // Geometry: overlapping or touching controls, content wider than the viewport, misaligned container edges.
 function measure() {
   const vw = document.documentElement.clientWidth;
-  const visible = el => { const r = el.getBoundingClientRect(); const cs = getComputedStyle(el); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && !el.closest('[hidden], dialog:not([open]), .leaflet-container, .visually-hidden') && !el.closest('details:not([open]) > :not(summary)') && (!document.querySelector('dialog[open]') || el.closest('dialog[open]')) && (!document.querySelector('.nav-wrap[data-open="true"]') || el.closest('.site-header')); };
+  const visible = el => { const r = el.getBoundingClientRect(); const cs = getComputedStyle(el); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && !el.closest('[hidden], dialog:not([open]), .leaflet-container, .visually-hidden') && !(el.closest('.thumbs, .table-wrap') && el.parentElement.closest('.thumbs, .table-wrap').scrollWidth > el.parentElement.closest('.thumbs, .table-wrap').clientWidth && (el.getBoundingClientRect().right > el.closest('.thumbs, .table-wrap').getBoundingClientRect().right + 1)) && !el.closest('details:not([open]) > :not(summary)') && (!document.querySelector('dialog[open]') || el.closest('dialog[open]')) && (!document.querySelector('.nav-wrap[data-open="true"]') || el.closest('.site-header')); };
   const controls = [...document.querySelectorAll('a.btn, button, select, input:not([type=hidden]), summary, .nav a, .tabs a, .pagination a')].filter(visible);
   const problems = [];
   const box = el => el.getBoundingClientRect();
@@ -80,6 +80,13 @@ for (const [width, theme, size, lang, zoom] of variants) {
   await page.screenshot({ path: `${OUT}display-open-${label}.png` });
   log.push({ page: 'display-open', width, theme, textSize: size, lang, zoom, file: `display-open-${label}.png`, ...(await page.evaluate(() => { const r = document.querySelector('.display-panel').getBoundingClientRect(); const vw = document.documentElement.clientWidth; return { overflow: r.right > vw + 1 || r.left < -1, problems: r.right > vw + 1 || r.left < -1 ? [`display panel outside viewport ${Math.round(r.left)}-${Math.round(r.right)} of ${vw}`] : [] }; })), axe: [] });
   await page.keyboard.press('Escape');
+  // Discovery states: open recommendation settings on home, open document explanation.
+  await page.goto(BASE + '/'); await page.waitForSelector('#recommendations-title');
+  const rec = page.locator('section[aria-labelledby="recommendations-title"] details > summary');
+  if (await rec.count()) { await rec.first().click(); await page.waitForTimeout(300); await page.screenshot({ path: `${OUT}recommend-open-${label}.png`, fullPage: true }); log.push({ page: 'recommend-open', width, theme, textSize: size, lang, zoom, file: `recommend-open-${label}.png`, ...(await page.evaluate(measure)), axe: [] }); }
+  await page.goto(BASE + `/documents/${doc}`);
+  const explain = page.locator('[aria-controls="document-explanation"]');
+  if (await explain.count()) { await explain.click(); await page.waitForSelector('#document-explanation [role=status], #document-explanation blockquote', { timeout: 10000 }).catch(() => {}); await page.screenshot({ path: `${OUT}explain-open-${label}.png`, fullPage: true }); log.push({ page: 'explain-open', width, theme, textSize: size, lang, zoom, file: `explain-open-${label}.png`, ...(await page.evaluate(measure)), axe: [] }); }
   if (width / zoom < 1200) {
     await page.locator('.menu-toggle').click();
     const menuVisible = await page.evaluate(() => { const links = [...document.querySelectorAll('.nav a')].filter(a => { const r = a.getBoundingClientRect(); return r.width > 0 && r.top >= 0 && r.bottom <= innerHeight * 3; }); return links.length; });

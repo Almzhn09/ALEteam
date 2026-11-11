@@ -457,3 +457,46 @@ details > summary { min-height: 44px; padding-block: var(--space-2); cursor: poi
 #recommendations-title { margin: 0; }
 #topic-subscriptions button { align-self: flex-start; }
 @media (max-width: 600px) { .explanation-body { max-height: 55vh; } }
+
+/* N-F06: uploads and catalog import screens. */
+.props > div { display: contents; }
+.upload-list { gap: var(--card-gap); }
+.upload-card .row.spread { align-items: flex-start; }
+.upload-name, .upload-hash { overflow-wrap: anywhere; word-break: break-word; }
+.upload-review { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--card-pad); margin: 0; }
+.upload-review legend { padding-inline: var(--space-2); font-weight: 600; }
+.checkbox-row { gap: var(--label-gap); align-items: flex-start; }
+.checkbox-row input { margin-block-start: .3em; }
+.measure-field { max-width: 22rem; }
+.mapping-table .input, .mapping-table .select { min-width: 0; }
+.mapping-table .input-narrow { width: 5.5rem; }
+.issue-list { margin: 0; padding-inline-start: var(--space-5); display: grid; gap: var(--space-2); }
+.panel > summary .summary-title { display: inline; margin: 0; font-size: 1.15rem; }
+/* 390px: the language select shrank to one letter instead of letting the tools wrap. */
+@media (max-width: 479px) { .header-tools .select-compact { min-width: 7.5rem; } }
+/* Checkbox and radio stay on the line of their label text. */
+.row.checkbox-row { flex-wrap: nowrap; }
+.mapping-table th { overflow-wrap: normal; word-break: normal; hyphens: auto; }
+.mapping-table .select { width: auto; }
+/* Narrow screens: each mapping row becomes a small block instead of a squeezed three-column table. */
+@media (max-width: 559px) {
+  .mapping-table thead { display: none; }
+  .mapping-table, .mapping-table tbody { display: block; }
+  .mapping-table tr { display: grid; grid-template-columns: auto 1fr; gap: var(--space-2) var(--space-3); padding-block: var(--space-3); border-bottom: 1px solid var(--border); }
+  .mapping-table th { grid-column: 1 / -1; padding: 0; border: 0; }
+  .mapping-table td { padding: 0; border: 0; }
+  .mapping-table .select { width: 100%; }
+}
+/* Explanation: no nested scroll on phones (it hid the limits note under its fold); quotes get a card gap. */
+.explanation-body { gap: var(--card-gap); }
+.explanation-body figure { display: grid; gap: var(--space-2); }
+@media (max-width: 767px) { .explanation-body { max-height: none; overflow: visible; padding-inline: 0; } }
+/* Import tables keep whole words and scroll inside their frame on phones instead of splitting words. */
+.table-words { min-width: 32rem; }
+.table-words th, .table-words td { overflow-wrap: normal; word-break: normal; }
+.table-words .mono { overflow-wrap: anywhere; }
+/* A document with many sheets widened the grid past a 360px screen: columns may shrink, the strip scrolls. */
+.doc-layout > * { min-width: 0; }
+/* Any label row with a checkbox/radio keeps the box beside its text; the box is large enough to hit. */
+label.row:has(> input[type="checkbox"]), label.row:has(> input[type="radio"]) { flex-wrap: nowrap; align-items: flex-start; gap: var(--label-gap); }
+label.row > input[type="checkbox"], label.row > input[type="radio"] { flex: none; width: 1.15em; height: 1.15em; margin: .2em 0 0; accent-color: var(--accent); }
