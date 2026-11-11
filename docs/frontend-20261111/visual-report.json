@@ -1,5 +1,5 @@
 {
- "recordedAt": "2026-11-11T10:43:44.648Z",
+ "recordedAt": "2026-11-11T14:22:49.094Z",
  "base": "http://localhost:3001",
  "browser": "Microsoft Edge (Playwright, headless)",
  "note": "zoom 2 = CSS viewport halved at device scale 2; this approximates, not replaces, real browser zoom",
