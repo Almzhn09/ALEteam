@@ -1,0 +1,56 @@
+{
+  "testedAt": "2026-11-11T16:51:28.804Z",
+  "sourceCommit": "b043fa72ee977f69d3a8135c76110e8e72e3d8e5",
+  "pullRequest": {
+    "number": 5,
+    "state": "MERGED",
+    "head": "14389870009e268a267ef65eeee7c79a2c02d5a5",
+    "base": "artur-full-tz-20261109",
+    "url": "https://github.com/Almzhn09/ALEteam/pull/5"
+  },
+  "tests": {
+    "unit": 379,
+    "realContentHttp": 7,
+    "realDocker": 8,
+    "browserRoutes": 15,
+    "typescript": "passed",
+    "productionBuild": "passed",
+    "translations": "1013/1013",
+    "windowsRuntime": "not run; real Linux PDF and actual child deadline/queue checks passed",
+    "gitAutocrlf": "source/dataset checkout filters preserve bytes, three artifact types checked"
+  },
+  "pdf": {
+    "testedAt": "2026-11-11T15:51:21.646Z",
+    "name": "Аналитикалық анықтама СЖТІТ 2026.pdf",
+    "bytes": 13888667,
+    "sha256": "33e5247b84e6a237f8af354c21dda28ed785b429880b65fd5a111130e55612e5",
+    "budgetMs": 120000,
+    "elapsedMs": 8384,
+    "passed": true,
+    "pages": 17,
+    "fragments": 0,
+    "sourceUnchanged": true,
+    "platform": "linux"
+  },
+  "sourcePhotos": {
+    "published": [
+      {
+        "sourceId": "archive-next-generation-ridder",
+        "state": "PUBLISHED"
+      }
+    ],
+    "pending": [
+      {
+        "id": "open-day-altay",
+        "reason": "incomplete_source"
+      },
+      {
+        "id": "thematic-exhibition-altay",
+        "reason": "incomplete_source"
+      }
+    ],
+    "originalTransferBytes": 81920,
+    "status": "Two full originals not fetched: enforced environment policy returns HTTP/CONNECT 403 for e-arhiv.vko.gov.kz; network draft saved, not applied."
+  },
+  "remoteGitHubActions": "not observed"
+}
