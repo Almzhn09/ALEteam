@@ -1,5 +1,6 @@
 import {z} from 'zod';
 import {db} from './db';
+import {kindSchema} from './cms';
 import {cmsMatchesFilters} from './material-search';
 import {Prisma} from '../generated/prisma/index.js';
 import {ApiError,json,readJson,queryParams,requireUser,rateLimit,idSchema} from './http';
@@ -14,7 +15,7 @@ import type {MaterialKey,SubscriptionInput} from '../contracts/discovery';
 const subscriptionSchema=z.object({topicId:idSchema.optional(),placeId:idSchema.optional(),locale:z.enum(['ru','kk','en']),filters:z.record(z.string(),z.unknown()).optional()}).strict().refine(v=>!!v.topicId||!!v.placeId||!!v.filters);
 export function normalizedSubscription(value:unknown):SubscriptionInput{
  const parsed=subscriptionSchema.parse(value);
- if(parsed.filters){if(parsed.filters.locale!==undefined&&parsed.filters.locale!==parsed.locale)throw new ApiError(400,'INVALID_SUBSCRIPTION','Проверьте введённые данные.');const {scope,contentKind,...archiveFilters}=parsed.filters;z.enum(['all','document','cms']).optional().parse(scope);z.string().max(50).optional().parse(contentKind);const query=catalogSchema.parse({...archiveFilters,locale:parsed.locale});
+ if(parsed.filters){if(parsed.filters.locale!==undefined&&parsed.filters.locale!==parsed.locale)throw new ApiError(400,'INVALID_SUBSCRIPTION','Проверьте введённые данные.');const {scope,contentKind,...archiveFilters}=parsed.filters;z.enum(['all','document','cms']).optional().parse(scope);kindSchema.optional().parse(contentKind);const query=catalogSchema.parse({...archiveFilters,locale:parsed.locale});
   if('page' in parsed.filters||'pageSize' in parsed.filters||'sort' in parsed.filters)throw new ApiError(400,'INVALID_SUBSCRIPTION','Проверьте введённые данные.');
   const {page:_,pageSize:__,sort:___,...semantic}=query;parsed.filters={...semantic,...(scope?{scope}:{}),...(contentKind?{contentKind}:{})};
  }

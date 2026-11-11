@@ -12,9 +12,9 @@ export const materialQuery=z.object({q:z.string().trim().max(100).default(''),sc
 export async function cmsMatchesFilters(key:MaterialKey,filters:Record<string,unknown>,locale:'ru'|'kk'|'en',fallback=false){
  if(key.kind!=='cms'||filters.scope==='document'||filters.type||filters.reference||filters.fundId||filters.fundNumber||filters.inventoryId||filters.inventoryNumber||filters.caseId||filters.caseNumber||filters.originalLanguage||filters.author||filters.organization||filters.locality||filters.placeId)return false;
  const material=await resolveMaterial(key,locale,fallback);if(!material)return false;
- const item=await db.contentItem.findUnique({where:{id:key.id},include:{revisions:{where:{status:'PUBLISHED',locale:material.source.locale}}}});if(!item||filters.contentKind&&filters.contentKind!==item.kind)return false;
+ const item=await db.contentItem.findUnique({where:{id:key.id},include:{revisions:{where:{status:'PUBLISHED',locale:material.source.locale}}}});if(!item||filters.branchId&&item.branchId!==filters.branchId||filters.contentKind&&filters.contentKind!==item.kind)return false;
  const revision=item.revisions[0];if(!revision)return false;const p=contentPayload.parse(revision.payload);
- if(filters.category&&filters.category!==p.category)return false;
+ if(filters.category&&filters.category!==p.category||filters.tag&&!p.tags.includes(String(filters.tag)))return false;
  const from=p.yearFrom??(p.date?Number(p.date.slice(0,4)):undefined),to=p.yearTo??from;
  if(filters.yearFrom!==undefined&&(to===undefined||to<Number(filters.yearFrom))||filters.yearTo!==undefined&&(from===undefined||from>Number(filters.yearTo)))return false;
  const words=String(filters.q??'').toLocaleLowerCase().split(/\s+/).filter(Boolean),text=(material.material.title+'\n'+material.text+'\n'+p.tags.join(' ')).toLocaleLowerCase();return words.every(word=>text.includes(word));
