@@ -1,3 +1,8 @@
+import {Suspense} from 'react';
+import {MaterialFiles} from './MaterialFiles';
+import {ExplainDocument,RelatedMaterials} from './DiscoveryMaterials';
+import {cmsAttachmentRefs} from '@/server/cms-attachments';
+import {FollowTopic} from './TopicSubscriptions';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
 import type { ContentKind, PublicContentItem,ContentLocale } from '@/contracts/cms';
@@ -33,13 +38,19 @@ export async function ContentDetail({ slug, path, kinds, crumb, children,content
   }
   const links = await related(item, lang);
   const p = item.payload;
+  const originals=await cmsAttachmentRefs(item.id,item.locale);
   return (
     <div className="container page measure-narrow stack">
       <Breadcrumbs items={[crumb, { label: p.title }]} />
-      <article className="stack" lang={item.locale}>
+      <nav className="reader-jumps row" aria-label={t('На этой странице')}>
+        <a href="#material-body">{t('Читать материал')}</a>
+        {originals.length>0&&<a href="#material-originals">{t('Оригиналы документов')}</a>}
+        <a href="#material-explanation">{t('Понятнее о документе')}</a>
+      </nav>
+      <article id="material-body" className="stack" lang={item.locale}>
         <div className="row" style={{ gap: 'var(--space-2)' }}>
           {p.date && <time className="small muted" dateTime={p.date}>{dayFormatter(lang)(p.date)}</time>}
-          {p.category && <span className="badge badge-neutral">{p.category}</span>}
+          {p.category && <span className="badge badge-neutral">{t(({history:'История',calendar:'Календарь памятных дат',contacts:'Контакты',compliance:'Комплаенс',structure:'Структура',branches:'Филиалы',fonds:'Справочник фондов',services:'Услуги'} as Record<string,string>)[p.category]??p.category)}</span>}
           <DemoBadge show={item.isDemo} />
         </div>
         <h1 style={{ marginBottom: 0 }}>{p.title}</h1>
@@ -47,9 +58,13 @@ export async function ContentDetail({ slug, path, kinds, crumb, children,content
         <Body item={item} />
         {children?.(item)}
       </article>
+      <MaterialFiles materialId={item.id} contentLocale={item.locale} initialFiles={originals}/>
+      <div id="material-explanation"><ExplainDocument kind="cms" documentId={item.id}/></div>
+      <RelatedMaterials kind="cms" documentId={item.id}/>
+      {p.category&&<div className="panel stack"><h2>{t('Не пропустить новое')}</h2><Suspense><FollowTopic contentLocale={item.locale} selection={{filters:{scope:'cms',category:p.category}}}/></Suspense></div>}
       <Related documents={links.documents} content={links.content} t={t} />
       <RelatedLinks links={p.links} t={t} />
-      <section className="card card-flat" aria-label={t('Сведения о публикации')}><Provenance item={item} t={t} /></section>
+      <details className="card card-flat"><summary>{t('Сведения о публикации')}</summary><Provenance item={item} t={t} /></details>
       <Share title={p.title} path={path} />
     </div>
   );

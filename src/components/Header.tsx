@@ -13,14 +13,11 @@ import { LANGS, langName, type Lang } from '@/lib/i18n';
 
 const links = [
   { href: '/catalog', label: 'Каталог' },
-  { href: '/exhibitions', label: 'Выставки' },
-  { href: '/memory', label: 'Архив памяти' },
+  { href: '/places', label: 'История места' },
   { href: '/branches', label: 'Филиалы' },
-  { href: '/news', label: 'Новости' },
   { href: '/about', label: 'Об архиве' },
   { href: '/help', label: 'Справка' },
 ];
-type Theme = 'system' | 'light' | 'dark';
 
 function LanguageSelect() {
   const { t, lang, setLang } = useI18n();
@@ -68,7 +65,8 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
     return () => { observer.disconnect(); document.documentElement.style.removeProperty('--header-height'); };
   }, []);
 
-  useEffect(() => { setOpen(false); account.current?.removeAttribute('open'); }, [pathname]);
+  const params = useSearchParams();
+  useEffect(() => { setOpen(false); account.current?.removeAttribute('open'); }, [pathname,params]);
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') { setOpen(false); toggle.current?.focus(); } };
@@ -96,11 +94,11 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
       <div className="container header-inner">
         <Link href="/" className="brand" aria-label={t('Электронный архив — на главную')}>
           <span className="brand-mark" aria-hidden="true">ЭА</span>
-          <span>{t('Электронный архив')}<small>{t('Восточно-Казахстанская область · прототип')}</small></span>
+          <span>{t('Электронный архив')}<small>{t('Восточно-Казахстанская область')}</small></span>
         </Link>
-        <form className="header-search" action="/catalog" method="get" role="search" aria-label={t('Поиск по каталогу')}>
-          <label htmlFor={searchId} className="visually-hidden">{t('Поиск по каталогу')}</label>
-          <input id={searchId} name="q" className="input" type="search" maxLength={200} autoComplete="off" placeholder={t('Поиск по каталогу')} />
+        <form className="header-search" action="/catalog" method="get" role="search" aria-label={t('Поиск по архиву')}>
+          <label htmlFor={searchId} className="visually-hidden">{t('Поиск по архиву')}</label>
+          <input id={searchId} name="q" className="input" type="search" maxLength={200} autoComplete="off" placeholder={t('Поиск по архиву')} />
           <button type="submit" className="btn btn-primary btn-sm">{t('Найти')}</button>
         </form>
         <div className="header-tools">
@@ -113,9 +111,9 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
           {open ? t('Закрыть') : t('Меню')}
         </button>
         <div className="nav-wrap" id="site-nav" data-open={open}>
-          <form className="menu-search" action="/catalog" method="get" role="search" aria-label={t('Поиск по каталогу')}>
-            <label htmlFor={`${searchId}-menu`} className="visually-hidden">{t('Поиск по каталогу')}</label>
-            <input id={`${searchId}-menu`} name="q" className="input" type="search" maxLength={200} autoComplete="off" placeholder={t('Поиск по каталогу')} />
+          <form className="menu-search" action="/catalog" method="get" role="search" aria-label={t('Поиск по архиву')}>
+            <label htmlFor={`${searchId}-menu`} className="visually-hidden">{t('Поиск по архиву')}</label>
+            <input id={`${searchId}-menu`} name="q" className="input" type="search" maxLength={200} autoComplete="off" placeholder={t('Поиск по архиву')} />
             <button type="submit" className="btn btn-primary btn-sm">{t('Найти')}</button>
           </form>
           <nav className="nav" aria-label={t('Основная навигация')}>

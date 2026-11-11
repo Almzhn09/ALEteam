@@ -10,7 +10,7 @@ export function Breadcrumbs({ items }: { items: { href?: string; label: string }
     <nav className="breadcrumbs" aria-label={t('Хлебные крошки')}>
       <ol>
         <li><Link href="/">{t('Главная')}</Link></li>
-        {items.map((item, i) => (
+        {items.filter(item => item.href !== '/').map((item, i) => (
           <li key={i}>{item.href ? <Link href={item.href}>{item.label}</Link> : <span aria-current="page">{item.label}</span>}</li>
         ))}
       </ol>

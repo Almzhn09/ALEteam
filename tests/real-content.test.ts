@@ -16,7 +16,7 @@ import {guides,guideText,guideTitle} from '../src/server/guides';
 import {prepareRealCuration} from '../src/server/artur-discovery/real-publication';
 import {parseFact} from '../src/server/discovery-facts';
 import {directoryIntent,directoryAnswer} from '../src/server/directory-knowledge';
-import {assistantSourceLink} from '../src/lib/assistant-source-link';
+import {assistantSourceLink,assistantReadingLink} from '../src/lib/assistant-source-link';
 
 test('real publication packet passes current CMS validation and excludes unrelated source worksheets',()=>{
  const keys=new Set<string>();
@@ -177,4 +177,11 @@ test('directory source links cannot be relabeled documents, swapped IDs or arbit
  for(const href of ['https://outside.invalid','/api/admin/directories','/api/directories/funds/rf-other','/api/directories/funds/rf-123?raw=1','/api/directories/funds/../private'])assert.equal(assistantSourceLink({id:'rf-123',kind:'fund',href}),'/assistant');
  assert.equal(assistantSourceLink({id:'cmsfile_f',kind:'cms',href:'/api/material-files/f/text?page=4'}),'/api/material-files/f/text?page=4');
  for(const href of ['/api/material-files/f/text?page=101','/api/material-files/f/text?path=private','https://outside.invalid/api/material-files/f/text','/api/content/first/api/content/last?locale=ru'])assert.equal(assistantSourceLink({id:'cmsfile_f',kind:'cms',href}),'/assistant');
+});
+
+test('public evidence opens a readable material or register without trusting stored URLs',()=>{
+ assert.equal(assistantReadingLink({id:'rf-123',kind:'fund',href:'/api/directories/funds/rf-123'}),'/catalog?scope=fund&entry=rf-123');
+ assert.equal(assistantReadingLink({id:'cms-1',kind:'cms',href:'/api/content/archive-history?locale=kk'}),'/materials/archive-history?contentLang=kk');
+ assert.equal(assistantReadingLink({id:'cmsfile_f',kind:'cms',href:'/api/material-files/f/text?page=4'}),'/api/material-files/f#page=4');
+ for(const href of ['javascript:alert(1)','//outside.invalid','/api/directories/funds/someone-else','/api/directories/funds/rf-123?admin=true'])assert.equal(assistantReadingLink({id:'rf-123',kind:'fund',href}),'/assistant');
 });

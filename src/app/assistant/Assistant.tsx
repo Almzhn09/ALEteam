@@ -9,7 +9,7 @@ import { DemoBadge, Loading, Notice, Ru } from '@/components/ui';
 import { useI18n } from '@/lib/lang';
 import type { Translate } from '@/lib/i18n';
 
-import {assistantSourceLink} from '@/lib/assistant-source-link';
+import {assistantReadingLink} from '@/lib/assistant-source-link';
 import {researchLink} from '@/lib/discovery-links';
 
 const MAX = 1000;
@@ -144,7 +144,7 @@ export function Assistant() {
                   <strong>{t('Источники:')}</strong>
                   <ul>
                     {m.sources.map(s => (
-                      <li key={s.id}>{s.kind === 'cms' || s.kind === 'fund' || s.kind === 'newspaper' || (s.kind === 'document' && s.locale && s.locale !== 'ru') ? <a href={assistantSourceLink(s)}><span lang={s.locale}>{s.title}</span></a> : <Link href={assistantSourceLink(s)}>{s.locale === 'en' ? <span lang="en">{s.title}</span> : <Ru>{s.title}</Ru>}</Link>} <DemoBadge show={s.isDemo} /></li>
+                      <li key={s.id}>{s.kind === 'cms' || s.kind === 'fund' || s.kind === 'newspaper' || (s.kind === 'document' && s.locale && s.locale !== 'ru') ? <a href={assistantReadingLink(s)}><span lang={s.locale}>{s.title}</span></a> : <Link href={assistantReadingLink(s)}>{s.locale === 'en' ? <span lang="en">{s.title}</span> : <Ru>{s.title}</Ru>}</Link>} <DemoBadge show={s.isDemo} /></li>
                     ))}
                   </ul>
                 </div>

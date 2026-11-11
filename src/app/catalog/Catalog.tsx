@@ -44,7 +44,7 @@ function fromUrl(params: URLSearchParams): { filters: Filters; dropped: boolean 
 }
 
 function toQuery(f: Partial<Filters>) {
-  const p = new URLSearchParams();
+  const p = new URLSearchParams({advanced:'1'});
   if(f.nameMode==='expanded')p.set('nameMode','expanded');
   if (f.q) p.set('q', f.q);
   if (f.fundId) p.set('fundId', f.fundId);
@@ -90,7 +90,7 @@ export function Catalog() {
     const controller = new AbortController();
     setLoading(true); setError(null);
     const api = new URLSearchParams(urlKey);
-    api.delete('contentLang'); api.delete('lang'); api.set('locale', contentLocale);
+    api.delete('advanced'); api.delete('contentLang'); api.delete('lang'); api.set('locale', contentLocale);
     api.set('sort', filters.sort); api.set('page', String(filters.page)); api.set('pageSize', String(PAGE_SIZE));
     apiGet<Page<DocumentSummary>&{nameExpansion?:NameExpansion}>(`/documents?${api}`, controller.signal)
       .then(r => { setData(r); setLoading(false); }, e => { if (e?.name !== 'AbortError') { setError(e); setLoading(false); } });

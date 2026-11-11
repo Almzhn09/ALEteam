@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { Catalog } from './Catalog';
+import { ArchiveSearch } from './ArchiveSearch';
 import { Breadcrumbs, Loading } from '@/components/ui';
 import { getT } from '@/lib/i18n-server';
 
@@ -10,8 +10,8 @@ export default async function CatalogPage() {
   return (
     <div className="container page">
       <Breadcrumbs items={[{ label: t('Каталог') }]} />
-      <h1>{t('Каталог документов')}</h1>
-      <Suspense fallback={<Loading />}><Catalog /></Suspense>
+      <div className="section-heading"><p className="eyebrow">{t('Исследуйте архив')}</p><h1>{t('Поиск по архиву')}</h1></div>
+      <Suspense fallback={<Loading />}><ArchiveSearch /></Suspense>
     </div>
   );
 }
