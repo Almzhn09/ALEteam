@@ -12,7 +12,7 @@ import { AssistantWidget } from './AssistantWidget';
 import { LANGS, langName, type Lang } from '@/lib/i18n-core';
 
 const links = [
-  { href: '/catalog', label: 'Поиск по архиву' },
+  { href: '/catalog', label: 'Поиск' },
   { href: '/calendar', label: 'Памятные даты' },
   { href: '/directories', label: 'Справочники' },
   { href: '/branches', label: 'Филиалы' },
