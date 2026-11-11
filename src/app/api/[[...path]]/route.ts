@@ -1,3 +1,8 @@
+import {materialAttachments} from '@/server/material-attachments';
+import {cmsAttachmentRefs,cmsFileResponse,cmsFileText,adminCmsAttachments,adminCmsFile} from '@/server/cms-attachments';
+import {directory} from '@/server/reference-directory';
+import {adminDirectories} from '@/server/reference-import';
+import {materialSearch} from '@/server/material-search';
 import {filePreviews} from '@/server/file-import-preview';
 import {fileText} from '@/server/authorized-file-text';
 import {navigation,navigationDraft} from '@/server/navigation';
@@ -76,12 +81,27 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
       if(path.length===4&&['GET','PATCH'].includes(method))return adminFacts(request,path[3]);
       if(path.length===5&&['verify','withdraw','revise'].includes(path[4])&&method==='POST')return adminFacts(request,path[3],path[4]);
     }
+    if(path[0]==='discovery'&&path[1]==='materials'&&['document','cms'].includes(path[2])&&path.length===5){
+      if(path[4]==='explanation'&&method==='POST')return explanation(request,path[3],path[2] as 'cms'|'document');
+      if(path[4]==='related'&&method==='GET')return related(request,path[3],path[2] as 'cms'|'document');
+      if(path[4]==='attachments'&&method==='GET'){const p=z.object({locale:discoveryLocale.default('ru')}).strict().parse(queryParams(request));const material=await resolveMaterial({kind:path[2] as 'cms'|'document',id:path[3]},p.locale);if(!material)throw new ApiError(404,'NOT_FOUND','Материал не найден.');return json({items:await materialAttachments({kind:path[2] as 'cms'|'document',id:path[3]},p.locale),source:material.source});}
+    }
+    if(path[0]==='material-files'&&path.length===2&&method==='GET')return cmsFileResponse(request,path[1]);
+    if(path[0]==='material-files'&&path.length===3&&path[2]==='text'&&method==='GET'){const p=z.object({page:z.coerce.number().int().min(1).max(100).optional()}).strict().parse(queryParams(request));return json({item:await cmsFileText(path[1],p.page)});}
+    if(path[0]==='admin'&&path[1]==='content'&&path.length===4&&path[3]==='attachments'&&['GET','POST'].includes(method))return adminCmsAttachments(request,path[2]);
+    if(path[0]==='admin'&&path[1]==='material-files'&&path.length===3&&method==='GET')return adminCmsFile(request,path[2],'status');
+    if(path[0]==='admin'&&path[1]==='material-files'&&path.length===4){if(path[3]==='content'&&['GET','PUT'].includes(method)||['review','publish','withdraw','retry'].includes(path[3])&&method==='POST')return adminCmsFile(request,path[2],path[3]);}
     if(path[0]==='documents'&&path.length===3&&path[2]==='explanation'&&method==='POST')return explanation(request,path[1]);
     if(path[0]==='discovery'&&path[1]==='materials'&&path.length===4&&['document','cms'].includes(path[2])&&method==='GET'){
       const p=z.object({locale:discoveryLocale.default('ru')}).strict().parse(queryParams(request));
       const material=await resolveMaterial({kind:path[2] as 'document'|'cms',id:path[3]},p.locale);
       if(!material)throw new ApiError(404,'NOT_FOUND','Материал не найден.');return json({item:material.material,source:material.source});
     }
+    if(route==='search'&&method==='GET')return materialSearch(request);
+    if(path[0]==='directories'&&['funds','newspapers'].includes(path[1])&&method==='GET'&&path.length<=3)return directory(request,path[1]==='funds'?'fund':'newspaper',path[2]==='export'?undefined:path[2],path[2]==='export');
+    if(route==='admin/directories'&&method==='GET')return adminDirectories(request);
+    if(route==='admin/directories/import'&&method==='POST')return adminDirectories(request);
+    if(path[0]==='admin'&&path[1]==='directories'&&path.length===4&&path[3]==='visibility'&&method==='POST')return adminDirectories(request,path[2]);
     if(route==='navigation'&&method==='GET')return navigation(request);
     if(route==='admin/navigation'&&method==='POST')return navigationDraft(request);
     if(route==='discovery/home'&&method==='GET')return home(request);

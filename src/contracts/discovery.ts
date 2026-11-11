@@ -6,7 +6,7 @@ export type MaterialKey = {kind: 'document' | 'cms'; id: string};
 export type TranslationStatus = 'published' | 'original';
 export interface SourceRef extends MaterialKey {
   locale: ContentLocale; revision: string; href: string; title: string; isDemo?: boolean;
-  fragment?: {id: string; page?: number; start?: number; end?: number};
+  fragment?: {id: string; page?: number; paragraph?:number; start?: number; end?: number};
 }
 export type ReasonCode = 'editorial' | 'popular' | 'chosen_topic' | 'history' | 'same_place' | 'same_person' | 'same_event' | 'same_fund' | 'text_similarity';
 export interface MaterialRef extends MaterialKey {
@@ -31,7 +31,7 @@ export interface AliasRef {
 }
 export interface NameExpansion {mode: 'literal' | 'expanded'; applied: boolean; variants: string[]; entityIds: string[]; clarificationRequired: boolean; sources: SourceRef[]}
 export interface HistoryEntry extends HistoricalDate {id: string; title: string; body: string; contentLocale: ContentLocale; translationStatus: TranslationStatus; materials: MaterialRef[]; sources: SourceRef[]; certainty: 'source_assertion' | 'approximate'}
-export interface TextFragment {id: string; text: string; page?: number; start?: number; end?: number}
+export interface TextFragment {id: string; text: string; page?: number; paragraph?:number; start?: number; end?: number}
 export interface AuthorizedText {
   source: SourceRef; fingerprint: string; sourceSha256: string; textSha256: string;
   fragments: TextFragment[]; ocr: {used: boolean; quality: 'reviewed' | 'unreviewed' | 'low' | 'not_applicable'; engine?: string; confidence?: number};
@@ -43,7 +43,7 @@ export interface Explanation {
   citations: {fragmentId: string; quote: string; source: SourceRef}[]; limitations: string[];
 }
 export interface InterestSettings {topicIds: string[]; personalizationEnabled: boolean; historyEnabled: boolean; updatedAt: string | null}
-export interface SubscriptionInput {topicId?: string; placeId?: string; filters?: CatalogFilters & {nameMode?: 'literal' | 'expanded'; placeId?: string}; locale: ContentLocale}
+export interface SubscriptionInput {topicId?: string; placeId?: string; filters?: CatalogFilters & {nameMode?: 'literal' | 'expanded'; placeId?: string;scope?:'all'|'document'|'cms';contentKind?:string}; locale: ContentLocale}
 export interface TopicSubscription extends SubscriptionInput {id: string; active: boolean; createdAt: string}
 export interface TopicNotice {id: string; subscriptionId: string; material: MaterialRef; createdAt: string; readAt: string | null}
 export interface DiscoveryHome {

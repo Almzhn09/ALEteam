@@ -1,6 +1,6 @@
 import {arturDiscoveryEngines} from './artur-discovery/transport';
 import {db} from './db';
-import {publicDocumentWhere} from './public-visibility';
+import {publicDocumentWhere,publicContentScope} from './public-visibility';
 import {z} from 'zod';
 import {boundedPage,decodeCursor,encodeCursor,unavailable} from './discovery-utils';
 import {liveFacts,localLabel,parseFact} from './discovery-facts';
@@ -40,13 +40,13 @@ export async function places(request:Request,id?:string){
  }
  const items=result.slice(0,p.limit);return json({place:place.item,items,nextCursor:result.length>p.limit?encodeCursor(items.at(-1)!.id,key,orderDate(items.at(-1)!,items.at(-1)!.id)):null,locale:p.locale,order:'chronological'});
 }
-export async function related(request:Request,id:string){
+export async function related(request:Request,id:string,kind:MaterialKey['kind']='document'){
  const p=boundedPage.omit({cursor:true}).strict().parse(queryParams(request));
- const target=await resolveMaterial({kind:'document',id:idSchema.parse(id)},p.locale);if(!target)unavailable();
- const links=await liveFacts('LINK'),items=[];const keys=new Set(['document:'+id]);
+ const target=await resolveMaterial({kind,id:idSchema.parse(id)},p.locale);if(!target)unavailable();
+ const links=await liveFacts('LINK'),items=[];const keys=new Set([kind+':'+id]);
  for(const row of links){
   const data=row.data as {from:MaterialKey;to:MaterialKey;reason:'same_place'|'same_person'|'same_event'|'same_fund'};
-  const to=data.from.kind==='document'&&data.from.id===id?data.to:data.to.kind==='document'&&data.to.id===id?data.from:null;
+  const to=data.from.kind===kind&&data.from.id===id?data.to:data.to.kind===kind&&data.to.id===id?data.from:null;
   if(!to||keys.has(to.kind+':'+to.id))continue;
   const material=await resolveMaterial(to,p.locale);if(!material)continue;
   const evidence=await resolveEvidence(row.evidence);if(!evidence)continue;
@@ -54,7 +54,8 @@ export async function related(request:Request,id:string){
   if(items.length>=p.limit)break;
  }
  if(items.length<p.limit){
-  const candidates=[];for(const row of await db.document.findMany({where:{...publicDocumentWhere,id:{not:id}},select:{id:true},orderBy:{id:'asc'},take:100})){const material=await resolveMaterial({kind:'document',id:row.id},p.locale);if(material&&!keys.has('document:'+row.id))candidates.push(material);}
+  const candidates=[];for(const row of await db.document.findMany({where:{...publicDocumentWhere,id:kind==='document'?{not:id}:undefined},select:{id:true},orderBy:{id:'asc'},take:100})){const material=await resolveMaterial({kind:'document',id:row.id},p.locale);if(material&&!keys.has('document:'+row.id))candidates.push(material);}
+  for(const row of await db.contentItem.findMany({where:{...publicContentScope,kind:{notIn:['SETTING','ARCHIVE_DOCUMENT']},id:{not:kind==='cms'?id:undefined},revisions:{some:{status:'PUBLISHED'}}},select:{id:true},orderBy:{id:'asc'},take:100})){const material=await resolveMaterial({kind:'cms',id:row.id},p.locale);if(material&&!keys.has('cms:'+row.id)&&candidates.length<100)candidates.push(material);}
   const ranked=arturDiscoveryEngines.rankRelated({target,candidates,limit:p.limit-items.length},{locale:p.locale,now:new Date().toISOString()});
   for(const match of ranked){
    const candidate=candidates.find(r=>r.material.kind===match.key.kind&&r.material.id===match.key.id);if(!candidate)throw new ApiError(502,'INVALID_ENGINE_RESPONSE','Сервис временно недоступен.');
@@ -63,7 +64,7 @@ export async function related(request:Request,id:string){
    items.push(materialWithReason(current,match.reason,evidence,p.locale));
   }
  }
- const currentTarget=await resolveMaterial({kind:'document',id},target.source.locale,false);if(!currentTarget)unavailable();if(currentTarget.source.revision!==target.source.revision)throw new ApiError(409,'SOURCE_CHANGED','Данные изменились. Обновите страницу и повторите.');
+ const currentTarget=await resolveMaterial({kind,id},target.source.locale,false);if(!currentTarget)unavailable();if(currentTarget.source.revision!==target.source.revision)throw new ApiError(409,'SOURCE_CHANGED','Данные изменились. Обновите страницу и повторите.');
  const textual=items.filter(i=>i.reason.code==='text_similarity').length;
  return json({items,method:textual?(textual===items.length?'text_similarity':'mixed'):'curated',locale:p.locale,engine:'artur',candidateLimit:100});
 }

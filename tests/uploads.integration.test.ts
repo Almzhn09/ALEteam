@@ -4,8 +4,9 @@ import {createHash, randomBytes, randomUUID} from 'node:crypto';
 import {spawn, execFileSync, type ChildProcess} from 'node:child_process';
 import {once} from 'node:events';
 import {setTimeout as delay} from 'node:timers/promises';
-import {mkdir, readFile, readdir, unlink, writeFile} from 'node:fs/promises';
+import {mkdir, mkdtemp, rm, readFile, readdir, unlink, writeFile} from 'node:fs/promises';
 import path from 'node:path';
+import {tmpdir} from 'node:os';
 import {hashPassword} from 'better-auth/crypto';
 
 const url = process.env.TEST_DATABASE_URL;
@@ -13,9 +14,9 @@ if (!url || !new URL(url).pathname.endsWith('_test')) throw Error('Dedicated TES
 process.env.DATABASE_URL = url;
 const {db} = await import('../src/server/db');
 const origin = 'http://localhost:3089', prefix = 'upload-test-', password = randomBytes(32).toString('hex');
-const root = process.env.FILE_STORAGE_ROOT ?? '.local/files';
+const root = await mkdtemp(path.join(tmpdir(),'ale-upload-http-'));
 const env = {...process.env, DATABASE_URL: url, BETTER_AUTH_URL: origin, BETTER_AUTH_SECRET: randomBytes(32).toString('hex'),
-  ALLOW_DEMO_SEED: '1', DEMO_AUTHOR_PASSWORD: password, DEMO_MODERATOR_PASSWORD: password};
+  FILE_STORAGE_ROOT:root, ALLOW_DEMO_SEED: '1', DEMO_AUTHOR_PASSWORD: password, DEMO_MODERATOR_PASSWORD: password};
 let app: ChildProcess, writer: string, reviewer: string, foreign: string, visitor: string, admin: string;
 let documentId: string, restrictedId: string;
 const bytes = await readFile('data/scans/demo-doc-01.png');
@@ -82,7 +83,7 @@ before(async () => {
   };
   documentId=await create(true);restrictedId=await create(false);
 }, {timeout: 120000});
-after(async () => {if(app?.exitCode===null){app.kill('SIGTERM');await once(app,'exit');}await mkdir('.local/uploads',{recursive:true});await writeFile('.local/uploads/report.json',JSON.stringify(proof,null,2)+'\n');await clean();await db.$disconnect();});
+after(async () => {if(app?.exitCode===null){app.kill('SIGTERM');await once(app,'exit');}await mkdir('.local/uploads',{recursive:true});await writeFile('.local/uploads/report.json',JSON.stringify(proof,null,2)+'\n');await clean();await db.$disconnect();await rm(root,{recursive:true,force:true});});
 
 test('upload creation is scoped, strict and never creates a public file',async()=>{
   assert.equal((await call('/admin/uploads')).status,401);assert.equal((await call('/admin/uploads','GET',undefined,visitor)).status,403);

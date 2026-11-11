@@ -1,5 +1,7 @@
 import {z} from 'zod';
 import {db} from './db';
+import {kindSchema} from './cms';
+import {cmsMatchesFilters} from './material-search';
 import {Prisma} from '../generated/prisma/index.js';
 import {ApiError,json,readJson,queryParams,requireUser,rateLimit,idSchema} from './http';
 import {publicDocumentWhere,publicContentScope} from './public-visibility';
@@ -13,9 +15,9 @@ import type {MaterialKey,SubscriptionInput} from '../contracts/discovery';
 const subscriptionSchema=z.object({topicId:idSchema.optional(),placeId:idSchema.optional(),locale:z.enum(['ru','kk','en']),filters:z.record(z.string(),z.unknown()).optional()}).strict().refine(v=>!!v.topicId||!!v.placeId||!!v.filters);
 export function normalizedSubscription(value:unknown):SubscriptionInput{
  const parsed=subscriptionSchema.parse(value);
- if(parsed.filters){if(parsed.filters.locale!==undefined&&parsed.filters.locale!==parsed.locale)throw new ApiError(400,'INVALID_SUBSCRIPTION','Проверьте введённые данные.');const query=catalogSchema.parse({...parsed.filters,locale:parsed.locale});
+ if(parsed.filters){if(parsed.filters.locale!==undefined&&parsed.filters.locale!==parsed.locale)throw new ApiError(400,'INVALID_SUBSCRIPTION','Проверьте введённые данные.');const {scope,contentKind,...archiveFilters}=parsed.filters;z.enum(['all','document','cms']).optional().parse(scope);kindSchema.optional().parse(contentKind);const query=catalogSchema.parse({...archiveFilters,locale:parsed.locale});
   if('page' in parsed.filters||'pageSize' in parsed.filters||'sort' in parsed.filters)throw new ApiError(400,'INVALID_SUBSCRIPTION','Проверьте введённые данные.');
-  const {page:_,pageSize:__,sort:___,...semantic}=query;parsed.filters=semantic;
+  const {page:_,pageSize:__,sort:___,...semantic}=query;parsed.filters={...semantic,...(scope?{scope}:{}),...(contentKind?{contentKind}:{})};
  }
  return parsed as SubscriptionInput;
 }
@@ -31,9 +33,10 @@ export async function matchesSubscription(key:MaterialKey,spec:SubscriptionInput
   if(!matched)return;
  }
  if(spec.filters){
-  if(key.kind!=='document')return;
+  if(key.kind==='cms')return await cmsMatchesFilters(key,{...spec.filters},spec.locale)?material:undefined;
+  if(spec.filters.scope==='cms'||spec.filters.contentKind)return;
   if(!cache.documents){
-   const query=new URLSearchParams();for(const [name,value] of Object.entries({...spec.filters,locale:spec.locale,pageSize:50}))if(value!==undefined)query.set(name,String(value));
+   const query=new URLSearchParams();for(const [name,value] of Object.entries({...spec.filters,scope:undefined,contentKind:undefined,locale:spec.locale,pageSize:50}))if(value!==undefined)query.set(name,String(value));
    cache.documents=new Set<string>();
    for(let page=1;page<=20;page++){
     query.set('page',String(page));const result=await(await documentList(new Request('http://discovery.invalid/?'+query))).json();

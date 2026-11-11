@@ -354,6 +354,7 @@ model ContentItem {
  revisions ContentRevision[]
 }
 model ContentRevision {
+ attachments CmsAttachment[]
  sourceDraftBindings SourceDraftBinding[]
  catalogBaseVersion Int?
  publishedDocumentTranslation DocumentTranslation?
@@ -637,4 +638,75 @@ model FileImportPreview {
  branch ArchiveBranch @relation(fields:[branchId],references:[id])
  @@index([branchId,createdAt,id])
  @@index([authorId,createdAt])
+}
+
+model ReferenceDataset {
+ id String @id
+ kind String
+ title String
+ sourceSha256 String
+ importHash String
+ source Json
+ isPublic Boolean @default(false)
+ createdAt DateTime @default(now())
+ entries ReferenceEntry[]
+ @@index([kind,isPublic,id])
+}
+model ReferenceEntry {
+ id String @id
+ datasetId String
+ sourceKey String
+ position Int
+ number String?
+ title String
+ searchText String
+ payload Json
+ raw Json
+ isPublic Boolean @default(false)
+ dataset ReferenceDataset @relation(fields:[datasetId],references:[id])
+ @@unique([datasetId,sourceKey])
+ @@index([datasetId,isPublic,position,id])
+ @@index([isPublic,title,id])
+ @@index([number])
+}
+model CmsAttachment {
+ id String @id @default(cuid())
+ revisionId String
+ parentId String?
+ variant String @default("master")
+ state String @default("AWAITING_CONTENT")
+ name String
+ mimeType String
+ expectedBytes Int
+ expectedSha256 String
+ storageKey String? @unique
+ parsed Json?
+ previewKey String?
+ previewSha256 String?
+ previewBytes Int?
+ rights String
+ sourceNote String
+ sourceLabel String
+ sourceVersion String
+ uploaderId String
+ reviewerId String?
+ failureCode String?
+ receiveToken String?
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ revision ContentRevision @relation(fields:[revisionId],references:[id],onDelete:Cascade)
+ @@index([revisionId,state,id])
+}
+model RealContentBinding {
+ id String @id @default(cuid())
+ namespace String
+ sourceKey String
+ locale String
+ targetKind String
+ targetId String
+ inputHash String
+ outputHash String
+ data Json
+ createdAt DateTime @default(now())
+ @@unique([namespace,sourceKey,locale])
 }

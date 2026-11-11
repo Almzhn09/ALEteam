@@ -1,0 +1,593 @@
+{
+  "sourceDigest": "5ce928f3b98c0bd8527877d130981c4674d3eefad2c4674b05a7e8f1e7f05f8e",
+  "pages": [
+    {
+      "sourceKey": "history-1",
+      "locale": "ru",
+      "itemId": "cmwboop850000q4o3p5rhb5da",
+      "revisionId": "cmwboop870001q4o3mcx226nx",
+      "state": "published",
+      "slug": "archive-history-1"
+    },
+    {
+      "sourceKey": "calendar-2026-ru",
+      "locale": "ru",
+      "itemId": "cmwbooqcz003kq4o3p14anacs",
+      "revisionId": "cmwbooqcz003lq4o3j718ruay",
+      "state": "published",
+      "slug": "archive-calendar-2026"
+    },
+    {
+      "sourceKey": "fund-directory-info",
+      "locale": "ru",
+      "itemId": "cmwbootqd00c6q4o3c3aok2qm",
+      "revisionId": "cmwbootqe00c7q4o3mx0780jt",
+      "state": "published",
+      "slug": "archive-fund-directory"
+    },
+    {
+      "sourceKey": "history-2",
+      "locale": "ru",
+      "itemId": "cmwboopcn000bq4o352nx3wzi",
+      "revisionId": "cmwboopco000cq4o3qh3j5tiw",
+      "state": "published",
+      "slug": "archive-history-2"
+    },
+    {
+      "sourceKey": "contacts",
+      "locale": "ru",
+      "itemId": "cmwboopdv000mq4o3hu6pb6pv",
+      "revisionId": "cmwboopdv000nq4o3itvhmkmx",
+      "state": "published",
+      "slug": "archive-contacts"
+    },
+    {
+      "sourceKey": "structure",
+      "locale": "ru",
+      "itemId": "cmwboopfi000xq4o3no9u187l",
+      "revisionId": "cmwboopfi000yq4o3w8ze0xwp",
+      "state": "published",
+      "slug": "archive-structure"
+    },
+    {
+      "sourceKey": "calendar-2022-ru",
+      "locale": "ru",
+      "itemId": "cmwboopgf0018q4o33xlzpwzo",
+      "revisionId": "cmwboopgf0019q4o3gq2fwzxs",
+      "state": "published",
+      "slug": "archive-calendar-2022"
+    },
+    {
+      "sourceKey": "calendar-2022-kk",
+      "locale": "kk",
+      "itemId": "cmwboopgf0018q4o33xlzpwzo",
+      "revisionId": "cmwboopic001jq4o3eyyjhc25",
+      "state": "published",
+      "slug": "archive-calendar-2022"
+    },
+    {
+      "sourceKey": "calendar-2023-ru",
+      "locale": "ru",
+      "itemId": "cmwboopk6001tq4o3gsfntfsj",
+      "revisionId": "cmwboopk7001uq4o3z7foulqq",
+      "state": "published",
+      "slug": "archive-calendar-2023"
+    },
+    {
+      "sourceKey": "calendar-2023-kk",
+      "locale": "kk",
+      "itemId": "cmwboopk6001tq4o3gsfntfsj",
+      "revisionId": "cmwboopn10024q4o30q96nv04",
+      "state": "published",
+      "slug": "archive-calendar-2023"
+    },
+    {
+      "sourceKey": "calendar-2024-ru",
+      "locale": "ru",
+      "itemId": "cmwboopq5002eq4o3bc5rizwy",
+      "revisionId": "cmwboopqa002fq4o342g7mwxq",
+      "state": "published",
+      "slug": "archive-calendar-2024"
+    },
+    {
+      "sourceKey": "calendar-2024-kk",
+      "locale": "kk",
+      "itemId": "cmwboopq5002eq4o3bc5rizwy",
+      "revisionId": "cmwboopvu002pq4o383zxzdy7",
+      "state": "published",
+      "slug": "archive-calendar-2024"
+    },
+    {
+      "sourceKey": "calendar-2025-ru",
+      "locale": "ru",
+      "itemId": "cmwbooq4h002zq4o3i85k4257",
+      "revisionId": "cmwbooq4h0030q4o31x4lta2w",
+      "state": "published",
+      "slug": "archive-calendar-2025"
+    },
+    {
+      "sourceKey": "calendar-2025-kk",
+      "locale": "kk",
+      "itemId": "cmwbooq4h002zq4o3i85k4257",
+      "revisionId": "cmwbooq87003aq4o3bhxd9kuw",
+      "state": "published",
+      "slug": "archive-calendar-2025"
+    },
+    {
+      "sourceKey": "calendar-2026-kk",
+      "locale": "kk",
+      "itemId": "cmwbooqcz003kq4o3p14anacs",
+      "revisionId": "cmwbooqgl003vq4o3qlhn2ypr",
+      "state": "published",
+      "slug": "archive-calendar-2026"
+    },
+    {
+      "sourceKey": "compliance-14",
+      "locale": "kk",
+      "itemId": "cmwbooqi60045q4o30jbl8bwr",
+      "revisionId": "cmwbooqi70046q4o33e0qgba5",
+      "state": "published",
+      "slug": "archive-compliance-information"
+    },
+    {
+      "sourceKey": "compliance-15",
+      "locale": "ru",
+      "itemId": "cmwbooqi60045q4o30jbl8bwr",
+      "revisionId": "cmwbooqqf004gq4o34po6xdtz",
+      "state": "published",
+      "slug": "archive-compliance-information"
+    },
+    {
+      "sourceKey": "compliance-16",
+      "locale": "ru",
+      "itemId": "cmwbooqtl004qq4o39q077ccr",
+      "revisionId": "cmwbooqtm004rq4o3s2stn8q8",
+      "state": "published",
+      "slug": "archive-compliance-analysis-notice"
+    },
+    {
+      "sourceKey": "compliance-17",
+      "locale": "kk",
+      "itemId": "cmwbooqtl004qq4o39q077ccr",
+      "revisionId": "cmwbooqvy0051q4o30fhttk83",
+      "state": "published",
+      "slug": "archive-compliance-analysis-notice"
+    },
+    {
+      "sourceKey": "S01-Книга-6",
+      "locale": "ru",
+      "itemId": "cmwbooqyf005bq4o3tarzhpx0",
+      "revisionId": "cmwbooqyg005cq4o31v5n93xz",
+      "state": "published",
+      "slug": "archive-branch-1"
+    },
+    {
+      "sourceKey": "S01-Книга-7",
+      "locale": "ru",
+      "itemId": "cmwboor1j005mq4o38soxwhpr",
+      "revisionId": "cmwboor1k005nq4o3jyzzzmxe",
+      "state": "published",
+      "slug": "archive-branch-2"
+    },
+    {
+      "sourceKey": "S01-Книга-8",
+      "locale": "ru",
+      "itemId": "cmwboor57005xq4o385rs1bkl",
+      "revisionId": "cmwboor58005yq4o3bifdfz6k",
+      "state": "published",
+      "slug": "archive-branch-3"
+    },
+    {
+      "sourceKey": "S01-Книга-9",
+      "locale": "ru",
+      "itemId": "cmwboorah0068q4o3pal0305j",
+      "revisionId": "cmwboorai0069q4o38dyhfi4y",
+      "state": "published",
+      "slug": "archive-branch-4"
+    },
+    {
+      "sourceKey": "S01-Книга-10",
+      "locale": "ru",
+      "itemId": "cmwboordb006jq4o30dsars14",
+      "revisionId": "cmwboordb006kq4o3f2kfr3kj",
+      "state": "published",
+      "slug": "archive-branch-5"
+    },
+    {
+      "sourceKey": "S01-Книга-11",
+      "locale": "ru",
+      "itemId": "cmwboorif006uq4o34nbyuyhq",
+      "revisionId": "cmwboorif006vq4o3xrqm7b0k",
+      "state": "published",
+      "slug": "archive-branch-6"
+    },
+    {
+      "sourceKey": "S01-Книга-12",
+      "locale": "ru",
+      "itemId": "cmwboorlm0075q4o3lwuuyuly",
+      "revisionId": "cmwboorln0076q4o3hoff9e7a",
+      "state": "published",
+      "slug": "archive-branch-7"
+    },
+    {
+      "sourceKey": "S01-Книга-13",
+      "locale": "ru",
+      "itemId": "cmwboorrg007gq4o3012ec603",
+      "revisionId": "cmwboorrr007hq4o3im9ik0xa",
+      "state": "published",
+      "slug": "archive-branch-8"
+    },
+    {
+      "sourceKey": "S01-Книга-14",
+      "locale": "ru",
+      "itemId": "cmwboorve007rq4o3wg7vnc4j",
+      "revisionId": "cmwboorvf007sq4o3h3d1uypd",
+      "state": "published",
+      "slug": "archive-branch-9"
+    },
+    {
+      "sourceKey": "S01-Книга-15",
+      "locale": "ru",
+      "itemId": "cmwboos0i0082q4o3avaulqav",
+      "revisionId": "cmwboos0k0083q4o3sacv8wy1",
+      "state": "published",
+      "slug": "archive-branch-10"
+    },
+    {
+      "sourceKey": "S01-Книга-16",
+      "locale": "ru",
+      "itemId": "cmwboos43008dq4o3v1v5e2e3",
+      "revisionId": "cmwboos43008eq4o383t16g5w",
+      "state": "published",
+      "slug": "archive-branch-11"
+    },
+    {
+      "sourceKey": "S01-Книга-17",
+      "locale": "ru",
+      "itemId": "cmwboosea008oq4o32mxsy0g9",
+      "revisionId": "cmwboosed008pq4o3d1rv7u9s",
+      "state": "published",
+      "slug": "archive-branch-12"
+    },
+    {
+      "sourceKey": "S01-Книга-18",
+      "locale": "ru",
+      "itemId": "cmwboosjq008zq4o3kaxmnlty",
+      "revisionId": "cmwboosjq0090q4o3wscj1o4f",
+      "state": "published",
+      "slug": "archive-branch-13"
+    },
+    {
+      "sourceKey": "branch-decree-142",
+      "locale": "ru",
+      "itemId": "cmwboosks009aq4o3qfhophbo",
+      "revisionId": "cmwbooskt009bq4o3p59dmaqh",
+      "state": "published",
+      "slug": "archive-branch-decree-142"
+    },
+    {
+      "sourceKey": "reference-paid-services-info",
+      "locale": "ru",
+      "itemId": "cmwbooslq009lq4o357m9fhen",
+      "revisionId": "cmwboosme009mq4o32l5io5cm",
+      "state": "published",
+      "slug": "archive-paid-services-info"
+    },
+    {
+      "sourceKey": "reference-paid-services-info",
+      "locale": "kk",
+      "itemId": "cmwbooslq009lq4o357m9fhen",
+      "revisionId": "cmwboospk009wq4o3erl8okbw",
+      "state": "published",
+      "slug": "archive-paid-services-info"
+    },
+    {
+      "sourceKey": "reference-paid-services-info",
+      "locale": "en",
+      "itemId": "cmwbooslq009lq4o357m9fhen",
+      "revisionId": "cmwboosw800a6q4o3h8qjg3ux",
+      "state": "published",
+      "slug": "archive-paid-services-info"
+    },
+    {
+      "sourceKey": "reference-public-services-info",
+      "locale": "ru",
+      "itemId": "cmwboosz200agq4o335xb6g15",
+      "revisionId": "cmwboosz600ahq4o3kbhf05li",
+      "state": "published",
+      "slug": "archive-public-services-info"
+    },
+    {
+      "sourceKey": "reference-public-services-info",
+      "locale": "kk",
+      "itemId": "cmwboosz200agq4o335xb6g15",
+      "revisionId": "cmwboot6f00arq4o3yzbvr0cg",
+      "state": "published",
+      "slug": "archive-public-services-info"
+    },
+    {
+      "sourceKey": "reference-public-services-info",
+      "locale": "en",
+      "itemId": "cmwboosz200agq4o335xb6g15",
+      "revisionId": "cmwbootbl00b1q4o3uc3w0ygk",
+      "state": "published",
+      "slug": "archive-public-services-info"
+    },
+    {
+      "sourceKey": "reference-reading-room-info",
+      "locale": "ru",
+      "itemId": "cmwbootd600bbq4o3gebl6hws",
+      "revisionId": "cmwbootd600bcq4o3h0ma4vo5",
+      "state": "published",
+      "slug": "archive-reading-room-info"
+    },
+    {
+      "sourceKey": "reference-reading-room-info",
+      "locale": "kk",
+      "itemId": "cmwbootd600bbq4o3gebl6hws",
+      "revisionId": "cmwbootef00bmq4o34p1nps26",
+      "state": "published",
+      "slug": "archive-reading-room-info"
+    },
+    {
+      "sourceKey": "reference-reading-room-info",
+      "locale": "en",
+      "itemId": "cmwbootd600bbq4o3gebl6hws",
+      "revisionId": "cmwbootig00bwq4o36xwzpvkz",
+      "state": "published",
+      "slug": "archive-reading-room-info"
+    },
+    {
+      "sourceKey": "newspaper-directory-info",
+      "locale": "ru",
+      "itemId": "cmwboou0l00chq4o34rkdg1rb",
+      "revisionId": "cmwboou0o00ciq4o3kz1eftk8",
+      "state": "published",
+      "slug": "archive-newspaper-directory"
+    },
+    {
+      "sourceKey": "compliance-file-a2e51204036a00b0",
+      "locale": "kk",
+      "itemId": "cmwboou9t00csq4o3v1626ji6",
+      "revisionId": "cmwboou9y00ctq4o3g7m60xv3",
+      "state": "published",
+      "slug": "archive-compliance-a2e51204036a"
+    },
+    {
+      "sourceKey": "compliance-file-73ef6b499f789b52",
+      "locale": "ru",
+      "itemId": "cmwbooucw00d3q4o3y2iyqf9f",
+      "revisionId": "cmwbooucw00d4q4o3bo7crozl",
+      "state": "published",
+      "slug": "archive-compliance-73ef6b499f78"
+    },
+    {
+      "sourceKey": "compliance-file-63b2717c252f8f74",
+      "locale": "kk",
+      "itemId": "cmwboouh600deq4o30r5wh252",
+      "revisionId": "cmwboouh600dfq4o3pzsjva9o",
+      "state": "published",
+      "slug": "archive-compliance-63b2717c252f"
+    },
+    {
+      "sourceKey": "compliance-file-0dae7a7694c8a2c7",
+      "locale": "ru",
+      "itemId": "cmwboouir00dpq4o32am3l5tn",
+      "revisionId": "cmwboouir00dqq4o3unmbvuah",
+      "state": "published",
+      "slug": "archive-compliance-0dae7a7694c8"
+    },
+    {
+      "sourceKey": "compliance-file-c884e438c91dc5bb",
+      "locale": "ru",
+      "itemId": "cmwboouly00e0q4o3mbmhde5n",
+      "revisionId": "cmwbooum100e1q4o3evesqwv3",
+      "state": "published",
+      "slug": "archive-compliance-c884e438c91d"
+    },
+    {
+      "sourceKey": "compliance-file-ceab9f738c6ca022",
+      "locale": "kk",
+      "itemId": "cmwboouqq00ebq4o3pjwzgneb",
+      "revisionId": "cmwboouqr00ecq4o3k74c59ve",
+      "state": "published",
+      "slug": "archive-compliance-ceab9f738c6c"
+    }
+  ],
+  "attachments": [
+    {
+      "id": "cmwboowtk00epq4o34sz8e6v6",
+      "revisionId": "cmwboop870001q4o3mcx226nx",
+      "sha256": "a7fe9a0dc02c62f2143fbc55c9c677cbbad7b1b05eb981be6ab4addf544aac59",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwboox5q00esq4o3b2nny8bo",
+      "revisionId": "cmwboopco000cq4o3qh3j5tiw",
+      "sha256": "a7fe9a0dc02c62f2143fbc55c9c677cbbad7b1b05eb981be6ab4addf544aac59",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbooxap00evq4o3j3rcaasu",
+      "revisionId": "cmwboopdv000nq4o3itvhmkmx",
+      "sha256": "b9fdc6060ab279171e66736178a75452191ca8b6abc69c0c61065eeb1a77df65",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbooxei00eyq4o3vvbs80z9",
+      "revisionId": "cmwboopfi000yq4o3w8ze0xwp",
+      "sha256": "a8678998fada92018f8fe49802e927e248cb942f05939438a8397b5689e72275",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbooxhu00f1q4o3toes2cwk",
+      "revisionId": "cmwboopgf0019q4o3gq2fwzxs",
+      "sha256": "5bc0722597c928f41e7d3c495ccd4547bfdf13fae635161700402fdd5717e2fe",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbooxml00f4q4o3caw9srr2",
+      "revisionId": "cmwboopic001jq4o3eyyjhc25",
+      "sha256": "5bc0722597c928f41e7d3c495ccd4547bfdf13fae635161700402fdd5717e2fe",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbooxr300f7q4o3nlbtyy8l",
+      "revisionId": "cmwboopk7001uq4o3z7foulqq",
+      "sha256": "f8633fbfa4063d3a209f07f9c7d2709e2544ef2ab5bef2e7b922a1ce6895b90f",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbooxv200faq4o36upm4bm5",
+      "revisionId": "cmwboopn10024q4o30q96nv04",
+      "sha256": "f8633fbfa4063d3a209f07f9c7d2709e2544ef2ab5bef2e7b922a1ce6895b90f",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbooy1b00fdq4o3338wdwhy",
+      "revisionId": "cmwboopqa002fq4o342g7mwxq",
+      "sha256": "7920a24940ec1336233e53d71cd9edf0d3c8159b4b57c31be0e7012d3dab3747",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbooy5p00fgq4o378zgjjzc",
+      "revisionId": "cmwboopvu002pq4o383zxzdy7",
+      "sha256": "7920a24940ec1336233e53d71cd9edf0d3c8159b4b57c31be0e7012d3dab3747",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbooya400fjq4o3djzqmx64",
+      "revisionId": "cmwbooq4h0030q4o31x4lta2w",
+      "sha256": "c549d827022b99c09beca17997b55cfe150e09d2bc1e1c2eb671514705bba488",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbooyeq00fmq4o3r74inm7h",
+      "revisionId": "cmwbooq87003aq4o3bhxd9kuw",
+      "sha256": "c549d827022b99c09beca17997b55cfe150e09d2bc1e1c2eb671514705bba488",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbooyjt00fpq4o342auiy1n",
+      "revisionId": "cmwbooqcz003lq4o3j718ruay",
+      "sha256": "744855e8e0971656ab407ea04a3734b4f6d03c258c79dd93a8ad6b4bba9a9ec7",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbooyuz00fsq4o39vkgfh53",
+      "revisionId": "cmwbooqgl003vq4o3qlhn2ypr",
+      "sha256": "744855e8e0971656ab407ea04a3734b4f6d03c258c79dd93a8ad6b4bba9a9ec7",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbooz1e00fvq4o3z4kg8kzu",
+      "revisionId": "cmwbooqi70046q4o33e0qgba5",
+      "sha256": "fc6b6566ee2882489cd15a127ecd2602fe5dd75cacfddc277500b49725455657",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbooz5l00fyq4o3mqoclc60",
+      "revisionId": "cmwbooqqf004gq4o34po6xdtz",
+      "sha256": "2fbcf5f47f56418c9f9771883ac13c177b122fe856f08677de5be59fb2837577",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbooz8f00g1q4o3wglivmwc",
+      "revisionId": "cmwbooskt009bq4o3p59dmaqh",
+      "sha256": "a0d390105cb014504b83f3fa7208e9254bad2cbb7bb12bbe8f5d066bf4caf7dd",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbop0wa00g4q4o3v9smw4pd",
+      "revisionId": "cmwboou9y00ctq4o3g7m60xv3",
+      "sha256": "a2e51204036a00b059299599a4a344cd67b8386ba0fbf798ffb51958ad4ece3d",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbop1x500g7q4o3b768u05q",
+      "revisionId": "cmwbooucw00d4q4o3bo7crozl",
+      "sha256": "73ef6b499f789b52fb6b32247724f7f0fb3e06568e2f1313b9237b98290d1158",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbop2ri00gaq4o3a6vjjwey",
+      "revisionId": "cmwboouh600dfq4o3pzsjva9o",
+      "sha256": "63b2717c252f8f743702c44352570da6f9f13ea3b899d3a3d616a28c7dfcf620",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbop53800gdq4o3k5fqisqe",
+      "revisionId": "cmwboouir00dqq4o3unmbvuah",
+      "sha256": "0dae7a7694c8a2c7607e874cf037fc3f5b05c8132ea9ab2d645f34bd3e72c73e",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbop78i00ggq4o3899njstg",
+      "revisionId": "cmwbooum100e1q4o3evesqwv3",
+      "sha256": "c884e438c91dc5bb3653b3f72c3f89130f24d612fd7476fb06cb58329ce77434",
+      "state": "PUBLISHED"
+    },
+    {
+      "id": "cmwbopaba00gjq4o3yu81nqpy",
+      "revisionId": "cmwboouqr00ecq4o3k74c59ve",
+      "sha256": "ceab9f738c6ca0224a015fa30ca74971d2e1a8f0c82c7fecc3e2f5fb183b813d",
+      "state": "PUBLISHED"
+    }
+  ],
+  "directories": {
+    "dryRun": false,
+    "sets": [
+      {
+        "id": "s09-funds-general",
+        "kind": "fund",
+        "count": 1552,
+        "state": "imported",
+        "sourceRows": 3755,
+        "missingNumberRows": [
+          3467,
+          3468
+        ],
+        "groups": 1552,
+        "holderUnmapped": true
+      },
+      {
+        "id": "s09-funds-party",
+        "kind": "fund",
+        "count": 153,
+        "state": "imported",
+        "sourceRows": 318,
+        "missingNumberRows": [
+          319
+        ],
+        "groups": 153,
+        "holderUnmapped": true
+      },
+      {
+        "id": "s09-newspapers",
+        "kind": "newspaper",
+        "count": 1466,
+        "state": "imported",
+        "sourceRows": 1468,
+        "headerRows": 2,
+        "holdingsRows": 1466,
+        "holderUnmapped": true
+      }
+    ],
+    "total": 3171
+  },
+  "facts": 26,
+  "topics": 5,
+  "blockedFacts": [],
+  "excluded": [
+    "S01 original contains unrelated VPN sheet; publish only selected contact fields",
+    "S04 internal risk-analysis attachments and internal personnel details",
+    "S08 development specification; not public archive content"
+  ],
+  "technicalReview": {
+    "actors": [
+      "ale-source-importer-v2",
+      "ale-source-integrity-v2"
+    ],
+    "kind": "automated source-integrity stages; not an archive signature"
+  }
+}

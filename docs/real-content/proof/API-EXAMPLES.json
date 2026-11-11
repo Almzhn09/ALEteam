@@ -1,0 +1,389 @@
+{
+  "kind": "Executed public API on the working real corpus; no private account data",
+  "examples": [
+    {
+      "request": "GET /api/directories/funds?number=%D0%A0-1%20%D1%87.%D1%81.",
+      "response": {
+        "items": [
+          {
+            "kind": "fund",
+            "id": "rf-f3dda5691e7cbf59e09b1df2fb1a",
+            "number": "Р-1 ч.с.",
+            "names": [
+              {
+                "name": "Усть-Каменогорский городской Совет  рабочих, крестьянских и красноармейских депутатов г. Усть-Каменогорск Семипалатинского округа",
+                "sourceRow": 2,
+                "periodOriginal": "[03]1926-19.02.1932"
+              },
+              {
+                "name": "Усть-Каменогорский городской Совет  рабочих, крестьянских и красноармейских депутатов г. Усть-Каменогорск Восточно-Казахстанской области",
+                "sourceRow": 3,
+                "periodOriginal": "20.02.1932-18.09.1939"
+              },
+              {
+                "name": "Усть-Каменогорский городской Совет депутатов трудящихся и его исполнительный комитет г. Усть-Каменогорск Восточно-Казахстанской области",
+                "sourceRow": 4,
+                "periodOriginal": "19.09.1939-06.10.1977"
+              },
+              {
+                "name": "Усть-Каменогорский городской Совет народных депутатов и его исполнительный комитет г. Усть-Каменогорск Восточно-Казахстанской области",
+                "sourceRow": 5,
+                "periodOriginal": "07.10.1977-11.03.1992"
+              },
+              {
+                "name": "Усть-Каменогорский городской Совет народных депутатов г. Усть-Каменогорск Восточно-Казахстанской области",
+                "sourceRow": 6,
+                "periodOriginal": "12.03.1992-09.12.1993"
+              }
+            ],
+            "renameStatus": "source_rows",
+            "source": {
+              "id": "s09-funds-general",
+              "title": "Фонды Государственного архива ВКО",
+              "asOf": null,
+              "notes": "Дата актуальности фондового перечня не установлена. Различия названий сохранены как строки источника.",
+              "holder": null,
+              "sha256": "cf9c63b4e00009738fed27c53f08736349dd7e7f93b17faec2a1574e75aeb3eb",
+              "edition": "Имя файла: 2018; подпись ссылки: 2026",
+              "branchId": null
+            },
+            "href": "/api/directories/funds/rf-f3dda5691e7cbf59e09b1df2fb1a"
+          }
+        ],
+        "total": 1,
+        "page": 1,
+        "pageSize": 20,
+        "kind": "fund",
+        "sourceVersions": [
+          {
+            "id": "s09-funds-general",
+            "title": "Фонды Государственного архива ВКО",
+            "asOf": null,
+            "notes": "Дата актуальности фондового перечня не установлена. Различия названий сохранены как строки источника.",
+            "holder": null,
+            "sha256": "cf9c63b4e00009738fed27c53f08736349dd7e7f93b17faec2a1574e75aeb3eb",
+            "edition": "Имя файла: 2018; подпись ссылки: 2026",
+            "branchId": null
+          }
+        ]
+      }
+    },
+    {
+      "request": "GET /api/search?scope=cms&q=%D1%87%D0%B8%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B3%D0%BE",
+      "response": {
+        "items": [
+          {
+            "kind": "material",
+            "material": {
+              "kind": "cms",
+              "id": "cmwboopdv000mq4o3hu6pb6pv",
+              "href": "/api/content/archive-contacts?locale=ru",
+              "title": "Контакты",
+              "contentLocale": "ru",
+              "availableLocales": [
+                "ru"
+              ],
+              "translationStatus": "published",
+              "isDemo": false,
+              "reason": {
+                "code": "editorial",
+                "text": "",
+                "evidence": []
+              }
+            },
+            "snippet": "Контактная информация\nАдрес: Республика Казахстан, 070000, г.Усть-Каменогорск, ул.Бейбітшілік, 26/1 (Головкова, 26/1)\nДиректор: Жапаров Аскар Кенжебаевич\nТелефон: 8 (7232) 25-13-22\nЗаместитель директора: Костина Елена Валерьевна\nТелефон: 8 (7232) 57-00-15\nЗаместитель директор:\n\ne-mail: arhiv-ukg@yandex.kz\nПриемная: 8 (7232) 25-59-76       \nИнспекто"
+          },
+          {
+            "kind": "material",
+            "material": {
+              "kind": "cms",
+              "id": "cmwbootd600bbq4o3gebl6hws",
+              "href": "/api/content/archive-reading-room-info?locale=ru",
+              "title": "Читальный зал",
+              "contentLocale": "ru",
+              "availableLocales": [
+                "en",
+                "kk",
+                "ru"
+              ],
+              "translationStatus": "published",
+              "isDemo": false,
+              "reason": {
+                "code": "editorial",
+                "text": "",
+                "evidence": []
+              }
+            },
+            "snippet": "В предоставленном документе «Контакты» указан график читального зала: понедельник–пятница, 9:00–16:00. На старом сайте опубликованы правила, утверждённые приказом №58 от 2 октября 2000 года. Их актуальность требует проверки; эта сохранённая версия не объявляется действующим регламентом. Перед посещением уточните график и правила у архива. Запись и "
+          }
+        ],
+        "total": 2,
+        "page": 1,
+        "pageSize": 20,
+        "locale": "ru",
+        "counts": {
+          "materials": 2,
+          "funds": 0,
+          "newspapers": 0
+        }
+      }
+    },
+    {
+      "request": "GET /api/discovery/home",
+      "response": {
+        "locale": "ru",
+        "recommended": {
+          "mode": "editorial",
+          "items": [
+            {
+              "kind": "cms",
+              "id": "cmwboop850000q4o3p5rhb5da",
+              "href": "/api/content/archive-history-1?locale=ru",
+              "title": "История архива · 1",
+              "contentLocale": "ru",
+              "availableLocales": [
+                "ru"
+              ],
+              "translationStatus": "published",
+              "isDemo": false,
+              "reason": {
+                "code": "editorial",
+                "text": "Редакционная подборка",
+                "evidence": [
+                  {
+                    "kind": "cms",
+                    "id": "cmwboop850000q4o3p5rhb5da",
+                    "locale": "ru",
+                    "revision": "1268f9b07998bdd7f946182f77193396e34d0b34ab22310443bfd3f6fd86e70a",
+                    "title": "История архива · 1",
+                    "isDemo": false,
+                    "href": "/api/content/archive-history-1?locale=ru"
+                  }
+                ]
+              }
+            },
+            {
+              "kind": "cms",
+              "id": "cmwbooqcz003kq4o3p14anacs",
+              "href": "/api/content/archive-calendar-2026?locale=ru",
+              "title": "Календарь памятных дат · 2026",
+              "contentLocale": "ru",
+              "availableLocales": [
+                "kk",
+                "ru"
+              ],
+              "translationStatus": "published",
+              "isDemo": false,
+              "yearFrom": 2026,
+              "yearTo": 2026,
+              "reason": {
+                "code": "editorial",
+                "text": "Редакционная подборка",
+                "evidence": [
+                  {
+                    "kind": "cms",
+                    "id": "cmwbooqcz003kq4o3p14anacs",
+                    "locale": "ru",
+                    "revision": "e9d807c9c025ab4dc8aa99d13552bf7374d416b0fa10977fe797283eb6000291",
+                    "title": "Календарь памятных дат · 2026",
+                    "isDemo": false,
+                    "href": "/api/content/archive-calendar-2026?locale=ru"
+                  }
+                ]
+              }
+            },
+            {
+              "kind": "cms",
+              "id": "cmwbootqd00c6q4o3c3aok2qm",
+              "href": "/api/content/archive-fund-directory?locale=ru",
+              "title": "Справочник фондов",
+              "contentLocale": "ru",
+              "availableLocales": [
+                "ru"
+              ],
+              "translationStatus": "published",
+              "isDemo": false,
+              "reason": {
+                "code": "editorial",
+                "text": "Редакционная подборка",
+                "evidence": [
+                  {
+                    "kind": "cms",
+                    "id": "cmwbootqd00c6q4o3c3aok2qm",
+                    "locale": "ru",
+                    "revision": "b3c220a3c6fc5370757d2b18940c00d48d1c3d9f406bf3ad7731b1ca9f4c5507",
+                    "title": "Справочник фондов",
+                    "isDemo": false,
+                    "href": "/api/content/archive-fund-directory?locale=ru"
+                  }
+                ]
+              }
+            },
+            {
+              "kind": "cms",
+              "id": "cmwboopcn000bq4o352nx3wzi",
+              "href": "/api/content/archive-history-2?locale=ru",
+              "title": "История архива · 2",
+              "contentLocale": "ru",
+              "availableLocales": [
+                "ru"
+              ],
+              "translationStatus": "published",
+              "isDemo": false,
+              "reason": {
+                "code": "editorial",
+                "text": "Редакционная подборка",
+                "evidence": [
+                  {
+                    "kind": "cms",
+                    "id": "cmwboopcn000bq4o352nx3wzi",
+                    "locale": "ru",
+                    "revision": "dcfc78277f55fb568ee184b7d051e2379a0e6224a21967e3568a26f28b751963",
+                    "title": "История архива · 2",
+                    "isDemo": false,
+                    "href": "/api/content/archive-history-2?locale=ru"
+                  }
+                ]
+              }
+            },
+            {
+              "kind": "cms",
+              "id": "cmwboopdv000mq4o3hu6pb6pv",
+              "href": "/api/content/archive-contacts?locale=ru",
+              "title": "Контакты",
+              "contentLocale": "ru",
+              "availableLocales": [
+                "ru"
+              ],
+              "translationStatus": "published",
+              "isDemo": false,
+              "reason": {
+                "code": "editorial",
+                "text": "Редакционная подборка",
+                "evidence": [
+                  {
+                    "kind": "cms",
+                    "id": "cmwboopdv000mq4o3hu6pb6pv",
+                    "locale": "ru",
+                    "revision": "21d761874b6b8833a946818ebabbe76975859c6c1bf1b2cfcdc35d129b207dc7",
+                    "title": "Контакты",
+                    "isDemo": false,
+                    "href": "/api/content/archive-contacts?locale=ru"
+                  }
+                ]
+              }
+            }
+          ],
+          "engine": "artur"
+        },
+        "popular": {
+          "status": "unavailable",
+          "period": null,
+          "items": []
+        },
+        "continue": {
+          "scope": "browser",
+          "items": []
+        },
+        "history": {
+          "status": "not_configured"
+        }
+      }
+    },
+    {
+      "request": "POST /api/discovery/materials/cms/cmwboop850000q4o3p5rhb5da/explanation",
+      "body": {
+        "locale": "ru"
+      },
+      "response": {
+        "status": "ready",
+        "mode": "extractive",
+        "sourceRevision": "c8db62a260c6cb7007a75cfcd8d655dd4c3752b9f543e857191d6d10bcc7cab0",
+        "summary": "Краткие выдержки из документа:\n«В соответствии с распоряжением Главы Восточно-Казахстанской областной администрации от 27 апреля 1992г. №336-р «О создании районных и городских архивов по личному составу при районных и городских администрациях Восточно-Казахстанской области» хозрасчетные архивы документов по личному составу преобразованы в районные и городские архивы по личному составу при районных и городских администрациях с содержанием за счет средств районных и городских бюджетов.»\n\n«Государственный архив Восточно-Казахстанской области образован в 1940 году с подчинением архивному отделению управления народного комиссариата внутренних дел Казахской ССР по Восточно-Казахстанской области.»\n\n«Согласно приказу управления народного комиссариата внутренних дел Казахской ССР от 31 октября 1941 года №68 архивное отделение было переименовано в отделение государственных архивов управления народного комиссариата внутренних дел (НКВД) Казахской ССР по Восточно-Казахстанской области.»",
+        "terms": [
+          {
+            "term": "НКВД",
+            "explanation": "НКВД — сокращение названия «Народный комиссариат внутренних дел». Уточняйте страну, период и полное название учреждения по самому источнику.",
+            "fragmentIds": [
+              "cmwboowtk00epq4o34sz8e6v6-3"
+            ]
+          },
+          {
+            "term": "переименовано",
+            "explanation": "Переименование — изменение названия. Само по себе оно не означает создание нового учреждения или города; дату и основание сверяйте с источником.",
+            "fragmentIds": [
+              "cmwboowtk00epq4o34sz8e6v6-3"
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "fragmentId": "cmwboowtk00epq4o34sz8e6v6-23",
+            "quote": "В соответствии с распоряжением Главы Восточно-Казахстанской областной администрации от 27 апреля 1992г. №336-р «О создании районных и городских архивов по личному составу при районных и городских администрациях Восточно-Казахстанской области» хозрасчетные архивы документов по личному составу преобразованы в районные и городские архивы по личному составу при районных и городских администрациях с содержанием за счет средств районных и городских бюджетов.",
+            "source": {
+              "kind": "cms",
+              "id": "cmwboop850000q4o3p5rhb5da",
+              "locale": "ru",
+              "revision": "c8db62a260c6cb7007a75cfcd8d655dd4c3752b9f543e857191d6d10bcc7cab0",
+              "title": "История архива · 1",
+              "isDemo": false,
+              "href": "/api/material-files/cmwboowtk00epq4o34sz8e6v6/text",
+              "fragment": {
+                "id": "cmwboowtk00epq4o34sz8e6v6-23",
+                "paragraph": 23,
+                "start": 5315,
+                "end": 5771
+              }
+            }
+          },
+          {
+            "fragmentId": "cmwboowtk00epq4o34sz8e6v6-2",
+            "quote": "Государственный архив Восточно-Казахстанской области образован в 1940 году с подчинением архивному отделению управления народного комиссариата внутренних дел Казахской ССР по Восточно-Казахстанской области.",
+            "source": {
+              "kind": "cms",
+              "id": "cmwboop850000q4o3p5rhb5da",
+              "locale": "ru",
+              "revision": "c8db62a260c6cb7007a75cfcd8d655dd4c3752b9f543e857191d6d10bcc7cab0",
+              "title": "История архива · 1",
+              "isDemo": false,
+              "href": "/api/material-files/cmwboowtk00epq4o34sz8e6v6/text",
+              "fragment": {
+                "id": "cmwboowtk00epq4o34sz8e6v6-2",
+                "paragraph": 2,
+                "start": 15,
+                "end": 221
+              }
+            }
+          },
+          {
+            "fragmentId": "cmwboowtk00epq4o34sz8e6v6-3",
+            "quote": "Согласно приказу управления народного комиссариата внутренних дел Казахской ССР от 31 октября 1941 года №68 архивное отделение было переименовано в отделение государственных архивов управления народного комиссариата внутренних дел (НКВД) Казахской ССР по Восточно-Казахстанской области.",
+            "source": {
+              "kind": "cms",
+              "id": "cmwboop850000q4o3p5rhb5da",
+              "locale": "ru",
+              "revision": "c8db62a260c6cb7007a75cfcd8d655dd4c3752b9f543e857191d6d10bcc7cab0",
+              "title": "История архива · 1",
+              "isDemo": false,
+              "href": "/api/material-files/cmwboowtk00epq4o34sz8e6v6/text",
+              "fragment": {
+                "id": "cmwboowtk00epq4o34sz8e6v6-3",
+                "paragraph": 3,
+                "start": 222,
+                "end": 508
+              }
+            }
+          }
+        ],
+        "limitations": [
+          "Автоматическая подборка точных выдержек и редакционный словарь; это не свободный пересказ и не архивная справка."
+        ],
+        "ocr": {
+          "used": false,
+          "quality": "not_applicable",
+          "engine": "openxml-docx"
+        }
+      }
+    }
+  ]
+}

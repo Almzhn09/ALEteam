@@ -30,6 +30,7 @@ function demoPdf(index: number, body: string) {
 }
 async function seed() {
   if (process.env.ALLOW_DEMO_SEED !== '1') throw new Error('Set ALLOW_DEMO_SEED=1 explicitly for a demo database.');
+  if(!new URL(process.env.DATABASE_URL!).pathname.endsWith('_test')&&process.env.SYNTHETIC_FIXTURE_DATABASE!=='1')throw Error('Synthetic seed is restricted to an isolated fixture database.');
   const authorPassword = process.env.DEMO_AUTHOR_PASSWORD;
   const moderatorPassword = process.env.DEMO_MODERATOR_PASSWORD;
   if (!authorPassword || !moderatorPassword || Math.min(authorPassword.length, moderatorPassword.length) < 12) throw new Error('Demo passwords (12+ characters) must be supplied through environment.');

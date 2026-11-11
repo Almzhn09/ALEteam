@@ -1,6 +1,6 @@
 export const uploadStates = ['AWAITING_CONTENT','RECEIVING','QUARANTINED','APPROVED','REJECTED','PUBLISHED','FAILED'] as const;
 export type UploadState = typeof uploadStates[number];
-export type UploadMime = 'application/pdf' | 'image/png' | 'image/jpeg';
+export type UploadMime = 'application/pdf' | 'image/png' | 'image/jpeg' | 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 export interface UploadCreateInput {
   documentId: string; originalName: string; mimeType: UploadMime;
   expectedBytes: number; expectedSha256: string; rights: string; sourceNote: string;
