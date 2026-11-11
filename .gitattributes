@@ -11,3 +11,5 @@ deploy/Caddyfile text eol=lf
 sources/** -text
 # Raw evidence snapshots retain CRLF/whitespace and are not source-code patches.
 sources/**/pages/*.html binary
+# Preserve dataset/model evidence bytes across Windows checkout filters too.
+data/** -text
