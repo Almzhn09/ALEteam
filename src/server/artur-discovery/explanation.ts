@@ -3,7 +3,7 @@ import {z} from 'zod';
 import {unsafeInstructions} from '../assistant-safety';
 import {sourceRefSchema,type EngineLocale,type EngineSourceRef} from './types';
 const fragment=z.object({id:z.string().min(1).max(120),text:z.string().max(12000),page:z.number().int().positive().max(100000).optional(),paragraph:z.number().int().positive().max(100000).optional(),quality:z.enum(['verified','ocr']),confidence:z.number().min(0).max(1).optional()}).strict();
-const readable=z.object({source:sourceRefSchema,publication:z.enum(['published','draft','withdrawn']),metadataAllowed:z.boolean(),digitalCopyAllowed:z.boolean(),branchVisible:z.boolean(),deleted:z.boolean(),fragments:z.array(fragment).max(200)}).strict();
+const readable=z.object({source:sourceRefSchema,publication:z.enum(['published','draft','withdrawn']),metadataAllowed:z.boolean(),digitalCopyAllowed:z.boolean(),branchVisible:z.boolean(),deleted:z.boolean(),fragments:z.array(fragment).max(1000)}).strict();
 export type ReadableSnapshot=z.infer<typeof readable>;
 export interface ExplanationCitation {fragmentId:string;page?:number;paragraph?:number;quote:string;start:number;end:number;fragmentSha256:string}
 export interface ExplanationResult {status:'ready'|'restricted'|'unavailable'|'no_text'|'low_quality'|'unsupported';mode:'extractive';automatic:true;source?:EngineSourceRef;sourceRevision?:string;textFingerprint?:string;summary?:string;citations:ExplanationCitation[];terms:{term:string;meaning:string;editorial:true}[];limitations:string[]}

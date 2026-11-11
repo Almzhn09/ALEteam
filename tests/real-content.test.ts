@@ -163,4 +163,6 @@ test('directory routing preserves literal source identifiers and does not replac
 test('directory source links cannot be relabeled documents, swapped IDs or arbitrary client URLs',()=>{
  assert.equal(assistantSourceLink({id:'rf-123',kind:'fund',href:'/api/directories/funds/rf-123'}),'/api/directories/funds/rf-123');
  for(const href of ['https://outside.invalid','/api/admin/directories','/api/directories/funds/rf-other','/api/directories/funds/rf-123?raw=1','/api/directories/funds/../private'])assert.equal(assistantSourceLink({id:'rf-123',kind:'fund',href}),'/assistant');
+ assert.equal(assistantSourceLink({id:'cmsfile_f',kind:'cms',href:'/api/material-files/f/text?page=4'}),'/api/material-files/f/text?page=4');
+ for(const href of ['/api/material-files/f/text?page=101','/api/material-files/f/text?path=private','https://outside.invalid/api/material-files/f/text','/api/content/first/api/content/last?locale=ru'])assert.equal(assistantSourceLink({id:'cmsfile_f',kind:'cms',href}),'/assistant');
 });

@@ -6,12 +6,13 @@ import assert from 'node:assert/strict';
 import {spawn,execFileSync,type ChildProcess} from 'node:child_process';
 import {once} from 'node:events';
 import {randomBytes,randomUUID} from 'node:crypto';
-import {mkdir,writeFile,open} from 'node:fs/promises';
+import {mkdir,writeFile,open,readFile} from 'node:fs/promises';
 import {setTimeout as delay} from 'node:timers/promises';
 import {hashPassword} from 'better-auth/crypto';
 import {chromium} from 'playwright-core';
 import packet from '../data/artur/real-content-v2/publication-manifest.json';
 import examples from '../data/artur/real-content-v2/acceptance-cases.json';
+import sourceFiles from '../data/artur/real-content-v2/files.json';
 import {prepareRealCuration} from '../src/server/artur-discovery/real-publication';
 import type {PublishedSourceBinding} from '../src/server/artur-discovery/publication';
 import type {PlaceRef} from '../src/contracts/discovery';
@@ -92,6 +93,27 @@ try{
    materials.set(record.materialKey,item.id);
   }
  });
+ const attached:Record<string,string>={};
+ await check('actual DOCX originals upload, parse, review and publish as CMS files with paragraph provenance',async()=>{
+  for(const key of ['history-1','calendar-2026-ru','compliance-16']){
+   const r=packet.records.find(r=>r.sourceKey===key)!,file=sourceFiles.files.find(f=>f.key===r.attachments[0])!;
+   const materialId=materials.get(r.materialKey)!,revision=await db.contentRevision.findFirstOrThrow({where:{itemId:materialId,locale:'ru',status:'PUBLISHED'}});
+   let upload=await db.cmsAttachment.findFirst({where:{revisionId:revision.id,expectedSha256:file.sha256,state:'PUBLISHED'}});
+   if(!upload){
+    const mimeType='application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    let declared=(await call('/admin/content/'+materialId+'/attachments','POST',{revisionId:revision.id,name:file.filename,mimeType,expectedBytes:file.bytes,expectedSha256:file.sha256,rights:r.request.payload.rights,sourceNote:r.request.payload.sourceNote,sourceLabel:r.request.payload.title,sourceVersion:'Предоставленный оригинал'},'writer')).item;
+    const raw=await fetch(base+'/api/admin/material-files/'+declared.id+'/content',{method:'PUT',headers:{Origin:base,Cookie:cookies.writer,'Content-Type':mimeType,'If-Match':'"'+declared.updatedAt+'"'},body:new Uint8Array(await readFile(file.path))});assert.equal(raw.status,200);declared=(await raw.json()).item;
+    declared=(await call('/admin/material-files/'+declared.id+'/review','POST',{expectedUpdatedAt:declared.updatedAt,decision:'APPROVE',rightsConfirmed:true,reason:'Сверка предоставленного оригинала для технической приёмки.'},'reviewer')).item;
+    upload=(await call('/admin/material-files/'+declared.id+'/publish','POST',{expectedUpdatedAt:declared.updatedAt,reason:'Публикация предоставленного источника для проверки.'},'publisher')).item;
+   }
+   assert.ok(upload);attached[key]=upload.id;
+   const readable=(await call('/material-files/'+upload.id+'/text')).item;
+   assert.equal(readable.sourceSha256,file.sha256);assert.ok(readable.fragments.some((f:{paragraph?:number})=>f.paragraph));assert.equal(readable.isOcr,false);
+   const explanation=await call('/discovery/materials/cms/'+materialId+'/explanation','POST',{locale:'ru'});
+   assert.equal(explanation.status,'ready');assert.ok(explanation.citations.length);
+   for(const cite of explanation.citations){assert.ok(cite.source.href.includes('/material-files/'));assert.ok(cite.source.fragment.paragraph);assert.equal(cite.source.fragment.page,undefined);assert.ok(readable.text.includes(cite.quote));}
+  }
+ });
  const parents:Record<string,Pick<PlaceRef,'id'|'name'>>={},topics:Record<string,string>={};
  const assigned:Record<string,string>={};
  async function publishFacts(){
@@ -145,6 +167,15 @@ try{
  await check('natural contact questions use provided hours and central contacts instead of guessing branch fields',async()=>{
   const hours=await call('/assistant','POST',{question:'Какой график работы архива?',locale:'ru'});assert.equal(hours.noAnswer,false);assert.ok(hours.answer.includes('8.00'));
   const address=await call('/assistant','POST',{question:'Где находится архив?',locale:'ru'});assert.equal(address.noAnswer,false);assert.ok(address.answer.includes('26/1'));
+ });
+ await check('assistant cites a permitted original DOCX and withdrawal removes that file from answers',async()=>{
+  const question='О проведении внутреннего анализа коррупционных рисков';
+  const result=await call('/assistant','POST',{question,locale:'ru'});assert.equal(result.noAnswer,false);
+  assert.ok(result.sources.some((s:{id:string;href:string})=>s.id==='cmsfile_'+attached['compliance-16']&&s.href.includes('/material-files/')));
+  const file=await db.cmsAttachment.findUniqueOrThrow({where:{id:attached['compliance-16']}});
+  await call('/admin/material-files/'+file.id+'/withdraw','POST',{expectedUpdatedAt:file.updatedAt.toISOString(),reason:'Проверка немедленного отзыва исходного файла.'},'publisher');
+  assert.equal((await fetch(base+'/api/material-files/'+file.id+'/text')).status,404);
+  const after=await call('/assistant','POST',{question,locale:'ru'});assert.ok(after.sources.every((s:{id:string})=>s.id!=='cmsfile_'+file.id));
  });
  await check('assistant quotes exact fund accounting numbers and original newspaper holdings with source editions',async()=>{
   const fund=await call('/assistant','POST',{question:'Найди фонд «Р-1 ч.с.»',locale:'ru'});

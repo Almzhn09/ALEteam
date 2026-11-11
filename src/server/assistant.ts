@@ -15,6 +15,7 @@ import {englishSiteDialog} from './english-dialog';
 import {publicDocumentWhere} from './public-visibility';
 import {planResearch} from './artur-discovery/research';
 import {directoryIntent,retrieveDirectoryPassages,revalidateDirectoryPassages,directoryAnswer,type DirectoryPassage} from './directory-knowledge';
+import {retrieveCmsFilePassages,revalidateCmsFilePassages,cmsFileAnswer,type CmsFilePassage} from './cms-file-knowledge';
 import type {NameExpansion as TransportNameExpansion,ResearchStep,ResearchAction} from '../contracts/discovery';
 
 export const assistantInput = z.object({
@@ -33,6 +34,7 @@ export async function assistant(request: Request) {
   let cmsPassages:CmsPassage[]=[];
   let catalogPassages:CatalogPassage[]=[];
   let directoryPassages:DirectoryPassage[]=[];
+  let filePassages:CmsFilePassage[]=[];
   const documentLocale=input.locale??'ru';
   const plan=semanticConversationPlan(input.question,input.history,documentLocale,local);
   const locale=input.locale??(isKazakh(input.question)?'kk':'ru');
@@ -42,9 +44,11 @@ export async function assistant(request: Request) {
     if(!process.env.ASSISTANT_SERVICE_URL&&directoryQuery&&!catalogPassages.length)directoryPassages=await retrieveDirectoryPassages(directoryQuery);
     if(!process.env.ASSISTANT_SERVICE_URL&&!directoryQuery&&(!plan.handled||!requiresCatalogEvidence(plan,input.question)))cmsPassages=await retrieveCmsPassages(cmsQuestionContext(input.question,input.history),locale);
     if(!process.env.ASSISTANT_SERVICE_URL&&plan.handled&&!requiresCatalogEvidence(plan,input.question)&&!cmsPassages.length)catalogPassages=await retrieveSemanticCatalog(plan);
+    if(!process.env.ASSISTANT_SERVICE_URL&&!directoryQuery&&!catalogPassages.length&&(!cmsPassages.length||cmsPassages.some(p=>p.text.length<600)))filePassages=await retrieveCmsFilePassages(cmsQuestionContext(input.question,input.history),locale);
     result = assistantOutput.parse(process.env.ASSISTANT_SERVICE_URL
       ? await serviceRequest(process.env.ASSISTANT_SERVICE_URL, process.env.ASSISTANT_SERVICE_TOKEN, { ...input, maxOutputTokens: 500 }, 15000)
       : directoryQuery&&!catalogPassages.length ? directoryAnswer(directoryPassages,locale)
+      : filePassages.length ? cmsFileAnswer(filePassages,locale,cmsQuestionContext(input.question,input.history))
       : cmsPassages.length ? cmsAnswer(cmsPassages,locale,cmsQuestionContext(input.question,input.history))
       : plan.handled ? semanticCatalogAnswer(catalogPassages,plan,local)
       : locale==='en' ? (local?englishSiteDialog(input.question,input.history):cmsAnswer([],locale))
@@ -54,6 +58,8 @@ export async function assistant(request: Request) {
   if ((!result.noAnswer && !result.sourceIds.length) || (result.noAnswer && result.sourceIds.length)) throw new ApiError(502, 'INVALID_ASSISTANT_RESPONSE', 'Ответ помощника не прошёл проверку источников.');
   const ids = [...new Set(result.sourceIds)];
   const selectedDirectory=directoryPassages.filter(p=>ids.includes(p.id));
+  const selectedFiles=filePassages.filter(p=>ids.includes(p.id));
+  if(!await revalidateCmsFilePassages(selectedFiles))throw new ApiError(503,'ASSISTANT_SOURCE_CHANGED','Публикация изменилась. Повторите вопрос.');
   if(!await revalidateDirectoryPassages(selectedDirectory))throw new ApiError(503,'ASSISTANT_SOURCE_CHANGED','Публикация изменилась. Повторите вопрос.');
   const selectedCatalog=catalogPassages.filter(p=>ids.includes(p.id));
   if(!await revalidateCatalogSources(selectedCatalog))throw new ApiError(503,'ASSISTANT_SOURCE_CHANGED','Публикация изменилась. Повторите вопрос.');
@@ -61,6 +67,8 @@ export async function assistant(request: Request) {
   if(!await revalidateCmsPassages(selectedCms,locale))throw new ApiError(503,'ASSISTANT_SOURCE_CHANGED','Публикация изменилась. Повторите вопрос.');
   const documents = await db.document.findMany({ where: { id: { in: ids }, ...publicDocumentWhere, allowDigitalCopy: true }, select: { id: true, title: true, isDemo: true,translations:{where:{locale:documentLocale},select:{title:true}} } });
   const sources = ids.map(id => {
+    const file=selectedFiles.find(p=>p.id===id);
+    if(file)return {id,title:file.title,isDemo:file.isDemo,kind:'cms',locale,href:file.href};
     const directory=selectedDirectory.find(p=>p.id===id);
     if(directory)return {id,title:directory.title,isDemo:false,kind:directory.kind,href:directory.href};
     const catalog=selectedCatalog.find(p=>p.id===id);
