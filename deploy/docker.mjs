@@ -20,16 +20,17 @@ export function composePrefix(project = option('--project', 'ale-stand')) {
 export function docker(args, env = process.env) {
   return execFileSync('docker', args, { env, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8' }).trim();
 }
-export async function dockerStream(args, { input, output, env = process.env } = {}) {
+export async function dockerStream(args, { input, output, diagnostic, env = process.env } = {}) {
   const source = input ? await open(input, 'r') : undefined;
   const destination = output ? await open(output, 'wx', 0o600) : undefined;
+  const errors = diagnostic ? await open(diagnostic,'wx',0o600) : undefined;
   try {
     await new Promise((resolve, reject) => {
-      const child = spawn('docker', args, { env, stdio: [source?.fd ?? 'ignore', destination?.fd ?? 'ignore', 'pipe'] });
-      child.stderr.resume(); // no SQL/user data or credentials are printed
+      const child = spawn('docker', args, { env, stdio: [source?.fd ?? 'ignore', destination?.fd ?? 'ignore', errors?.fd ?? 'pipe'] });
+      if(!errors)child.stderr.resume(); // diagnostics are private; no SQL/user data or credentials are printed
       child.on('error', reject);
       child.on('exit', code => code === 0 ? resolve() : reject(new Error(`Docker operation failed (${code})`)));
     });
   } catch (error) { if (output) await unlink(output).catch(() => {}); throw error; }
-  finally { await source?.close(); await destination?.close(); }
+  finally { await source?.close(); await destination?.close(); await errors?.close(); }
 }

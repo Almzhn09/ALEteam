@@ -10,6 +10,8 @@ npm run setup:local
 # Запустить PostgreSQL по основной инструкции; существующий .env не перезаписывать.
 npm run db:migrate
 npm run content:preview
+# Сохранить закрытые оригиналы/реестры источников в native files store для backup:
+node --env-file-if-exists=.env scripts/persist-source-bundle.mjs
 npm run content:apply
 npm run build
 npm start
