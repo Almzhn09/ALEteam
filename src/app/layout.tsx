@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
+import './visual.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { SessionProvider } from '@/lib/session';
@@ -17,8 +18,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = translator(await getLang());
   return {
     metadataBase: new URL(siteUrl()),
-    title: { default: t('Электронный архив — прототип ALEteam'), template: `%s · ${t('Электронный архив')}` },
-    description: t('Прототип обновлённого электронного архива: поиск документов, карточки со сканами, избранное, ИИ-помощник и обсуждения.'),
+    title: { default: t('Электронный архив Восточно-Казахстанской области'), template: `%s · ${t('Электронный архив')}` },
+    description: t('История архива, памятные даты и справочники фондов — начните с интересующей темы.'),
   };
 }
 export const viewport: Viewport = {

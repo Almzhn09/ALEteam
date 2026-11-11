@@ -101,7 +101,7 @@ try {
     await author.goto(base + '/assistant'); await author.locator('[data-assistant-mode]').first().waitFor();
     const previous = await author.locator('[data-assistant-mode]').count();
     await ask('Что такое архивный фонд?', previous + 1);
-    await author.locator('.sources a[href="/about#guide-fund"]').click(); await author.waitForURL(/\/about#guide-fund$/); await author.locator('#guide-fund').waitFor();
+    await author.locator('.sources a[href="/help#guide-fund"]').click(); await author.waitForURL(/\/help#guide-fund$/); await author.locator('#guide-fund').waitFor();
     await author.goto(base + '/assistant'); await author.locator('[data-assistant-mode]').first().waitFor(); const stored = await author.locator('[data-assistant-mode]').count();
     await ask('Свидетельство Иванова', stored + 1); await author.getByText('В материалах архива ответа не найдено').waitFor();
   });

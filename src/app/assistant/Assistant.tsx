@@ -20,7 +20,7 @@ type Message =
   | { role: 'assistant'; content: string; noAnswer: boolean; sources: AssistantAnswer['sources']; mode?: AssistantAnswer['mode']; researchSteps?:AssistantAnswer['researchSteps']; actions?:AssistantAnswer['actions']; nameExpansion?:AssistantAnswer['nameExpansion']; researchLimitations?:AssistantAnswer['researchLimitations'] }
   | { role: 'error'; content: string; retry?: string };
 
-const examples = ['Есть ли материалы о библиотеке?', 'Что означает архивный шифр?', 'Найди документы о железной дороге'];
+const examples = ['Когда был образован архив области?', 'Какие часы работы читального зала?', 'Что такое архивный фонд?'];
 
 function isMessage(v: unknown): v is Message {
   const m = v as Message;

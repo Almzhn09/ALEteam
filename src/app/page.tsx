@@ -1,86 +1,92 @@
 import Link from 'next/link';
 import { ContentCard } from '@/components/content';
-import { DocumentCard } from '@/components/DocumentCard';
-import { typeLabel } from '@/lib/labels';
+import { HomeDiscovery } from '@/components/HomeDiscovery';
+import { SectionHero } from '@/components/SectionHero';
+import { SectionIcon } from '@/components/SectionIcon';
+import { directoryTotals } from '@/lib/directories-server';
 import { getLang, getT } from '@/lib/i18n-server';
+import { sections } from '@/lib/sections';
+import { firstHref } from '@/lib/sections-server';
 import { languageAlternates } from '@/lib/seo';
-import { latestDocuments, listContent } from '@/server/public-read';
-import {HomeDiscovery} from '@/components/HomeDiscovery';
+import { listContent } from '@/server/public-read';
 
-const quick = [
-  { href: '/catalog', title: 'Каталог документов', text: 'Поиск по тексту и архивному шифру, фильтры по периоду, типу и фонду.' },
-  { href: '/exhibitions', title: 'Онлайн-выставки', text: 'Тематические экспозиции архивных материалов.' },
-  { href: '/branches', title: 'Филиалы и подразделения', text: 'Адреса, контакты, график работы и маршруты до филиалов архива.' },
-  { href: '/places', title: 'История места', text: 'Города и районы: события и опубликованные источники.' },
-];
 export function generateMetadata() { return { alternates: languageAlternates('/') }; }
 
+// R-F01: one real image beside the text, four section entries, recommendations, the directories in numbers.
+// Copy follows data/artur/real-content-v2/ui-copy.json; every list below is read from the published corpus.
 export default async function Home() {
   const [t, lang] = await Promise.all([getT(), getLang()]);
-  const [news, exhibitions, events, ownDocs] = await Promise.all([listContent(lang, 'NEWS'), listContent(lang, 'EXHIBITION'), listContent(lang, 'EVENT'), latestDocuments(lang, 4)]);
-  const docs = (ownDocs.length ? ownDocs : lang === 'ru' ? [] : await latestDocuments('ru', 3)).slice(0,3);
+  const [historyHref, contactsHref, totals, news, exhibitions] = await Promise.all([
+    firstHref(lang, 'history', '/about#history'), firstHref(lang, 'contacts', '/about#contacts'), directoryTotals(), listContent(lang, 'NEWS'), listContent(lang, 'EXHIBITION'),
+  ]);
+  const entries = [
+    { ...sections.history, href: historyHref },
+    sections.calendar, sections.directories, sections.branches,
+  ];
   const blocks = [
     { id: 'news', title: 'Новости и события', href: '/news', items: [...news].sort((a, b) => (b.payload.date ?? '').localeCompare(a.payload.date ?? '')).slice(0, 3) },
     { id: 'exhibitions', title: 'Онлайн-выставки', href: '/exhibitions', items: exhibitions.slice(0, 3) },
-    { id: 'events', title: 'Большой архив памяти', href: '/memory', items: events.slice(0, 3) },
   ].filter(b => b.items.length);
-  return <>
-    <section className="hero" aria-labelledby="hero-title">
-      <div className="container">
-        <h1 id="hero-title">{t('Электронный архив')}</h1>
-        <p className="lead">{t('Ищите архивные документы, просматривайте карточки и сканы, сохраняйте находки и обсуждайте материалы.')}</p>
-        <form className="hero-search" action="/catalog" method="get" role="search" aria-label={t('Поиск по архиву')}>
+  const number = new Intl.NumberFormat(lang === 'kk' ? 'kk-KZ' : lang === 'en' ? 'en-GB' : 'ru-RU');
+  return (
+    <div className="container page stack-xl home">
+      <SectionHero title={t('Откройте историю Восточного Казахстана')} lead={t('История архива, памятные даты и справочники фондов — начните с интересующей темы.')} image="home">
+        <form className="hero-search" action="/search" method="get" role="search" aria-label={t('Поиск по сайту и справочникам')}>
           <label htmlFor="hero-q" className="visually-hidden">{t('Что вы ищете')}</label>
-          <input id="hero-q" name="q" className="input" type="search" maxLength={200} autoComplete="off" placeholder={t('Например: библиотека или DEMO-Ф2-О1-Д1')} />
+          <input id="hero-q" name="q" className="input" type="search" maxLength={200} autoComplete="off" placeholder={t('Тема, имя или название фонда')} />
           <button type="submit" className="btn btn-primary">{t('Найти')}</button>
         </form>
-        <div className="row small" style={{ marginTop: 'var(--space-4)' }}>
-          <span className="muted">{t('Типы документов:')}</span>
-          {(Object.keys(typeLabel) as (keyof typeof typeLabel)[]).map(type => <Link key={type} href={`/catalog?type=${type}`}>{t(typeLabel[type])}</Link>)}
-        </div>
-      </div>
-    </section>
+      </SectionHero>
 
-    <div className="container page">
-      <section aria-labelledby="quick-title">
-        <h2 id="quick-title" className="visually-hidden">{t('Быстрые действия')}</h2>
-        <div className="quick-grid">
-          {quick.map(q => (
-            <Link key={q.href} href={q.href} className="card card-flat quick-card">
-              <h3>{t(q.title)}</h3>
-              <p className="muted small" style={{ margin: 0 }}>{t(q.text)}</p>
-            </Link>
+      <section aria-labelledby="sections-title">
+        <h2 id="sections-title" className="visually-hidden">{t('Разделы')}</h2>
+        <ul className="entry-grid">
+          {entries.map(entry => (
+            <li key={entry.id} className="reveal">
+              <Link href={entry.href} className="entry-card">
+                <SectionIcon id={entry.id} />
+                <span className="entry-card-title">{t(entry.title)}</span>
+                <span className="entry-card-text">{t(entry.description)}</span>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
-      <HomeDiscovery/>
-      {docs.length > 0 && <section className="section" aria-labelledby="recent-title">
-        <div className="row spread" style={{ marginBottom: 'var(--space-4)' }}>
-          <h2 id="recent-title" style={{ margin: 0 }}>{t('Материалы каталога')}</h2>
-          <Link href="/catalog?sort=year_desc">{t('Все материалы')} →</Link>
+      <HomeDiscovery />
+
+      {(totals.funds !== null || totals.newspapers !== null) && <section className="figures reveal" aria-labelledby="figures-title">
+        <div className="figures-text">
+          <h2 id="figures-title">{t('Справочники фондов')}</h2>
+          <p className="muted">{t('Версия справочника указана у источника. Строка справочника не является цифровой копией дела.')}</p>
+          <Link className="btn btn-secondary" href="/directories">{t('Открыть справочники')}</Link>
         </div>
-        {!ownDocs.length && lang !== 'ru' && <p className="small muted">{t('Переводы карточек ещё не опубликованы: показаны записи на русском языке.')}</p>}
-        <ul className="result-list grid-cards">{docs.map(doc => <li key={doc.id}><DocumentCard doc={doc} /></li>)}</ul>
+        <dl className="figures-list">
+          {totals.funds !== null && <div><dt>{t('учётных номеров фондов')}</dt><dd>{number.format(totals.funds)}</dd></div>}
+          {totals.newspapers !== null && <div><dt>{t('строк перечня газет')}</dt><dd>{number.format(totals.newspapers)}</dd></div>}
+        </dl>
       </section>}
 
       {blocks.map(block => (
-        <section key={block.id} className="section" aria-labelledby={`${block.id}-title`}>
-          <div className="row spread" style={{ marginBottom: 'var(--space-4)' }}>
-            <h2 id={`${block.id}-title`} style={{ margin: 0 }}>{t(block.title)}</h2>
+        <section key={block.id} className="stack" aria-labelledby={`${block.id}-title`}>
+          <div className="section-head">
+            <h2 id={`${block.id}-title`}>{t(block.title)}</h2>
             <Link href={block.href}>{t('Все материалы')} →</Link>
           </div>
           <ul className="result-list grid-cards">{block.items.map(i => <li key={i.id}><ContentCard item={i} lang={lang} t={t} /></li>)}</ul>
         </section>
       ))}
 
-      <section className="section" aria-labelledby="about-title">
-        <div className="panel prose">
-          <h2 id="about-title">{t('Об архиве')}</h2>
-          <p>{t('Прототип обновлённого интерфейса Государственного архива Восточно-Казахстанской области. Адрес и режим работы сверены с официальным сайтом 8 ноября 2026 года.')}</p>
-          <p style={{ margin: 0 }}>{t('Официальная информация:')} <a href="http://e-arhiv.vko.gov.kz/ru" rel="noopener noreferrer" target="_blank">e-arhiv.vko.gov.kz<span className="visually-hidden"> {t('(откроется в новой вкладке)')}</span></a> · <Link href="/about">{t('Подробнее и помощь')}</Link></p>
+      <section className="info-band reveal" aria-labelledby="visit-title">
+        <div>
+          <h2 id="visit-title" className="info-band-title">{t('Государственный архив Восточно-Казахстанской области')}</h2>
+          <p>{t('Понедельник–пятница: архив 8:00–17:00; читальный зал 9:00–16:00.')}</p>
+        </div>
+        <div className="info-band-links">
+          <Link className="btn btn-secondary" href={contactsHref}>{t('Контакты')}</Link>
+          <Link className="btn btn-secondary" href="/about">{t('Об архиве')}</Link>
         </div>
       </section>
     </div>
-  </>;
+  );
 }

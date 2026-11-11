@@ -23,7 +23,8 @@ async function inspect(input){
    destroy(target){target.canvas.width=0;target.canvas.height=0;target.canvas=null;target.context=null;}
    getNoAlphaContext(canvas){return canvas.getContext('2d',{alpha:false});}
   }
-  const task=pdfjs.getDocument({data:new Uint8Array(data),isEvalSupported:false,disableFontFace:true,useSystemFonts:false,useWorkerFetch:false,maxImageSize:16_000_000,verbosity:0,CanvasFactory,standardFontDataUrl:fileURLToPath(new URL('./standard_fonts/',import.meta.resolve('pdfjs-dist/package.json'))),cMapUrl:fileURLToPath(new URL('./cmaps/',import.meta.resolve('pdfjs-dist/package.json'))),cMapPacked:true,wasmUrl:fileURLToPath(new URL('./wasm/',import.meta.resolve('pdfjs-dist/package.json')))});
+  const pdfDir=name=>fileURLToPath(new URL(`./${name}/`,import.meta.resolve('pdfjs-dist/package.json'))).split('\\').join('/');
+  const task=pdfjs.getDocument({data:new Uint8Array(data),isEvalSupported:false,disableFontFace:true,useSystemFonts:false,useWorkerFetch:false,maxImageSize:16_000_000,verbosity:0,CanvasFactory,standardFontDataUrl:pdfDir('standard_fonts'),cMapUrl:pdfDir('cmaps'),cMapPacked:true,wasmUrl:pdfDir('wasm')});
   const pdf=await task.promise;
   try{
    pages=pdf.numPages;if(pages<1||pages>100)fail('FORMAT_LIMIT');

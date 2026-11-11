@@ -28,7 +28,7 @@ for (const file of files) {
   if (/(labels|api)\.ts$|(Header|page|Moderation|Assistant)\.tsx$/.test(file)) for (const m of source.matchAll(fieldRe)) add(m[1]);
   if (server) for (const m of source.matchAll(apiErrorRe)) add(m[1]);
   // These files pass labels through helpers (Field, row, tuples), so every Cyrillic literal counts.
-  if (/admin[\\/]|BranchExplorer|DocumentView|Catalog\.tsx|memory[\\/]page|tour-steps\.ts|DiscoveryMaterials|HomeDiscovery|TopicSubscriptions|PlacesExplorer/.test(file)) {
+  if (/admin[\\/]|BranchExplorer|DocumentView|Catalog\.tsx|memory[\\/]page|tour-steps\.ts|DiscoveryMaterials|HomeDiscovery|TopicSubscriptions|PlacesExplorer|lib[\\/](sections|visuals)\.ts|Registry\.tsx|SearchPage\.tsx|MaterialAttachments|directories[\\/]|SectionHero|SectionCards/.test(file)) {
     for (const m of source.matchAll(new RegExp(STRING, 'g'))) add(m[1]);
     for (const m of source.matchAll(/(?:label|title)="([^"]+)"/g)) add(m[1]);
   }

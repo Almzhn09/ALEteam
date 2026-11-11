@@ -8,6 +8,7 @@ import { langName } from '@/lib/i18n';
 import { DemoBadge, ErrorNotice, Loading, Notice } from '@/components/ui';
 import { FormError, useStaff } from '../../AdminShell';
 import { PayloadForm, RevisionWorkflow, StateBadge, cleanPayload, emptyPayload, kindLabel } from '../../editorial';
+import { CmsAttachments } from '../Attachments';
 
 const EDITABLE = ['DRAFT', 'CHANGES_REQUESTED'];
 const FINISHED = ['PUBLISHED', 'ARCHIVED'];
@@ -100,5 +101,6 @@ export default function ContentEditorPage({ params }: { params: Promise<{ id: st
       <h2>{form.title}</h2><p className="pre-wrap">{form.body}</p>
       <p className="small muted" style={{ margin: 0 }}>{t('Права')}: {form.rights}{form.sourceNote ? ` · ${form.sourceNote}` : ''}</p>
     </section>}
+    {item.kind !== 'SETTING' && <CmsAttachments itemId={item.id} branchId={item.branchId} revision={latest} />}
   </>;
 }

@@ -5,6 +5,13 @@ import type { PublicContentItem } from '@/contracts/cms';
 import { dayFormatter, langName, type Lang, type Translate } from '@/lib/i18n';
 import { Breadcrumbs, DemoBadge } from '@/components/ui';
 import { contentHref } from '@/server/public-read';
+import { sectionOf } from '@/lib/sections';
+
+/** Source note for readers: internal codes, storage paths and English technical remarks stay in the admin data. */
+export function readerSourceNote(note: string | null | undefined) {
+  if (!note) return '';
+  return note.split(';').map(part => part.trim()).filter(part => part && !/^S\d{2}\b/.test(part) && !/sources\/|originals|verbatim|transcription|sourceKey|sha/i.test(part) && /[а-яёәіңғүұқөһ]/i.test(part)).join('; ');
+}
 
 const isHttp = (url?: string | null): url is string => !!url && /^https?:\/\//i.test(url);
 export function period(p: PublicContentItem['payload']) {
@@ -20,7 +27,7 @@ export function ContentCard({ item, lang, t, href }: { item: PublicContentItem; 
       <div className="row" style={{ gap: 'var(--space-2)', marginBottom: 'var(--space-1)' }}>
         {p.date && <time className="small muted" dateTime={p.date}>{day(p.date)}</time>}
         {period(p) && <span className="small muted">{period(p)}</span>}
-        {p.category && <span className="badge badge-neutral">{p.category}</span>}
+        {sectionOf(p.category) && <span className="badge badge-neutral">{t(sectionOf(p.category)!.title)}</span>}
         <DemoBadge show={item.isDemo} />
       </div>
       <h2 style={{ fontSize: '1.1rem', marginBottom: 'var(--space-2)' }}><Link href={href ?? contentHref(item)}>{p.title}</Link></h2>
@@ -34,7 +41,7 @@ export function Provenance({ item, t }: { item: PublicContentItem; t: Translate 
   return (
     <dl className="props">
       <dt>{t('Права')}</dt><dd>{p.rights}</dd>
-      {p.sourceNote && <><dt>{t('Происхождение')}</dt><dd>{p.sourceNote}</dd></>}
+      {readerSourceNote(p.sourceNote) && <><dt>{t('Происхождение')}</dt><dd>{readerSourceNote(p.sourceNote)}</dd></>}
       {isHttp(p.sourceUrl) && <><dt>{t('Источник')}</dt><dd><a href={p.sourceUrl} target="_blank" rel="noopener noreferrer">{t('Открыть источник')}<span className="visually-hidden"> {t('(откроется в новой вкладке)')}</span></a></dd></>}
       {period(p) && <><dt>{t('Период')}</dt><dd>{period(p)}</dd></>}
     </dl>
@@ -60,8 +67,39 @@ export function Related({ documents, content, t }: { documents: { id: string; ti
   );
 }
 
+type Block = { type: 'p'; text: string } | { type: 'ul'; items: string[] } | { type: 'table'; rows: string[][] };
+/** Plain-text body into paragraphs, lists and tables (lines with " | "). Text is never parsed as HTML. */
+export function bodyBlocks(body: string): Block[] {
+  const blocks: Block[] = [];
+  for (const raw of body.split('\n')) {
+    const line = raw.trim();
+    const last = blocks[blocks.length - 1];
+    if (!line) { if (last?.type === 'p') blocks.push({ type: 'p', text: '' }); continue; }
+    if (line.includes(' | ') || line.startsWith('|')) {
+      const cells = line.split('|').map(c => c.trim());
+      if (cells.every(c => !c)) continue;
+      if (last?.type === 'table') last.rows.push(cells); else blocks.push({ type: 'table', rows: [cells] });
+    } else if (/^[-•–]\s+/.test(line)) {
+      const text = line.replace(/^[-•–]\s+/, '');
+      if (last?.type === 'ul') last.items.push(text); else blocks.push({ type: 'ul', items: [text] });
+    } else if (last?.type === 'p' && last.text && !/[.!?:;»)]$/.test(last.text) && line.length < 80 && last.text.length < 80) {
+      last.text += '\n' + line;
+    } else blocks.push({ type: 'p', text: line });
+  }
+  return blocks.filter(b => b.type !== 'p' || b.text);
+}
+
 export function Body({ item }: { item: PublicContentItem }) {
-  return <div className="prose pre-wrap" lang={item.locale}>{item.payload.body}</div>;
+  const blocks = bodyBlocks(item.payload.body);
+  return <div className="prose body-text" lang={item.locale}>{blocks.map((b, i) => {
+    if (b.type === 'p') return <p key={i} className="pre-wrap">{b.text}</p>;
+    if (b.type === 'ul') return <ul key={i}>{b.items.map((t, j) => <li key={j}>{t}</li>)}</ul>;
+    const width = Math.max(...b.rows.map(r => r.length));
+    const rows = b.rows.map(r => r.length === width ? r : [...r, ...Array(width - r.length).fill('')]);
+    // Drop columns that are empty in every row (source tables keep layout spacers).
+    const keep = Array.from({ length: width }, (_, c) => rows.some(r => r[c]));
+    return <div key={i} className="table-wrap body-table"><table className="table"><tbody>{rows.map((r, j) => <tr key={j}>{r.filter((_, c) => keep[c]).map((cell, c) => c === 0 ? <th key={c} scope="row">{cell}</th> : <td key={c}>{cell}</td>)}</tr>)}</tbody></table></div>;
+  })}</div>;
 }
 
 export function NoTranslation({ available, t, crumbs, path }: { available: string[]; t: Translate; crumbs: { href?: string; label: string }[]; path: string }) {

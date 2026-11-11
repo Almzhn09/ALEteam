@@ -19,6 +19,7 @@ const sections = [
   { href: '/admin/catalog', label: 'Каталог', any: ['catalog.read'] },
   { href: '/admin/uploads', label: 'Файлы цифровых копий', any: ['catalog.read'] },
   { href: '/admin/imports', label: 'Импорт каталога', any: ['catalog.read'] },
+  { href: '/admin/directories', label: 'Справочники', any: ['catalog.read'] },
   { href: '/admin/branches', label: 'Филиалы', any: ['branches.manage'] },
   { href: '/admin/users', label: 'Сотрудники', any: ['staff.users.manage'] },
   { href: '/admin/roles', label: 'Роли и права', any: ['staff.roles.manage'] },
