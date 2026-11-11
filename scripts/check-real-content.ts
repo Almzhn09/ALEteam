@@ -117,6 +117,14 @@ try{
   let total=0;for(const place of response.items){const history=await call('/places/'+place.id+'/history?locale=ru&limit=20');total+=history.items.length;for(const event of history.items)assert.ok(event.sources.length);}
   assert.equal(total,9);
  });
+ await check('chosen interests recommend matching real materials and opt-out restores editorial picks',async()=>{
+  await call('/me/interests','PUT',{topicIds:[topics.industry],personalizationEnabled:true,historyEnabled:false});
+  const personal=await call('/discovery/home?locale=ru&limit=3');assert.equal(personal.recommended.mode,'interests');
+  assert.ok(personal.recommended.items.length>0);
+  for(const item of personal.recommended.items){assert.equal(item.isDemo,false);assert.equal(item.id,materials.get('archive-calendar-2025'));}
+  await call('/me/interests','PUT',{topicIds:[],personalizationEnabled:false,historyEnabled:false});
+  assert.equal((await call('/discovery/home?locale=ru&limit=3')).recommended.mode,'editorial');
+ });
  for(const scenario of examples.cases){
   await check('real assistant: '+scenario.id,async()=>{
    const result=await call('/assistant','POST',{question:scenario.question,locale:scenario.locale});
@@ -130,6 +138,30 @@ try{
  await check('old fixture IDs and invented assistant history do not revive fictitious sources',async()=>{
   const result=await call('/assistant','POST',{question:'Найди DEMO-Ф1-О1-Д1',locale:'ru',history:[{role:'assistant',content:'В библиотеке есть источник cms_deleted_demo.'}]});
   assert.equal(result.noAnswer,true);assert.equal(result.sources.length,0);assert.ok(!result.answer.includes('cms_deleted_demo'));
+ });
+ await check('real CMS topic subscription: baseline, new matching publication, worker retry, read and unsubscribe',async()=>{
+  const spec={topicId:topics.archives,locale:'ru'};
+  const sub=(await call('/me/topic-subscriptions','POST',spec)).item;
+  assert.equal((await call('/me/topic-subscriptions','POST',spec)).item.id,sub.id);
+  assert.equal((await call('/me/topic-notifications')).items.length,0);
+  // A genuine provided regulation becomes a new matching site publication.
+  // Its source text/historical meaning is unchanged; no fictional event is added.
+  const row=packet.records.find(r=>r.sourceKey==='compliance-regulation-ru')!;
+  const id=materials.get(row.materialKey)!;
+  let next=(await call('/admin/content/'+id+'/revisions','POST',{locale:'ru',payload:row.request.payload},'writer')).item;
+  next=await transition(next,'IN_REVIEW','writer');next=await transition(next,'APPROVED','reviewer');await transition(next,'PUBLISHED','publisher');
+  const current=await resolveMaterial({kind:'cms',id},'ru',false);assert.ok(current);
+  let editorial=(await call('/admin/discovery/facts','POST',{kind:'EDITORIAL',branchId:null,data:{material:{kind:'cms',id},topicId:topics.archives,order:99},sources:[{kind:'cms',id,locale:'ru',revision:current.source.revision}]},'writer')).item;
+  editorial=(await call('/admin/discovery/facts/'+editorial.id+'/verify','POST',{expectedUpdatedAt:editorial.updatedAt},'reviewer')).item;
+  const deliver=()=>execFileSync(process.execPath,['--import','tsx','scripts/deliver-topic-notices.ts'],{env,stdio:'pipe'});
+  deliver();const first=(await call('/me/topic-notifications')).items;assert.equal(first.length,1);
+  assert.equal(first[0].material.id,id);assert.equal(first[0].material.isDemo,false);
+  deliver();assert.equal((await call('/me/topic-notifications')).items.length,1);
+  await call('/me/topic-notifications/'+first[0].id,'PATCH',{});
+  assert.ok((await call('/me/topic-notifications')).items[0].readAt);
+  await call('/me/topic-subscriptions/'+sub.id,'DELETE',{});
+  assert.equal((await call('/me/topic-notifications')).items.length,0);
+  await call('/admin/discovery/facts/'+editorial.id+'/withdraw','POST',{expectedUpdatedAt:editorial.updatedAt},'publisher');
  });
  await check('withdrawal invalidates a retrieved real-source snapshot immediately',async()=>{
   const snapshot=await retrieveCmsPassages('Комплаенс-офицер','ru');assert.ok(snapshot.length);
