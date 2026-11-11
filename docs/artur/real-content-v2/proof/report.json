@@ -1,0 +1,439 @@
+{
+  "generated": "2026-11-11T07:05:29.854Z",
+  "commit": "6b49dbe1727da24d7188a8442fd36cd132fe0a47",
+  "dataSource": "provided source files; no synthetic seed",
+  "nativeDefaultSetup": true,
+  "scope": "R-A01–R-A05 source and assistant acceptance; visual redesign remains R-F01/F04",
+  "technicalAccounts": true,
+  "humanArchiveApproval": false,
+  "checks": [
+    {
+      "name": "default real setup imports 53 source editions and repeats without new rows or fixtures",
+      "passed": true
+    },
+    {
+      "name": "actual DOCX originals upload, parse, review and publish as CMS files with paragraph provenance",
+      "passed": true
+    },
+    {
+      "name": "real places, histories, topics and source-backed recommendations publish through fact API",
+      "passed": true
+    },
+    {
+      "name": "the home recommendations cite real source materials and have no invented view counts",
+      "passed": true
+    },
+    {
+      "name": "all three real place histories contain nine sourced events",
+      "passed": true
+    },
+    {
+      "name": "complete source registers import without creating fictitious archival documents",
+      "passed": true
+    },
+    {
+      "name": "chosen interests recommend matching real materials and opt-out restores editorial picks",
+      "passed": true
+    },
+    {
+      "name": "real assistant: opening-hours",
+      "passed": true
+    },
+    {
+      "name": "real assistant: reception-phone",
+      "passed": true
+    },
+    {
+      "name": "real assistant: history-founded",
+      "passed": true
+    },
+    {
+      "name": "real assistant: decree-142",
+      "passed": true
+    },
+    {
+      "name": "real assistant: history-late-paragraph",
+      "passed": true
+    },
+    {
+      "name": "real assistant: calendar-school",
+      "passed": true
+    },
+    {
+      "name": "real assistant: calendar-kazakh",
+      "passed": true
+    },
+    {
+      "name": "real assistant: fonds-version",
+      "passed": true
+    },
+    {
+      "name": "real assistant: compliance",
+      "passed": true
+    },
+    {
+      "name": "natural contact questions use provided hours and central contacts instead of guessing branch fields",
+      "passed": true
+    },
+    {
+      "name": "assistant cites a permitted original DOCX and withdrawal removes that file from answers",
+      "passed": true
+    },
+    {
+      "name": "assistant quotes exact fund accounting numbers and original newspaper holdings with source editions",
+      "passed": true
+    },
+    {
+      "name": "withdrawing a reference dataset immediately revokes assistant evidence",
+      "passed": true
+    },
+    {
+      "name": "old fixture IDs and invented assistant history do not revive fictitious sources",
+      "passed": true
+    },
+    {
+      "name": "real CMS topic subscription: baseline, new matching publication, worker retry, read and unsubscribe",
+      "passed": true
+    },
+    {
+      "name": "withdrawal invalidates a retrieved real-source snapshot immediately",
+      "passed": true
+    },
+    {
+      "name": "browser reads the actual source text, with light/dark themes and enlarged type",
+      "passed": true
+    },
+    {
+      "name": "real long-form text remains readable across 36 locale, viewport and theme combinations",
+      "passed": true
+    }
+  ],
+  "visualMatrix": [
+    {
+      "width": 360,
+      "locale": "ru",
+      "theme": "light",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "locale": "ru",
+      "theme": "light",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "locale": "ru",
+      "theme": "dark",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "locale": "ru",
+      "theme": "dark",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "locale": "kk",
+      "theme": "light",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "locale": "kk",
+      "theme": "light",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "locale": "kk",
+      "theme": "dark",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "locale": "kk",
+      "theme": "dark",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "locale": "en",
+      "theme": "light",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "locale": "en",
+      "theme": "light",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "locale": "en",
+      "theme": "dark",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "locale": "en",
+      "theme": "dark",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 768,
+      "locale": "ru",
+      "theme": "light",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 768,
+      "locale": "ru",
+      "theme": "light",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 768,
+      "locale": "ru",
+      "theme": "dark",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 768,
+      "locale": "ru",
+      "theme": "dark",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 768,
+      "locale": "kk",
+      "theme": "light",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 768,
+      "locale": "kk",
+      "theme": "light",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 768,
+      "locale": "kk",
+      "theme": "dark",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 768,
+      "locale": "kk",
+      "theme": "dark",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 768,
+      "locale": "en",
+      "theme": "light",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 768,
+      "locale": "en",
+      "theme": "light",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 768,
+      "locale": "en",
+      "theme": "dark",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 768,
+      "locale": "en",
+      "theme": "dark",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "locale": "ru",
+      "theme": "light",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "locale": "ru",
+      "theme": "light",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "locale": "ru",
+      "theme": "dark",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "locale": "ru",
+      "theme": "dark",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "locale": "kk",
+      "theme": "light",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "locale": "kk",
+      "theme": "light",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "locale": "kk",
+      "theme": "dark",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "locale": "kk",
+      "theme": "dark",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "theme": "light",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "theme": "light",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "theme": "dark",
+      "textSize": "100",
+      "fontSize": "16px",
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "theme": "dark",
+      "textSize": "150",
+      "fontSize": "24px",
+      "overflow": 0
+    }
+  ],
+  "integrationGates": [
+    {
+      "name": "CMS attachments",
+      "passed": true,
+      "detail": "Inspect actual data after R-B01/B03 import."
+    },
+    {
+      "name": "CMS explanation",
+      "passed": true,
+      "detail": "Inspect actual data after R-B01/B03 import."
+    },
+    {
+      "name": "CMS related",
+      "passed": true,
+      "detail": "Inspect actual data after R-B01/B03 import."
+    },
+    {
+      "name": "fund register",
+      "passed": true,
+      "detail": "Inspect actual data after R-B01/B03 import."
+    },
+    {
+      "name": "newspaper register",
+      "passed": true,
+      "detail": "Inspect actual data after R-B01/B03 import."
+    },
+    {
+      "name": "unified search",
+      "passed": true,
+      "detail": "Inspect actual data after R-B01/B03 import."
+    },
+    {
+      "name": "public source-based copy",
+      "passed": true,
+      "detail": "No obsolete fictional-material footer found."
+    }
+  ],
+  "sourceIntegrationReady": true
+}
