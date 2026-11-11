@@ -1,0 +1,34 @@
+{
+  "testedAt": "2026-11-11T14:26:09.128Z",
+  "checks": [
+    {
+      "name": "home",
+      "url": "/",
+      "status": 200,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "contacts",
+      "url": "/materials/archive-contacts",
+      "status": 200,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "history",
+      "url": "/materials/archive-history-1",
+      "status": 200,
+      "noHorizontalOverflow": true
+    }
+  ],
+  "api": {
+    "searchTotal": 1,
+    "exactFundTotal": 1,
+    "ocrPages": [
+      4,
+      5,
+      6
+    ],
+    "ocrConfidence": 0.8956600455387356
+  },
+  "browserErrors": []
+}

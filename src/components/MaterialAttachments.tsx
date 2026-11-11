@@ -37,9 +37,10 @@ export async function MaterialAttachments({ id, locale }: { id: string; locale: 
       {files.length > 0 && <ul className="attachment-list">
         {files.map(file => {
           const preview = previewOf(file);
+          const originalHref=file.href+(file.source.page?'#page='+file.source.page:'');
           const inline = file.mimeType === 'application/pdf';
           return <li key={file.id} className="attachment-card">
-            {preview && <a href={file.href} target="_blank" rel="noopener noreferrer" className="attachment-thumb" tabIndex={-1} aria-hidden="true">
+            {preview && <a href={originalHref} target="_blank" rel="noopener noreferrer" className="attachment-thumb" tabIndex={-1} aria-hidden="true">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={preview.href} alt="" loading="lazy" decoding="async" />
             </a>}
@@ -47,7 +48,7 @@ export async function MaterialAttachments({ id, locale }: { id: string; locale: 
               <p className="attachment-name">{file.name}</p>
               <p className="small muted">{typeName(file.mimeType)} · {size(file.bytes)}{file.source.page ? ` · ${t('с. {n}', { n: file.source.page })}` : ''}</p>
               <div className="row">
-                {inline && <a className="btn btn-secondary btn-sm" href={file.href} target="_blank" rel="noopener noreferrer">{t('Открыть')}<span className="visually-hidden"> {file.name} {hint}</span></a>}
+                {inline && <a className="btn btn-secondary btn-sm" href={originalHref} target="_blank" rel="noopener noreferrer">{t('Открыть')}<span className="visually-hidden"> {file.name} {hint}</span></a>}
                 {file.downloadable && <a className="btn btn-secondary btn-sm" href={`${file.href}?download=1`} download>{t('Скачать')}<span className="visually-hidden"> {file.name}</span></a>}
               </div>
             </div>

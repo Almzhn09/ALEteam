@@ -1,0 +1,386 @@
+{
+  "testedAt": "2026-11-11T14:38:10.076Z",
+  "examples": [
+    {
+      "request": "GET /api/search?scope=cms&q=%D1%87%D0%B8%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9",
+      "response": {
+        "items": [
+          {
+            "kind": "material",
+            "material": {
+              "kind": "cms",
+              "id": "cmwbootd600bbq4o3gebl6hws",
+              "href": "/api/content/archive-reading-room-info?locale=ru",
+              "title": "Читальный зал",
+              "contentLocale": "ru",
+              "availableLocales": [
+                "en",
+                "kk",
+                "ru"
+              ],
+              "translationStatus": "published",
+              "isDemo": false,
+              "reason": {
+                "code": "editorial",
+                "text": "",
+                "evidence": []
+              }
+            },
+            "snippet": "В предоставленном документе «Контакты» указан график читального зала: понедельник–пятница, 9:00–16:00. На старом сайте опубликованы правила, утверждённые приказом №58 от 2 октября 2000 года. Их актуальность требует проверки; эта сохранённая версия не объявляется действующим регламентом. Перед посещением уточните график и правила у архива. Запись и "
+          }
+        ],
+        "total": 1,
+        "page": 1,
+        "pageSize": 20,
+        "locale": "ru",
+        "counts": {
+          "materials": 1,
+          "funds": 0,
+          "newspapers": 0
+        }
+      }
+    },
+    {
+      "request": "GET /api/directories/funds?number=%D0%A0-1%20%D1%87.%D1%81.",
+      "response": {
+        "items": [
+          {
+            "kind": "fund",
+            "id": "rf-f3dda5691e7cbf59e09b1df2fb1a",
+            "number": "Р-1 ч.с.",
+            "names": [
+              {
+                "name": "Усть-Каменогорский городской Совет  рабочих, крестьянских и красноармейских депутатов г. Усть-Каменогорск Семипалатинского округа",
+                "sourceRow": 2,
+                "periodOriginal": "[03]1926-19.02.1932"
+              },
+              {
+                "name": "Усть-Каменогорский городской Совет  рабочих, крестьянских и красноармейских депутатов г. Усть-Каменогорск Восточно-Казахстанской области",
+                "sourceRow": 3,
+                "periodOriginal": "20.02.1932-18.09.1939"
+              },
+              {
+                "name": "Усть-Каменогорский городской Совет депутатов трудящихся и его исполнительный комитет г. Усть-Каменогорск Восточно-Казахстанской области",
+                "sourceRow": 4,
+                "periodOriginal": "19.09.1939-06.10.1977"
+              },
+              {
+                "name": "Усть-Каменогорский городской Совет народных депутатов и его исполнительный комитет г. Усть-Каменогорск Восточно-Казахстанской области",
+                "sourceRow": 5,
+                "periodOriginal": "07.10.1977-11.03.1992"
+              },
+              {
+                "name": "Усть-Каменогорский городской Совет народных депутатов г. Усть-Каменогорск Восточно-Казахстанской области",
+                "sourceRow": 6,
+                "periodOriginal": "12.03.1992-09.12.1993"
+              }
+            ],
+            "renameStatus": "source_rows",
+            "source": {
+              "id": "s09-funds-general",
+              "title": "Фонды Государственного архива ВКО",
+              "asOf": null,
+              "notes": "Дата актуальности фондового перечня не установлена. Различия названий сохранены как строки источника.",
+              "holder": null,
+              "sha256": "cf9c63b4e00009738fed27c53f08736349dd7e7f93b17faec2a1574e75aeb3eb",
+              "edition": "Имя файла: 2018; подпись ссылки: 2026",
+              "branchId": null
+            },
+            "href": "/api/directories/funds/rf-f3dda5691e7cbf59e09b1df2fb1a"
+          }
+        ],
+        "total": 1,
+        "page": 1,
+        "pageSize": 20,
+        "kind": "fund",
+        "sourceVersions": [
+          {
+            "id": "s09-funds-general",
+            "title": "Фонды Государственного архива ВКО",
+            "asOf": null,
+            "notes": "Дата актуальности фондового перечня не установлена. Различия названий сохранены как строки источника.",
+            "holder": null,
+            "sha256": "cf9c63b4e00009738fed27c53f08736349dd7e7f93b17faec2a1574e75aeb3eb",
+            "edition": "Имя файла: 2018; подпись ссылки: 2026",
+            "branchId": null
+          }
+        ]
+      }
+    },
+    {
+      "request": "GET /api/discovery/topics",
+      "response": {
+        "locale": "ru",
+        "items": [
+          {
+            "id": "cmwbopbvx00isq4o3n1ugkgo6",
+            "title": "История архива",
+            "description": "",
+            "contentLocale": "ru",
+            "availableLocales": [
+              "ru",
+              "kk",
+              "en"
+            ],
+            "translationStatus": "published",
+            "isDemo": false,
+            "sources": [
+              {
+                "kind": "cms",
+                "id": "cmwboop850000q4o3p5rhb5da",
+                "locale": "ru",
+                "revision": "b999905e5fdeeda1c70c3ed2e376f61e8115ba8edcb3719a4ba5d2173c12825f",
+                "title": "История архива · 1",
+                "isDemo": false,
+                "href": "/api/content/archive-history-1?locale=ru"
+              }
+            ]
+          },
+          {
+            "id": "cmwbopbw200ivq4o3jtdvy8bw",
+            "title": "История городов",
+            "description": "",
+            "contentLocale": "ru",
+            "availableLocales": [
+              "ru",
+              "kk",
+              "en"
+            ],
+            "translationStatus": "published",
+            "isDemo": false,
+            "sources": [
+              {
+                "kind": "cms",
+                "id": "cmwbooqcz003kq4o3p14anacs",
+                "locale": "ru",
+                "revision": "d67471d0c23042ba4e9ceab257ba31c47e5d18fa4366b0e3f3951dfcd634e909",
+                "title": "Календарь памятных дат · 2026",
+                "isDemo": false,
+                "href": "/api/content/archive-calendar-2026?locale=ru"
+              }
+            ]
+          },
+          {
+            "id": "cmwbopbw700iyq4o3gre2f7o2",
+            "title": "Календарь памятных дат",
+            "description": "",
+            "contentLocale": "ru",
+            "availableLocales": [
+              "ru",
+              "kk",
+              "en"
+            ],
+            "translationStatus": "published",
+            "isDemo": false,
+            "sources": [
+              {
+                "kind": "cms",
+                "id": "cmwbooqcz003kq4o3p14anacs",
+                "locale": "ru",
+                "revision": "d67471d0c23042ba4e9ceab257ba31c47e5d18fa4366b0e3f3951dfcd634e909",
+                "title": "Календарь памятных дат · 2026",
+                "isDemo": false,
+                "href": "/api/content/archive-calendar-2026?locale=ru"
+              }
+            ]
+          },
+          {
+            "id": "cmwbopbwe00j1q4o36qaayaa4",
+            "title": "Газеты",
+            "description": "",
+            "contentLocale": "ru",
+            "availableLocales": [
+              "ru",
+              "kk",
+              "en"
+            ],
+            "translationStatus": "published",
+            "isDemo": false,
+            "sources": [
+              {
+                "kind": "cms",
+                "id": "cmwboou0l00chq4o34rkdg1rb",
+                "locale": "ru",
+                "revision": "527d99ce5469f97ac6a0a1a8bfbb3df72b4297f2d0be2f7427690a0118001ab5",
+                "title": "Перечень хранения газет",
+                "isDemo": false,
+                "href": "/api/content/archive-newspaper-directory?locale=ru"
+              }
+            ]
+          },
+          {
+            "id": "cmwbopbwk00j4q4o38rcm2bwo",
+            "title": "Комплаенс",
+            "description": "",
+            "contentLocale": "ru",
+            "availableLocales": [
+              "ru",
+              "kk",
+              "en"
+            ],
+            "translationStatus": "published",
+            "isDemo": false,
+            "sources": [
+              {
+                "kind": "cms",
+                "id": "cmwbooqi60045q4o30jbl8bwr",
+                "locale": "ru",
+                "revision": "5ce347022a194ef8de84a274a59d4f9f36c5fcfdf52acf610851300f10394619",
+                "title": "Информация о работе комплаенс службы",
+                "isDemo": false,
+                "href": "/api/content/archive-compliance-information?locale=ru"
+              }
+            ]
+          }
+        ],
+        "nextCursor": "eyJ2IjoxLCJpZCI6ImNtd2JvcGJ3azAwajRxNG8zOHJjbTJid28iLCJzY29wZSI6IjNiNzBjMzUzZDFhNzliNWI4MGQ2OTg0NTZmYjg1MDcyODc3ZjQ3ZDE2NWUyNzNmZTVlYmViMTU0MjMzYzYzOGIifQ"
+      }
+    },
+    {
+      "request": "GET /api/places",
+      "response": {
+        "items": [
+          {
+            "id": "cmwbopbmv00gmq4o3epesfn72",
+            "name": "Усть-Каменогорск",
+            "description": "Материалы о городе и его названиях. Даты и происхождение указаны у источников.",
+            "contentLocale": "ru",
+            "availableLocales": [
+              "ru"
+            ],
+            "translationStatus": "published",
+            "mapAvailable": false,
+            "coordinates": null,
+            "historyCount": 3,
+            "isDemo": false
+          },
+          {
+            "id": "cmwbopbn400gpq4o3p13as85y",
+            "name": "Риддер",
+            "description": "Материалы о городе и его названиях. Даты и происхождение указаны у источников.",
+            "contentLocale": "ru",
+            "availableLocales": [
+              "ru"
+            ],
+            "translationStatus": "published",
+            "mapAvailable": false,
+            "coordinates": null,
+            "historyCount": 3,
+            "isDemo": false
+          },
+          {
+            "id": "cmwbopbnd00gsq4o30wccxayb",
+            "name": "Алтай",
+            "description": "Материалы о городе и его названиях. Даты и происхождение указаны у источников.",
+            "contentLocale": "ru",
+            "availableLocales": [
+              "ru"
+            ],
+            "translationStatus": "published",
+            "mapAvailable": false,
+            "coordinates": null,
+            "historyCount": 3,
+            "isDemo": false
+          }
+        ],
+        "nextCursor": null,
+        "locale": "ru"
+      }
+    },
+    {
+      "request": "POST /api/discovery/materials/cms/cmwboop850000q4o3p5rhb5da/explanation",
+      "body": {
+        "locale": "ru"
+      },
+      "response": {
+        "status": "ready",
+        "mode": "extractive",
+        "sourceRevision": "c55734da1cedb3652927d00d994906a76e36a7fa774437468790ad3f7db55cd9",
+        "summary": "Краткие выдержки из документа:\n«В соответствии с распоряжением Главы Восточно-Казахстанской областной администрации от 27 апреля 1992г. №336-р «О создании районных и городских архивов по личному составу при районных и городских администрациях Восточно-Казахстанской области» хозрасчетные архивы документов по личному составу преобразованы в районные и городские архивы по личному составу при районных и городских администрациях с содержанием за счет средств районных и городских бюджетов.»\n\n«Государственный архив Восточно-Казахстанской области образован в 1940 году с подчинением архивному отделению управления народного комиссариата внутренних дел Казахской ССР по Восточно-Казахстанской области.»\n\n«Согласно приказу управления народного комиссариата внутренних дел Казахской ССР от 31 октября 1941 года №68 архивное отделение было переименовано в отделение государственных архивов управления народного комиссариата внутренних дел (НКВД) Казахской ССР по Восточно-Казахстанской области.»",
+        "terms": [
+          {
+            "term": "НКВД",
+            "explanation": "НКВД — сокращение названия «Народный комиссариат внутренних дел». Уточняйте страну, период и полное название учреждения по самому источнику.",
+            "fragmentIds": [
+              "cmwc7clia00g656o3phj0p4x7-3"
+            ]
+          },
+          {
+            "term": "переименовано",
+            "explanation": "Переименование — изменение названия. Само по себе оно не означает создание нового учреждения или города; дату и основание сверяйте с источником.",
+            "fragmentIds": [
+              "cmwc7clia00g656o3phj0p4x7-3"
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "fragmentId": "cmwc7clia00g656o3phj0p4x7-23",
+            "quote": "В соответствии с распоряжением Главы Восточно-Казахстанской областной администрации от 27 апреля 1992г. №336-р «О создании районных и городских архивов по личному составу при районных и городских администрациях Восточно-Казахстанской области» хозрасчетные архивы документов по личному составу преобразованы в районные и городские архивы по личному составу при районных и городских администрациях с содержанием за счет средств районных и городских бюджетов.",
+            "source": {
+              "kind": "cms",
+              "id": "cmwboop850000q4o3p5rhb5da",
+              "locale": "ru",
+              "revision": "c55734da1cedb3652927d00d994906a76e36a7fa774437468790ad3f7db55cd9",
+              "title": "История архива · 1",
+              "isDemo": false,
+              "href": "/api/material-files/cmwc7clia00g656o3phj0p4x7/text",
+              "fragment": {
+                "id": "cmwc7clia00g656o3phj0p4x7-23",
+                "paragraph": 23,
+                "start": 5315,
+                "end": 5771
+              }
+            }
+          },
+          {
+            "fragmentId": "cmwc7clia00g656o3phj0p4x7-2",
+            "quote": "Государственный архив Восточно-Казахстанской области образован в 1940 году с подчинением архивному отделению управления народного комиссариата внутренних дел Казахской ССР по Восточно-Казахстанской области.",
+            "source": {
+              "kind": "cms",
+              "id": "cmwboop850000q4o3p5rhb5da",
+              "locale": "ru",
+              "revision": "c55734da1cedb3652927d00d994906a76e36a7fa774437468790ad3f7db55cd9",
+              "title": "История архива · 1",
+              "isDemo": false,
+              "href": "/api/material-files/cmwc7clia00g656o3phj0p4x7/text",
+              "fragment": {
+                "id": "cmwc7clia00g656o3phj0p4x7-2",
+                "paragraph": 2,
+                "start": 15,
+                "end": 221
+              }
+            }
+          },
+          {
+            "fragmentId": "cmwc7clia00g656o3phj0p4x7-3",
+            "quote": "Согласно приказу управления народного комиссариата внутренних дел Казахской ССР от 31 октября 1941 года №68 архивное отделение было переименовано в отделение государственных архивов управления народного комиссариата внутренних дел (НКВД) Казахской ССР по Восточно-Казахстанской области.",
+            "source": {
+              "kind": "cms",
+              "id": "cmwboop850000q4o3p5rhb5da",
+              "locale": "ru",
+              "revision": "c55734da1cedb3652927d00d994906a76e36a7fa774437468790ad3f7db55cd9",
+              "title": "История архива · 1",
+              "isDemo": false,
+              "href": "/api/material-files/cmwc7clia00g656o3phj0p4x7/text",
+              "fragment": {
+                "id": "cmwc7clia00g656o3phj0p4x7-3",
+                "paragraph": 3,
+                "start": 222,
+                "end": 508
+              }
+            }
+          }
+        ],
+        "limitations": [
+          "Автоматическая подборка точных выдержек и редакционный словарь; это не свободный пересказ и не архивная справка."
+        ],
+        "ocr": {
+          "used": false,
+          "quality": "not_applicable",
+          "engine": "openxml-docx"
+        }
+      }
+    }
+  ]
+}

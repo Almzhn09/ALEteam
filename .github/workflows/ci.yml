@@ -83,6 +83,8 @@ jobs:
         run: npm run test:discovery
       - name: Real-source publication, safe cleanup, attachments and complete registries
         run: npm run test:real-content
+      - name: Safe managed-source upgrades, interrupted OCR and concurrent imports
+        run: npm run test:real-content-upgrade
       - name: Integrated team UI, discovery journey and spacing matrix
         shell: bash
         run: |

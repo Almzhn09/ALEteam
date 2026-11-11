@@ -8,6 +8,7 @@ import { latestDocuments, listContent } from '@/server/public-read';
 import {HomeDiscovery} from '@/components/HomeDiscovery';
 import {ArchivePhoto} from '@/components/ArchivePhoto';
 import {homeDiscoveryInitial} from '@/lib/home-server';
+import {slotVisual} from '@/lib/visuals-server';
 import editorial from '../../data/artur/real-content-v2/ui-copy.json';
 
 const quick = [
@@ -21,7 +22,7 @@ export function generateMetadata() { return { alternates: languageAlternates('/'
 export default async function Home() {
   const [t, lang] = await Promise.all([getT(), getLang()]);
   const copy=editorial[lang];
-  const [news, exhibitions, events, ownDocs, initialDiscovery] = await Promise.all([listContent(lang, 'NEWS'), listContent(lang, 'EXHIBITION'), listContent(lang, 'EVENT'), latestDocuments(lang, 4), homeDiscoveryInitial(lang)]);
+  const [news, exhibitions, events, ownDocs, initialDiscovery, photo] = await Promise.all([listContent(lang, 'NEWS'), listContent(lang, 'EXHIBITION'), listContent(lang, 'EVENT'), latestDocuments(lang, 4), homeDiscoveryInitial(lang), slotVisual('home')]);
   const docs = (ownDocs.length ? ownDocs : lang === 'ru' ? [] : await latestDocuments('ru', 3)).slice(0,3);
   const blocks = [
     { id: 'news', title: 'Новости и события', href: '/news', items: [...news].sort((a, b) => (b.payload.date ?? '').localeCompare(a.payload.date ?? '')).slice(0, 3) },
@@ -46,7 +47,7 @@ export default async function Home() {
         </div>}
         <div className="hero-links"><span className="small muted">{t('Начните с темы:')}</span><Link href="/catalog?scope=cms&q=история">{t('История архива')}</Link><Link href="/catalog?scope=cms&q=2026">{t('Календарь 2026')}</Link></div>
        </div>
-       <div className="hero-visual reveal"><ArchivePhoto lang={lang} priority/></div>
+       <div className="hero-visual reveal"><ArchivePhoto visual={photo} lang={lang} priority/></div>
       </div>
     </section>
 

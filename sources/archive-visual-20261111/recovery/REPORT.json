@@ -1,0 +1,175 @@
+{
+  "checkedAt": "2026-11-11T18:48:38.395094+00:00",
+  "originalsReplaced": false,
+  "sameEventFullOriginalsRecovered": false,
+  "originEvidence": {
+    "http": "Both original URLs return200, Content-Length81920 and original SHA. Tail Range returns416 with Content-Range bytes */81920; the advertised objects contain no remaining bytes.",
+    "https": "Both HTTPS variants returned503; no successful complete HTTPS response was observed.",
+    "thumbnailProvenance": {
+      "pageSnapshot": "sources/archive-visual-20261111/pages/recovered-source-home-20261111.html",
+      "sha256": "43cb10c8a2443f19cae79dbf040dc45fe96f80161dc104cfb153b01b33e573c4",
+      "note": "The open-day image URL occurs in the official homepage thumbnail for52813; the article itself has no inline image."
+    }
+  },
+  "attempts": [
+    {
+      "id": "open-day-altay",
+      "mode": "http-original",
+      "url": "http://e-arhiv.vko.gov.kz/akimsemey/state/zirian/photo_2026-09-17_16-34-20.jpg",
+      "range": null,
+      "exit": 0,
+      "error": "",
+      "bytes": 81920,
+      "sha256": "f7e21d3e70ce0b5b4a43899ab7352d7f322c9424e307debd50f64cab33b547b9",
+      "headers": {
+        "status": "HTTP/1.1 200 OK",
+        "content-type": "image/jpeg",
+        "last-modified": "Tue, 22 Sep 2026 03:39:45 GMT",
+        "accept-ranges": "bytes",
+        "etag": "\"a6d8ce2444add1:0\"",
+        "server": "envoy",
+        "content-length": "81920"
+      }
+    },
+    {
+      "id": "open-day-altay",
+      "mode": "https-fresh",
+      "url": "https://e-arhiv.vko.gov.kz/akimsemey/state/zirian/photo_2026-09-17_16-34-20.jpg?archive-full-source=20261111",
+      "range": null,
+      "exit": 0,
+      "error": "",
+      "bytes": 91,
+      "sha256": "2f85832e31ca57711e6107af6b142363351ae516adb71c69afc643fac26be7f6",
+      "headers": {
+        "status": "HTTP/2 503 ",
+        "server": "envoy",
+        "content-length": "91",
+        "content-type": "text/plain"
+      }
+    },
+    {
+      "id": "open-day-altay",
+      "mode": "http-tail",
+      "url": "http://e-arhiv.vko.gov.kz/akimsemey/state/zirian/photo_2026-09-17_16-34-20.jpg",
+      "range": "bytes=81920-",
+      "exit": 0,
+      "error": "",
+      "bytes": 362,
+      "sha256": "eb736f97a6d7665e025d3d33ddd344bcc7f36b7a7fdc4291be5a72160fbece63",
+      "headers": {
+        "status": "HTTP/1.1 416 Range Not Satisfiable",
+        "content-type": "image/jpeg",
+        "last-modified": "Tue, 22 Sep 2026 03:39:45 GMT",
+        "accept-ranges": "bytes",
+        "etag": "\"a6d8ce2444add1:0\"",
+        "server": "envoy",
+        "content-length": "362",
+        "content-range": "bytes */81920"
+      }
+    },
+    {
+      "id": "open-day-altay",
+      "mode": "https-range",
+      "url": "https://e-arhiv.vko.gov.kz/akimsemey/state/zirian/photo_2026-09-17_16-34-20.jpg?archive-range=20261111",
+      "range": "bytes=81920-163839",
+      "exit": 0,
+      "error": "",
+      "bytes": 91,
+      "sha256": "2f85832e31ca57711e6107af6b142363351ae516adb71c69afc643fac26be7f6",
+      "headers": {
+        "status": "HTTP/2 503 ",
+        "server": "envoy",
+        "content-length": "91",
+        "content-type": "text/plain"
+      }
+    },
+    {
+      "id": "thematic-exhibition-altay",
+      "mode": "http-original",
+      "url": "http://e-arhiv.vko.gov.kz/akimsemey/state/ajaguz/photo_2026-09-04_15-33-39.jpg",
+      "range": null,
+      "exit": 0,
+      "error": "",
+      "bytes": 81920,
+      "sha256": "f6a84b8dc208388b33ac570bd89c84be2ba7c175232c5aaf0a96e1899a4a0443",
+      "headers": {
+        "status": "HTTP/1.1 200 OK",
+        "content-type": "image/jpeg",
+        "last-modified": "Fri, 04 Sep 2026 11:18:31 GMT",
+        "accept-ranges": "bytes",
+        "etag": "\"73f35c1e5f3cdd1:0\"",
+        "server": "envoy",
+        "content-length": "81920"
+      }
+    },
+    {
+      "id": "thematic-exhibition-altay",
+      "mode": "https-fresh",
+      "url": "https://e-arhiv.vko.gov.kz/akimsemey/state/ajaguz/photo_2026-09-04_15-33-39.jpg?archive-full-source=20261111",
+      "range": null,
+      "exit": 0,
+      "error": "",
+      "bytes": 91,
+      "sha256": "2f85832e31ca57711e6107af6b142363351ae516adb71c69afc643fac26be7f6",
+      "headers": {
+        "status": "HTTP/2 503 ",
+        "server": "envoy",
+        "content-length": "91",
+        "content-type": "text/plain"
+      }
+    },
+    {
+      "id": "thematic-exhibition-altay",
+      "mode": "http-tail",
+      "url": "http://e-arhiv.vko.gov.kz/akimsemey/state/ajaguz/photo_2026-09-04_15-33-39.jpg",
+      "range": "bytes=81920-",
+      "exit": 0,
+      "error": "",
+      "bytes": 362,
+      "sha256": "eb736f97a6d7665e025d3d33ddd344bcc7f36b7a7fdc4291be5a72160fbece63",
+      "headers": {
+        "status": "HTTP/1.1 416 Range Not Satisfiable",
+        "content-type": "image/jpeg",
+        "last-modified": "Fri, 04 Sep 2026 11:18:31 GMT",
+        "accept-ranges": "bytes",
+        "etag": "\"73f35c1e5f3cdd1:0\"",
+        "server": "envoy",
+        "content-length": "362",
+        "content-range": "bytes */81920"
+      }
+    },
+    {
+      "id": "thematic-exhibition-altay",
+      "mode": "https-range",
+      "url": "https://e-arhiv.vko.gov.kz/akimsemey/state/ajaguz/photo_2026-09-04_15-33-39.jpg?archive-range=20261111",
+      "range": "bytes=81920-163839",
+      "exit": 0,
+      "error": "",
+      "bytes": 91,
+      "sha256": "2f85832e31ca57711e6107af6b142363351ae516adb71c69afc643fac26be7f6",
+      "headers": {
+        "status": "HTTP/2 503 ",
+        "server": "envoy",
+        "content-length": "91",
+        "content-type": "text/plain"
+      }
+    }
+  ],
+  "alternatives": {
+    "manifest": "sources/archive-visual-20261111/recovery/supplemental-manifest.json",
+    "completeImages": 2,
+    "sameEventSubstitutionAllowed": false
+  },
+  "validation": {
+    "strictDecoder": "sharp failOn:warning, raw().toBuffer()",
+    "visualInspection": "All2selected originals inspected with view_image",
+    "regeneratedMissingPixels": false,
+    "unchangedDownloads": true
+  },
+  "limitations": [
+    "No complete versions of the two original same-event images were located.",
+    "Reading-room photograph has no known capture date and the official original is448×336.",
+    "Older Persons Day photograph belongs only to that dated social-outreach event.",
+    "Authors are not named by the official source; no free-license claim is invented."
+  ]
+}

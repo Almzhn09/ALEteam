@@ -20,18 +20,19 @@ export function composePrefix(project = option('--project', 'ale-stand')) {
 export function docker(args, env = process.env) {
   return execFileSync('docker', args, { env, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8' }).trim();
 }
-export async function dockerStream(args, { input, output, env = process.env } = {}) {
+export async function dockerStream(args, { input, output, diagnostic, env = process.env } = {}) {
   const source = input ? await open(input, 'r') : undefined;
   const destination = output ? await open(output, 'wx', 0o600) : undefined;
+  const errors = diagnostic ? await open(diagnostic,'wx',0o600) : undefined;
   try {
     await new Promise((resolve, reject) => {
-      const child = spawn('docker', args, { env, stdio: [source?.fd ?? 'ignore', destination?.fd ?? 'ignore', 'pipe'] });
+      const child = spawn('docker', args, { env, stdio: [source?.fd ?? 'ignore', destination?.fd ?? 'ignore', errors?.fd ?? 'pipe'] });
       // Retain a bounded private diagnostic; never print raw Docker output.
       // Non-enumerable fields also keep a normal uncaught CLI error from
       // dumping SQL, user data or credentials through Node's Error inspector.
       const limit = 64 * 1024;
       let stderr = Buffer.alloc(0), stderrTruncated = false;
-      child.stderr.on('data', chunk => {
+      child.stderr?.on('data', chunk => {
         const data = Buffer.from(chunk);
         if (stderr.length + data.length > limit) stderrTruncated = true;
         stderr = Buffer.concat([stderr, data]);
@@ -51,5 +52,5 @@ export async function dockerStream(args, { input, output, env = process.env } = 
       });
     });
   } catch (error) { if (output) await unlink(output).catch(() => {}); throw error; }
-  finally { await source?.close(); await destination?.close(); }
+  finally { await source?.close(); await destination?.close(); await errors?.close(); }
 }

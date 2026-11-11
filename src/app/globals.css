@@ -714,3 +714,5 @@ label.row > input[type="checkbox"], label.row > input[type="radio"] { flex: none
   .brand { font-size: 1rem; }
   .section-intro h1 { font-size: 1.6rem; }
 }
+
+.reading-photo { max-width: min(100%,448px); }

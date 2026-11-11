@@ -35,6 +35,9 @@ for (const file of files) {
   const examples = source.match(/const examples = \[([^\]]*)\]/);
   if (examples) for (const m of examples[1].matchAll(new RegExp(STRING, 'g'))) add(m[1]);
 }
+// Visual captions now come from the source manifest rather than duplicated TypeScript strings.
+const visuals=JSON.parse(readFileSync('sources/archive-visual-20261111/manifest.json','utf8'));
+for(const image of visuals.images.filter(image=>image.origin==='official_archive_site'))for(const field of ['caption','alt','credit'])add(image[field]);
 const lang = process.argv.find(a => a.startsWith('--lang='))?.slice(7);
 const { kk } = await import(new URL('../src/lib/kk.ts', import.meta.url));
 const { en } = await import(new URL('../src/lib/en.ts', import.meta.url));

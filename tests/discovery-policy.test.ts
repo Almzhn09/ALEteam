@@ -5,7 +5,7 @@ import type {AuthorizedText} from '../src/contracts/discovery';
 import {db} from '../src/server/db';
 import {boundedFileFragments} from '../src/server/authorized-file-text';
 import {execFileSync} from 'node:child_process';
-import {mkdtemp,mkdir,writeFile,readFile,rm} from 'node:fs/promises';
+import {mkdtemp,mkdir,writeFile,readFile,rm,readdir,symlink} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 after(()=>db.$disconnect());
@@ -36,6 +36,17 @@ test('source bundle upgrades tolerate editorial README changes while rejecting c
   const command=()=>execFileSync(process.execPath,[path.resolve('scripts/persist-source-bundle.mjs')],{cwd:temporary,env:{...process.env,FILE_STORAGE_ROOT:storage},stdio:'pipe'});
   for(const extra of ['archive-public-20261111','archive-reference-20261110']){await mkdir(path.join(temporary,'sources',extra),{recursive:true});await writeFile(path.join(temporary,'sources',extra,'manifest.json'),'{}');}
   command();await writeFile(path.join(source,'README.md'),'Corrected editorial notes');command();assert.equal(await readFile(path.join(storage,'source-bundles/archive-20261110/originals/source.txt'),'utf8'),'immutable source');
+  // An expanded publication allowlist is metadata, not a replacement of an original.
+  const manifest=path.join(source,'manifest.json'),stored=path.join(storage,'source-bundles/archive-20261110');
+  await writeFile(manifest,'{"records":["new authorized source"]}');await writeFile(path.join(source,'originals/extra.txt'),'additional original');command();command();
+  assert.equal(await readFile(path.join(stored,'manifest.json'),'utf8'),await readFile(manifest,'utf8'));
+  const versions=await Promise.all((await readdir(path.join(stored,'.manifest-history'))).map(name=>readFile(path.join(stored,'.manifest-history',name),'utf8')));
+  assert.deepEqual(versions.sort(),['{}','{"records":["new authorized source"]}'].sort());
+  await writeFile(manifest,'{"records":["must not activate on conflict"]}');
   await writeFile(path.join(source,'originals/source.txt'),'unexpected replacement');assert.throws(command);assert.equal(await readFile(path.join(storage,'source-bundles/archive-20261110/originals/source.txt'),'utf8'),'immutable source');
+  assert.equal(await readFile(path.join(stored,'manifest.json'),'utf8'),'{"records":["new authorized source"]}');
+  await writeFile(path.join(source,'originals/source.txt'),'immutable source');
+  await rm(path.join(stored,'manifest.json'));await writeFile(path.join(temporary,'outside.json'),'{}');await symlink(path.join(temporary,'outside.json'),path.join(stored,'manifest.json'));
+  assert.throws(command);assert.equal(await readFile(path.join(temporary,'outside.json'),'utf8'),'{}');
  }finally{await rm(temporary,{recursive:true,force:true});}
 });

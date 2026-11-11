@@ -1,4 +1,4 @@
-// UI dictionary: real-content integration, existing translations take priority.
+// Integrated UI dictionary, current interface labels take priority.
 export const en: Record<string,string> = {
   "(откроется в новой вкладке)": "(opens in a new tab)",
   "070000, г. Усть-Каменогорск, ул. Головкова, 26/1": "070000, Ust-Kamenogorsk, 26/1 Golovkov Street",
@@ -1104,5 +1104,12 @@ export const en: Record<string,string> = {
   "Почему этот материал?": "Why this material?",
   "На этой странице": "On this page",
   "Читать материал": "Read material",
-  "Таблицу можно прокручивать по горизонтали.": "Scroll horizontally to read the table."
+  "Другой импорт источников уже выполняется.": "Another source import is already running.",
+  "Источник изменён редактором, отозван или имеет незавершённую редакцию. Требуется сверка.": "The source was edited, withdrawn, or has an unfinished revision. Review it before importing.",
+  "Таблицу можно прокручивать по горизонтали.": "Scroll horizontally to read the table.",
+ "Работа с архивными документами в читальном зале Государственного архива ВКО. Дата съёмки в источнике не указана.": "Working with archival documents in the State Archive of East Kazakhstan reading room. The source does not specify the date of the photograph.",
+ "Посетитель за столом читального зала изучает раскрытый архивный документ.": "A visitor seated at a reading-room table studies an open archival document.",
+ "Сотрудники филиала района Алтай во время визита ко Дню пожилого человека, 1 октября 2026 года.": "Altay district archive branch employees during a visit for the Day of Older Persons, 1 October 2026.",
+ "Четыре участника встречи рядом с букетом цветов и подарками.": "Four participants at a visit stand beside flowers and gifts.",
+ "Просмотреть изображение": "View image",
 };

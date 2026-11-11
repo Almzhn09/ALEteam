@@ -43,7 +43,8 @@
         "status": "incomplete_source",
         "tool": "sharp strict JPEG/PNG decode",
         "note": "Preserved source bytes; not embedded in the production UI. VipsJpeg: premature end of JPEG image"
-      }
+      },
+      "publicationParentSourceKey": null
     },
     {
       "id": "archive-next-generation-ridder",
@@ -85,7 +86,8 @@
         "checked": "2026-11-11",
         "status": "complete_decode",
         "tool": "sharp strict JPEG/PNG decode"
-      }
+      },
+      "publicationParentSourceKey": "history-1"
     },
     {
       "id": "thematic-exhibition-altay",
@@ -128,7 +130,8 @@
         "status": "incomplete_source",
         "tool": "sharp strict JPEG/PNG decode",
         "note": "Preserved source bytes; not embedded in the production UI. VipsJpeg: premature end of JPEG image"
-      }
+      },
+      "publicationParentSourceKey": null
     },
     {
       "id": "decree-142-page-4",
@@ -170,7 +173,110 @@
         "checked": "2026-11-11",
         "status": "complete_decode",
         "tool": "sharp strict JPEG/PNG decode"
-      }
+      },
+      "publicationParentSourceKey": null
+    },
+    {
+      "id": "reading-room-researcher",
+      "path": "sources/archive-visual-20261111/originals/reading-room-researcher-b7765254d510.jpg",
+      "sha256": "b7765254d51083504c903fdf228f92e5a97c8d6e52008b99f04544ae5c7507c0",
+      "bytes": 29953,
+      "width": 448,
+      "height": 336,
+      "caption": "Работа с архивными документами в читальном зале Государственного архива ВКО. Дата съёмки в источнике не указана.",
+      "alt": "Посетитель за столом читального зала изучает раскрытый архивный документ.",
+      "eventDate": null,
+      "datePrecision": "unknown",
+      "usage": "reading-room-or-services",
+      "crop": "Показывать целиком либо сохранять документ и посетителя. Размер исходника448×336: не выдавать увеличение за высокое разрешение, не датировать фотографию по дате загрузки страницы.",
+      "inspected": true,
+      "credit": "Государственный архив Восточно-Казахстанской области",
+      "author": "Не указан в источнике",
+      "licenseClaim": null,
+      "publicAssetPolicy": "Publish through the existing verified CMS attachment workflow; do not replace an unrelated event photo or bypass access rights.",
+      "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1338",
+      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/upload/IMG_2361.JPG",
+      "pageSnapshot": "sources/archive-visual-20261111/pages/recovered-source-1338-20261111.html",
+      "pageSha256": "932e929647c44b3b70f1ae786c7d3282696b2c49a1cb8fe80fe75cafee3b9101",
+      "origin": "official_archive_site",
+      "localized": {
+        "ru": {
+          "alt": "Посетитель за столом читального зала изучает раскрытый архивный документ.",
+          "caption": "Работа с архивными документами в читальном зале Государственного архива ВКО. Дата съёмки в источнике не указана."
+        },
+        "kk": {
+          "alt": "Оқу залындағы үстел басында келуші ашық архив құжатын қарап отыр.",
+          "caption": "ШҚО мемлекеттік архивінің оқу залында архив құжаттарымен жұмыс. Дереккөзде түсірілген күні көрсетілмеген."
+        },
+        "en": {
+          "alt": "A visitor seated at a reading-room table studies an open archival document.",
+          "caption": "Working with archival documents in the State Archive of East Kazakhstan reading room. The source does not specify the date of the photograph."
+        }
+      },
+      "validation": {
+        "method": "sharp failOn:warning; full raw().toBuffer() decode; view_image visual inspection",
+        "state": "complete_decode",
+        "reencoded": false,
+        "downloadComplete": true
+      },
+      "isRestoredDamagedOriginal": false,
+      "decoderValidation": {
+        "checked": "2026-11-11",
+        "status": "complete_decode",
+        "tool": "sharp failOn:warning; full raw().toBuffer() decode"
+      },
+      "publicationParentSourceKey": "reference-reading-room-info"
+    },
+    {
+      "id": "elderly-day-altay-2026",
+      "path": "sources/archive-visual-20261111/originals/elderly-day-altay-2026-31bd1b986c9e.jpg",
+      "sha256": "31bd1b986c9e7df7edde0c552232a44fc255d8d725a6f01cb8761312f3e3a72c",
+      "bytes": 108065,
+      "width": 1280,
+      "height": 720,
+      "caption": "Сотрудники филиала района Алтай во время визита ко Дню пожилого человека, 1 октября 2026 года.",
+      "alt": "Четыре участника встречи рядом с букетом цветов и подарками.",
+      "eventDate": "2026-10-01",
+      "datePrecision": "day",
+      "usage": "historical-social-outreach-only",
+      "crop": "Сохранять контекст встречи и участников. Это социальный визит, а не фотография читального зала, выставки Халиловой или Дня открытых дверей. Не использовать как историческую фотографию прежнего века или актуальное приглашение.",
+      "inspected": true,
+      "credit": "Государственный архив Восточно-Казахстанской области",
+      "author": "Не указан в источнике",
+      "licenseClaim": null,
+      "publicAssetPolicy": "Publish through the existing verified CMS attachment workflow; do not replace an unrelated event photo or bypass access rights.",
+      "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52814",
+      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/state/jarma/photo_2026-10-01_16-40-16.jpg",
+      "pageSnapshot": "sources/archive-visual-20261111/pages/recovered-source-52814-20261111.html",
+      "pageSha256": "1c2483e2aa19aec4d3273e7c4b2199470c1ed6bf5d71725aafde347eff047181",
+      "origin": "official_archive_site",
+      "localized": {
+        "ru": {
+          "alt": "Четыре участника встречи рядом с букетом цветов и подарками.",
+          "caption": "Сотрудники филиала района Алтай во время визита ко Дню пожилого человека, 1 октября 2026 года."
+        },
+        "kk": {
+          "alt": "Кездесудің төрт қатысушысы гүл шоғы мен сыйлықтардың жанында тұр.",
+          "caption": "Алтай ауданы филиалы қызметкерлерінің Қарттар күніне арналған сапары, 2026 жылғы 1 қазан."
+        },
+        "en": {
+          "alt": "Four participants at a visit stand beside flowers and gifts.",
+          "caption": "Altay district archive branch employees during a visit for the Day of Older Persons, 1 October 2026."
+        }
+      },
+      "validation": {
+        "method": "sharp failOn:warning; full raw().toBuffer() decode; view_image visual inspection",
+        "state": "complete_decode",
+        "reencoded": false,
+        "downloadComplete": true
+      },
+      "isRestoredDamagedOriginal": false,
+      "decoderValidation": {
+        "checked": "2026-11-11",
+        "status": "complete_decode",
+        "tool": "sharp failOn:warning; full raw().toBuffer() decode"
+      },
+      "publicationParentSourceKey": null
     }
   ]
 }

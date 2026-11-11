@@ -31,6 +31,7 @@ services:
       DEMO_AUTHOR_PASSWORD: ${DEMO_AUTHOR_PASSWORD:-}
       DEMO_MODERATOR_PASSWORD: ${DEMO_MODERATOR_PASSWORD:-}
       FILE_STORAGE_ROOT: /data/files
+      FILE_PROCESSING_TIMEOUT_MS: ${FILE_PROCESSING_TIMEOUT_MS:-120000}
     depends_on:
       db:
         condition: service_healthy
@@ -48,6 +49,7 @@ services:
       BETTER_AUTH_URL: ${BETTER_AUTH_URL:?Run npm run deploy:setup}
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?Run npm run deploy:setup}
       FILE_STORAGE_ROOT: /data/files
+      FILE_PROCESSING_TIMEOUT_MS: ${FILE_PROCESSING_TIMEOUT_MS:-120000}
       MODERATION_MODE: ${MODERATION_MODE:-local}
       ASSISTANT_MODE: ${ASSISTANT_MODE:-local-model}
       DISCOVERY_AGGREGATES_ENABLED: ${DISCOVERY_AGGREGATES_ENABLED:-0}
@@ -72,6 +74,7 @@ services:
     environment:
       DATABASE_URL: postgresql://archive_app:${APP_DB_PASSWORD}@db:5432/archive
       FILE_STORAGE_ROOT: /data/files
+      FILE_PROCESSING_TIMEOUT_MS: ${FILE_PROCESSING_TIMEOUT_MS:-120000}
     volumes:
       - archive_files:/data/files
     depends_on:
