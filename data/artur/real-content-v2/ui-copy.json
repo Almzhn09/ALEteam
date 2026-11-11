@@ -38,7 +38,10 @@
     "hours": "Понедельник–пятница: архив 8:00–17:00; читальный зал 9:00–16:00.",
     "tourButton": "Как пользоваться",
     "editorialLabel": "Рекомендуем",
-    "personalLabel": "По вашим интересам"
+    "personalLabel": "По вашим интересам",
+    "address": "070000, г. Усть-Каменогорск, ул. Бейбітшілік, 26/1 (Головкова, 26/1)",
+    "officeHours": "понедельник–пятница, 8:00–17:00",
+    "readingHours": "понедельник–пятница, 9:00–16:00"
   },
   "kk": {
     "heroTitle": "Шығыс Қазақстан тарихын ашыңыз",
@@ -77,7 +80,10 @@
     "hours": "Дүйсенбі–жұма: архив 8:00–17:00; оқу залы 9:00–16:00.",
     "tourButton": "Қалай пайдалану керек",
     "editorialLabel": "Ұсынамыз",
-    "personalLabel": "Қызығушылықтарыңыз бойынша"
+    "personalLabel": "Қызығушылықтарыңыз бойынша",
+    "address": "070000, Өскемен қ., Бейбітшілік көшесі, 26/1 (Головкова, 26/1)",
+    "officeHours": "дүйсенбі–жұма, 8:00–17:00",
+    "readingHours": "дүйсенбі–жұма, 9:00–16:00"
   },
   "en": {
     "heroTitle": "Explore the history of East Kazakhstan",
@@ -116,7 +122,10 @@
     "hours": "Monday–Friday: archive 08:00–17:00; reading room 09:00–16:00.",
     "tourButton": "How to use this site",
     "editorialLabel": "Recommended reading",
-    "personalLabel": "Based on your interests"
+    "personalLabel": "Based on your interests",
+    "address": "070000, Ust-Kamenogorsk, 26/1 Beibitshilik St. (Golovkova, 26/1)",
+    "officeHours": "Monday–Friday, 08:00–17:00",
+    "readingHours": "Monday–Friday, 09:00–16:00"
   },
   "sourceUrl": "http://e-arhiv.vko.gov.kz/ru",
   "sourceIds": [

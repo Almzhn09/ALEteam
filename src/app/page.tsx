@@ -6,6 +6,7 @@ import { getLang, getT } from '@/lib/i18n-server';
 import { languageAlternates } from '@/lib/seo';
 import { latestDocuments, listContent } from '@/server/public-read';
 import {HomeDiscovery} from '@/components/HomeDiscovery';
+import editorial from '../../data/artur/real-content-v2/ui-copy.json';
 
 const quick = [
   { href: '/catalog', title: 'Каталог документов', text: 'Поиск по тексту и архивному шифру, фильтры по периоду, типу и фонду.' },
@@ -17,6 +18,7 @@ export function generateMetadata() { return { alternates: languageAlternates('/'
 
 export default async function Home() {
   const [t, lang] = await Promise.all([getT(), getLang()]);
+  const copy=editorial[lang];
   const [news, exhibitions, events, ownDocs] = await Promise.all([listContent(lang, 'NEWS'), listContent(lang, 'EXHIBITION'), listContent(lang, 'EVENT'), latestDocuments(lang, 4)]);
   const docs = (ownDocs.length ? ownDocs : lang === 'ru' ? [] : await latestDocuments('ru', 3)).slice(0,3);
   const blocks = [
@@ -28,16 +30,16 @@ export default async function Home() {
     <section className="hero" aria-labelledby="hero-title">
       <div className="container">
         <h1 id="hero-title">{t('Электронный архив')}</h1>
-        <p className="lead">{t('Ищите архивные документы, просматривайте карточки и сканы, сохраняйте находки и обсуждайте материалы.')}</p>
+        <p className="lead">{copy.heroText}</p>
         <form className="hero-search" action="/catalog" method="get" role="search" aria-label={t('Поиск по архиву')}>
           <label htmlFor="hero-q" className="visually-hidden">{t('Что вы ищете')}</label>
-          <input id="hero-q" name="q" className="input" type="search" maxLength={200} autoComplete="off" placeholder={t('Например: библиотека или DEMO-Ф2-О1-Д1')} />
+          <input id="hero-q" name="q" className="input" type="search" maxLength={200} autoComplete="off" placeholder={copy.searchPlaceholder} />
           <button type="submit" className="btn btn-primary">{t('Найти')}</button>
         </form>
-        <div className="row small" style={{ marginTop: 'var(--space-4)' }}>
+        {docs.length>0&&<div className="row small" style={{ marginTop: 'var(--space-4)' }}>
           <span className="muted">{t('Типы документов:')}</span>
           {(Object.keys(typeLabel) as (keyof typeof typeLabel)[]).map(type => <Link key={type} href={`/catalog?type=${type}`}>{t(typeLabel[type])}</Link>)}
-        </div>
+        </div>}
       </div>
     </section>
 
@@ -77,7 +79,7 @@ export default async function Home() {
       <section className="section" aria-labelledby="about-title">
         <div className="panel prose">
           <h2 id="about-title">{t('Об архиве')}</h2>
-          <p>{t('Прототип обновлённого интерфейса Государственного архива Восточно-Казахстанской области. Адрес и режим работы сверены с официальным сайтом 8 ноября 2026 года.')}</p>
+          <p>{copy.aboutSource}</p>
           <p style={{ margin: 0 }}>{t('Официальная информация:')} <a href="http://e-arhiv.vko.gov.kz/ru" rel="noopener noreferrer" target="_blank">e-arhiv.vko.gov.kz<span className="visually-hidden"> {t('(откроется в новой вкладке)')}</span></a> · <Link href="/about">{t('Подробнее и помощь')}</Link></p>
         </div>
       </section>

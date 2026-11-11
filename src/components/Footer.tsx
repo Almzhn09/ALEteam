@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getLang, getT } from '@/lib/i18n-server';
 import { listContent } from '@/server/public-read';
+import editorial from '../../data/artur/real-content-v2/ui-copy.json';
 
 const isHttp = (url: string) => /^https?:\/\//i.test(url);
 const external = (url: string, label: string, hint: string) => <li key={url}><a href={url} target="_blank" rel="noopener noreferrer">{label}<span className="visually-hidden"> {hint}</span></a></li>;
@@ -13,13 +14,13 @@ export async function Footer() {
   const social = linksOf('site-social-links'); const government = linksOf('site-gov-links');
   const legal = pages.filter(p => p.payload.category === 'legal');
   const hint = t('(откроется в новой вкладке)');
+  const copy=editorial[lang];
   return (
     <footer className="site-footer">
       <div className="container footer-grid">
         <section aria-labelledby="footer-about">
-          <h2 id="footer-about">{t('О прототипе')}</h2>
-          <p>{t('Хакатонный прототип команды ALEteam. Не является официальным сайтом государственного архива.')}</p>
-          <p>{t('Материалы с меткой ДЕМО вымышлены и не являются архивными источниками.')}</p>
+          <h2 id="footer-about">{t('Электронный архив')}</h2>
+          <p>{copy.footerProject}</p>
         </section>
         <section aria-labelledby="footer-nav">
           <h2 id="footer-nav">{t('Разделы')}</h2>
