@@ -55,7 +55,10 @@
     "check:display": "node --env-file-if-exists=.env --import tsx scripts/check-display.ts",
     "sources:verify": "node scripts/verify-archive-sources.mjs",
     "check:team-ui": "node --import tsx scripts/check-team-ui.ts",
-    "check:performance": "node scripts/check-performance.mjs"
+    "check:performance": "node scripts/check-performance.mjs",
+    "test:real-content": "node --env-file-if-exists=.env --import tsx --test --test-concurrency=1 tests/real-content.integration.test.ts",
+    "content:preview": "node --env-file-if-exists=.env --import tsx scripts/real-content.ts",
+    "content:apply": "node --env-file-if-exists=.env --import tsx scripts/real-content.ts --apply"
   },
   "dependencies": {
     "@e965/xlsx": "0.20.3",

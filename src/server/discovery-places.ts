@@ -54,7 +54,7 @@ export async function related(request:Request,id:string,kind:MaterialKey['kind']
   if(items.length>=p.limit)break;
  }
  if(items.length<p.limit){
-  const candidates=[];for(const row of await db.document.findMany({where:{...publicDocumentWhere,id:{not:id}},select:{id:true},orderBy:{id:'asc'},take:100})){const material=await resolveMaterial({kind:'document',id:row.id},p.locale);if(material&&!keys.has('document:'+row.id))candidates.push(material);}
+  const candidates=[];for(const row of await db.document.findMany({where:{...publicDocumentWhere,id:kind==='document'?{not:id}:undefined},select:{id:true},orderBy:{id:'asc'},take:100})){const material=await resolveMaterial({kind:'document',id:row.id},p.locale);if(material&&!keys.has('document:'+row.id))candidates.push(material);}
   for(const row of await db.contentItem.findMany({where:{...publicContentScope,kind:{notIn:['SETTING','ARCHIVE_DOCUMENT']},id:{not:kind==='cms'?id:undefined},revisions:{some:{status:'PUBLISHED'}}},select:{id:true},orderBy:{id:'asc'},take:100})){const material=await resolveMaterial({kind:'cms',id:row.id},p.locale);if(material&&!keys.has('cms:'+row.id)&&candidates.length<100)candidates.push(material);}
   const ranked=arturDiscoveryEngines.rankRelated({target,candidates,limit:p.limit-items.length},{locale:p.locale,now:new Date().toISOString()});
   for(const match of ranked){
