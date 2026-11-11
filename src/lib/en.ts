@@ -998,4 +998,6 @@ export const en: Record<string, string> = {
   "Почему этот материал?": "Why this material?",
   "На этой странице": "On this page",
   "Читать материал": "Read material",
+  'Другой импорт источников уже выполняется.': 'Another source import is already running.',
+  'Источник изменён редактором, отозван или имеет незавершённую редакцию. Требуется сверка.': 'The source was edited, withdrawn, or has an unfinished revision. Review it before importing.',
 };
