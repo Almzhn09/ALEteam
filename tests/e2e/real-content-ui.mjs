@@ -1,4 +1,5 @@
-// Read-only acceptance of the actual published corpus. No mocked HTTP, no seed.
+// Read-only acceptance of the actual published corpus. No source fixtures or seed.
+// One intentional failed text request verifies the visible retry path.
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright-core';
 import {mkdir,readFile,writeFile} from 'node:fs/promises';
@@ -50,12 +51,12 @@ const place=(await api('/places?locale=ru&limit=3')).items[0];assert.ok(place);
  await check('advanced archival filters keep their existing API while honest empty and retry states work',async()=>{
   await page.goto(base+'/catalog?advanced=1&q=1940');await page.getByRole('heading',{name:'Ничего не найдено',exact:true}).waitFor();assert.equal(await page.getByRole('alert').filter({hasText:/\S/}).count(),0);
   await page.goto(base+'/catalog?scope=cms&q=zzzzzz-no-real-match');await page.getByRole('heading',{name:'Ничего не найдено',exact:true}).waitFor();
-  await page.route('**/api/search?**',route=>route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:{code:'UNAVAILABLE',message:'Temporary test failure'}})}));
-  await page.goto(base+'/catalog?scope=cms');await page.getByRole('alert').filter({hasText:/\S/}).waitFor();await page.unroute('**/api/search?**');await page.getByRole('button',{name:'Повторить',exact:true}).click();await page.locator('.search-card').first().waitFor();
+
  });
  await check('real CMS DOCX offers original bytes, paragraph text, source-bound explanation and related reading',async()=>{
   await page.goto(base+historyRoute);await page.getByRole('heading',{name:'Оригиналы документов',exact:true}).waitFor();
-  await page.getByText('Читать текст оригинала',{exact:true}).click();await page.locator('.source-fragment').first().waitFor();assert.match(await page.locator('.original-fragments').innerText(),/1940/u);
+  await page.route('**/api/material-files/*/text**',route=>route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:{code:'UNAVAILABLE',message:'Temporary test failure'}})}));
+  await page.getByText('Читать текст оригинала',{exact:true}).click();await page.locator('.original-text').getByRole('alert').filter({hasText:/\S/}).waitFor();await page.unroute('**/api/material-files/*/text**');await page.locator('.original-text').getByRole('button',{name:'Повторить',exact:true}).click();await page.locator('.source-fragment').first().waitFor();assert.match(await page.locator('.original-fragments').innerText(),/1940/u);
   await page.getByRole('button',{name:'Показать выдержки и термины',exact:true}).click();await page.locator('.explanation-body blockquote').first().waitFor();
   const hrefs=await page.locator('.explanation-body figcaption a').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('href')));assert.ok(hrefs.every(h=>/^\/api\/material-files\/[a-zA-Z0-9_-]+(?:#page=\d+)?$/u.test(h)));
   await page.getByRole('heading',{name:'Связанные материалы',exact:true}).first().waitFor();await page.screenshot({path:out+'/material-desktop.png',fullPage:true});

@@ -124,7 +124,7 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
             <Link href="/favorites" className="small" aria-current={current('/favorites')}>
               <span aria-hidden="true">★</span> {t('Избранное')}{favorites.hydrated && favorites.items.length > 0 && <span className="muted"> ({favorites.items.length})</span>}
             </Link>
-            {state.status === 'loading' && <span className="muted small">{t('Проверка входа…')}</span>}
+            {state.status === 'loading' && <span className="visually-hidden" role="status">{t('Проверка входа…')}</span>}
             {user && (
               <details className="account-menu" ref={account} onKeyDown={e => { if (e.key === 'Escape') { account.current?.removeAttribute('open'); account.current?.querySelector('summary')?.focus(); } }}>
                 <summary className="btn btn-secondary btn-sm">{user.name}</summary>
@@ -138,8 +138,10 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
               </details>
             )}
             {logoutError && <span className="field-error" role="alert">{logoutError}</span>}
-            {(state.status === 'guest' || state.status === 'error') && (
-              <Link className="btn btn-primary btn-sm" href={`/login?returnTo=${encodeURIComponent(pathname)}`}>{t('Войти')}</Link>
+            {/* The public login link also renders during the session check. It stays usable
+                without JS and has exactly the same dimensions after an anonymous /me response. */}
+            {(state.status === 'loading' || state.status === 'guest' || state.status === 'error') && (
+              <Link className="btn btn-primary btn-sm" aria-busy={state.status === 'loading'} href={`/login?returnTo=${encodeURIComponent(pathname)}`}>{t('Войти')}</Link>
             )}
           </div>
         </div>
