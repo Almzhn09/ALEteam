@@ -7,6 +7,7 @@ import { useI18n } from '@/lib/lang';
 import { langName } from '@/lib/i18n';
 import { DemoBadge, ErrorNotice, Loading, Notice } from '@/components/ui';
 import { FormError, useStaff } from '../../AdminShell';
+import { CmsAttachments } from '../CmsAttachments';
 import { PayloadForm, RevisionWorkflow, StateBadge, cleanPayload, emptyPayload, kindLabel } from '../../editorial';
 
 const EDITABLE = ['DRAFT', 'CHANGES_REQUESTED'];
@@ -95,6 +96,7 @@ export default function ContentEditorPage({ params }: { params: Promise<{ id: st
         <button type="button" className="btn btn-secondary" aria-expanded={preview} onClick={() => setPreview(v => !v)}>{t('Предпросмотр')}</button>
       </div>
     </form>
+    {latest && <CmsAttachments itemId={item.id} branchId={item.branchId} revision={latest} revisions={item.revisions} />}
     {preview && <section className="card" aria-label={t('Предпросмотр')} lang={locale}>
       <p className="small muted">{t('Так текст увидит посетитель. Это не публикация.')}</p>
       <h2>{form.title}</h2><p className="pre-wrap">{form.body}</p>
