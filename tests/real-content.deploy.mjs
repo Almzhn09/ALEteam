@@ -26,6 +26,11 @@ try{
   const contents=await get(config.BETTER_AUTH_URL,'/content?pageSize=50');assert.ok(contents.items.every(c=>c.isDemo===false));assert.ok(!JSON.stringify(contents).includes('DEMO-'));
   const uid=compose(project,['exec','-T','app','node','-e','console.log(process.getuid())']);assert.equal(uid,'1000');
  });
+ await check('standalone includes the locally served font and a decodable real editorial photo',async()=>{
+  const origin=config.BETTER_AUTH_URL,home=await fetch(origin+'/');assert.equal(home.status,200);const html=await home.text();assert.ok(html.includes('hero-title'));
+  for(const name of ['latin','cyrillic','cyrillic-ext']){const file='fonts/noto-sans-'+name+'.woff2',r=await fetch(origin+'/'+file);assert.equal(r.status,200);const bytes=Buffer.from(await r.arrayBuffer());assert.equal(createHash('sha256').update(bytes).digest('hex'),createHash('sha256').update(await readFile('public/'+file)).digest('hex'));}
+  const photo=html.match(/src="([^"]*\/_next\/image\?[^"]*)"/);assert.ok(photo,'Actual editorial photo rendered');const image=await fetch(origin+photo[1].replaceAll('&amp;','&'));assert.equal(image.status,200);assert.ok(image.headers.get('content-type')?.startsWith('image/'));assert.ok((await image.arrayBuffer()).byteLength>1000);
+ });
  let fileId,previewId,expectedSha;
  await check('standalone runtime serves original DOCX, S06 page-4 preview and measured page-aware OCR with source-bound explanations',async()=>{
   const origin=config.BETTER_AUTH_URL,history=(await get(origin,'/content/archive-history-1')).item;

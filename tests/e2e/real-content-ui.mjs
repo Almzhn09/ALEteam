@@ -19,8 +19,9 @@ assert.ok(history);const historyRoute=history.href.replace('/api/content/','/mat
 const decree=(await api('/search?scope=cms&q=142')).items.find(h=>h.kind==='material'&&h.material.href.includes('-142'))?.material;assert.ok(decree);
 const decreeRoute=decree.href.replace('/api/content/','/materials/').replace('?locale=','?contentLang=');
 const paper=(await api('/directories/newspapers?pageSize=1')).items[0];
+const place=(await api('/places?locale=ru&limit=3')).items[0];assert.ok(place);
  await check('home shows source-backed recommendations, a loaded credited photo, local font and voluntary help',async()=>{
-  await page.goto(base);await page.getByRole('link',{name:/История архива/}).first().waitFor();
+  await page.goto(base);await page.locator('section[aria-labelledby="recommendations-title"] .result-list a').first().waitFor();
   assert.equal(await page.locator('dialog[open]').count(),0);
   const photo=page.locator('.archive-photo img');await photo.evaluate(img=>img.decode());assert.ok(await photo.evaluate(img=>img.naturalWidth>0));
   assert.ok(await page.locator('.archive-photo figcaption a').getAttribute('href'));await page.evaluate(()=>document.fonts.ready);
@@ -67,13 +68,14 @@ const paper=(await api('/directories/newspapers?pageSize=1')).items[0];
  });
  const axe=await readFile('node_modules/axe-core/axe.min.js','utf8');
  // Full 36 reading variants, 5 real screens each; measured layout, not a claim of physical-device/browser-zoom testing.
- const routes=[['home','/'],['catalog','/catalog?scope=cms'],['funds','/catalog?scope=fund&number='+encodeURIComponent('Р-1 ч.с.')],['material',historyRoute],['places','/places']];
+ const routes=[['home','/'],['catalog','/catalog?scope=cms'],['funds','/catalog?scope=fund&number='+encodeURIComponent('Р-1 ч.с.')],['material',historyRoute],['places','/places?placeId='+encodeURIComponent(place.id)]];
  const variants=[];for(const width of[360,768,1440])for(const lang of['ru','kk','en'])for(const theme of['light','dark'])for(const size of['100','150'])variants.push({width,lang,theme,size});
  for(const v of variants){
   const c=await browser.newContext({viewport:{width:v.width,height:1000},reducedMotion:'reduce'});await c.addCookies([{name:'lang',value:v.lang,url:base},{name:'display-theme',value:v.theme,url:base},{name:'display-text-size',value:v.size,url:base}]);const p=await c.newPage();
-  for(const [name,route]of routes){await p.goto(base+route);await p.evaluate(()=>document.fonts.ready);if(name==='home')await p.locator('#recommendations-title').waitFor();if(['catalog','funds'].includes(name))await p.locator('.search-card').first().waitFor();if(name==='material')await p.locator('.material-originals h2').waitFor();
+  for(const [name,route]of routes){await p.goto(base+route);await p.evaluate(()=>document.fonts.ready);if(name==='home')await p.locator('section[aria-labelledby="recommendations-title"] .result-list a').first().waitFor();if(name==='places')await p.locator('.history-timeline > li').first().waitFor();if(['catalog','funds'].includes(name))await p.locator('.search-card').first().waitFor();if(name==='material')await p.locator('.material-originals h2').waitFor();
    const geometry=await p.evaluate(()=>{const visible=el=>el.getBoundingClientRect().width>0&&el.getBoundingClientRect().height>0&&!el.closest('details:not([open]) > :not(summary)')&&!el.closest('dialog:not([open]),.visually-hidden');const elements=[...document.querySelectorAll('.btn,select,input:not([type=hidden]),summary,.search-scopes a')].filter(visible),problems=[];for(const el of elements){const r=el.getBoundingClientRect();if(r.left< -1||r.right>innerWidth+1)problems.push('outside '+(el.textContent||el.tagName).slice(0,40));}for(let i=0;i<elements.length;i++)for(let j=i+1;j<elements.length;j++){const a=elements[i],b=elements[j];if(a.contains(b)||b.contains(a))continue;const ar=a.getBoundingClientRect(),br=b.getBoundingClientRect();if(Math.min(ar.right,br.right)-Math.max(ar.left,br.left)>1&&Math.min(ar.bottom,br.bottom)-Math.max(ar.top,br.top)>1)problems.push('overlap '+a.tagName+'/'+b.tagName);}return{overflow:Math.max(0,document.documentElement.scrollWidth-innerWidth),problems};});
    matrix.push({...v,page:name,...geometry});assert.equal(geometry.overflow,0,JSON.stringify(matrix.at(-1)));assert.deepEqual(geometry.problems,[],JSON.stringify(matrix.at(-1)));
+   if(v.width===1440&&v.lang==='ru'&&v.size==='100')await p.screenshot({path:out+'/'+name+'-desktop-'+v.theme+'.png',fullPage:true});
    if(v.width===360&&v.lang==='ru'&&v.theme==='dark'&&v.size==='150')await p.screenshot({path:out+'/'+name+'-mobile-dark-150.png',fullPage:true});
    if(v.width===1440&&v.lang==='ru'&&v.size==='100'){await p.addScriptTag({content:axe});const violations=await p.evaluate(async()=> (await axe.run(document,{runOnly:['wcag2a','wcag2aa','wcag21aa']})).violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.length})));assert.deepEqual(violations,[],JSON.stringify({v,name,violations}));}
   }await c.close();

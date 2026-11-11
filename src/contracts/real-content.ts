@@ -10,4 +10,4 @@ export interface FundDirectoryEntry {kind:'fund';id:string;number:string;source:
 export interface NewspaperEntry {kind:'newspaper';id:string;title:string;publisherOriginal:string;volumesOriginal:string;yearsOriginal:string;notes:string;sourceRow:number;source:RegistrySource;href:string}
 export type SearchHit={kind:'material';material:MaterialRef;snippet:string}|FundDirectoryEntry|NewspaperEntry;
 export interface SearchResult {items:SearchHit[];total:number;page:number;pageSize:number;locale:string;counts:{materials:number;funds:number;newspapers:number}}
-export interface MaterialSearchFilters {scope?:'all'|'document'|'cms';q?:string;category?:string;contentKind?:string;locale?:string;yearFrom?:number;yearTo?:number}
+export interface MaterialSearchFilters {scope?:'all'|'document'|'cms'|'fund'|'newspaper';q?:string;category?:string;contentKind?:string;locale?:string;yearFrom?:number;yearTo?:number}
