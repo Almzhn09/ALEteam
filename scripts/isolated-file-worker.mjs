@@ -11,6 +11,7 @@ function fail(code){throw Object.assign(new Error(),{safeCode:code});}
 async function inspect(input){
  const metadata=await stat(input.path);if(metadata.size!==input.expectedBytes||metadata.size>MAX_BYTES)fail('SOURCE_CHANGED');
  const data=await readFile(input.path);if(hash(data)!==input.expectedSha256)fail('SOURCE_CHANGED');
+ if(input.mime==='application/vnd.openxmlformats-officedocument.wordprocessingml.document')return docx(data);
  const sharp=(await import('sharp')).default;sharp.concurrency(1);sharp.cache(false);
  let preview,fragments=[],pages=1,parser;
  if(input.mime==='application/pdf'){
@@ -35,7 +36,7 @@ async function inspect(input){
     const ops=await page.getOperatorList();operators+=ops.fnArray.length;if(operators>300000)fail('FORMAT_LIMIT');
     const text=(await page.getTextContent()).items.filter(i=>'str'in i).map(i=>i.str+(i.hasEOL?'\n':' ')).join('').trim();textChars+=text.length;if(textChars>1000000)fail('FORMAT_LIMIT');
     const remaining=12000-fragments.reduce((n,f)=>n+f.text.length,0);if(text&&remaining>0)fragments.push({page:number,text:text.slice(0,remaining)});
-    if(number===1){const original=page.getViewport({scale:1});if(!Number.isFinite(original.width)||!Number.isFinite(original.height)||original.width<=0||original.height<=0)fail('FORMAT_LIMIT');const scale=Math.min(1000/original.width,1400/original.height,1.5),viewport=page.getViewport({scale});const target=new CanvasFactory().create(Math.ceil(viewport.width),Math.ceil(viewport.height));await page.render({canvasContext:target.context,canvas:target.canvas,viewport}).promise;preview=await sharp(target.canvas.toBuffer('image/png')).png({palette:true,colours:128,compressionLevel:9}).toBuffer();}
+    if(number===(input.previewPage??1)){const original=page.getViewport({scale:1});if(!Number.isFinite(original.width)||!Number.isFinite(original.height)||original.width<=0||original.height<=0)fail('FORMAT_LIMIT');const scale=Math.min(1000/original.width,1400/original.height,1.5),viewport=page.getViewport({scale});const target=new CanvasFactory().create(Math.ceil(viewport.width),Math.ceil(viewport.height));await page.render({canvasContext:target.context,canvas:target.canvas,viewport}).promise;preview=await sharp(target.canvas.toBuffer('image/png')).png({palette:true,colours:128,compressionLevel:9}).toBuffer();}
     page.cleanup();
    }
    parser='pdfjs-'+pdfjs.version;
@@ -48,6 +49,17 @@ async function inspect(input){
  }
  if(!preview||preview.length>2*1024*1024)fail('PREVIEW_LIMIT');
  return {passed:true,parser,pages,fragments,antivirus:'not-configured',preview:{mimeType:'image/png',sha256:hash(preview),bytes:preview.length,base64:preview.toString('base64')}};
+}
+async function docx(data){
+ const {unzipSync}=await import('fflate');const {XMLParser,XMLValidator}=await import('fast-xml-parser');
+ let expanded=0,entries=0;const files=unzipSync(data,{filter:entry=>{entries++;expanded+=entry.originalSize;if(entries>1000||expanded>40*1024*1024||entry.originalSize>20*1024*1024)fail('FORMAT_LIMIT');if(/vbaProject|word\/embeddings\//i.test(entry.name))fail('ACTIVE_CONTENT');return ['word/document.xml','[Content_Types].xml'].includes(entry.name);}});
+ if(!files['word/document.xml']||!files['[Content_Types].xml'])fail('FORMAT_MISMATCH');
+ const xml=new TextDecoder('utf-8',{fatal:true}).decode(files['word/document.xml']);if(/<!DOCTYPE|<!ENTITY/i.test(xml)||XMLValidator.validate(xml)!==true)fail('INVALID_XML');
+ const tree=new XMLParser({preserveOrder:true,ignoreAttributes:false,processEntities:true,parseTagValue:false,trimValues:false}).parse(xml);
+ const paragraphs=[];function text(nodes){let out='';for(const node of nodes??[])for(const [tag,children]of Object.entries(node)){if(tag==='#text')out+=children;else if(tag==='w:tab')out+='\t';else if(tag==='w:br')out+='\n';else if(Array.isArray(children))out+=text(children);}return out;}
+ function walk(nodes){for(const node of nodes??[])for(const [tag,children]of Object.entries(node)){if(tag==='w:p'){const value=text(children).trim();if(value)paragraphs.push(value);}else if(Array.isArray(children))walk(children);}}walk(tree);
+ if(paragraphs.join('\n').length>1000000)fail('FORMAT_LIMIT');let remaining=12000;const fragments=[];for(const [index,text]of paragraphs.entries()){if(remaining<=0)break;fragments.push({paragraph:index+1,text:text.slice(0,remaining)});remaining-=text.length+1;}
+ return {passed:true,parser:'openxml-docx',pages:null,paragraphs:paragraphs.length,fragments,antivirus:'not-configured',preview:null};
 }
 async function spreadsheet(input){
  const data=Buffer.from(input.base64,'base64');if(data.length<1||data.length>2*1024*1024)fail('FORMAT_LIMIT');

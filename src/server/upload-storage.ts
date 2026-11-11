@@ -10,6 +10,7 @@ const keyPattern = /^uploads\/[a-f0-9-]{36}\.bin$/u;
 function signature(bytes: Buffer): UploadMime | undefined {
   if (bytes.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))) return 'image/png';
   if (bytes.subarray(0,3).equals(Buffer.from([255,216,255]))) return 'image/jpeg';
+  if (bytes.subarray(0,4).equals(Buffer.from([80,75,3,4]))) return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
   if (bytes.subarray(0,5).toString() === '%PDF-') return 'application/pdf';
 }
 async function directory(root: string) {

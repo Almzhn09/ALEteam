@@ -8,7 +8,7 @@ import {createHash} from 'node:crypto';
 import * as XLSX from '@e965/xlsx';
 const worker=(input:unknown)=>JSON.parse(execFileSync(process.execPath,['--max-old-space-size=128','scripts/isolated-file-worker.mjs'],{input:JSON.stringify(input),env:{NODE_ENV:'production',PATH:process.env.PATH},maxBuffer:17*1024*1024,timeout:25000}).toString());
 function rejected(input:unknown){try{worker(input);assert.fail('Untrusted content was accepted');}catch(error){const result=JSON.parse((error as {stdout:Buffer}).stdout.toString());assert.equal(result.passed,false);return result;}}
-const hash=(b:Buffer)=>createHash('sha256').update(b).digest('hex');
+const hash=(b:Uint8Array)=>createHash('sha256').update(b).digest('hex');
 test('CSV/XLSX/XLSB preserve zeros, literal suffixes, formula flags and the Excel leap-day ambiguity',()=>{
  const plain=Buffer.from('id,number\n0007,0005-а\n');assert.equal(worker({mode:'spreadsheet',format:'csv',base64:plain.toString('base64')}).sheets[0].rows[1].cells[1].raw,'0005-а');
  for(const format of ['csv','xlsx','xlsb'] as const){
@@ -34,5 +34,14 @@ test('full image decode rejects signature-only corruption and PDF JavaScript is 
   const fake=Buffer.from([137,80,78,71,13,10,26,10,0,1,2,3]);const active=pdfWithJavaScript();
   for(const [name,bytes,mime]of [['fake.png',fake,'image/png'],['active.pdf',active,'application/pdf']] as const){const file=path.join(folder,name);writeFileSync(file,bytes);const failure=rejected({mode:'inspect',path:file,expectedBytes:bytes.length,expectedSha256:hash(bytes),mime});if(name==='active.pdf')assert.equal(failure.error,'ACTIVE_CONTENT');}
   const original=readFileSync('data/scans/demo-doc-01.png');const file=path.join(folder,'original.png');writeFileSync(file,original);const r=worker({mode:'inspect',path:file,expectedBytes:original.length,expectedSha256:hash(original),mime:'image/png'});assert.equal(r.passed,true);assert.equal(r.antivirus,'not-configured');assert.equal(hash(readFileSync(file)),hash(original));assert.equal(hash(Buffer.from(r.preview.base64,'base64')),r.preview.sha256);
+ }finally{rmSync(folder,{recursive:true,force:true});}
+});
+
+test('real DOCX uses original paragraphs; malformed XML, active objects and DTD declarations are rejected',async()=>{
+ const folder=mkdtempSync(path.join(tmpdir(),'ale-docx-'));const {zipSync,strToU8}=await import('fflate');
+ try{
+  const original=readFileSync('sources/archive-20261110/originals/История архива.docx'),file=path.join(folder,'source.docx');writeFileSync(file,original);
+  const result=worker({mode:'inspect',path:file,expectedBytes:original.length,expectedSha256:hash(original),mime:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});assert.equal(result.parser,'openxml-docx');assert.equal(result.pages,null);assert.ok(result.fragments[0].paragraph===1);assert.ok(result.fragments.some((f:{text:string})=>f.text.includes('архив')));assert.equal(hash(readFileSync(file)),hash(original));
+  for(const xml of ['<!DOCTYPE x [<!ENTITY secret SYSTEM "file:///etc/passwd">]><w:document/>','<w:document><unclosed>']){const data=zipSync({'[Content_Types].xml':strToU8('<Types/>'),'word/document.xml':strToU8(xml)});writeFileSync(file,data);rejected({mode:'inspect',path:file,expectedBytes:data.length,expectedSha256:hash(data),mime:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});}
  }finally{rmSync(folder,{recursive:true,force:true});}
 });

@@ -6,8 +6,8 @@ import {recognizedText} from './ocr';
 import {ApiError,json} from './http';
 const hash=(value:Buffer|string)=>createHash('sha256').update(value).digest('hex');
 const parsedSchema=z.object({parser:z.string(),fragments:z.array(z.object({page:z.number().int().positive(),text:z.string().max(12000)}))});
-export function boundedFileFragments(fragments:{id:string;page?:number;text:string}[],limit=12000){
- let used=0;const result:{id:string;page?:number;text:string;start:number;end:number}[]=[];
+export function boundedFileFragments(fragments:{id:string;page?:number;paragraph?:number;text:string}[],limit=12000){
+ let used=0;const result:{id:string;page?:number;paragraph?:number;text:string;start:number;end:number}[]=[];
  for(const fragment of fragments){
   if(used>=limit)break;
   const text=fragment.text.slice(0,limit-used);result.push({...fragment,text,start:used,end:used+text.length});used+=text.length+1;
