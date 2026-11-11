@@ -37,7 +37,13 @@
           "caption": "Altay district branch open day, 21 September 2026."
         }
       },
-      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/state/zirian/photo_2026-09-17_16-34-20.jpg"
+      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/state/zirian/photo_2026-09-17_16-34-20.jpg",
+      "decoderValidation": {
+        "checked": "2026-11-11",
+        "status": "incomplete_source",
+        "tool": "sharp strict JPEG/PNG decode",
+        "note": "Preserved source bytes; not embedded in the production UI. VipsJpeg: premature end of JPEG image"
+      }
     },
     {
       "id": "archive-next-generation-ridder",
@@ -74,7 +80,12 @@
           "caption": "Archive and the Future Generation project, Ridder branch, 18 September 2026."
         }
       },
-      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/state/ridder/884bbc46-061f-40b5-84c7-2465b22acbd5.jpg"
+      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/state/ridder/884bbc46-061f-40b5-84c7-2465b22acbd5.jpg",
+      "decoderValidation": {
+        "checked": "2026-11-11",
+        "status": "complete_decode",
+        "tool": "sharp strict JPEG/PNG decode"
+      }
     },
     {
       "id": "thematic-exhibition-altay",
@@ -111,7 +122,13 @@
           "caption": "Exhibition marking Nadezhda Khalilova’s anniversary, Altay district branch, 4 September 2026."
         }
       },
-      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/state/ajaguz/photo_2026-09-04_15-33-39.jpg"
+      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/state/ajaguz/photo_2026-09-04_15-33-39.jpg",
+      "decoderValidation": {
+        "checked": "2026-11-11",
+        "status": "incomplete_source",
+        "tool": "sharp strict JPEG/PNG decode",
+        "note": "Preserved source bytes; not embedded in the production UI. VipsJpeg: premature end of JPEG image"
+      }
     },
     {
       "id": "decree-142-page-4",
@@ -148,6 +165,11 @@
           "alt": "First page of the Russian section of Resolution No. 142 about archive branches.",
           "caption": "East Kazakhstan regional akimat Resolution No. 142, 2 June 2026, page 4."
         }
+      },
+      "decoderValidation": {
+        "checked": "2026-11-11",
+        "status": "complete_decode",
+        "tool": "sharp strict JPEG/PNG decode"
       }
     }
   ]

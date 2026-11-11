@@ -61,5 +61,5 @@ try{
 }catch(error){process.exitCode=1;let message=String(error.stderr??error.stack??error);for(const[k,v]of Object.entries(config))if(/PASSWORD|SECRET/.test(k))message=message.replaceAll(v,'[REDACTED]');await writeFile(folder+'/failure.log',message,{mode:0o600});console.log('FAIL real-content deployment; private redacted diagnosis '+folder+'/failure.log');}
 finally{
  for(const name of [restored,project])try{compose(name,['--profile','workers','down','--volumes','--remove-orphans']);}catch{}
- await unlink(sourceEnv).catch(()=>{});await unlink(restoreEnv).catch(()=>{});await writeFile('.local/real-content/docker-proof.json',JSON.stringify({testedAt:new Date().toISOString(),checks,measurements,corpus:snapshot,temporaryEnvFilesRemoved:true,backupRetainedPrivately:true},null,2)+'\n');console.log('Real-content Docker checks '+checks.length+'/6');
+ await unlink(sourceEnv).catch(()=>{});await unlink(restoreEnv).catch(()=>{});await writeFile('.local/real-content/docker-proof.json',JSON.stringify({testedAt:new Date().toISOString(),checks,measurements,corpus:snapshot,temporaryEnvFilesRemoved:true,backupRetainedPrivately:true},null,2)+'\n');console.log('Real-content Docker checks '+checks.length+'/7');
 }
