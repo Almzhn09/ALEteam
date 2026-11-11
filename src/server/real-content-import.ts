@@ -27,12 +27,13 @@ async function actors(){
   if(!current)await db.user.create({data:{id,email,name,emailVerified:false,isActive:false}});
  }
 }
-async function publishRevision(revision:ContentRevision){
+async function publishRevision(revision:ContentRevision,client?:Prisma.TransactionClient){
  let current=revision;
  for(const status of ['IN_REVIEW','APPROVED','PUBLISHED'] as const){
   if(current.status==='PUBLISHED'||current.status==='ARCHIVED')break;
   if(status==='IN_REVIEW'&&!['DRAFT','CHANGES_REQUESTED'].includes(current.status)||status==='APPROVED'&&current.status!=='IN_REVIEW'||status==='PUBLISHED'&&current.status!=='APPROVED')continue;
-  current=await db.$transaction(async tx=>{const full=await tx.contentRevision.findUniqueOrThrow({where:{id:current.id},include:{item:true}});return applyCmsTransition(tx,full,{status,expectedUpdatedAt:full.updatedAt.toISOString(),reason},{user:{id:status==='IN_REVIEW'?authorId:reviewerId},grants});});
+  const transition=async(tx:Prisma.TransactionClient)=>{const full=await tx.contentRevision.findUniqueOrThrow({where:{id:current.id},include:{item:true}});return applyCmsTransition(tx,full,{status,expectedUpdatedAt:full.updatedAt.toISOString(),reason},{user:{id:status==='IN_REVIEW'?authorId:reviewerId},grants});};
+  current=client?await transition(client):await db.$transaction(transition);
  }return current;
 }
 function importConflict():never {throw new ApiError(409,'SOURCE_IMPORT_CONFLICT','Источник изменён редактором, отозван или имеет незавершённую редакцию. Требуется сверка.');}
@@ -67,12 +68,13 @@ async function ensurePage(row:RealPage,namespace:string){
   // Human drafts, withdrawal, closed branches and changed metadata require review.
   const revision=await db.$transaction(async tx=>{
    await tx.$queryRaw`SELECT id FROM "ContentItem" WHERE id=${binding.targetId} FOR UPDATE`;
+   await tx.$queryRaw`SELECT id FROM "ContentRevision" WHERE id=${(binding.data as {revisionId:string}).revisionId} FOR UPDATE`;
    const current=await checkedManagedPage(binding,row,tx);
    const next=await appendCmsDraft(tx,binding.targetId,row.locale,row.payload,authorId);
    await tx.realContentBinding.update({where:{id:binding.id,inputHash:binding.inputHash},data:{inputHash,outputHash:hash(row.payload),data:{...binding.data as Prisma.InputJsonObject,revisionId:next.id,versions:[...bindingVersions(binding),{revisionId:current.id,inputHash:binding.inputHash,outputHash:binding.outputHash}]}}});
-   return next;
+   return publishRevision(next,tx);
   });
-  return {itemId:binding.targetId,revision:await publishRevision(revision),state:'updated',slug:checked.item.slug};
+  return {itemId:binding.targetId,revision,state:'updated',slug:checked.item.slug};
  }
  let revision:ContentRevision;let itemId:string;let slug=row.slug;
  const legacy=await db.sourceDraftBinding.findUnique({where:{namespace_sourceKey_locale:{namespace:'archive-20261110',sourceKey:row.sourceKey,locale:row.locale}},include:{item:true,revision:true}});

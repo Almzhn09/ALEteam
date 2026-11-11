@@ -2,10 +2,12 @@ import {before,after,test} from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import {readFileSync} from 'node:fs';
-import {mkdtemp,rm} from 'node:fs/promises';
+import {mkdtemp,rm,writeFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import pg from 'pg';
+import {setTimeout as delay} from 'node:timers/promises';
 
 const url=process.env.TEST_DATABASE_URL;
 if(!url||!new URL(url).pathname.endsWith('_test'))throw Error('Dedicated _test DB required');
@@ -110,4 +112,57 @@ test('a simultaneous source import fails promptly instead of duplicating publica
   await lock.query('SELECT pg_advisory_lock(782032114)');
   await assert.rejects(()=>importRealContent(false),e=>(e as {code?:string}).code==='SOURCE_IMPORT_BUSY');
  }finally{await lock.query('SELECT pg_advisory_unlock(782032114)');await lock.end();}
+});
+
+test('an editor withdrawing the old revision during an upgrade cannot be bypassed by the publisher',async()=>{
+ const bound=await binding('contacts'),id=(bound.data as {revisionId:string}).revisionId;
+ const before=await db.contentRevision.count();
+ const editor=new pg.Client({connectionString:url});await editor.connect();
+ let importing:Promise<{error?:unknown}>|undefined;
+ try{
+  await db.realContentBinding.update({where:{id:bound.id},data:{inputHash:hash('isolated previous concurrent edition')}});
+  await editor.query('BEGIN');await editor.query('SELECT id FROM "ContentRevision" WHERE id=$1 FOR UPDATE',[id]);
+  importing=importRealContent(false).then(()=>({}),error=>({error}));
+  let waiting=false;
+  for(let n=0;n<500;n++){
+   const rows=await db.$queryRawUnsafe<{waiting:boolean}[]>("SELECT EXISTS(SELECT 1 FROM pg_stat_activity WHERE datname=current_database() AND wait_event_type='Lock' AND query LIKE '%ContentRevision%FOR UPDATE%') AS waiting");
+   if(rows[0].waiting){waiting=true;break;}await delay(20);
+  }
+  assert.ok(waiting,'Importer must lock the previous revision before replacing it');
+  await editor.query('UPDATE "ContentRevision" SET status=\'ARCHIVED\' WHERE id=$1',[id]);await editor.query('COMMIT');
+  const result=await importing;assert.ok(conflict(result.error));
+  assert.equal(await db.contentRevision.count(),before);assert.equal((await db.contentRevision.findUniqueOrThrow({where:{id}})).status,'ARCHIVED');
+ }finally{
+  await editor.query('ROLLBACK');await editor.end();await importing;
+  const current=await binding('contacts');
+  if((current.data as {revisionId:string}).revisionId===id){
+   await db.contentRevision.update({where:{id},data:{status:'PUBLISHED'}});
+   await db.realContentBinding.update({where:{id:bound.id},data:{inputHash:bound.inputHash}});
+  }
+ }
+});
+
+test('an upgrade backup must contain both distinct files, match the database and pass both checksums',async()=>{
+ const {backupBeforeRealImport}=await import('../src/server/real-content-backup');
+ const release=await binding('__release__','none');
+ const manifest=path.join(storage,'test-backup-manifest.json');
+ const rows=await db.$queryRawUnsafe('SELECT name,"appliedAt" FROM "ArchiveMigration" ORDER BY name LIMIT 1');
+ const databaseIdentity=createHash('sha256').update(JSON.stringify([new URL(url!).pathname,rows])).digest('hex');
+ const entry={name:'database.dump',sha256:'0'.repeat(64)};
+ const previous=process.env.REAL_CONTENT_BACKUP_MANIFEST;
+ try{
+  await db.realContentBinding.update({where:{id:release.id},data:{inputHash:hash('isolated prior release')}});
+  process.env.REAL_CONTENT_BACKUP_MANIFEST=manifest;
+  await writeFile(manifest,JSON.stringify({version:1,databaseIdentity,files:[entry,entry]}));
+  await assert.rejects(()=>backupBeforeRealImport(),/BACKUP_INCOMPLETE/);
+  const files=[entry,{name:'files.tar',sha256:'0'.repeat(64)}];
+  await writeFile(manifest,JSON.stringify({version:1,databaseIdentity:'wrong database',files}));
+  await assert.rejects(()=>backupBeforeRealImport(),/BACKUP_DATABASE_MISMATCH/);
+  await writeFile(path.join(storage,'database.dump'),'isolated invalid backup bytes');
+  await writeFile(manifest,JSON.stringify({version:1,databaseIdentity,files}));
+  await assert.rejects(()=>backupBeforeRealImport(),/BACKUP_INTEGRITY_FAILED/);
+ }finally{
+  if(previous===undefined)delete process.env.REAL_CONTENT_BACKUP_MANIFEST;else process.env.REAL_CONTENT_BACKUP_MANIFEST=previous;
+  await db.realContentBinding.update({where:{id:release.id},data:{inputHash:release.inputHash}});
+ }
 });

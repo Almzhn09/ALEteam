@@ -15,7 +15,13 @@ export async function backupBeforeRealImport(){
  if(await db.user.count()===0&&await db.document.count()===0&&await db.contentItem.count()===0)return {kind:'empty-database'};
  const pack=await realContentPackage();let release;try{release=await db.realContentBinding.findUnique({where:{namespace_sourceKey_locale:{namespace:pack.namespace,sourceKey:'__release__',locale:'none'}}});}catch(error){if((error as {code?:string}).code!=='P2021')throw error;}
  if(release?.inputHash===pack.digest&&await db.document.count({where:{isDemo:true,isPublic:true}})===0)return {kind:'idempotent-existing-release',digest:pack.digest};
- if(process.env.REAL_CONTENT_BACKUP_MANIFEST){const file=path.resolve(process.env.REAL_CONTENT_BACKUP_MANIFEST),manifest=JSON.parse(await readFile(file,'utf8'));if(manifest.databaseIdentity!==await identity())throw Error('BACKUP_DATABASE_MISMATCH');for(const entry of manifest.files){if(!['database.dump','files.tar'].includes(entry.name)||await fileHash(path.join(path.dirname(file),entry.name))!==entry.sha256)throw Error('BACKUP_INTEGRITY_FAILED');}if(manifest.files.length!==2)throw Error('BACKUP_INCOMPLETE');return {kind:'verified-existing-backup',manifest:file};}
+ if(process.env.REAL_CONTENT_BACKUP_MANIFEST){
+  const file=path.resolve(process.env.REAL_CONTENT_BACKUP_MANIFEST),manifest=JSON.parse(await readFile(file,'utf8'));
+  if(manifest.version!==1||!Array.isArray(manifest.files)||manifest.files.length!==2||new Set(manifest.files.map((entry:{name:string})=>entry.name)).size!==2)throw Error('BACKUP_INCOMPLETE');
+  if(manifest.databaseIdentity!==await identity())throw Error('BACKUP_DATABASE_MISMATCH');
+  for(const entry of manifest.files){if(!['database.dump','files.tar'].includes(entry.name)||await fileHash(path.join(path.dirname(file),entry.name))!==entry.sha256)throw Error('BACKUP_INTEGRITY_FAILED');}
+  return {kind:'verified-existing-backup',manifest:file};
+ }
  const directory=path.resolve('.local/real-content/backups',new Date().toISOString().replace(/[:.]/g,'-'));await mkdir(directory,{recursive:true,mode:0o700});
  const args=['--format=custom','--no-owner','--username',decodeURIComponent(url.username),'--dbname',decodeURIComponent(url.pathname.slice(1))],env={...process.env,PGPASSWORD:decodeURIComponent(url.password),PGHOST:url.hostname,PGPORT:url.port||'5432'};
  let program='pg_dump',clientArgs=args;
