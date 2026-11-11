@@ -51,7 +51,7 @@ export async function adminContent(request:Request,id?:string){
   const where={...scopeWhere(branches),...(id?{id:idSchema.parse(id)}:{}),...(p.branchId?{branchId:p.branchId}:{}),kind:p.kind??{not:'ARCHIVE_DOCUMENT' as const}};
   const[items,total]=await db.$transaction([db.contentItem.findMany({where,include:{revisions:{orderBy:[{locale:'asc'},{version:'desc'}]}},orderBy:{id:'asc'},take:p.pageSize,skip:(p.page-1)*p.pageSize}),db.contentItem.count({where})]);return json({items,total,...p});
  }
- const p=z.object({slug:z.string().regex(/^[a-z0-9][a-z0-9-]{0,99}$/),kind:kindSchema,branchId:idSchema.nullable().default(null),isDemo:z.boolean().default(true),locale:localeSchema,payload:contentPayload}).strict().parse(await readJson(request));
+ const p=z.object({slug:z.string().regex(/^[a-z0-9][a-z0-9-]{0,99}$/),kind:kindSchema,branchId:idSchema.nullable().default(null),isDemo:z.boolean().default(true),locale:localeSchema,payload:contentPayload}).strict().parse(await readJson(request,65536));
  const c=await staffContext(request,p.kind==='SETTING'?'settings.manage':'content.write',p.branchId);
  if(p.kind==='SETTING'&&p.branchId)throw new ApiError(400,'GLOBAL_SETTING','Настройки сайта имеют глобальную область.');
  if(p.kind==='BRANCH_PROFILE'&&!p.branchId)throw new ApiError(400,'BRANCH_REQUIRED','Укажите филиал.');
@@ -61,7 +61,7 @@ export async function adminContent(request:Request,id?:string){
 export async function newRevision(request:Request,itemId:string){
  const {item,c}=await authorizedItem(request,itemId,'content.write');
  if(item.kind==='SETTING'&&!allows(c.grants,'settings.manage',null))throw new ApiError(403,'FORBIDDEN','Недостаточно прав сотрудника.');
- const p=z.object({locale:localeSchema,payload:contentPayload}).strict().parse(await readJson(request));checkPayload(item.kind,p.payload,item.isDemo);
+ const p=z.object({locale:localeSchema,payload:contentPayload}).strict().parse(await readJson(request,65536));checkPayload(item.kind,p.payload,item.isDemo);
  await rateLimit(`cms-write:${c.user.id}`,60,60);
  const revision=await db.$transaction(async tx=>{
   const revision=await appendCmsDraft(tx,itemId,p.locale,p.payload,c.user.id);await audit(tx,c.user.id,'REVISION_CREATED',revision.id);return revision;
@@ -72,7 +72,7 @@ export async function editRevision(request:Request,id:string){
  const catalog=revision.item.kind==='ARCHIVE_DOCUMENT';
  const c=await staffContext(request,catalog?'catalog.write':'content.write',revision.item.branchId);
  if(revision.item.kind==='SETTING'&&!allows(c.grants,'settings.manage',null))throw new ApiError(403,'FORBIDDEN','Недостаточно прав сотрудника.');
- const body=z.object({expectedUpdatedAt:z.iso.datetime(),payload:z.unknown()}).strict().parse(await readJson(request));
+ const body=z.object({expectedUpdatedAt:z.iso.datetime(),payload:z.unknown()}).strict().parse(await readJson(request,65536));
  const p={expectedUpdatedAt:body.expectedUpdatedAt,payload:catalog?parseDocumentPayload(revision.locale,body.payload):contentPayload.parse(body.payload)};
  if(!catalog)checkPayload(revision.item.kind,contentPayload.parse(p.payload),revision.item.isDemo);
  await rateLimit(`cms-write:${c.user.id}`,60,60);
