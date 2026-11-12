@@ -78,7 +78,8 @@ const place=(await api('/places?locale=ru&limit=3')).items[0];assert.ok(place);
  });
  const axe=await readFile('node_modules/axe-core/axe.min.js','utf8');
  // Full 36 reading variants, 12 real screens each; measured layout, not a claim of physical-device/browser-zoom testing.
- const routes=[['home','/'],['catalog','/catalog?scope=cms'],['funds','/catalog?scope=fund&number='+encodeURIComponent('Р-1 ч.с.')],['material',historyRoute],['places','/places?placeId='+encodeURIComponent(place.id)],['about','/about'],['calendar','/calendar'],['services','/services'],['compliance','/about/compliance'],['directories','/directories'],['fund-list','/directories/funds'],['newspaper-list','/directories/newspapers']];
+ const allRoutes=[['home','/'],['catalog','/catalog?scope=cms'],['funds','/catalog?scope=fund&number='+encodeURIComponent('Р-1 ч.с.')],['material',historyRoute],['places','/places?placeId='+encodeURIComponent(place.id)],['about','/about'],['calendar','/calendar'],['services','/services'],['compliance','/about/compliance'],['directories','/directories'],['fund-list','/directories/funds'],['newspaper-list','/directories/newspapers']];
+ const routes=process.argv.includes('--home-only')?allRoutes.filter(([name])=>name==='home'):allRoutes;
  const variants=[];for(const width of[360,768,1440])for(const lang of['ru','kk','en'])for(const theme of['light','dark'])for(const size of['100','150'])variants.push({width,lang,theme,size});
  for(const v of variants){
   const c=await browser.newContext({viewport:{width:v.width,height:1000},reducedMotion:'reduce'});await c.addCookies([{name:'lang',value:v.lang,url:base},{name:'display-theme',value:v.theme,url:base},{name:'display-text-size',value:v.size,url:base}]);const p=await c.newPage();
@@ -90,7 +91,7 @@ const place=(await api('/places?locale=ru&limit=3')).items[0];assert.ok(place);
    if(v.width===1440&&v.lang==='ru'&&v.size==='100'){await p.addScriptTag({content:axe});const violations=await p.evaluate(async()=> (await axe.run(document,{runOnly:['wcag2a','wcag2aa','wcag21a','wcag21aa']})).violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.length})));assert.deepEqual(violations,[],JSON.stringify({v,name,violations}));}
   }await c.close();
  }
- checks.push({name:'432 real-page reading layouts: 36 size/language/theme/text variants × 12 screens, no overflow or overlapping controls; axe checks on 24 desktop screens',passed:true});
+ checks.push({name:`${matrix.length} real-page reading layouts: 36 size/language/theme/text variants × ${routes.length} screens, no overflow or overlapping controls; axe checks on ${routes.length*2} desktop screens`,passed:true});
  // Open panels at the most constrained text setting.
  await ctx.addCookies([{name:'display-theme',value:'dark',url:base},{name:'display-text-size',value:'150',url:base}]);await page.setViewportSize({width:360,height:900});await page.goto(base);await page.locator('.display-preferences summary').click();await page.locator('.display-panel').waitFor();assert.equal(await page.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-innerWidth)),0);await page.keyboard.press('Escape');
  await page.getByRole('button',{name:'Меню',exact:true}).click();await page.locator('.nav-wrap[data-open=true]').waitFor();assert.equal(await page.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-innerWidth)),0);await page.keyboard.press('Escape');

@@ -4,7 +4,8 @@ import assert from 'node:assert/strict';
 import {mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 const base=process.env.BASE_URL??'http://localhost:3122',out=process.env.OUT??'.local/reference-native-zoom';assert.match(base,/^http:\/\/(localhost|127\.0\.0\.1):\d+$/u);await mkdir(out,{recursive:true});
-const routes=['/','/catalog?scope=cms','/catalog?scope=fund','/materials/archive-history-1?contentLang=ru','/places','/about','/calendar','/services','/about/compliance','/directories','/directories/funds','/directories/newspapers'],rows=[];
+const allRoutes=['/','/catalog?scope=cms','/catalog?scope=fund','/materials/archive-history-1?contentLang=ru','/places','/about','/calendar','/services','/about/compliance','/directories','/directories/funds','/directories/newspapers'];
+const routes=process.argv.includes('--home-only')?allRoutes.filter(route=>route==='/'):allRoutes,rows=[];
 try{for(const width of [360,768,1440])for(const lang of ['ru','kk','en'])for(const theme of ['light','dark']){
  const profile=await mkdtemp('.local/reference-zoom-profile-'),ctx=await chromium.launchPersistentContext(profile,{executablePath:'/usr/bin/chromium',headless:true,viewport:null,reducedMotion:'reduce',args:['--no-sandbox',`--window-size=${width*2},1400`]});
  try{
