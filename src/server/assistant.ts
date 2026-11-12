@@ -12,6 +12,8 @@ import {cmsAnswer,cmsQuestionContext} from './cms-grounding';
 import {semanticConversationPlan,requiresCatalogEvidence} from './semantic-catalog-plan';
 import {retrieveSemanticCatalog,revalidateCatalogSources,semanticCatalogAnswer,type CatalogPassage} from './semantic-catalog';
 import {englishSiteDialog} from './english-dialog';
+import {conversation,followUps,talkLocale,type Conversation} from './assistant-conversation';
+import {guideTitle} from './guides';
 import {publicDocumentWhere} from './public-visibility';
 import {planResearch} from './artur-discovery/research';
 import {directoryIntent,retrieveDirectoryPassages,revalidateDirectoryPassages,directoryAnswer,type DirectoryPassage} from './directory-knowledge';
@@ -27,9 +29,19 @@ const assistantOutput = z.object({ answer: z.string().trim().min(1).max(8000), s
 export async function assistant(request: Request) {
   const user = await requireUser(request);
   const input = assistantInput.parse(await readJson(request));
-  const local = process.env.ASSISTANT_MODE === 'local-model' && !process.env.ASSISTANT_SERVICE_URL;
+  // The team's own model is the documented default; retrieval-only or LLM modes must be chosen explicitly.
+  const local = (process.env.ASSISTANT_MODE || 'local-model') === 'local-model' && !process.env.ASSISTANT_SERVICE_URL;
   await rateLimit(`assistant:${local ? 'local:' : ''}${user.id}`, local ? 30 : 10, local ? 60 : 3600);
   await rateLimit(`assistant:global-daily${local ? ':local' : ''}`, local ? 10000 : 100, 86400);
+  // Small talk ("привет", "как дела", "кто ты") is answered before any archive search.
+  const talk:Conversation=process.env.ASSISTANT_SERVICE_URL?{}:conversation(input.question,input.history,input.locale??'ru');
+  if(talk.reply){
+   const talkLang=talkLocale(input.question,input.locale??'ru');
+   return json({answer:talk.reply.answer,noAnswer:false,mode:'local-model',talk:true,suggestions:talk.reply.suggestions,
+    sources:[{id:'guide-site',title:guideTitle('guide-site',talkLang)||guideTitle('guide-site','ru'),isDemo:false,kind:'guide',...(talkLang==='en'?{locale:'en'}:{}),href:'/api/guides/guide-site'}]});
+  }
+  const originalQuestion=input.question;
+  if(talk.rest)input.question=talk.rest;
   let result: z.infer<typeof assistantOutput>;
   let cmsPassages:CmsPassage[]=[];
   let catalogPassages:CatalogPassage[]=[];
@@ -89,5 +101,5 @@ export async function assistant(request: Request) {
   const researchActions:ResearchAction[]=research?.actions.map(a=>({type:'catalogSearch',filters:a.query}))??[];
   const researchSteps:ResearchStep[]=research?.steps.map(s=>({id:s.id,text:s.title+'. '+s.description,status:'suggested',sources:[],...(s.kind==='search'&&researchActions[0]?{action:researchActions[0]}:{})}))??[];
   const expansion:TransportNameExpansion|undefined=plan.nameExpansion?{mode:'expanded',applied:plan.nameExpansion.status==='resolved',variants:plan.nameExpansion.variants,entityIds:[],clarificationRequired:plan.nameExpansion.status==='ambiguous',sources:[]}:undefined;
-  return json({...(research?{researchSteps,actions:researchActions,researchLimitations:research.limitations}:{}),...(expansion?{nameExpansion:expansion,nameExpansionProvenance:{kind:'project_dictionary',sourceIds:[...new Set(plan.nameExpansion!.matches.flatMap(m=>m.sourceIds))]}}:{}), answer: result.answer, noAnswer: result.noAnswer, mode: result.mode ?? 'external', sources,...(plan.handled&&!directoryQuery&&!plan.clarification&&!cmsPassages.length&&!filePassages.length&&!process.env.ASSISTANT_SERVICE_URL?{catalogQuery:plan.filters}:{}) });
+  return json({...(research?{researchSteps,actions:researchActions,researchLimitations:research.limitations}:{}),...(expansion?{nameExpansion:expansion,nameExpansionProvenance:{kind:'project_dictionary',sourceIds:[...new Set(plan.nameExpansion!.matches.flatMap(m=>m.sourceIds))]}}:{}), answer: (talk.greeting?talk.greeting+' ':'')+result.answer, noAnswer: result.noAnswer, mode: result.mode ?? 'external', sources,...(result.noAnswer&&!process.env.ASSISTANT_SERVICE_URL?{suggestions:followUps(originalQuestion,input.locale??'ru',true)}:{}),...(plan.handled&&!directoryQuery&&!plan.clarification&&!cmsPassages.length&&!filePassages.length&&!process.env.ASSISTANT_SERVICE_URL?{catalogQuery:plan.filters}:{}) });
 }

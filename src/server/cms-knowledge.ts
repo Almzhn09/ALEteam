@@ -29,7 +29,9 @@ export async function retrieveCmsPassages(question:string,locale:ContentLocale):
  const haystack=Prisma.sql`lower((r.payload->>'title') || ' ' || (r.payload->>'body') || ' ' || coalesce(r.payload->>'address','') || ' ' || coalesce(r.payload->>'phone','') || ' ' || coalesce(r.payload->>'email','') || ' ' || coalesce(r.payload->>'hours','') || CASE WHEN r.payload ? 'address' THEN ' адрес мекенжай address контакты байланыс contacts' ELSE '' END || CASE WHEN r.payload ? 'phone' THEN ' телефон phone контакты байланыс contacts' ELSE '' END || CASE WHEN r.payload ? 'email' THEN ' email электронная почта контакты байланыс contacts' ELSE '' END || CASE WHEN r.payload ? 'hours' THEN ' график часы работы жұмыс уақыты hours' ELSE '' END || CASE i.kind WHEN 'BRANCH_PROFILE' THEN ' филиал филиалы филиалдар бөлімше branch branches' WHEN 'NEWS' THEN ' новости жаңалықтар news' WHEN 'EXHIBITION' THEN ' выставка көрме exhibition' WHEN 'COLLECTION' THEN ' коллекция жинақ collection' ELSE '' END)`;
  const matches=terms.map(t=>/^\d+$/u.test(t)?Prisma.sql`${haystack} ~ ${'(^|[^0-9])'+t+'([^0-9]|$)'}`:Prisma.sql`${haystack} LIKE ${'%'+t+'%'}`);
  const config=locale==='ru'?'russian':'simple';
- const relevance=Prisma.sql`ts_rank_cd(setweight(to_tsvector(${config}::regconfig,r.payload->>'title'),'A') || setweight(to_tsvector(${config}::regconfig,r.payload->>'body'),'B'),plainto_tsquery(${config}::regconfig,${question.slice(0,1000)}))`;
+ const relevance=Prisma.sql`ts_rank_cd(setweight(to_tsvector(${config}::regconfig,r.payload->>'title'),'A') || setweight(to_tsvector(${config}::regconfig,r.payload->>'body'),'B'),plainto_tsquery(${config}::regconfig,${question.slice(0,1000).toLowerCase()}))`;
+ // Lowercased here: a database created with the C locale does not lowercase Cyrillic, so
+ // "Когда" stayed a non-stopword query term and pushed the right page down the ranking.
  const ids=await db.$queryRaw<{id:string}[]>(Prisma.sql`
   SELECT r.id FROM "ContentRevision" r JOIN "ContentItem" i ON i.id=r."itemId"
   LEFT JOIN "ArchiveBranch" b ON b.id=i."branchId"

@@ -47,6 +47,10 @@ export interface AssistantAnswer {
   actions?:ResearchAction[];
   researchLimitations?:string[];
   catalogQuery?: CatalogFilters;
+  /** Follow-up questions the visitor can send with one click. */
+  suggestions?: string[];
+  /** Small-talk reply about the assistant itself, not an archive answer. */
+  talk?: boolean;
   answer: string; noAnswer: boolean; mode: 'retrieval' | 'llm' | 'local-model' | 'external';
   sources: { id: string; title: string; isDemo: boolean; kind: 'document' | 'guide' | 'cms' | 'fund' | 'newspaper'; locale?: 'ru' | 'kk' | 'en'; digitalCopyAllowed?: boolean; href: string }[];
 }

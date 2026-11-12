@@ -5,7 +5,7 @@ import {assistantReadingLink as assistantSourceLink} from '../src/lib/assistant-
 import {cmsQueryTerms} from '../src/server/cms-knowledge';
 const passage={id:'cms_revision',revisionId:'revision',title:'Reviewed source',text:'Published source text',kind:'cms' as const,isDemo:true,href:'/api/content/reviewed?locale=en',stamp:'2026-11-09T00:00:00.000Z'};
 test('CMS quotes exact published text, identifies demo and uses selected language',()=>{
- const r=cmsAnswer([passage],'en');assert.ok(r.answer.startsWith('Excerpts'));assert.ok(r.answer.includes('DEMO:'));assert.ok(r.answer.includes(passage.text));assert.deepEqual(r.sourceIds,[passage.id]);assert.equal(r.mode,'retrieval');assert.ok(!r.answer.includes(passage.id));
+ const r=cmsAnswer([passage],'en');assert.ok(r.answer.startsWith('Here is what I found'));assert.ok(r.answer.includes('DEMO:'));assert.ok(r.answer.includes(passage.text));assert.deepEqual(r.sourceIds,[passage.id]);assert.equal(r.mode,'retrieval');assert.ok(!r.answer.includes(passage.id));
  assert.ok(cmsAnswer([passage],'kk').answer.startsWith('Жарияланған'));
 });
 test('missing English CMS translation never becomes a Russian quote',()=>{
