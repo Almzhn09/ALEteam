@@ -1,0 +1,12 @@
+// Full multilingual AA audit of the same real public routes. No mocked data.
+import {chromium} from 'playwright-core';import assert from 'node:assert/strict';import {mkdir,readFile,writeFile} from 'node:fs/promises';import {execFileSync} from 'node:child_process';
+const base=process.env.BASE_URL??'http://localhost:3122',out=process.env.OUT??'.local/reference-axe';assert.match(base,/^http:\/\/(localhost|127\.0\.0\.1):\d+$/u);await mkdir(out,{recursive:true});
+const browser=await chromium.launch({headless:true,executablePath:'/usr/bin/chromium',args:['--no-sandbox','--disable-dev-shm-usage']}),axe=await readFile('node_modules/axe-core/axe.min.js','utf8'),rows=[];
+const place=(await(await fetch(base+'/api/places?locale=ru&limit=1')).json()).items[0];assert.ok(place);
+const routes=['/','/catalog?scope=cms','/catalog?scope=fund','/materials/archive-history-1?contentLang=ru','/places?placeId='+encodeURIComponent(place.id),'/about','/calendar','/services','/about/compliance','/directories','/directories/funds','/directories/newspapers'];
+try{for(const lang of ['ru','kk','en'])for(const theme of ['light','dark']){
+ const ctx=await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce'});await ctx.addCookies([{name:'lang',value:lang,url:base},{name:'display-theme',value:theme,url:base},{name:'display-text-size',value:'100',url:base}]);const p=await ctx.newPage();
+ try{for(const route of routes){await p.goto(base+route);await p.evaluate(()=>document.fonts.ready);if(route==='/')await p.locator('section[aria-labelledby="recommendations-title"] .result-list a').first().waitFor();if(route.startsWith('/places'))await p.locator('.history-timeline > li').first().waitFor();await p.addScriptTag({content:axe});const result=await p.evaluate(()=>axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa']}}));const row={lang,theme,route,violations:result.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>n.target)})),passes:result.passes.length};rows.push(row);assert.deepEqual(row.violations,[],JSON.stringify(row));}}
+ finally{await ctx.close();}
+}}finally{await browser.close();await writeFile(out+'/report.json',JSON.stringify({testedAt:new Date().toISOString(),commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),axeVersion:'4.10.2',tags:['wcag2a','wcag2aa','wcag21a','wcag21aa'],target:'72 real loaded screens; anonymous local production server',rows},null,2)+'\n');}
+console.log('PASS',rows.length,'multilingual axe screens; no violations');

@@ -1,0 +1,447 @@
+{
+  "testedAt": "2026-11-12T18:47:03.642Z",
+  "checks": [
+    {
+      "name": "all public menu and footer destinations open in RU, KK and EN",
+      "passed": true
+    },
+    {
+      "name": "missing English translation opens the unchanged published source and retains English interface",
+      "passed": true
+    },
+    {
+      "name": "branches are available in every interface language and each profile opens",
+      "passed": true
+    },
+    {
+      "name": "language picker releases a pinned source edition, prefers a published translation and preserves unrelated URL state",
+      "passed": true
+    },
+    {
+      "name": "unpublished or wrong-kind routes remain unavailable, and explicit edition selection is respected",
+      "passed": true
+    },
+    {
+      "name": "contacts, history and structure fit three widths in both affected languages",
+      "passed": true
+    }
+  ],
+  "pages": [
+    {
+      "path": "/",
+      "lang": "ru",
+      "status": 200,
+      "title": "Государственный архив\nВосточно-Казахстанской области"
+    },
+    {
+      "path": "/about",
+      "lang": "ru",
+      "status": 200,
+      "title": "Государственный архив Восточно-Казахстанской области"
+    },
+    {
+      "path": "/materials/archive-history-1",
+      "lang": "ru",
+      "status": 200,
+      "title": "История архива · 1"
+    },
+    {
+      "path": "/materials/archive-structure",
+      "lang": "ru",
+      "status": 200,
+      "title": "Структура архива"
+    },
+    {
+      "path": "/about/compliance",
+      "lang": "ru",
+      "status": 200,
+      "title": "Комплаенс"
+    },
+    {
+      "path": "/calendar",
+      "lang": "ru",
+      "status": 200,
+      "title": "Памятные даты"
+    },
+    {
+      "path": "/directories/funds",
+      "lang": "ru",
+      "status": 200,
+      "title": "Справочник фондов"
+    },
+    {
+      "path": "/directories/newspapers",
+      "lang": "ru",
+      "status": 200,
+      "title": "Перечень хранения газет"
+    },
+    {
+      "path": "/directories",
+      "lang": "ru",
+      "status": 200,
+      "title": "Справочники фондов"
+    },
+    {
+      "path": "/services",
+      "lang": "ru",
+      "status": 200,
+      "title": "Услуги"
+    },
+    {
+      "path": "/materials/archive-reading-room-info",
+      "lang": "ru",
+      "status": 200,
+      "title": "Читальный зал"
+    },
+    {
+      "path": "/materials/archive-paid-services-info",
+      "lang": "ru",
+      "status": 200,
+      "title": "Платные услуги: справочная информация"
+    },
+    {
+      "path": "/materials/archive-public-services-info",
+      "lang": "ru",
+      "status": 200,
+      "title": "Государственная услуга: где найти официальную информацию"
+    },
+    {
+      "path": "/help",
+      "lang": "ru",
+      "status": 200,
+      "title": "Справка и частые вопросы"
+    },
+    {
+      "path": "/catalog?scope=cms",
+      "lang": "ru",
+      "status": 200,
+      "title": "Поиск по архиву"
+    },
+    {
+      "path": "/materials/archive-contacts",
+      "lang": "ru",
+      "status": 200,
+      "title": "Контакты"
+    },
+    {
+      "path": "/guide",
+      "lang": "ru",
+      "status": 200,
+      "title": "Как пользоваться сайтом"
+    },
+    {
+      "path": "/news",
+      "lang": "ru",
+      "status": 200,
+      "title": "Новости и события"
+    },
+    {
+      "path": "/exhibitions",
+      "lang": "ru",
+      "status": 200,
+      "title": "Онлайн-выставки"
+    },
+    {
+      "path": "/memory",
+      "lang": "ru",
+      "status": 200,
+      "title": "Большой архив памяти"
+    },
+    {
+      "path": "/branches",
+      "lang": "ru",
+      "status": 200,
+      "title": "Филиалы и подразделения"
+    },
+    {
+      "path": "/pages/archive-contacts",
+      "lang": "ru",
+      "status": 200,
+      "title": "Контакты"
+    },
+    {
+      "path": "/catalog?scope=newspaper&entry=rn-3eacef96c7c8cf5d159a004902dd",
+      "lang": "ru",
+      "status": 200,
+      "title": "Поиск по архиву"
+    },
+    {
+      "path": "/",
+      "lang": "kk",
+      "status": 200,
+      "title": "Шығыс Қазақстан облысының\nмемлекеттік архиві"
+    },
+    {
+      "path": "/about",
+      "lang": "kk",
+      "status": 200,
+      "title": "Шығыс Қазақстан облысының мемлекеттік архиві"
+    },
+    {
+      "path": "/materials/archive-history-1",
+      "lang": "kk",
+      "status": 200,
+      "title": "История архива · 1"
+    },
+    {
+      "path": "/materials/archive-structure",
+      "lang": "kk",
+      "status": 200,
+      "title": "Структура архива"
+    },
+    {
+      "path": "/about/compliance",
+      "lang": "kk",
+      "status": 200,
+      "title": "Комплаенс"
+    },
+    {
+      "path": "/calendar",
+      "lang": "kk",
+      "status": 200,
+      "title": "Атаулы күндер"
+    },
+    {
+      "path": "/directories/funds",
+      "lang": "kk",
+      "status": 200,
+      "title": "Қорлар анықтамалығы"
+    },
+    {
+      "path": "/directories/newspapers",
+      "lang": "kk",
+      "status": 200,
+      "title": "Газеттерді сақтау тізбесі"
+    },
+    {
+      "path": "/directories",
+      "lang": "kk",
+      "status": 200,
+      "title": "Қорлар анықтамалықтары"
+    },
+    {
+      "path": "/services",
+      "lang": "kk",
+      "status": 200,
+      "title": "Қызметтер"
+    },
+    {
+      "path": "/materials/archive-reading-room-info",
+      "lang": "kk",
+      "status": 200,
+      "title": "Оқу залы"
+    },
+    {
+      "path": "/materials/archive-paid-services-info",
+      "lang": "kk",
+      "status": 200,
+      "title": "Ақылы қызметтер туралы анықтамалық ақпарат"
+    },
+    {
+      "path": "/materials/archive-public-services-info",
+      "lang": "kk",
+      "status": 200,
+      "title": "Мемлекеттік қызмет: ресми ақпаратты қайдан табуға болады"
+    },
+    {
+      "path": "/help",
+      "lang": "kk",
+      "status": 200,
+      "title": "Анықтама және жиі қойылатын сұрақтар"
+    },
+    {
+      "path": "/catalog?scope=cms",
+      "lang": "kk",
+      "status": 200,
+      "title": "Мұрағаттан іздеу"
+    },
+    {
+      "path": "/materials/archive-contacts",
+      "lang": "kk",
+      "status": 200,
+      "title": "Контакты"
+    },
+    {
+      "path": "/guide",
+      "lang": "kk",
+      "status": 200,
+      "title": "Сайтты қалай пайдалану"
+    },
+    {
+      "path": "/news",
+      "lang": "kk",
+      "status": 200,
+      "title": "Жаңалықтар мен оқиғалар"
+    },
+    {
+      "path": "/exhibitions",
+      "lang": "kk",
+      "status": 200,
+      "title": "Онлайн көрмелер"
+    },
+    {
+      "path": "/memory",
+      "lang": "kk",
+      "status": 200,
+      "title": "Үлкен жад мұрағаты"
+    },
+    {
+      "path": "/branches",
+      "lang": "kk",
+      "status": 200,
+      "title": "Филиалдар мен бөлімшелер"
+    },
+    {
+      "path": "/pages/archive-contacts",
+      "lang": "kk",
+      "status": 200,
+      "title": "Контакты"
+    },
+    {
+      "path": "/catalog?scope=newspaper&entry=rn-3eacef96c7c8cf5d159a004902dd",
+      "lang": "kk",
+      "status": 200,
+      "title": "Мұрағаттан іздеу"
+    },
+    {
+      "path": "/",
+      "lang": "en",
+      "status": 200,
+      "title": "State Archive\nof East Kazakhstan"
+    },
+    {
+      "path": "/about",
+      "lang": "en",
+      "status": 200,
+      "title": "State Archive of East Kazakhstan Region"
+    },
+    {
+      "path": "/materials/archive-history-1",
+      "lang": "en",
+      "status": 200,
+      "title": "История архива · 1"
+    },
+    {
+      "path": "/materials/archive-structure",
+      "lang": "en",
+      "status": 200,
+      "title": "Структура архива"
+    },
+    {
+      "path": "/about/compliance",
+      "lang": "en",
+      "status": 200,
+      "title": "Compliance"
+    },
+    {
+      "path": "/calendar",
+      "lang": "en",
+      "status": 200,
+      "title": "Commemorative dates"
+    },
+    {
+      "path": "/directories/funds",
+      "lang": "en",
+      "status": 200,
+      "title": "Fund directory"
+    },
+    {
+      "path": "/directories/newspapers",
+      "lang": "en",
+      "status": 200,
+      "title": "List of newspaper holdings"
+    },
+    {
+      "path": "/directories",
+      "lang": "en",
+      "status": 200,
+      "title": "Fonds directories"
+    },
+    {
+      "path": "/services",
+      "lang": "en",
+      "status": 200,
+      "title": "Services"
+    },
+    {
+      "path": "/materials/archive-reading-room-info",
+      "lang": "en",
+      "status": 200,
+      "title": "Reading room"
+    },
+    {
+      "path": "/materials/archive-paid-services-info",
+      "lang": "en",
+      "status": 200,
+      "title": "Paid services: reference information"
+    },
+    {
+      "path": "/materials/archive-public-services-info",
+      "lang": "en",
+      "status": 200,
+      "title": "Public services: finding official information"
+    },
+    {
+      "path": "/help",
+      "lang": "en",
+      "status": 200,
+      "title": "Help and FAQ"
+    },
+    {
+      "path": "/catalog?scope=cms",
+      "lang": "en",
+      "status": 200,
+      "title": "Search the archive"
+    },
+    {
+      "path": "/materials/archive-contacts",
+      "lang": "en",
+      "status": 200,
+      "title": "Контакты"
+    },
+    {
+      "path": "/guide",
+      "lang": "en",
+      "status": 200,
+      "title": "How to use the site"
+    },
+    {
+      "path": "/news",
+      "lang": "en",
+      "status": 200,
+      "title": "News and events"
+    },
+    {
+      "path": "/exhibitions",
+      "lang": "en",
+      "status": 200,
+      "title": "Online exhibitions"
+    },
+    {
+      "path": "/memory",
+      "lang": "en",
+      "status": 200,
+      "title": "The Great Memory Archive"
+    },
+    {
+      "path": "/branches",
+      "lang": "en",
+      "status": 200,
+      "title": "Branches and units"
+    },
+    {
+      "path": "/pages/archive-contacts",
+      "lang": "en",
+      "status": 200,
+      "title": "Контакты"
+    },
+    {
+      "path": "/catalog?scope=newspaper&entry=rn-3eacef96c7c8cf5d159a004902dd",
+      "lang": "en",
+      "status": 200,
+      "title": "Search the archive"
+    }
+  ],
+  "errors": [],
+  "scope": "Local production; existing real public CMS editions; no writes or automatic translation"
+}

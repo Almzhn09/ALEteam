@@ -1,0 +1,350 @@
+{
+  "testedAt": "2026-11-12T04:49:48.190Z",
+  "commit": "16b6a1b4a2e6ec21361a91e7d0f36be56313c654",
+  "tool": "Lighthouse13.6.0",
+  "observations": [
+    {
+      "name": "home",
+      "route": "/",
+      "device": "mobile",
+      "run": 1,
+      "scores": {
+        "performance": 72,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0,
+      "lcpMs": 5116.7605,
+      "tbtMs": 382
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "device": "mobile",
+      "run": 2,
+      "scores": {
+        "performance": 80,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.0007535026516096845,
+      "lcpMs": 4739.395100000001,
+      "tbtMs": 199.9999999999999
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "device": "mobile",
+      "run": 3,
+      "scores": {
+        "performance": 81,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0,
+      "lcpMs": 4671.8247,
+      "tbtMs": 161.0000000000001
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "device": "desktop",
+      "run": 1,
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.001589396224104879,
+      "lcpMs": 1058.1671999999999,
+      "tbtMs": 0
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "device": "desktop",
+      "run": 2,
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.001589396224104879,
+      "lcpMs": 1056.3156000000001,
+      "tbtMs": 0
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "device": "desktop",
+      "run": 3,
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.001589396224104879,
+      "lcpMs": 1017.2570000000002,
+      "tbtMs": 0
+    },
+    {
+      "name": "catalog",
+      "route": "/catalog?scope=cms",
+      "device": "mobile",
+      "run": 1,
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.0002396621096799024,
+      "lcpMs": 650.85525,
+      "tbtMs": 158.9999999999999
+    },
+    {
+      "name": "catalog",
+      "route": "/catalog?scope=cms",
+      "device": "mobile",
+      "run": 2,
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.0002396621096799024,
+      "lcpMs": 734.9028,
+      "tbtMs": 108
+    },
+    {
+      "name": "catalog",
+      "route": "/catalog?scope=cms",
+      "device": "mobile",
+      "run": 3,
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.0002396621096799024,
+      "lcpMs": 797.9419,
+      "tbtMs": 152
+    },
+    {
+      "name": "catalog",
+      "route": "/catalog?scope=cms",
+      "device": "desktop",
+      "run": 1,
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.001086699837013439,
+      "lcpMs": 209.08095,
+      "tbtMs": 0
+    },
+    {
+      "name": "catalog",
+      "route": "/catalog?scope=cms",
+      "device": "desktop",
+      "run": 2,
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.0128709555546005,
+      "lcpMs": 631.1728,
+      "tbtMs": 0
+    },
+    {
+      "name": "catalog",
+      "route": "/catalog?scope=cms",
+      "device": "desktop",
+      "run": 3,
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.001086699837013439,
+      "lcpMs": 202.8872,
+      "tbtMs": 0
+    },
+    {
+      "name": "material",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "device": "mobile",
+      "run": 1,
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.0002396621096799024,
+      "lcpMs": 873.1476,
+      "tbtMs": 116.99999999999955
+    },
+    {
+      "name": "material",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "device": "mobile",
+      "run": 2,
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.0002396621096799024,
+      "lcpMs": 876.28355,
+      "tbtMs": 110
+    },
+    {
+      "name": "material",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "device": "mobile",
+      "run": 3,
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.0002396621096799024,
+      "lcpMs": 920.23565,
+      "tbtMs": 152.5000000000001
+    },
+    {
+      "name": "material",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "device": "desktop",
+      "run": 1,
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.000977330437717854,
+      "lcpMs": 250.99765,
+      "tbtMs": 0
+    },
+    {
+      "name": "material",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "device": "desktop",
+      "run": 2,
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.000977330437717854,
+      "lcpMs": 257.08695,
+      "tbtMs": 0
+    },
+    {
+      "name": "material",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "device": "desktop",
+      "run": 3,
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "cls": 0.000977330437717854,
+      "lcpMs": 243.0242,
+      "tbtMs": 0
+    }
+  ],
+  "medians": [
+    {
+      "name": "home",
+      "route": "/",
+      "device": "mobile",
+      "scores": {
+        "performance": 80,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      }
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "device": "desktop",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      }
+    },
+    {
+      "name": "catalog",
+      "route": "/catalog?scope=cms",
+      "device": "mobile",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      }
+    },
+    {
+      "name": "catalog",
+      "route": "/catalog?scope=cms",
+      "device": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      }
+    },
+    {
+      "name": "material",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "device": "mobile",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      }
+    },
+    {
+      "name": "material",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "device": "desktop",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      }
+    }
+  ],
+  "target": "Local real-corpus production server; default simulated throttling; anonymous Chrome",
+  "limitations": [
+    "Exactly three observations per screen/device; all are retained; median is not a best-run selection.",
+    "Not a physical-device or public HTTPS hosting benchmark."
+  ]
+}

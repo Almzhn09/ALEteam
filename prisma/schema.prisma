@@ -1,0 +1,712 @@
+generator client {
+  provider = "prisma-client-js"
+  output = "../src/generated/prisma"
+  engineType = "client"
+}
+datasource db {
+  provider = "postgresql"
+}
+enum Role {
+  AUTHOR
+  MODERATOR
+}
+enum CommentStatus {
+  PENDING
+  PUBLISHED
+  REJECTED
+  HIDDEN
+}
+model User {
+ discoveryPreference DiscoveryPreference?
+ topicSubscriptions TopicSubscription[]
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          Role      @default(AUTHOR)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  comments      Comment[]
+  reports       Report[]
+  decisions     ModerationDecision[]
+  isActive Boolean @default(true)
+  publicationEvents PublicationEvent[]
+  staffAssignments StaffAssignment[]
+  auditEvents AuditEvent[]
+  contentRevisions ContentRevision[] @relation("ContentAuthor")
+  reviewedRevisions ContentRevision[] @relation("ContentReviewer")
+  editorialNotices EditorialNotice[]
+  favorites     Favorite[]
+  notifications Notification[]
+  notifyReplies Boolean @default(true)
+  notifyModeration Boolean @default(true)
+  uploads ArchiveUpload[] @relation("UploadCreator")
+  reviewedUploads ArchiveUpload[] @relation("UploadReviewer")
+  importBatches CatalogImport[]
+}
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  lastActivityAt DateTime @default(now())
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
+}
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([providerId, accountId])
+  @@index([userId])
+}
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  @@index([identifier])
+}
+model RateLimit {
+  id          String @id @default(cuid())
+  key         String @unique
+  count       Int
+  lastRequest BigInt
+}
+model ApiRateLimit {
+  key       String   @id
+  count     Int
+  expiresAt DateTime
+  @@index([expiresAt])
+}
+model Fund {
+  id          String @id
+  name        String
+  description String
+  documents   Document[]
+  branchId String?
+  number String?
+  branch ArchiveBranch? @relation(fields: [branchId], references: [id])
+  inventories Inventory[]
+  updatedAt DateTime @updatedAt @default(now())
+  @@unique([branchId, number])
+}
+model Document {
+  id           String   @id
+  title        String
+  description  String
+  reference    String   @unique
+  year         Int
+  type         String
+  sourceUrl    String?
+  rights       String
+  isDemo       Boolean  @default(true)
+  isPublic     Boolean  @default(false)
+  fundId       String
+  caseId String?
+  updatedAt DateTime @updatedAt @default(now())
+  deletedAt DateTime?
+  contentItemId String? @unique
+  contentItem ContentItem? @relation(fields: [contentItemId], references: [id])
+  category String?
+  tags String[] @default([])
+  sourceNote String?
+  catalogVersion Int @default(0)
+  translations DocumentTranslation[]
+  authorName String?
+  organization String?
+  locality String?
+  originalLanguage String?
+  leafCount Int?
+  yearTo Int?
+  storageLocation String?
+  accessConditions String?
+  internalNotes String?
+  allowDigitalCopy Boolean @default(false)
+  archivalCase ArchivalCase? @relation(fields: [caseId, fundId], references: [id, fundId])
+  createdAt    DateTime @default(now())
+  fund         Fund     @relation(fields: [fundId], references: [id])
+  files        ArchiveFile[]
+  comments     Comment[]
+  favorites    Favorite[]
+  uploads ArchiveUpload[]
+  importSource CatalogImportSource?
+  @@index([isPublic, year, id])
+  @@index([fundId])
+  @@index([type])
+  @@index([caseId])
+  @@index([originalLanguage])
+}
+model ArchiveFile {
+ variant String @default("master")
+ parentFileId String?
+  id           String   @id
+  documentId   String
+  storageKey   String   @unique
+  name         String
+  mimeType     String
+  size         Int
+  downloadable Boolean  @default(false)
+  isPublic     Boolean  @default(false)
+  document     Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  upload ArchiveUpload?
+  @@index([documentId])
+}
+model Comment {
+  id                String        @id @default(cuid())
+  documentId        String
+  authorId          String
+  body              String
+  status            CommentStatus @default(PENDING)
+  reason            String
+  moderationVersion String
+  idempotencyKey    String
+  parentId          String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  document          Document      @relation(fields: [documentId], references: [id])
+  author            User          @relation(fields: [authorId], references: [id])
+  reports           Report[]
+  decisions         ModerationDecision[]
+  parent            Comment? @relation("Replies", fields: [parentId], references: [id])
+  replies           Comment[] @relation("Replies")
+  notifications     Notification[]
+  @@unique([authorId, idempotencyKey])
+  @@index([documentId, status, createdAt, id])
+  @@index([status, createdAt, id])
+  @@index([parentId])
+}
+model Favorite {
+  userId     String
+  documentId String
+  createdAt  DateTime @default(now())
+  user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  @@id([userId, documentId])
+  @@index([userId, createdAt, documentId])
+}
+enum NotificationKind {
+  COMMENT_REPLY
+  MODERATION_DECISION
+}
+model Notification {
+  id        String @id @default(cuid())
+  userId    String
+  eventKey  String
+  kind      NotificationKind
+  commentId String
+  status    CommentStatus?
+  createdAt DateTime @default(now())
+  readAt    DateTime?
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  @@unique([userId, eventKey])
+  @@index([userId, createdAt, id])
+}
+model Report {
+  id         String   @id @default(cuid())
+  commentId  String
+  reporterId String
+  reason     String
+  resolvedAt DateTime?
+  createdAt  DateTime @default(now())
+  comment    Comment  @relation(fields: [commentId], references: [id])
+  reporter   User     @relation(fields: [reporterId], references: [id])
+  @@unique([commentId, reporterId])
+  @@index([resolvedAt, createdAt])
+}
+model ModerationDecision {
+  id          String        @id @default(cuid())
+  commentId   String
+  moderatorId String
+  fromStatus  CommentStatus
+  toStatus    CommentStatus
+  reason      String
+  createdAt   DateTime      @default(now())
+  comment     Comment       @relation(fields: [commentId], references: [id])
+  moderator   User          @relation(fields: [moderatorId], references: [id])
+  @@index([commentId, createdAt])
+}
+
+model ArchiveBranch {
+ fileImportPreviews FileImportPreview[]
+ siteMeasurements SiteMeasurement[]
+ discoveryFacts DiscoveryFact[]
+ id String @id
+ code String @unique
+ name String
+ isPublic Boolean @default(false)
+ isDemo Boolean @default(true)
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ funds Fund[]
+ staffAssignments StaffAssignment[]
+ content ContentItem[]
+ importBatches CatalogImport[]
+}
+model Inventory {
+ updatedAt DateTime @updatedAt @default(now())
+ id String @id
+ fundId String
+ number String
+ title String
+ fund Fund @relation(fields: [fundId], references: [id])
+ cases ArchivalCase[]
+ @@unique([id, fundId])
+ @@unique([fundId, number])
+}
+model ArchivalCase {
+ updatedAt DateTime @updatedAt @default(now())
+ id String @id
+ inventoryId String
+ fundId String
+ number String
+ title String
+ inventory Inventory @relation(fields: [inventoryId, fundId], references: [id, fundId])
+ documents Document[]
+ @@unique([id, fundId])
+ @@unique([inventoryId, number])
+}
+model StaffRole {
+ id String @id
+ name String
+ permissions StaffPermission[]
+ assignments StaffAssignment[]
+}
+model StaffPermission {
+ roleId String
+ permission String
+ role StaffRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+ @@id([roleId, permission])
+}
+model StaffAssignment {
+ id String @id @default(cuid())
+ userId String
+ roleId String
+ branchId String?
+ scopeKey String
+ user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ role StaffRole @relation(fields: [roleId], references: [id])
+ branch ArchiveBranch? @relation(fields: [branchId], references: [id])
+ @@unique([userId, roleId, scopeKey])
+}
+model AuditEvent {
+ id String @id @default(cuid())
+ actorId String
+ action String
+ entityId String
+ createdAt DateTime @default(now())
+ actor User @relation(fields: [actorId], references: [id])
+ @@index([createdAt, id])
+}
+enum ContentKind {
+ ARCHIVE_DOCUMENT
+ PAGE
+ FAQ
+ NEWS
+ COLLECTION
+ PERSON
+ EVENT
+ MEMOIR
+ EXHIBITION
+ EXHIBIT
+ BRANCH_PROFILE
+ SETTING
+}
+enum PublicationState {
+ DRAFT
+ IN_REVIEW
+ CHANGES_REQUESTED
+ APPROVED
+ PUBLISHED
+ ARCHIVED
+}
+model ContentItem {
+ sourceDraftBindings SourceDraftBinding[]
+ document Document?
+ id String @id @default(cuid())
+ slug String @unique
+ kind ContentKind
+ branchId String?
+ isDemo Boolean @default(true)
+ createdAt DateTime @default(now())
+ branch ArchiveBranch? @relation(fields: [branchId], references: [id])
+ revisions ContentRevision[]
+}
+model ContentRevision {
+ attachments CmsAttachment[]
+ sourceDraftBindings SourceDraftBinding[]
+ catalogBaseVersion Int?
+ publishedDocumentTranslation DocumentTranslation?
+ id String @id @default(cuid())
+ itemId String
+ locale String
+ version Int
+ status PublicationState @default(DRAFT)
+ payload Json
+ events PublicationEvent[]
+ notices EditorialNotice[]
+ authorId String
+ reviewerId String?
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ item ContentItem @relation(fields: [itemId], references: [id])
+ author User @relation("ContentAuthor", fields: [authorId], references: [id])
+ reviewer User? @relation("ContentReviewer", fields: [reviewerId], references: [id])
+ @@unique([itemId, locale, version])
+ @@index([status, itemId, locale])
+}
+model EditorialNotice {
+ id String @id @default(cuid())
+ userId String
+ revisionId String
+ event String
+ readAt DateTime?
+ createdAt DateTime @default(now())
+ user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ revision ContentRevision @relation(fields: [revisionId], references: [id])
+ @@index([userId, createdAt])
+}
+
+model PublicationEvent {
+ id String @id @default(cuid())
+ revisionId String
+ actorId String
+ fromStatus PublicationState
+ toStatus PublicationState
+ reason String
+ createdAt DateTime @default(now())
+ revision ContentRevision @relation(fields: [revisionId], references: [id])
+ actor User @relation(fields: [actorId], references: [id])
+ @@index([revisionId, createdAt])
+}
+
+model DocumentTranslation {
+ documentId String
+ locale String
+ title String
+ description String
+ rights String
+ authorName String?
+ organization String?
+ locality String?
+ storageLocation String?
+ accessConditions String?
+ category String?
+ tags String[] @default([])
+ sourceUrl String?
+ sourceNote String?
+ revisionId String? @unique
+ document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+ revision ContentRevision? @relation(fields: [revisionId], references: [id])
+ @@id([documentId, locale])
+}
+
+model ArchiveUpload {
+ inspection Json?
+ inspectionJob UploadInspectionJob?
+ id String @id
+ documentId String
+ uploaderId String
+ reviewerId String?
+ fileId String? @unique
+ originalName String
+ mimeType String
+ expectedBytes Int
+ expectedSha256 String
+ actualBytes Int?
+ actualSha256 String?
+ rights String
+ sourceNote String
+ state String @default("AWAITING_CONTENT")
+ storageKey String? @unique
+ receiveToken String?
+ failureCode String?
+ reviewReason String?
+ rightsConfirmed Boolean @default(false)
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ document Document @relation(fields: [documentId], references: [id])
+ uploader User @relation("UploadCreator", fields: [uploaderId], references: [id])
+ reviewer User? @relation("UploadReviewer", fields: [reviewerId], references: [id])
+ file ArchiveFile? @relation(fields: [fileId], references: [id], onDelete: Restrict)
+ @@index([documentId, createdAt])
+ @@index([uploaderId, state])
+}
+
+model CatalogImport {
+ id String @id
+ branchId String
+ sourceNamespace String
+ authorId String
+ manifest Json
+ digest String
+ state String
+ report Json
+ createdDocuments Json
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ branch ArchiveBranch @relation(fields: [branchId], references: [id])
+ author User @relation(fields: [authorId], references: [id])
+ sources CatalogImportSource[]
+ @@unique([id, branchId, sourceNamespace])
+ @@index([branchId, createdAt])
+}
+model CatalogImportSource {
+ branchId String
+ sourceNamespace String
+ sourceId String
+ batchId String
+ documentId String @unique
+ contentHash String
+ createdAt DateTime @default(now())
+ batch CatalogImport @relation(fields: [batchId, branchId, sourceNamespace], references: [id, branchId, sourceNamespace])
+ document Document @relation(fields: [documentId], references: [id])
+ @@id([branchId, sourceNamespace, sourceId])
+}
+
+// COL-B01: source-bound structured facts. Narratives stay in the existing reviewed CMS.
+model DiscoveryFact {
+ id String @id @default(cuid())
+ kind String
+ branchId String?
+ parentId String?
+ data Json
+ sources Json
+ status String @default("DRAFT")
+ authorId String
+ reviewerId String?
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ branch ArchiveBranch? @relation(fields:[branchId], references:[id])
+ parent DiscoveryFact? @relation("DiscoveryParent", fields:[parentId], references:[id])
+ children DiscoveryFact[] @relation("DiscoveryParent")
+ @@index([kind,status,id])
+ @@index([parentId,status,id])
+}
+model SourceDraftBatch {
+ id String @id @default(cuid())
+ digest String
+ mode String
+ manifest Json
+ report Json
+ status String
+ authorId String
+ createdAt DateTime @default(now())
+ committedAt DateTime?
+ @@index([authorId,createdAt])
+}
+model SourceDraftBinding {
+ id String @id @default(cuid())
+ namespace String
+ sourceKey String
+ locale String
+ requestHash String
+ sourceHash String
+ itemId String
+ revisionId String
+ branchId String?
+ original Json
+ createdAt DateTime @default(now())
+ item ContentItem @relation(fields:[itemId], references:[id])
+ revision ContentRevision @relation(fields:[revisionId], references:[id])
+ @@unique([namespace,sourceKey,locale])
+ @@index([itemId])
+}
+model DiscoveryPreference {
+ userId String @id
+ topicIds String[] @default([])
+ personalizationEnabled Boolean @default(false)
+ historyEnabled Boolean @default(false)
+ updatedAt DateTime @updatedAt
+ user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+}
+model TopicSubscription {
+ cursor BigInt @default(0)
+ id String @id @default(cuid())
+ userId String
+ fingerprint String
+ spec Json
+ active Boolean @default(true)
+ baseline BigInt
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+ notices TopicNotice[]
+ @@unique([userId,fingerprint])
+ @@index([active,baseline])
+ @@index([active,cursor,updatedAt,id])
+}
+model MaterialPublication {
+ sequence BigInt @id @default(autoincrement())
+ kind String
+ materialId String
+ locale String
+ revision String
+ createdAt DateTime @default(now())
+ @@unique([kind,materialId,locale,revision])
+}
+model TopicNotice {
+ id String @id @default(cuid())
+ subscriptionId String
+ materialKey String
+ publicationSequence BigInt
+ readAt DateTime?
+ createdAt DateTime @default(now())
+ subscription TopicSubscription @relation(fields:[subscriptionId], references:[id], onDelete:Cascade)
+ @@unique([subscriptionId,materialKey])
+ @@index([subscriptionId,createdAt,id])
+}
+model DiscoveryAggregate {
+ id String @id @default(cuid())
+ kind String
+ materialId String
+ locale String
+ periodFrom DateTime
+ periodTo DateTime
+ count Int
+ approvedBy String
+ sourceNote String
+ createdAt DateTime @default(now())
+ @@unique([kind,materialId,locale,periodFrom,periodTo])
+}
+
+model SiteMeasurement {
+ id String @id @default(cuid())
+ metric String
+ branchId String?
+ periodFrom DateTime
+ periodTo DateTime
+ count Int
+ sourceNote String
+ approvedBy String
+ createdAt DateTime @default(now())
+ branch ArchiveBranch? @relation(fields:[branchId],references:[id])
+ @@index([branchId,periodFrom,periodTo])
+}
+
+model UploadInspectionJob {
+ id String @id @default(cuid())
+ uploadId String @unique
+ state String @default("QUEUED")
+ attempts Int @default(0)
+ leaseToken String?
+ leaseUntil DateTime?
+ result Json?
+ failureCode String?
+ previewStorageKey String?
+ previewSha256 String?
+ previewBytes Int?
+ previewFileId String? @unique
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ upload ArchiveUpload @relation(fields:[uploadId],references:[id],onDelete:Cascade)
+ @@index([state,leaseUntil])
+}
+model FileImportPreview {
+ id String @id @default(cuid())
+ branchId String
+ authorId String
+ sourceNamespace String
+ format String
+ sourceHash String
+ originalBytes Bytes
+ mapping Json
+ result Json
+ catalogBatchId String?
+ createdAt DateTime @default(now())
+ branch ArchiveBranch @relation(fields:[branchId],references:[id])
+ @@index([branchId,createdAt,id])
+ @@index([authorId,createdAt])
+}
+
+model ReferenceDataset {
+ id String @id
+ kind String
+ title String
+ sourceSha256 String
+ importHash String
+ source Json
+ isPublic Boolean @default(false)
+ createdAt DateTime @default(now())
+ entries ReferenceEntry[]
+ @@index([kind,isPublic,id])
+}
+model ReferenceEntry {
+ id String @id
+ datasetId String
+ sourceKey String
+ position Int
+ number String?
+ title String
+ searchText String
+ payload Json
+ raw Json
+ isPublic Boolean @default(false)
+ dataset ReferenceDataset @relation(fields:[datasetId],references:[id])
+ @@unique([datasetId,sourceKey])
+ @@index([datasetId,isPublic,position,id])
+ @@index([isPublic,title,id])
+ @@index([number])
+}
+model CmsAttachment {
+ id String @id @default(cuid())
+ revisionId String
+ parentId String?
+ variant String @default("master")
+ state String @default("AWAITING_CONTENT")
+ name String
+ mimeType String
+ expectedBytes Int
+ expectedSha256 String
+ storageKey String? @unique
+ parsed Json?
+ previewKey String?
+ previewSha256 String?
+ previewBytes Int?
+ rights String
+ sourceNote String
+ sourceLabel String
+ sourceVersion String
+ uploaderId String
+ reviewerId String?
+ failureCode String?
+ receiveToken String?
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ revision ContentRevision @relation(fields:[revisionId],references:[id],onDelete:Cascade)
+ @@index([revisionId,state,id])
+}
+model RealContentBinding {
+ id String @id @default(cuid())
+ namespace String
+ sourceKey String
+ locale String
+ targetKind String
+ targetId String
+ inputHash String
+ outputHash String
+ data Json
+ createdAt DateTime @default(now())
+ @@unique([namespace,sourceKey,locale])
+}

@@ -1,0 +1,77 @@
+{
+  "testedAt": "2026-11-11T19:19:25.426Z",
+  "checks": [
+    {
+      "name": "fresh default Compose imports the real corpus without fictional seed or Python runtime",
+      "passed": true
+    },
+    {
+      "name": "standalone includes the locally served font and a decodable real editorial photo",
+      "passed": true
+    },
+    {
+      "name": "standalone runtime serves original DOCX, S06 page-4 preview and measured page-aware OCR with source-bound explanations",
+      "passed": true
+    },
+    {
+      "name": "re-running real setup is idempotent and never re-enables fixtures",
+      "passed": true
+    },
+    {
+      "name": "an existing Docker site upgrades with an identity-bound backup and immutable source history",
+      "passed": true
+    },
+    {
+      "name": "real source search and actual source preview timings are measured",
+      "passed": true
+    },
+    {
+      "name": "private backup includes all real tables, source originals, parsed OCR and derivatives",
+      "passed": true
+    },
+    {
+      "name": "restore into a new project preserves real provenance, visibility and identical original bytes",
+      "passed": true
+    }
+  ],
+  "measurements": [
+    {
+      "name": "real_material_search",
+      "requests": 10,
+      "p50Ms": 128.42,
+      "p95Ms": 171.23,
+      "corpus": {
+        "cmsItems": 39,
+        "publishedEditions": 53,
+        "fundGroups": 1705,
+        "newspaperRows": 1466
+      },
+      "runtime": "Node 24 Docker non-root, local loopback sequential fetch; full response bytes",
+      "lighthouse": false
+    },
+    {
+      "name": "real_source_preview",
+      "requests": 10,
+      "p50Ms": 29.89,
+      "p95Ms": 1409.96,
+      "corpus": {
+        "cmsItems": 39,
+        "publishedEditions": 53,
+        "fundGroups": 1705,
+        "newspaperRows": 1466
+      },
+      "runtime": "Node 24 Docker non-root, local loopback sequential fetch; full response bytes",
+      "lighthouse": false
+    }
+  ],
+  "corpus": {
+    "content": 35,
+    "documents": 0,
+    "branches": 13,
+    "funds": 1705,
+    "newspapers": 1466
+  },
+  "temporaryEnvFilesRemoved": true,
+  "backupRetainedPrivately": true,
+  "testedSourceCommit": "91a4867e0e91847d8a2e4a8834482c4170b12f59"
+}

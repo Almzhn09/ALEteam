@@ -1,0 +1,160 @@
+{
+  "recordedAt": "2026-11-09T16:43:53.146636+00:00",
+  "scope": "Second catalog API stage; production Next, real PostgreSQL, local Docker backup/restore; no public deployment",
+  "tests": {
+    "unit": {
+      "passed": 210,
+      "failed": 0
+    },
+    "previousAPI": {
+      "passed": 21,
+      "failed": 0
+    },
+    "cmsAPI": {
+      "passed": 14,
+      "failed": 0
+    },
+    "catalogAPI": {
+      "passed": 12,
+      "failed": 0
+    }
+  },
+  "browser": {
+    "checks": [
+      {
+        "name": "home search reaches real catalog and combined filters",
+        "passed": true
+      },
+      {
+        "name": "document renders real PNG, zoom, download policy and persisted favorites",
+        "passed": true
+      },
+      {
+        "name": "author signs in through the UI and cannot access moderation",
+        "passed": true
+      },
+      {
+        "name": "guest favorites transfer explicitly and synchronize across two browser sessions",
+        "passed": true
+      },
+      {
+        "name": "document exposes actual OCR text and similar document links",
+        "passed": true
+      },
+      {
+        "name": "assistant shows actual mode, document and guide links, and unknown-answer state",
+        "passed": true
+      },
+      {
+        "name": "comment UI publishes clean text, rejects a contextual Unicode bypass, and queues a quote",
+        "passed": true
+      },
+      {
+        "name": "moderator reviews the real pending comment through the UI",
+        "passed": true
+      },
+      {
+        "name": "report, hide and restore persist an auditable decision history",
+        "passed": true
+      },
+      {
+        "name": "reply form creates a private notification, preferences persist and another account cannot read it",
+        "passed": true
+      },
+      {
+        "name": "signing out in another tab immediately hides account favorites",
+        "passed": true
+      },
+      {
+        "name": "WCAG automated checks and responsive layout across RU/KK, light/dark and three widths",
+        "passed": true
+      },
+      {
+        "name": "keyboard skip link and logout revoke the actual browser session",
+        "passed": true
+      }
+    ],
+    "auditedScreens": 54,
+    "pageErrors": []
+  },
+  "docker": {
+    "testedAt": "2026-11-09T16:42:52.773Z",
+    "target": "isolated local Docker projects, not a public deployment",
+    "checks": [
+      {
+        "name": "runtime is non-root and both images exclude environment files",
+        "passed": true
+      },
+      {
+        "name": "fresh Compose stack initializes schema, original assets and two accounts",
+        "passed": true
+      },
+      {
+        "name": "standalone runtime serves a PNG and persists an authenticated comment",
+        "passed": true
+      },
+      {
+        "name": "CMS creates independent reviewed translations and archive hierarchy in Compose",
+        "passed": true
+      },
+      {
+        "name": "database and app restart preserve the marker comment and file volume",
+        "passed": true
+      },
+      {
+        "name": "backup includes private database and files with an integrity manifest",
+        "passed": true
+      },
+      {
+        "name": "same-project, corrupted-backup and occupied-volume restore fail before changing resources",
+        "passed": true
+      },
+      {
+        "name": "restore to a fresh project recovers the marker, users and exact file bytes",
+        "passed": true
+      },
+      {
+        "name": "CMS roles, hierarchy, translations, private history and notices survive backup and restore",
+        "passed": true
+      },
+      {
+        "name": "catalog publication snapshots, translations and copy restrictions survive restore",
+        "passed": true
+      },
+      {
+        "name": "favorites, notification preferences and reply events survive restart and restore",
+        "passed": true
+      }
+    ],
+    "backupRetainedPrivately": true
+  },
+  "sourceSHA256": {
+    "prisma/schema.prisma": "e4e15e19b5ff343f59040f09a89f62dc540262b845fb8d1665f92e9e74727f0b",
+    "prisma/migrations/202611090004_catalog_workflow/migration.sql": "7d6cd61e428bc4f4166aacc54cb2fb1245dba34046668ce455e869bc1b69aaa1",
+    "src/contracts/catalog.ts": "4bf56298b1ed95b11163d5bb3ab2d553fd3167154395852c1e546a8c2a5ddf42",
+    "src/server/archive-publication.ts": "9af9a36a61c47bee1fc0a95dd8da4183c850ea3e8dbac35e43b75da4192d8d1b",
+    "src/server/archive-records.ts": "408dfa1c8942e4d40e8816fbf0f02756511df21c06bf399d0b53443a976f1a23",
+    "src/server/catalog.ts": "d3b5394d74890452d712b60b6262b994904b6c7fcb7aa08302c75d33fca62277"
+  },
+  "limitations": [
+    "Independent team review and remote CI pending",
+    "New catalog form/filter UI belongs to Alinur",
+    "Primary catalog locale is RU in this prototype; hierarchy labels are canonical",
+    "No real archive migration or approved policy",
+    "Uploads, quarantine, import/export and analytics are future stages"
+  ],
+  "previewSmoke": [
+    {
+      "origin": "http://localhost:3000",
+      "status": 200,
+      "mode": "local-model",
+      "sourceCount": 3
+    },
+    {
+      "origin": "http://localhost:3100",
+      "status": 200,
+      "mode": "local-model",
+      "sourceCount": 3
+    }
+  ]
+}

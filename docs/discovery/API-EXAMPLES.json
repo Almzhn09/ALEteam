@@ -1,0 +1,240 @@
+{
+  "kind": "executed HTTP examples; synthetic fixtures only",
+  "examples": [
+    {
+      "request": "GET /api/places?locale=en",
+      "response": {
+        "items": [
+          {
+            "id": "cmwauqkoz004dzlmq992rn5kp",
+            "name": "ДЕМО Новыйгород",
+            "description": "Синтетическое место для проверки.",
+            "contentLocale": "ru",
+            "availableLocales": [
+              "ru"
+            ],
+            "translationStatus": "original",
+            "mapAvailable": false,
+            "coordinates": null,
+            "historyCount": 3,
+            "isDemo": true
+          }
+        ],
+        "nextCursor": null,
+        "locale": "en"
+      }
+    },
+    {
+      "request": "GET /api/documents/527d5205-9b05-4f7e-b152-746f07a1988c/related",
+      "response": {
+        "items": [
+          {
+            "kind": "document",
+            "id": "ce2a91d9-2645-4f76-abff-69ecea1029df",
+            "href": "/api/documents/ce2a91d9-2645-4f76-abff-69ecea1029df?locale=ru",
+            "title": "ДЕМО связанный материал",
+            "contentLocale": "ru",
+            "availableLocales": [
+              "ru"
+            ],
+            "translationStatus": "published",
+            "isDemo": true,
+            "yearFrom": 1960,
+            "yearTo": 1969,
+            "reason": {
+              "code": "same_event",
+              "text": "То же событие",
+              "evidence": [
+                {
+                  "kind": "cms",
+                  "id": "cmwauqkj60040zlmqkiv89391",
+                  "locale": "ru",
+                  "revision": "9a2a9f170464197b99f1c75e21311ed87134efe4abd501cea23234ec24d946d4",
+                  "title": "ДЕМО источник для проверки",
+                  "isDemo": true,
+                  "href": "/api/content/discovery-demo-source?locale=ru"
+                }
+              ]
+            }
+          }
+        ],
+        "method": "curated",
+        "locale": "ru",
+        "engine": "baseline",
+        "candidateLimit": 100
+      }
+    },
+    {
+      "request": "POST /api/documents/demo-doc-01/explanation",
+      "response": {
+        "mode": null,
+        "sourceRevision": "57863f6af176754d65d931df05aef4a377bc78b463364ca7d5d6dae048ae559c",
+        "terms": [],
+        "citations": [],
+        "limitations": [
+          "COL-A03 engine is not connected. OCR, if used, requires independent review."
+        ],
+        "status": "unsupported"
+      }
+    },
+    {
+      "request": "GET /api/discovery/home",
+      "response": {
+        "locale": "ru",
+        "recommended": {
+          "mode": "editorial",
+          "items": [
+            {
+              "kind": "document",
+              "id": "527d5205-9b05-4f7e-b152-746f07a1988c",
+              "href": "/api/documents/527d5205-9b05-4f7e-b152-746f07a1988c?locale=ru",
+              "title": "ДЕМО фотографии старого города",
+              "contentLocale": "ru",
+              "availableLocales": [
+                "ru"
+              ],
+              "translationStatus": "published",
+              "isDemo": true,
+              "yearFrom": 1960,
+              "yearTo": 1969,
+              "reason": {
+                "code": "editorial",
+                "text": "Редакционная подборка",
+                "evidence": [
+                  {
+                    "kind": "cms",
+                    "id": "cmwauqkj60040zlmqkiv89391",
+                    "locale": "ru",
+                    "revision": "9a2a9f170464197b99f1c75e21311ed87134efe4abd501cea23234ec24d946d4",
+                    "title": "ДЕМО источник для проверки",
+                    "isDemo": true,
+                    "href": "/api/content/discovery-demo-source?locale=ru"
+                  }
+                ]
+              }
+            }
+          ],
+          "engine": "baseline"
+        },
+        "popular": {
+          "status": "unavailable",
+          "period": null,
+          "items": []
+        },
+        "continue": {
+          "scope": "browser",
+          "items": []
+        },
+        "history": {
+          "status": "not_configured"
+        }
+      }
+    },
+    {
+      "request": "GET /api/discovery/home",
+      "response": {
+        "locale": "ru",
+        "recommended": {
+          "mode": "interests",
+          "items": [
+            {
+              "kind": "document",
+              "id": "527d5205-9b05-4f7e-b152-746f07a1988c",
+              "href": "/api/documents/527d5205-9b05-4f7e-b152-746f07a1988c?locale=ru",
+              "title": "ДЕМО фотографии старого города",
+              "contentLocale": "ru",
+              "availableLocales": [
+                "ru"
+              ],
+              "translationStatus": "published",
+              "isDemo": true,
+              "yearFrom": 1960,
+              "yearTo": 1969,
+              "reason": {
+                "code": "chosen_topic",
+                "text": "Выбранная тема",
+                "evidence": [
+                  {
+                    "kind": "cms",
+                    "id": "cmwauqkj60040zlmqkiv89391",
+                    "locale": "ru",
+                    "revision": "9a2a9f170464197b99f1c75e21311ed87134efe4abd501cea23234ec24d946d4",
+                    "title": "ДЕМО источник для проверки",
+                    "isDemo": true,
+                    "href": "/api/content/discovery-demo-source?locale=ru"
+                  }
+                ]
+              }
+            }
+          ],
+          "engine": "baseline"
+        },
+        "popular": {
+          "status": "unavailable",
+          "period": null,
+          "items": []
+        },
+        "continue": {
+          "scope": "browser",
+          "items": []
+        },
+        "history": {
+          "status": "not_configured"
+        }
+      }
+    },
+    {
+      "request": "GET /api/discovery/home",
+      "response": {
+        "locale": "ru",
+        "recommended": {
+          "mode": "editorial",
+          "items": [
+            {
+              "kind": "document",
+              "id": "527d5205-9b05-4f7e-b152-746f07a1988c",
+              "href": "/api/documents/527d5205-9b05-4f7e-b152-746f07a1988c?locale=ru",
+              "title": "ДЕМО фотографии старого города",
+              "contentLocale": "ru",
+              "availableLocales": [
+                "ru"
+              ],
+              "translationStatus": "published",
+              "isDemo": true,
+              "yearFrom": 1960,
+              "yearTo": 1969,
+              "reason": {
+                "code": "editorial",
+                "text": "Редакционная подборка",
+                "evidence": [
+                  {
+                    "kind": "cms",
+                    "id": "cmwauqkj60040zlmqkiv89391",
+                    "locale": "ru",
+                    "revision": "9a2a9f170464197b99f1c75e21311ed87134efe4abd501cea23234ec24d946d4",
+                    "title": "ДЕМО источник для проверки",
+                    "isDemo": true,
+                    "href": "/api/content/discovery-demo-source?locale=ru"
+                  }
+                ]
+              }
+            }
+          ],
+          "engine": "baseline"
+        },
+        "popular": {
+          "status": "unavailable",
+          "period": null,
+          "items": []
+        },
+        "continue": {
+          "scope": "browser",
+          "items": []
+        },
+        "history": {
+          "status": "not_configured"
+        }
+      }
+    }
+  ]
+}

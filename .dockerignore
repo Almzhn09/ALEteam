@@ -1,0 +1,13 @@
+.git
+.next
+.cloud-runtime
+.local
+node_modules
+src/generated
+**/.env
+**/.env.*
+.env
+.env.*
+docs
+tests/deploy.mjs
+*.tsbuildinfo

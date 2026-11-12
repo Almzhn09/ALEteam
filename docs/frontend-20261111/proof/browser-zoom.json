@@ -1,0 +1,547 @@
+{
+  "generated": "2026-11-11T19:15:51.535Z",
+  "commit": "91a4867e0e91847d8a2e4a8834482c4170b12f59",
+  "mechanism": "Native Chromium chrome.settingsPrivate.setDefaultZoom(2), viewport:null, fixed 1440px browser window; no CDP device emulation",
+  "rows": [
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/catalog?scope=cms",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/catalog?scope=fund",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/guide",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/about",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/calendar",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/services",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/directories/funds",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/catalog?scope=cms",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/catalog?scope=fund",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/guide",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/about",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/calendar",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/services",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/directories/funds",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/catalog?scope=cms",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/catalog?scope=fund",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/guide",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/about",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/calendar",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/services",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/directories/funds",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/catalog?scope=cms",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/catalog?scope=fund",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/guide",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/about",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/calendar",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/services",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/directories/funds",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/catalog?scope=cms",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/catalog?scope=fund",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/guide",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/about",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/calendar",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/services",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/directories/funds",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/catalog?scope=cms",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/catalog?scope=fund",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/guide",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/about",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/calendar",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/services",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/directories/funds",
+      "browserZoom": 2,
+      "outerWidth": 1440,
+      "innerWidth": 720,
+      "devicePixelRatio": 2,
+      "overflow": 0
+    }
+  ]
+}

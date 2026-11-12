@@ -1,0 +1,168 @@
+{
+  "scope": "Author-written offline query routing; known aliases, no DB/CMS/UI, not an independent language benchmark",
+  "total": 20,
+  "beforePassed": 0,
+  "afterPassed": 20,
+  "rows": [
+    {
+      "question": "I am looking for library readers",
+      "expected": "библиотека",
+      "before": "распознавание текста",
+      "after": "библиотека",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "Please tell me about the school classroom",
+      "expected": "школа",
+      "before": "станция",
+      "after": "школа",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "I need the railway station timetable",
+      "expected": "станция",
+      "before": "музей",
+      "after": "станция",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "Where is the digital exhibition?",
+      "expected": "цифровые выставки",
+      "before": "скачивание файлов",
+      "after": "цифровые выставки",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "I want to see archive news",
+      "expected": "новости архива",
+      "before": "скачивание файлов",
+      "after": "новости архива",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "Can you describe archive branches?",
+      "expected": "филиалы архива",
+      "before": "вход на сайт",
+      "after": "филиалы архива",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "I need to understand editorial review",
+      "expected": "редакционная проверка",
+      "before": "уведомления",
+      "after": "редакционная проверка",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "How do I get saved documents?",
+      "expected": "избранное",
+      "before": "нет ответа",
+      "after": "избранное",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "What are the comment rules?",
+      "expected": "правила комментариев",
+      "before": "музей",
+      "after": "правила комментариев",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "Please explain source verification",
+      "expected": "проверка источников",
+      "before": "станция",
+      "after": "проверка источников",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "I want text recognition",
+      "expected": "распознавание текста",
+      "before": "станция",
+      "after": "распознавание текста",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "Would you show the museum exhibits?",
+      "expected": "музей",
+      "before": "школа",
+      "after": "музей",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "Мені мұрағат филиалдары туралы айтып берші",
+      "expected": "филиалы архива",
+      "before": "архивный фонд",
+      "after": "филиалы архива",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "Цифрлық көрме қайда?",
+      "expected": "цифровые выставки",
+      "before": "уточнение места",
+      "after": "цифровые выставки",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "Мұрағат жаңалықтары бар ма?",
+      "expected": "новости архива",
+      "before": "архивный",
+      "after": "новости архива",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "Жарияланымды тексеру қалай болады?",
+      "expected": "редакционная проверка",
+      "before": "уточнение способа",
+      "after": "редакционная проверка",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "Расскажите, где филиалы архива",
+      "expected": "филиалы архива",
+      "before": "распознавание текста",
+      "after": "филиалы архива",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "Какая цифровая выставка доступна?",
+      "expected": "цифровые выставки",
+      "before": "музей",
+      "after": "цифровые выставки",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "Как читать новости архива?",
+      "expected": "новости архива",
+      "before": "архивный фонд",
+      "after": "новости архива",
+      "beforePassed": false,
+      "afterPassed": true
+    },
+    {
+      "question": "Нужно согласование публикации",
+      "expected": "редакционная проверка",
+      "before": "помощь по сайту",
+      "after": "редакционная проверка",
+      "beforePassed": false,
+      "afterPassed": true
+    }
+  ]
+}

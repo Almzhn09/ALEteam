@@ -1,0 +1,29 @@
+{
+  "testedAt": "2026-11-11T14:50:05.618Z",
+  "fromEditions": 49,
+  "toEditions": 53,
+  "originalFilesBefore": 17,
+  "originalFilesAfter": 21,
+  "preservedModels": [
+    "user",
+    "account",
+    "session",
+    "comment",
+    "favorite",
+    "topicSubscription",
+    "discoveryPreference",
+    "staffAssignment"
+  ],
+  "totals": {
+    "items": 39,
+    "published": 53,
+    "files": 50,
+    "publicFiles": 27,
+    "facts": 99,
+    "directories": 3171,
+    "publications": 102
+  },
+  "repeatedWithoutDuplicates": true,
+  "backupVerified": true,
+  "retainedSourceLocaleBindings": 49
+}

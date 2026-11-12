@@ -1,0 +1,47 @@
+{
+  "home": {
+    "url": "http://e-arhiv.vko.gov.kz/ru",
+    "finalUrl": "http://e-arhiv.vko.gov.kz/ru",
+    "status": 200
+  },
+  "kk": {
+    "url": "http://e-arhiv.vko.gov.kz/kk",
+    "finalUrl": "http://e-arhiv.vko.gov.kz/kk",
+    "status": 200
+  },
+  "contacts": {
+    "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1330",
+    "finalUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1330",
+    "status": 200
+  },
+  "reading": {
+    "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1338",
+    "finalUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1338",
+    "status": 200
+  },
+  "database": {
+    "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1350",
+    "finalUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1350",
+    "status": 200
+  },
+  "paid": {
+    "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52679",
+    "finalUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52679",
+    "status": 200
+  },
+  "services": {
+    "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/22187",
+    "finalUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/22187",
+    "status": 200
+  },
+  "glossary": {
+    "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1478",
+    "finalUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1478",
+    "status": 200
+  },
+  "metrics": {
+    "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1926",
+    "finalUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1926",
+    "status": 200
+  }
+}

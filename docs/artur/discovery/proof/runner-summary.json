@@ -1,0 +1,11 @@
+{
+  "results": [
+    {
+      "command": "npm run check:team-ui",
+      "exitCode": 0,
+      "log": "check-team-ui.log"
+    }
+  ],
+  "dedicatedDatabase": true,
+  "containerRemoved": true
+}

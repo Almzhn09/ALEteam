@@ -1,0 +1,326 @@
+{
+  "version": 1,
+  "retrieved": "2026-11-11",
+  "images": [
+    {
+      "id": "open-day-altay",
+      "path": "sources/archive-visual-20261111/originals/open-day-altay.jpg",
+      "sha256": "f7e21d3e70ce0b5b4a43899ab7352d7f322c9424e307debd50f64cab33b547b9",
+      "bytes": 81920,
+      "width": 1254,
+      "height": 1254,
+      "caption": "Афиша дня открытых дверей в филиале района Алтай, 21 сентября 2026 года.",
+      "alt": "Двуязычная афиша дня открытых дверей филиала района Алтай.",
+      "eventDate": "2026-09-21",
+      "usage": "historical-event-only",
+      "crop": "Показывать полностью: текст/дата афиши не обрезаются. Не использовать как актуальное объявление или фотографию центрального архива.",
+      "inspected": true,
+      "credit": "Государственный архив Восточно-Казахстанской области",
+      "author": "Не указан в источнике",
+      "licenseClaim": null,
+      "publicAssetPolicy": "Use media attachment policy; do not bypass restricted CMS assets with a public copy.",
+      "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52813",
+      "pageSnapshot": "sources/archive-visual-20261111/pages/52813.html",
+      "pageSha256": "f47616686a74ae85556e6c6e465ceb6dfb55e55979a3749692120bc6d1560319",
+      "origin": "official_archive_site",
+      "localized": {
+        "ru": {
+          "alt": "Двуязычная афиша дня открытых дверей филиала района Алтай.",
+          "caption": "Афиша дня открытых дверей в филиале района Алтай, 21 сентября 2026 года."
+        },
+        "kk": {
+          "alt": "Алтай ауданы филиалының ашық есік күніне арналған екітілді афиша.",
+          "caption": "Алтай ауданы филиалының ашық есік күні, 2026 жылғы 21 қыркүйек."
+        },
+        "en": {
+          "alt": "Bilingual poster for the Altay district archive branch open day.",
+          "caption": "Altay district branch open day, 21 September 2026."
+        }
+      },
+      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/state/zirian/photo_2026-09-17_16-34-20.jpg",
+      "decoderValidation": {
+        "checked": "2026-11-11",
+        "status": "incomplete_source",
+        "tool": "sharp strict JPEG/PNG decode",
+        "note": "Preserved source bytes; not embedded in the production UI. VipsJpeg: premature end of JPEG image"
+      },
+      "publicationParentSourceKey": null
+    },
+    {
+      "id": "archive-next-generation-ridder",
+      "path": "sources/archive-visual-20261111/originals/archive-next-generation-ridder.jpg",
+      "sha256": "0df4b138555a57e1bd3a15288361a2e3ec739e5e025ec36125d6cf37989f3eb2",
+      "bytes": 181774,
+      "width": 960,
+      "height": 1280,
+      "caption": "Проект «Архив и будущее поколение», Риддерский филиал, 18 сентября 2026 года.",
+      "alt": "Посетители слушают рассказ сотрудника у стендов по истории Риддера.",
+      "eventDate": "2026-09-18",
+      "usage": "home-or-about",
+      "crop": "Сохранять контекст стендов и участников. Текст рядом с изображением, без наложения на лица.",
+      "inspected": true,
+      "credit": "Государственный архив Восточно-Казахстанской области",
+      "author": "Не указан в источнике",
+      "licenseClaim": null,
+      "publicAssetPolicy": "Use media attachment policy; do not bypass restricted CMS assets with a public copy.",
+      "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52812",
+      "pageSnapshot": "sources/archive-visual-20261111/pages/52812.html",
+      "pageSha256": "77652f8861e9e78bab457dc8b9e37320f4147601cf1a347a1e9fd63281a2849a",
+      "origin": "official_archive_site",
+      "localized": {
+        "ru": {
+          "alt": "Посетители слушают рассказ сотрудника у стендов по истории Риддера.",
+          "caption": "Проект «Архив и будущее поколение», Риддерский филиал, 18 сентября 2026 года."
+        },
+        "kk": {
+          "alt": "Келушілер Риддер тарихына арналған стендтер жанында архив қызметкерін тыңдап отыр.",
+          "caption": "«Архив және болашақ ұрпақ» жобасы, Риддер филиалы, 2026 жылғы 18 қыркүйек."
+        },
+        "en": {
+          "alt": "Visitors listen to an archive employee beside displays about Ridder’s history.",
+          "caption": "Archive and the Future Generation project, Ridder branch, 18 September 2026."
+        }
+      },
+      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/state/ridder/884bbc46-061f-40b5-84c7-2465b22acbd5.jpg",
+      "decoderValidation": {
+        "checked": "2026-11-11",
+        "status": "complete_decode",
+        "tool": "sharp strict JPEG/PNG decode"
+      },
+      "publicationParentSourceKey": "history-1"
+    },
+    {
+      "id": "thematic-exhibition-altay",
+      "path": "sources/archive-visual-20261111/originals/thematic-exhibition-altay.jpg",
+      "sha256": "f6a84b8dc208388b33ac570bd89c84be2ba7c175232c5aaf0a96e1899a4a0443",
+      "bytes": 81920,
+      "width": 960,
+      "height": 1280,
+      "caption": "Тематическая выставка к юбилею Надежды Халиловой в филиале района Алтай, 4 сентября 2026 года.",
+      "alt": "Выступление перед посетителями на тематической выставке в филиале района Алтай.",
+      "eventDate": "2026-09-04",
+      "usage": "history-or-exhibition",
+      "crop": "Сохранять контекст выставочного стенда; не представлять изображение как историческую фотографию прежнего века.",
+      "inspected": true,
+      "credit": "Государственный архив Восточно-Казахстанской области",
+      "author": "Не указан в источнике",
+      "licenseClaim": null,
+      "publicAssetPolicy": "Use media attachment policy; do not bypass restricted CMS assets with a public copy.",
+      "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52811",
+      "pageSnapshot": "sources/archive-visual-20261111/pages/52811.html",
+      "pageSha256": "af4e661cd5a702ead5bc99d0592e3e66ff06927001367a6677292009920732a4",
+      "origin": "official_archive_site",
+      "localized": {
+        "ru": {
+          "alt": "Выступление перед посетителями на тематической выставке в филиале района Алтай.",
+          "caption": "Тематическая выставка к юбилею Надежды Халиловой в филиале района Алтай, 4 сентября 2026 года."
+        },
+        "kk": {
+          "alt": "Алтай ауданы филиалындағы тақырыптық көрмеде келушілерге сөз сөйлеу.",
+          "caption": "Надежда Халилованың мерейтойына арналған көрме, Алтай ауданы филиалы, 2026 жылғы 4 қыркүйек."
+        },
+        "en": {
+          "alt": "A talk to visitors during a thematic exhibition at the Altay district branch.",
+          "caption": "Exhibition marking Nadezhda Khalilova’s anniversary, Altay district branch, 4 September 2026."
+        }
+      },
+      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/state/ajaguz/photo_2026-09-04_15-33-39.jpg",
+      "decoderValidation": {
+        "checked": "2026-11-11",
+        "status": "incomplete_source",
+        "tool": "sharp strict JPEG/PNG decode",
+        "note": "Preserved source bytes; not embedded in the production UI. VipsJpeg: premature end of JPEG image"
+      },
+      "publicationParentSourceKey": null
+    },
+    {
+      "id": "decree-142-page-4",
+      "path": "sources/archive-visual-20261111/originals/decree-142-page-4.png",
+      "sha256": "4e1243c685b24e33d887b7a60c4a5d575a1342fa827259f5b6ab8d277a476331",
+      "bytes": 1440182,
+      "width": 1131,
+      "height": 1600,
+      "caption": "Постановление акимата ВКО от 2 июня 2026 года №142, страница 4.",
+      "alt": "Первая страница русской части постановления №142 о филиалах архива.",
+      "eventDate": "2026-06-02",
+      "usage": "document-or-structure",
+      "crop": "Страница целиком; без дорисовки, замены текста и обрезки даты/номера.",
+      "inspected": true,
+      "credit": "Государственный архив Восточно-Казахстанской области",
+      "author": "Не указан в источнике",
+      "licenseClaim": null,
+      "publicAssetPolicy": "Use media attachment policy; do not bypass restricted CMS assets with a public copy.",
+      "sourceId": "S06",
+      "sourcePath": "sources/archive-20261110/originals/Постановление обл акимата 142.pdf",
+      "sourcePage": 4,
+      "origin": "rendered_user_pdf",
+      "renderCommand": "pdftoppm -f 4 -singlefile -scale-to 1600 -png <S06.pdf> <output>",
+      "localized": {
+        "ru": {
+          "alt": "Первая страница русской части постановления №142 о филиалах архива.",
+          "caption": "Постановление акимата ВКО от 2 июня 2026 года №142, страница 4."
+        },
+        "kk": {
+          "alt": "Архив филиалдары туралы №142 қаулының орысша бөлігінің бірінші беті.",
+          "caption": "ШҚО әкімдігінің 2026 жылғы 2 маусымдағы №142 қаулысы, 4-бет."
+        },
+        "en": {
+          "alt": "First page of the Russian section of Resolution No. 142 about archive branches.",
+          "caption": "East Kazakhstan regional akimat Resolution No. 142, 2 June 2026, page 4."
+        }
+      },
+      "decoderValidation": {
+        "checked": "2026-11-11",
+        "status": "complete_decode",
+        "tool": "sharp strict JPEG/PNG decode"
+      },
+      "publicationParentSourceKey": null
+    },
+    {
+      "id": "reading-room-researcher",
+      "path": "sources/archive-visual-20261111/originals/reading-room-researcher-b7765254d510.jpg",
+      "sha256": "b7765254d51083504c903fdf228f92e5a97c8d6e52008b99f04544ae5c7507c0",
+      "bytes": 29953,
+      "width": 448,
+      "height": 336,
+      "caption": "Работа с архивными документами в читальном зале Государственного архива ВКО. Дата съёмки в источнике не указана.",
+      "alt": "Посетитель за столом читального зала изучает раскрытый архивный документ.",
+      "eventDate": null,
+      "datePrecision": "unknown",
+      "usage": "reading-room-or-services",
+      "crop": "Показывать целиком либо сохранять документ и посетителя. Размер исходника448×336: не выдавать увеличение за высокое разрешение, не датировать фотографию по дате загрузки страницы.",
+      "inspected": true,
+      "credit": "Государственный архив Восточно-Казахстанской области",
+      "author": "Не указан в источнике",
+      "licenseClaim": null,
+      "publicAssetPolicy": "Publish through the existing verified CMS attachment workflow; do not replace an unrelated event photo or bypass access rights.",
+      "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1338",
+      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/upload/IMG_2361.JPG",
+      "pageSnapshot": "sources/archive-visual-20261111/pages/recovered-source-1338-20261111.html",
+      "pageSha256": "932e929647c44b3b70f1ae786c7d3282696b2c49a1cb8fe80fe75cafee3b9101",
+      "origin": "official_archive_site",
+      "localized": {
+        "ru": {
+          "alt": "Посетитель за столом читального зала изучает раскрытый архивный документ.",
+          "caption": "Работа с архивными документами в читальном зале Государственного архива ВКО. Дата съёмки в источнике не указана."
+        },
+        "kk": {
+          "alt": "Оқу залындағы үстел басында келуші ашық архив құжатын қарап отыр.",
+          "caption": "ШҚО мемлекеттік архивінің оқу залында архив құжаттарымен жұмыс. Дереккөзде түсірілген күні көрсетілмеген."
+        },
+        "en": {
+          "alt": "A visitor seated at a reading-room table studies an open archival document.",
+          "caption": "Working with archival documents in the State Archive of East Kazakhstan reading room. The source does not specify the date of the photograph."
+        }
+      },
+      "validation": {
+        "method": "sharp failOn:warning; full raw().toBuffer() decode; view_image visual inspection",
+        "state": "complete_decode",
+        "reencoded": false,
+        "downloadComplete": true
+      },
+      "isRestoredDamagedOriginal": false,
+      "decoderValidation": {
+        "checked": "2026-11-11",
+        "status": "complete_decode",
+        "tool": "sharp failOn:warning; full raw().toBuffer() decode"
+      },
+      "publicationParentSourceKey": "reference-reading-room-info"
+    },
+    {
+      "id": "elderly-day-altay-2026",
+      "path": "sources/archive-visual-20261111/originals/elderly-day-altay-2026-31bd1b986c9e.jpg",
+      "sha256": "31bd1b986c9e7df7edde0c552232a44fc255d8d725a6f01cb8761312f3e3a72c",
+      "bytes": 108065,
+      "width": 1280,
+      "height": 720,
+      "caption": "Сотрудники филиала района Алтай во время визита ко Дню пожилого человека, 1 октября 2026 года.",
+      "alt": "Четыре участника встречи рядом с букетом цветов и подарками.",
+      "eventDate": "2026-10-01",
+      "datePrecision": "day",
+      "usage": "historical-social-outreach-only",
+      "crop": "Сохранять контекст встречи и участников. Это социальный визит, а не фотография читального зала, выставки Халиловой или Дня открытых дверей. Не использовать как историческую фотографию прежнего века или актуальное приглашение.",
+      "inspected": true,
+      "credit": "Государственный архив Восточно-Казахстанской области",
+      "author": "Не указан в источнике",
+      "licenseClaim": null,
+      "publicAssetPolicy": "Publish through the existing verified CMS attachment workflow; do not replace an unrelated event photo or bypass access rights.",
+      "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52814",
+      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/state/jarma/photo_2026-10-01_16-40-16.jpg",
+      "pageSnapshot": "sources/archive-visual-20261111/pages/recovered-source-52814-20261111.html",
+      "pageSha256": "1c2483e2aa19aec4d3273e7c4b2199470c1ed6bf5d71725aafde347eff047181",
+      "origin": "official_archive_site",
+      "localized": {
+        "ru": {
+          "alt": "Четыре участника встречи рядом с букетом цветов и подарками.",
+          "caption": "Сотрудники филиала района Алтай во время визита ко Дню пожилого человека, 1 октября 2026 года."
+        },
+        "kk": {
+          "alt": "Кездесудің төрт қатысушысы гүл шоғы мен сыйлықтардың жанында тұр.",
+          "caption": "Алтай ауданы филиалы қызметкерлерінің Қарттар күніне арналған сапары, 2026 жылғы 1 қазан."
+        },
+        "en": {
+          "alt": "Four participants at a visit stand beside flowers and gifts.",
+          "caption": "Altay district archive branch employees during a visit for the Day of Older Persons, 1 October 2026."
+        }
+      },
+      "validation": {
+        "method": "sharp failOn:warning; full raw().toBuffer() decode; view_image visual inspection",
+        "state": "complete_decode",
+        "reencoded": false,
+        "downloadComplete": true
+      },
+      "isRestoredDamagedOriginal": false,
+      "decoderValidation": {
+        "checked": "2026-11-11",
+        "status": "complete_decode",
+        "tool": "sharp failOn:warning; full raw().toBuffer() decode"
+      },
+      "publicationParentSourceKey": null
+    },
+    {
+      "id": "archive-central-building",
+      "path": "sources/archive-visual-20261111/originals/archive-central-building-97bdab95bc59.jpg",
+      "sha256": "97bdab95bc598fb6a8cc95b4676b2377f0e12e95499af5592b0840408fd1f8f7",
+      "bytes": 287040,
+      "width": 1024,
+      "height": 768,
+      "caption": "Здание архива на официальной странице контактной информации. Дата съёмки не указана.",
+      "alt": "Светлое многоэтажное здание архива с узкими окнами и деревьями у входа.",
+      "eventDate": null,
+      "usage": "central-archive-contact-page",
+      "crop": "Full original frame; no invented replacement or photographic editing.",
+      "inspected": true,
+      "credit": "Государственный архив Восточно-Казахстанской области",
+      "author": "Не указан в источнике",
+      "licenseClaim": null,
+      "publicAssetPolicy": "Published CMS attachment only; no public copy or optimizer cache.",
+      "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1330",
+      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/upload/%D1%84%D0%BE%D1%82%D0%BE%201.jpg",
+      "pageSnapshot": "sources/reference-design-20261112/official-contacts.html",
+      "pageSha256": "049ad5bf4f14f78f436d40bcdd5d4eb7e63115d5415486ede094aae7a5043dc5",
+      "origin": "official_archive_site",
+      "localized": {
+        "ru": {
+          "caption": "Здание архива на официальной странице контактной информации. Дата съёмки не указана.",
+          "alt": "Светлое многоэтажное здание архива с узкими окнами и деревьями у входа."
+        },
+        "kk": {
+          "caption": "Ресми байланыс парағында көрсетілген архив ғимараты. Түсірілген күні көрсетілмеген.",
+          "alt": "Кіреберісінде ағаштары бар, терезелері жіңішке көпқабатты ашық түсті архив ғимараты."
+        },
+        "en": {
+          "caption": "The archive building shown on its official contact page. The photograph is undated.",
+          "alt": "A light-coloured multi-storey archive building with narrow windows and trees by the entrance."
+        }
+      },
+      "publicationParentSourceKey": "contacts",
+      "decoderValidation": {
+        "checked": "2026-11-12T04:04:08.459879+00:00",
+        "status": "complete_decode",
+        "tool": "sharp strict metadata and full raw decode"
+      },
+      "downloadedAt": "2026-11-12T04:04:08.459890+00:00"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "places": [
+    {
+      "id": "ust-kamenogorsk",
+      "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1330",
+      "checkedAt": "2026-11-09",
+      "note": "RU/KK names observed in the site audit; English transliterations are project aliases awaiting archive review. No historical coordinates inferred.",
+      "filterVariants": {
+        "ru": [
+          "Усть-Каменогорск",
+          "Усть Каменогорск",
+          "Өскемен"
+        ],
+        "kk": [
+          "Өскемен",
+          "Усть-Каменогорск"
+        ],
+        "en": [
+          "Ust-Kamenogorsk",
+          "Oskemen",
+          "Öskemen"
+        ]
+      }
+    }
+  ],
+  "topics": [
+    {
+      "label": "библиотека",
+      "pattern": "библиотек[\\p{L}]*|читальн[\\p{L}]*|кітапхана[\\p{L}]*|оқырман[\\p{L}]*|librar(?:y|ies)|reading room",
+      "query": {
+        "ru": "библиотека",
+        "kk": "кітапхана",
+        "en": "library"
+      }
+    },
+    {
+      "label": "школа",
+      "pattern": "школ[\\p{L}]*|ученик[\\p{L}]*|мекте[пб][\\p{L}]*|оқушы[\\p{L}]*|schools?|pupils?|classrooms?",
+      "query": {
+        "ru": "школа",
+        "kk": "мектеп",
+        "en": "school"
+      }
+    },
+    {
+      "label": "музей",
+      "pattern": "музе[\\p{L}]*|мұражай[\\p{L}]*|museums?",
+      "query": {
+        "ru": "музей",
+        "kk": "мұражай",
+        "en": "museum"
+      }
+    },
+    {
+      "label": "площадь",
+      "pattern": "площад[\\p{L}]*|алаң[\\p{L}]*|city square|urban square",
+      "query": {
+        "ru": "площадь",
+        "kk": "алаң",
+        "en": "square"
+      }
+    },
+    {
+      "label": "станция",
+      "pattern": "станци[\\p{L}]*|темір жол|бекет[\\p{L}]*|railway station|railroad station",
+      "query": {
+        "ru": "станция",
+        "kk": "бекет",
+        "en": "station"
+      }
+    }
+  ],
+  "supportedModelTerms": [
+    "вокзал",
+    "транспорт",
+    "расписание",
+    "благоустройство",
+    "железная дорога",
+    "railroad",
+    "train timetable",
+    "читатели",
+    "ученики",
+    "учебный класс"
+  ]
+}

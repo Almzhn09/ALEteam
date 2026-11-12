@@ -1,0 +1,483 @@
+{
+  "testedAt": "2026-11-11T14:38:09.563Z",
+  "count": 53,
+  "mappings": [
+    {
+      "sourceKey": "S01-Книга-10",
+      "locale": "ru",
+      "itemId": "cmwboordb006jq4o30dsars14",
+      "slug": "archive-branch-5",
+      "revisionId": "cmwc7ck1f006q56o3r6zwwzif",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-branch-5?locale=ru"
+    },
+    {
+      "sourceKey": "S01-Книга-11",
+      "locale": "ru",
+      "itemId": "cmwboorif006uq4o34nbyuyhq",
+      "slug": "archive-branch-6",
+      "revisionId": "cmwc7ck2t007156o3xlkwo8kp",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-branch-6?locale=ru"
+    },
+    {
+      "sourceKey": "S01-Книга-12",
+      "locale": "ru",
+      "itemId": "cmwboorlm0075q4o3lwuuyuly",
+      "slug": "archive-branch-7",
+      "revisionId": "cmwc7ck4l007c56o3v12ulkxq",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-branch-7?locale=ru"
+    },
+    {
+      "sourceKey": "S01-Книга-13",
+      "locale": "ru",
+      "itemId": "cmwboorrg007gq4o3012ec603",
+      "slug": "archive-branch-8",
+      "revisionId": "cmwc7ck5x007n56o3j4975xtk",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-branch-8?locale=ru"
+    },
+    {
+      "sourceKey": "S01-Книга-14",
+      "locale": "ru",
+      "itemId": "cmwboorve007rq4o3wg7vnc4j",
+      "slug": "archive-branch-9",
+      "revisionId": "cmwc7ck77007y56o3d2x5pxoh",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-branch-9?locale=ru"
+    },
+    {
+      "sourceKey": "S01-Книга-15",
+      "locale": "ru",
+      "itemId": "cmwboos0i0082q4o3avaulqav",
+      "slug": "archive-branch-10",
+      "revisionId": "cmwc7ck97008956o3xzte5r63",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-branch-10?locale=ru"
+    },
+    {
+      "sourceKey": "S01-Книга-16",
+      "locale": "ru",
+      "itemId": "cmwboos43008dq4o3v1v5e2e3",
+      "slug": "archive-branch-11",
+      "revisionId": "cmwc7ckba008k56o3xcqqkry8",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-branch-11?locale=ru"
+    },
+    {
+      "sourceKey": "S01-Книга-17",
+      "locale": "ru",
+      "itemId": "cmwboosea008oq4o32mxsy0g9",
+      "slug": "archive-branch-12",
+      "revisionId": "cmwc7ckcj008v56o30jh0oekr",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-branch-12?locale=ru"
+    },
+    {
+      "sourceKey": "S01-Книга-18",
+      "locale": "ru",
+      "itemId": "cmwboosjq008zq4o3kaxmnlty",
+      "slug": "archive-branch-13",
+      "revisionId": "cmwc7ckdu009656o3mr3d8r5t",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-branch-13?locale=ru"
+    },
+    {
+      "sourceKey": "S01-Книга-6",
+      "locale": "ru",
+      "itemId": "cmwbooqyf005bq4o3tarzhpx0",
+      "slug": "archive-branch-1",
+      "revisionId": "cmwc7cjuy005i56o396m28it8",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-branch-1?locale=ru"
+    },
+    {
+      "sourceKey": "S01-Книга-7",
+      "locale": "ru",
+      "itemId": "cmwboor1j005mq4o38soxwhpr",
+      "slug": "archive-branch-2",
+      "revisionId": "cmwc7cjx7005t56o3rh20ny9c",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-branch-2?locale=ru"
+    },
+    {
+      "sourceKey": "S01-Книга-8",
+      "locale": "ru",
+      "itemId": "cmwboor57005xq4o385rs1bkl",
+      "slug": "archive-branch-3",
+      "revisionId": "cmwc7cjyg006456o3hi1zdl8o",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-branch-3?locale=ru"
+    },
+    {
+      "sourceKey": "S01-Книга-9",
+      "locale": "ru",
+      "itemId": "cmwboorah0068q4o3pal0305j",
+      "slug": "archive-branch-4",
+      "revisionId": "cmwc7ck00006f56o3707euy9t",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-branch-4?locale=ru"
+    },
+    {
+      "sourceKey": "branch-decree-142",
+      "locale": "ru",
+      "itemId": "cmwboosks009aq4o3qfhophbo",
+      "slug": "archive-branch-decree-142",
+      "revisionId": "cmwc7ckfa009h56o387daxrab",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-branch-decree-142?locale=ru"
+    },
+    {
+      "sourceKey": "calendar-2022-kk",
+      "locale": "kk",
+      "itemId": "cmwboopgf0018q4o33xlzpwzo",
+      "slug": "archive-calendar-2022",
+      "revisionId": "cmwc7cj5l001j56o3yxmv1i2l",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-calendar-2022?locale=kk"
+    },
+    {
+      "sourceKey": "calendar-2022-ru",
+      "locale": "ru",
+      "itemId": "cmwboopgf0018q4o33xlzpwzo",
+      "slug": "archive-calendar-2022",
+      "revisionId": "cmwc7cj3n001856o3k651riid",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-calendar-2022?locale=ru"
+    },
+    {
+      "sourceKey": "calendar-2023-kk",
+      "locale": "kk",
+      "itemId": "cmwboopk6001tq4o3gsfntfsj",
+      "slug": "archive-calendar-2023",
+      "revisionId": "cmwc7cj8o002556o3mnzws86i",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-calendar-2023?locale=kk"
+    },
+    {
+      "sourceKey": "calendar-2023-ru",
+      "locale": "ru",
+      "itemId": "cmwboopk6001tq4o3gsfntfsj",
+      "slug": "archive-calendar-2023",
+      "revisionId": "cmwc7cj71001u56o3adu9g9pk",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-calendar-2023?locale=ru"
+    },
+    {
+      "sourceKey": "calendar-2024-kk",
+      "locale": "kk",
+      "itemId": "cmwboopq5002eq4o3bc5rizwy",
+      "slug": "archive-calendar-2024",
+      "revisionId": "cmwc7cjcr002r56o3tm03s9j3",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-calendar-2024?locale=kk"
+    },
+    {
+      "sourceKey": "calendar-2024-ru",
+      "locale": "ru",
+      "itemId": "cmwboopq5002eq4o3bc5rizwy",
+      "slug": "archive-calendar-2024",
+      "revisionId": "cmwc7cja5002g56o3av4iet42",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-calendar-2024?locale=ru"
+    },
+    {
+      "sourceKey": "calendar-2025-kk",
+      "locale": "kk",
+      "itemId": "cmwbooq4h002zq4o3i85k4257",
+      "slug": "archive-calendar-2025",
+      "revisionId": "cmwc7cjgx003d56o31cwxom8y",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-calendar-2025?locale=kk"
+    },
+    {
+      "sourceKey": "calendar-2025-ru",
+      "locale": "ru",
+      "itemId": "cmwbooq4h002zq4o3i85k4257",
+      "slug": "archive-calendar-2025",
+      "revisionId": "cmwc7cjf0003256o3rart0imd",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-calendar-2025?locale=ru"
+    },
+    {
+      "sourceKey": "calendar-2026-kk",
+      "locale": "kk",
+      "itemId": "cmwbooqcz003kq4o3p14anacs",
+      "slug": "archive-calendar-2026",
+      "revisionId": "cmwc7cjlk003z56o3h1bwg4ff",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-calendar-2026?locale=kk"
+    },
+    {
+      "sourceKey": "calendar-2026-ru",
+      "locale": "ru",
+      "itemId": "cmwbooqcz003kq4o3p14anacs",
+      "slug": "archive-calendar-2026",
+      "revisionId": "cmwc7cjiq003o56o3nhl7t6r7",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-calendar-2026?locale=ru"
+    },
+    {
+      "sourceKey": "compliance-14",
+      "locale": "kk",
+      "itemId": "cmwbooqi60045q4o30jbl8bwr",
+      "slug": "archive-compliance-information",
+      "revisionId": "cmwc7cjn8004a56o3o483zb7u",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-compliance-information?locale=kk"
+    },
+    {
+      "sourceKey": "compliance-15",
+      "locale": "ru",
+      "itemId": "cmwbooqi60045q4o30jbl8bwr",
+      "slug": "archive-compliance-information",
+      "revisionId": "cmwc7cjp7004l56o36dftlll3",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-compliance-information?locale=ru"
+    },
+    {
+      "sourceKey": "compliance-16",
+      "locale": "ru",
+      "itemId": "cmwbooqtl004qq4o39q077ccr",
+      "slug": "archive-compliance-analysis-notice",
+      "revisionId": "cmwc7cjr6004w56o3pcjjpnun",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-compliance-analysis-notice?locale=ru"
+    },
+    {
+      "sourceKey": "compliance-17",
+      "locale": "kk",
+      "itemId": "cmwbooqtl004qq4o39q077ccr",
+      "slug": "archive-compliance-analysis-notice",
+      "revisionId": "cmwc7cjt3005756o3jgt75z08",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-compliance-analysis-notice?locale=kk"
+    },
+    {
+      "sourceKey": "compliance-file-0dae7a7694c8a2c7",
+      "locale": "ru",
+      "itemId": "cmwboouir00dpq4o32am3l5tn",
+      "slug": "archive-compliance-0dae7a7694c8",
+      "revisionId": "cmwc7cl2y00eo56o3yjk1ugea",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-compliance-0dae7a7694c8?locale=ru"
+    },
+    {
+      "sourceKey": "compliance-file-33e5247b84e6a237",
+      "locale": "kk",
+      "itemId": "cmwc7ckwm00d556o3jsaepnnx",
+      "slug": "archive-compliance-33e5247b84e6",
+      "revisionId": "cmwc7ckwn00d656o34uclspah",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-compliance-33e5247b84e6?locale=kk"
+    },
+    {
+      "sourceKey": "compliance-file-63b2717c252f8f74",
+      "locale": "kk",
+      "itemId": "cmwboouh600deq4o30r5wh252",
+      "slug": "archive-compliance-63b2717c252f",
+      "revisionId": "cmwc7cl1v00ed56o3nzaid0di",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-compliance-63b2717c252f?locale=kk"
+    },
+    {
+      "sourceKey": "compliance-file-73ef6b499f789b52",
+      "locale": "ru",
+      "itemId": "cmwbooucw00d3q4o3y2iyqf9f",
+      "slug": "archive-compliance-73ef6b499f78",
+      "revisionId": "cmwc7cl0800e256o3b038nmnc",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-compliance-73ef6b499f78?locale=ru"
+    },
+    {
+      "sourceKey": "compliance-file-a2e51204036a00b0",
+      "locale": "kk",
+      "itemId": "cmwboou9t00csq4o3v1626ji6",
+      "slug": "archive-compliance-a2e51204036a",
+      "revisionId": "cmwc7ckyt00dr56o3f0e6g189",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-compliance-a2e51204036a?locale=kk"
+    },
+    {
+      "sourceKey": "compliance-file-c884e438c91dc5bb",
+      "locale": "ru",
+      "itemId": "cmwboouly00e0q4o3mbmhde5n",
+      "slug": "archive-compliance-c884e438c91d",
+      "revisionId": "cmwc7cl4400ez56o398a26l1j",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-compliance-c884e438c91d?locale=ru"
+    },
+    {
+      "sourceKey": "compliance-file-ceab9f738c6ca022",
+      "locale": "kk",
+      "itemId": "cmwboouqq00ebq4o3pjwzgneb",
+      "slug": "archive-compliance-ceab9f738c6c",
+      "revisionId": "cmwc7cl5b00fa56o3ivg92h24",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-compliance-ceab9f738c6c?locale=kk"
+    },
+    {
+      "sourceKey": "compliance-file-fe0975c5428359f8",
+      "locale": "ru",
+      "itemId": "cmwc7ckxx00dg56o351z00gyu",
+      "slug": "archive-compliance-fe0975c54283",
+      "revisionId": "cmwc7ckxx00dh56o3f56ydzpy",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-compliance-fe0975c54283?locale=ru"
+    },
+    {
+      "sourceKey": "compliance-index-kk",
+      "locale": "kk",
+      "itemId": "cmwc7cl6k00fl56o3q72csdjv",
+      "slug": "archive-compliance",
+      "revisionId": "cmwc7cl7u00fw56o3vbryjjfh",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-compliance?locale=kk"
+    },
+    {
+      "sourceKey": "compliance-index-ru",
+      "locale": "ru",
+      "itemId": "cmwc7cl6k00fl56o3q72csdjv",
+      "slug": "archive-compliance",
+      "revisionId": "cmwc7cl6k00fm56o3lpz4ovi3",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-compliance?locale=ru"
+    },
+    {
+      "sourceKey": "contacts",
+      "locale": "ru",
+      "itemId": "cmwboopdv000mq4o3hu6pb6pv",
+      "slug": "archive-contacts",
+      "revisionId": "cmwc7cizn000m56o3f8m2ov1k",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-contacts?locale=ru"
+    },
+    {
+      "sourceKey": "fund-directory-info",
+      "locale": "ru",
+      "itemId": "cmwbootqd00c6q4o3c3aok2qm",
+      "slug": "archive-fund-directory",
+      "revisionId": "cmwc7cktq00cj56o3rmkf3dzv",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-fund-directory?locale=ru"
+    },
+    {
+      "sourceKey": "history-1",
+      "locale": "ru",
+      "itemId": "cmwboop850000q4o3p5rhb5da",
+      "slug": "archive-history-1",
+      "revisionId": "cmwc7civr000056o3g20wde0j",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-history-1?locale=ru"
+    },
+    {
+      "sourceKey": "history-2",
+      "locale": "ru",
+      "itemId": "cmwboopcn000bq4o352nx3wzi",
+      "slug": "archive-history-2",
+      "revisionId": "cmwc7ciy2000b56o3o71dbp1u",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-history-2?locale=ru"
+    },
+    {
+      "sourceKey": "newspaper-directory-info",
+      "locale": "ru",
+      "itemId": "cmwboou0l00chq4o34rkdg1rb",
+      "slug": "archive-newspaper-directory",
+      "revisionId": "cmwc7ckuy00cu56o322y6kq2s",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-newspaper-directory?locale=ru"
+    },
+    {
+      "sourceKey": "reference-paid-services-info",
+      "locale": "en",
+      "itemId": "cmwbooslq009lq4o357m9fhen",
+      "slug": "archive-paid-services-info",
+      "revisionId": "cmwc7ckk000ae56o3kk2pg7p8",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-paid-services-info?locale=en"
+    },
+    {
+      "sourceKey": "reference-paid-services-info",
+      "locale": "kk",
+      "itemId": "cmwbooslq009lq4o357m9fhen",
+      "slug": "archive-paid-services-info",
+      "revisionId": "cmwc7cki600a356o3cht8js80",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-paid-services-info?locale=kk"
+    },
+    {
+      "sourceKey": "reference-paid-services-info",
+      "locale": "ru",
+      "itemId": "cmwbooslq009lq4o357m9fhen",
+      "slug": "archive-paid-services-info",
+      "revisionId": "cmwc7ckgv009s56o3qyc283nx",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-paid-services-info?locale=ru"
+    },
+    {
+      "sourceKey": "reference-public-services-info",
+      "locale": "en",
+      "itemId": "cmwboosz200agq4o335xb6g15",
+      "slug": "archive-public-services-info",
+      "revisionId": "cmwc7cknv00bb56o3vjbyzn60",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-public-services-info?locale=en"
+    },
+    {
+      "sourceKey": "reference-public-services-info",
+      "locale": "kk",
+      "itemId": "cmwboosz200agq4o335xb6g15",
+      "slug": "archive-public-services-info",
+      "revisionId": "cmwc7ckm700b056o3g0rtvu02",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-public-services-info?locale=kk"
+    },
+    {
+      "sourceKey": "reference-public-services-info",
+      "locale": "ru",
+      "itemId": "cmwboosz200agq4o335xb6g15",
+      "slug": "archive-public-services-info",
+      "revisionId": "cmwc7ckkw00ap56o38wrjv5vt",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-public-services-info?locale=ru"
+    },
+    {
+      "sourceKey": "reference-reading-room-info",
+      "locale": "en",
+      "itemId": "cmwbootd600bbq4o3gebl6hws",
+      "slug": "archive-reading-room-info",
+      "revisionId": "cmwc7cks400c856o36zrt0dyw",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-reading-room-info?locale=en"
+    },
+    {
+      "sourceKey": "reference-reading-room-info",
+      "locale": "kk",
+      "itemId": "cmwbootd600bbq4o3gebl6hws",
+      "slug": "archive-reading-room-info",
+      "revisionId": "cmwc7ckqt00bx56o3ojdoge14",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-reading-room-info?locale=kk"
+    },
+    {
+      "sourceKey": "reference-reading-room-info",
+      "locale": "ru",
+      "itemId": "cmwbootd600bbq4o3gebl6hws",
+      "slug": "archive-reading-room-info",
+      "revisionId": "cmwc7ckpe00bm56o3cvoskt7y",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-reading-room-info?locale=ru"
+    },
+    {
+      "sourceKey": "structure",
+      "locale": "ru",
+      "itemId": "cmwboopfi000xq4o3no9u187l",
+      "slug": "archive-structure",
+      "revisionId": "cmwc7cj1e000x56o3qm39q1rd",
+      "status": "PUBLISHED",
+      "href": "/api/content/archive-structure?locale=ru"
+    }
+  ]
+}

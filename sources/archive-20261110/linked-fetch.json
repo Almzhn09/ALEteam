@@ -1,0 +1,32 @@
+[
+  {
+    "member": "Фонды/Фонды.docx",
+    "label": "Перечень газет, хранящихся в государственном архиве Восточно-Казахстанской области за 1935-2011гг. по состоянию на 01.01.2026г.",
+    "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%B3%D0%B0%D0%B7%D0%B5%D1%82%D1%8B%20%D0%B7%D0%B0%201935-2017.docx",
+    "status": 200,
+    "bytes": 214596,
+    "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "path": "linked/S09-link-1.docx",
+    "sha256": "876e74ae28c0c31dffc66d61dfb35cc664d1cf8c5efc890d7169bc6bd65ee862"
+  },
+  {
+    "member": "Фонды/Фонды.docx",
+    "label": "Фонды государственного архива Восточно-Казахстанской области по состоянию на 01.01.2026г.",
+    "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%A4%D0%BE%D0%BD%D0%B4%D1%8B%20%D0%B3%D0%BE%D1%81%D0%B0%D1%80%D1%85%D0%B8%D0%B2%D0%B0%20%D0%92%D0%9A%D0%9E%20%D0%BD%D0%B0%202018%D0%B3..xlsb",
+    "status": 200,
+    "bytes": 345863,
+    "contentType": "application/vnd.ms-excel.sheet.binary.macroEnabled.12",
+    "path": "linked/S09-link-2.xlsb",
+    "sha256": "cf9c63b4e00009738fed27c53f08736349dd7e7f93b17faec2a1574e75aeb3eb"
+  },
+  {
+    "member": "Фонды/Фонды.docx",
+    "label": "Партийные фонды государственного архива Восточно-Казахстанской области по состоянию на 01.01.2026г.",
+    "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%BF%D0%B0%D1%80%D1%82%20%D1%84%D0%BE%D0%BD%D0%B4%D1%8B%20%D0%B3%D0%BE%D1%81%D0%B0%D1%80%D1%85%D0%B8%D0%B2%D0%B0%20%D0%92%D0%9A%D0%9E%20%D0%BD%D0%B0%202018%D0%B3..xlsb",
+    "status": 200,
+    "bytes": 41148,
+    "contentType": "application/vnd.ms-excel.sheet.binary.macroEnabled.12",
+    "path": "linked/S09-link-3.xlsb",
+    "sha256": "470631d78a74a459f8b009e1698f077087883733cca90f128a23bee45191bd21"
+  }
+]

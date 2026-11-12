@@ -1,0 +1,55 @@
+{
+  "capturedAt": "2026-11-10T09:42:48.484Z",
+  "codeCommit": "28a0a19e7835444f383caf334afac9e453f61305",
+  "target": "Local production Next.js build, real dedicated PostgreSQL, real Chromium; no mock API",
+  "syntheticData": true,
+  "screenshots": [
+    {
+      "file": "01-home-ru-desktop.png",
+      "route": "/",
+      "locale": "ru",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "file": "02-catalog-ru-desktop.png",
+      "route": "/catalog?q=библиотека",
+      "locale": "ru",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "file": "03-document-ru-desktop.png",
+      "route": "/documents/demo-doc-01",
+      "locale": "ru",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "file": "04-assistant-ru-desktop.png",
+      "route": "/assistant",
+      "locale": "ru",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "file": "05-home-kk-mobile.png",
+      "route": "/",
+      "locale": "kk",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "pageErrors": [],
+  "sourceSha256": {
+    "src/app/page.tsx": "605f0d9e09fcd5681333354f36021c06fba6e11f7ddea35d595718645f87aeaa",
+    "src/app/assistant/Assistant.tsx": "4efbf5f5ccf3abdb2a85ac38265895b41072914126d78388e29c7d58c1833d7b",
+    "src/server/assistant.ts": "69e8705df71a48d96e87c6f85cac083c58892704569f704bb61603a6b86178e6",
+    "src/server/corpus-health.ts": "543ed0fb2ec8d676d98a9c7869a26c1eef505486a763d123e031824adc6a4f40"
+  },
+  "limitations": [
+    "Only the frontend currently published in GitHub is shown; no newer final UI commit was available.",
+    "Demo records and original demo scans; not official archive data or proof of rights.",
+    "No EN UI or new CMS editing screens are claimed."
+  ]
+}

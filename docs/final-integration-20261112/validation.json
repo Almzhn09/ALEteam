@@ -1,0 +1,63 @@
+{
+  "testedAt": "2026-11-12T18:47:40.901Z",
+  "base": "363a1fd",
+  "applicationFix": "227c820",
+  "image": "sha256:554676f49390634df475f5722cae24efd79d9b0d4effbbadd91777286198803d",
+  "checks": {
+    "productionBuild": "passed, native and Docker",
+    "unit": {
+      "passed": 404,
+      "failed": 0
+    },
+    "typecheck": "passed",
+    "i18n": {
+      "translated": 1060,
+      "missing": 0
+    },
+    "http": {
+      "passed": 22,
+      "failed": 0
+    },
+    "finalBackend": {
+      "passed": 6,
+      "failed": 0
+    },
+    "referenceOriginal": {
+      "passed": 2,
+      "failed": 0
+    },
+    "deploymentUnit": {
+      "passed": 11,
+      "failed": 0
+    },
+    "compactFresh": 6,
+    "compactPersistentAndBrowser": 11,
+    "mainPath": 6,
+    "registration": 7,
+    "languageGroups": 6,
+    "languagePages": 69,
+    "languageWidthCombinations": 18,
+    "editions": 53,
+    "filesWithExactSha256": 44,
+    "cityTotals": [
+      1048,
+      1048,
+      1048,
+      1048
+    ],
+    "pdfNativePages": [
+      1,
+      2,
+      15
+    ],
+    "docxParts": 2,
+    "docxFragments": 42
+  },
+  "limitations": [
+    "Local Docker acceptance, not a deployment or write against working Neon",
+    "GitHub Actions status unavailable: GitHub API returned Forbidden; local results are recorded",
+    "User uploads outside bundled sources need persistent file storage",
+    "Email delivery and email password reset are not connected",
+    "Source migration is the reviewed bundled corpus, not every historical page of the old site"
+  ]
+}

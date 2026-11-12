@@ -1,0 +1,10 @@
+{
+  "testedAt": "2026-11-12T17:59:02.910Z",
+  "checks": [
+    "Full original DOCX has 12316 characters and a readable final part",
+    "Negative reader offset rejected",
+    "Withdrawn file cannot be read through reader mode",
+    "Archived parent cannot be read through reader mode"
+  ],
+  "scope": "New temporary clone in dedicated local _test database only; original source records and live Neon unchanged"
+}

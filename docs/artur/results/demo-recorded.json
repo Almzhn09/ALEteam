@@ -1,0 +1,54 @@
+{
+  "recordedAt": "2026-11-07T18:42:38.951Z",
+  "recorded": true,
+  "label": "Recorded server demo, not a live frontend presentation",
+  "events": [
+    {
+      "step": "search",
+      "total": 4,
+      "firstDocument": "demo-doc-16"
+    },
+    {
+      "step": "assistant",
+      "mode": "retrieval",
+      "noAnswer": false,
+      "sourceIds": [
+        "demo-doc-01",
+        "demo-doc-06",
+        "demo-doc-11"
+      ]
+    },
+    {
+      "step": "assistant",
+      "mode": "retrieval",
+      "noAnswer": false,
+      "sourceIds": [
+        "guide-fund"
+      ]
+    },
+    {
+      "step": "assistant",
+      "mode": "retrieval",
+      "noAnswer": true,
+      "sourceIds": []
+    },
+    {
+      "step": "comment",
+      "sample": "clean",
+      "status": "PUBLISHED",
+      "id": "cmw6r3l540000xepo8pyj2gl9"
+    },
+    {
+      "step": "comment",
+      "sample": "blocked",
+      "status": "REJECTED",
+      "id": "cmw6r3l5k0001xepo0dwnnpfk"
+    },
+    {
+      "step": "comment",
+      "sample": "quote",
+      "status": "PENDING",
+      "id": "cmw6r3l5w0002xepoikwixe1g"
+    }
+  ]
+}

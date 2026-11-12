@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-11-08T06:02:43.979Z",
+  "status": "blocked",
+  "reason": "MODEL_OR_KEY_MISSING",
+  "configured": {
+    "keyPresent": false,
+    "modelPresent": false
+  },
+  "requested": false,
+  "maximumProviderCalls": 1,
+  "maximumOutputTokens": 500,
+  "note": "A blocked/not_run result is not a successful provider test. Values and provider response bodies are intentionally omitted."
+}

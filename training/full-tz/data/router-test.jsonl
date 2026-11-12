@@ -1,0 +1,817 @@
+{"question": "Меня интересует библиотека", "target": "библиотека", "group": "test"}
+{"question": "библиотека бойынша көмек керек", "target": "библиотека", "group": "test"}
+{"question": "Could you explain библиотека for me?", "target": "библиотека", "group": "test"}
+{"question": "Меня интересует библиотеки", "target": "библиотека", "group": "test"}
+{"question": "библиотеки бойынша көмек керек", "target": "библиотека", "group": "test"}
+{"question": "Could you explain библиотеки for me?", "target": "библиотека", "group": "test"}
+{"question": "Меня интересует библиотеке", "target": "библиотека", "group": "test"}
+{"question": "библиотеке бойынша көмек керек", "target": "библиотека", "group": "test"}
+{"question": "Could you explain библиотеке for me?", "target": "библиотека", "group": "test"}
+{"question": "Меня интересует читальный зал", "target": "библиотека", "group": "test"}
+{"question": "читальный зал бойынша көмек керек", "target": "библиотека", "group": "test"}
+{"question": "Could you explain читальный зал for me?", "target": "библиотека", "group": "test"}
+{"question": "Меня интересует читатели", "target": "библиотека", "group": "test"}
+{"question": "читатели бойынша көмек керек", "target": "библиотека", "group": "test"}
+{"question": "Could you explain читатели for me?", "target": "библиотека", "group": "test"}
+{"question": "Меня интересует кітапхана", "target": "библиотека", "group": "test"}
+{"question": "кітапхана бойынша көмек керек", "target": "библиотека", "group": "test"}
+{"question": "Could you explain кітапхана for me?", "target": "библиотека", "group": "test"}
+{"question": "Меня интересует оқырмандар", "target": "библиотека", "group": "test"}
+{"question": "оқырмандар бойынша көмек керек", "target": "библиотека", "group": "test"}
+{"question": "Could you explain оқырмандар for me?", "target": "библиотека", "group": "test"}
+{"question": "Меня интересует kitaphana", "target": "библиотека", "group": "test"}
+{"question": "kitaphana бойынша көмек керек", "target": "библиотека", "group": "test"}
+{"question": "Could you explain kitaphana for me?", "target": "библиотека", "group": "test"}
+{"question": "Меня интересует library", "target": "библиотека", "group": "test"}
+{"question": "library бойынша көмек керек", "target": "библиотека", "group": "test"}
+{"question": "Could you explain library for me?", "target": "библиотека", "group": "test"}
+{"question": "Меня интересует reading room", "target": "библиотека", "group": "test"}
+{"question": "reading room бойынша көмек керек", "target": "библиотека", "group": "test"}
+{"question": "Could you explain reading room for me?", "target": "библиотека", "group": "test"}
+{"question": "Меня интересует library readers", "target": "библиотека", "group": "test"}
+{"question": "library readers бойынша көмек керек", "target": "библиотека", "group": "test"}
+{"question": "Could you explain library readers for me?", "target": "библиотека", "group": "test"}
+{"question": "Меня интересует площадь", "target": "площадь", "group": "test"}
+{"question": "площадь бойынша көмек керек", "target": "площадь", "group": "test"}
+{"question": "Could you explain площадь for me?", "target": "площадь", "group": "test"}
+{"question": "Меня интересует площади", "target": "площадь", "group": "test"}
+{"question": "площади бойынша көмек керек", "target": "площадь", "group": "test"}
+{"question": "Could you explain площади for me?", "target": "площадь", "group": "test"}
+{"question": "Меня интересует городская площадь", "target": "площадь", "group": "test"}
+{"question": "городская площадь бойынша көмек керек", "target": "площадь", "group": "test"}
+{"question": "Could you explain городская площадь for me?", "target": "площадь", "group": "test"}
+{"question": "Меня интересует благоустройство", "target": "площадь", "group": "test"}
+{"question": "благоустройство бойынша көмек керек", "target": "площадь", "group": "test"}
+{"question": "Could you explain благоустройство for me?", "target": "площадь", "group": "test"}
+{"question": "Меня интересует алаң", "target": "площадь", "group": "test"}
+{"question": "алаң бойынша көмек керек", "target": "площадь", "group": "test"}
+{"question": "Could you explain алаң for me?", "target": "площадь", "group": "test"}
+{"question": "Меня интересует абаттандыру", "target": "площадь", "group": "test"}
+{"question": "абаттандыру бойынша көмек керек", "target": "площадь", "group": "test"}
+{"question": "Could you explain абаттандыру for me?", "target": "площадь", "group": "test"}
+{"question": "Меня интересует city square", "target": "площадь", "group": "test"}
+{"question": "city square бойынша көмек керек", "target": "площадь", "group": "test"}
+{"question": "Could you explain city square for me?", "target": "площадь", "group": "test"}
+{"question": "Меня интересует urban square", "target": "площадь", "group": "test"}
+{"question": "urban square бойынша көмек керек", "target": "площадь", "group": "test"}
+{"question": "Could you explain urban square for me?", "target": "площадь", "group": "test"}
+{"question": "Меня интересует школа", "target": "школа", "group": "test"}
+{"question": "школа бойынша көмек керек", "target": "школа", "group": "test"}
+{"question": "Could you explain школа for me?", "target": "школа", "group": "test"}
+{"question": "Меня интересует школы", "target": "школа", "group": "test"}
+{"question": "школы бойынша көмек керек", "target": "школа", "group": "test"}
+{"question": "Could you explain школы for me?", "target": "школа", "group": "test"}
+{"question": "Меня интересует школе", "target": "школа", "group": "test"}
+{"question": "школе бойынша көмек керек", "target": "школа", "group": "test"}
+{"question": "Could you explain школе for me?", "target": "школа", "group": "test"}
+{"question": "Меня интересует ученики", "target": "школа", "group": "test"}
+{"question": "ученики бойынша көмек керек", "target": "школа", "group": "test"}
+{"question": "Could you explain ученики for me?", "target": "школа", "group": "test"}
+{"question": "Меня интересует учебный класс", "target": "школа", "group": "test"}
+{"question": "учебный класс бойынша көмек керек", "target": "школа", "group": "test"}
+{"question": "Could you explain учебный класс for me?", "target": "школа", "group": "test"}
+{"question": "Меня интересует мектеп", "target": "школа", "group": "test"}
+{"question": "мектеп бойынша көмек керек", "target": "школа", "group": "test"}
+{"question": "Could you explain мектеп for me?", "target": "школа", "group": "test"}
+{"question": "Меня интересует оқушылар", "target": "школа", "group": "test"}
+{"question": "оқушылар бойынша көмек керек", "target": "школа", "group": "test"}
+{"question": "Could you explain оқушылар for me?", "target": "школа", "group": "test"}
+{"question": "Меня интересует сынып", "target": "школа", "group": "test"}
+{"question": "сынып бойынша көмек керек", "target": "школа", "group": "test"}
+{"question": "Could you explain сынып for me?", "target": "школа", "group": "test"}
+{"question": "Меня интересует mektep", "target": "школа", "group": "test"}
+{"question": "mektep бойынша көмек керек", "target": "школа", "group": "test"}
+{"question": "Could you explain mektep for me?", "target": "школа", "group": "test"}
+{"question": "Меня интересует school", "target": "школа", "group": "test"}
+{"question": "school бойынша көмек керек", "target": "школа", "group": "test"}
+{"question": "Could you explain school for me?", "target": "школа", "group": "test"}
+{"question": "Меня интересует classroom", "target": "школа", "group": "test"}
+{"question": "classroom бойынша көмек керек", "target": "школа", "group": "test"}
+{"question": "Could you explain classroom for me?", "target": "школа", "group": "test"}
+{"question": "Меня интересует pupils", "target": "школа", "group": "test"}
+{"question": "pupils бойынша көмек керек", "target": "школа", "group": "test"}
+{"question": "Could you explain pupils for me?", "target": "школа", "group": "test"}
+{"question": "Меня интересует музей", "target": "музей", "group": "test"}
+{"question": "музей бойынша көмек керек", "target": "музей", "group": "test"}
+{"question": "Could you explain музей for me?", "target": "музей", "group": "test"}
+{"question": "Меня интересует музея", "target": "музей", "group": "test"}
+{"question": "музея бойынша көмек керек", "target": "музей", "group": "test"}
+{"question": "Could you explain музея for me?", "target": "музей", "group": "test"}
+{"question": "Меня интересует музее", "target": "музей", "group": "test"}
+{"question": "музее бойынша көмек керек", "target": "музей", "group": "test"}
+{"question": "Could you explain музее for me?", "target": "музей", "group": "test"}
+{"question": "Меня интересует выставка", "target": "музей", "group": "test"}
+{"question": "выставка бойынша көмек керек", "target": "музей", "group": "test"}
+{"question": "Could you explain выставка for me?", "target": "музей", "group": "test"}
+{"question": "Меня интересует экспонаты", "target": "музей", "group": "test"}
+{"question": "экспонаты бойынша көмек керек", "target": "музей", "group": "test"}
+{"question": "Could you explain экспонаты for me?", "target": "музей", "group": "test"}
+{"question": "Меня интересует мұражай", "target": "музей", "group": "test"}
+{"question": "мұражай бойынша көмек керек", "target": "музей", "group": "test"}
+{"question": "Could you explain мұражай for me?", "target": "музей", "group": "test"}
+{"question": "Меня интересует көрме", "target": "музей", "group": "test"}
+{"question": "көрме бойынша көмек керек", "target": "музей", "group": "test"}
+{"question": "Could you explain көрме for me?", "target": "музей", "group": "test"}
+{"question": "Меня интересует жәдігер", "target": "музей", "group": "test"}
+{"question": "жәдігер бойынша көмек керек", "target": "музей", "group": "test"}
+{"question": "Could you explain жәдігер for me?", "target": "музей", "group": "test"}
+{"question": "Меня интересует museum", "target": "музей", "group": "test"}
+{"question": "museum бойынша көмек керек", "target": "музей", "group": "test"}
+{"question": "Could you explain museum for me?", "target": "музей", "group": "test"}
+{"question": "Меня интересует museum exhibits", "target": "музей", "group": "test"}
+{"question": "museum exhibits бойынша көмек керек", "target": "музей", "group": "test"}
+{"question": "Could you explain museum exhibits for me?", "target": "музей", "group": "test"}
+{"question": "Меня интересует железная дорога", "target": "станция", "group": "test"}
+{"question": "железная дорога бойынша көмек керек", "target": "станция", "group": "test"}
+{"question": "Could you explain железная дорога for me?", "target": "станция", "group": "test"}
+{"question": "Меня интересует железной дороге", "target": "станция", "group": "test"}
+{"question": "железной дороге бойынша көмек керек", "target": "станция", "group": "test"}
+{"question": "Could you explain железной дороге for me?", "target": "станция", "group": "test"}
+{"question": "Меня интересует станция", "target": "станция", "group": "test"}
+{"question": "станция бойынша көмек керек", "target": "станция", "group": "test"}
+{"question": "Could you explain станция for me?", "target": "станция", "group": "test"}
+{"question": "Меня интересует расписание", "target": "станция", "group": "test"}
+{"question": "расписание бойынша көмек керек", "target": "станция", "group": "test"}
+{"question": "Could you explain расписание for me?", "target": "станция", "group": "test"}
+{"question": "Меня интересует вокзал", "target": "станция", "group": "test"}
+{"question": "вокзал бойынша көмек керек", "target": "станция", "group": "test"}
+{"question": "Could you explain вокзал for me?", "target": "станция", "group": "test"}
+{"question": "Меня интересует транспорт", "target": "станция", "group": "test"}
+{"question": "транспорт бойынша көмек керек", "target": "станция", "group": "test"}
+{"question": "Could you explain транспорт for me?", "target": "станция", "group": "test"}
+{"question": "Меня интересует темір жол", "target": "станция", "group": "test"}
+{"question": "темір жол бойынша көмек керек", "target": "станция", "group": "test"}
+{"question": "Could you explain темір жол for me?", "target": "станция", "group": "test"}
+{"question": "Меня интересует бекет", "target": "станция", "group": "test"}
+{"question": "бекет бойынша көмек керек", "target": "станция", "group": "test"}
+{"question": "Could you explain бекет for me?", "target": "станция", "group": "test"}
+{"question": "Меня интересует көлік", "target": "станция", "group": "test"}
+{"question": "көлік бойынша көмек керек", "target": "станция", "group": "test"}
+{"question": "Could you explain көлік for me?", "target": "станция", "group": "test"}
+{"question": "Меня интересует temir zhol", "target": "станция", "group": "test"}
+{"question": "temir zhol бойынша көмек керек", "target": "станция", "group": "test"}
+{"question": "Could you explain temir zhol for me?", "target": "станция", "group": "test"}
+{"question": "Меня интересует railway station", "target": "станция", "group": "test"}
+{"question": "railway station бойынша көмек керек", "target": "станция", "group": "test"}
+{"question": "Could you explain railway station for me?", "target": "станция", "group": "test"}
+{"question": "Меня интересует railroad", "target": "станция", "group": "test"}
+{"question": "railroad бойынша көмек керек", "target": "станция", "group": "test"}
+{"question": "Could you explain railroad for me?", "target": "станция", "group": "test"}
+{"question": "Меня интересует train timetable", "target": "станция", "group": "test"}
+{"question": "train timetable бойынша көмек керек", "target": "станция", "group": "test"}
+{"question": "Could you explain train timetable for me?", "target": "станция", "group": "test"}
+{"question": "Меня интересует архивный фонд", "target": "архивный фонд", "group": "test"}
+{"question": "архивный фонд бойынша көмек керек", "target": "архивный фонд", "group": "test"}
+{"question": "Could you explain архивный фонд for me?", "target": "архивный фонд", "group": "test"}
+{"question": "Меня интересует архивного фонда", "target": "архивный фонд", "group": "test"}
+{"question": "архивного фонда бойынша көмек керек", "target": "архивный фонд", "group": "test"}
+{"question": "Could you explain архивного фонда for me?", "target": "архивный фонд", "group": "test"}
+{"question": "Меня интересует фонд", "target": "архивный фонд", "group": "test"}
+{"question": "фонд бойынша көмек керек", "target": "архивный фонд", "group": "test"}
+{"question": "Could you explain фонд for me?", "target": "архивный фонд", "group": "test"}
+{"question": "Меня интересует мұрағат қоры", "target": "архивный фонд", "group": "test"}
+{"question": "мұрағат қоры бойынша көмек керек", "target": "архивный фонд", "group": "test"}
+{"question": "Could you explain мұрағат қоры for me?", "target": "архивный фонд", "group": "test"}
+{"question": "Меня интересует мұрағаттық қор", "target": "архивный фонд", "group": "test"}
+{"question": "мұрағаттық қор бойынша көмек керек", "target": "архивный фонд", "group": "test"}
+{"question": "Could you explain мұрағаттық қор for me?", "target": "архивный фонд", "group": "test"}
+{"question": "Меня интересует қор", "target": "архивный фонд", "group": "test"}
+{"question": "қор бойынша көмек керек", "target": "архивный фонд", "group": "test"}
+{"question": "Could you explain қор for me?", "target": "архивный фонд", "group": "test"}
+{"question": "Меня интересует archival fonds", "target": "архивный фонд", "group": "test"}
+{"question": "archival fonds бойынша көмек керек", "target": "архивный фонд", "group": "test"}
+{"question": "Could you explain archival fonds for me?", "target": "архивный фонд", "group": "test"}
+{"question": "Меня интересует archive collection definition", "target": "архивный фонд", "group": "test"}
+{"question": "archive collection definition бойынша көмек керек", "target": "архивный фонд", "group": "test"}
+{"question": "Could you explain archive collection definition for me?", "target": "архивный фонд", "group": "test"}
+{"question": "Меня интересует архивный шифр", "target": "архивный шифр", "group": "test"}
+{"question": "архивный шифр бойынша көмек керек", "target": "архивный шифр", "group": "test"}
+{"question": "Could you explain архивный шифр for me?", "target": "архивный шифр", "group": "test"}
+{"question": "Меня интересует шифр", "target": "архивный шифр", "group": "test"}
+{"question": "шифр бойынша көмек керек", "target": "архивный шифр", "group": "test"}
+{"question": "Could you explain шифр for me?", "target": "архивный шифр", "group": "test"}
+{"question": "Меня интересует опись", "target": "архивный шифр", "group": "test"}
+{"question": "опись бойынша көмек керек", "target": "архивный шифр", "group": "test"}
+{"question": "Could you explain опись for me?", "target": "архивный шифр", "group": "test"}
+{"question": "Меня интересует мұрағаттық шифр", "target": "архивный шифр", "group": "test"}
+{"question": "мұрағаттық шифр бойынша көмек керек", "target": "архивный шифр", "group": "test"}
+{"question": "Could you explain мұрағаттық шифр for me?", "target": "архивный шифр", "group": "test"}
+{"question": "Меня интересует тізімдеме", "target": "архивный шифр", "group": "test"}
+{"question": "тізімдеме бойынша көмек керек", "target": "архивный шифр", "group": "test"}
+{"question": "Could you explain тізімдеме for me?", "target": "архивный шифр", "group": "test"}
+{"question": "Меня интересует archive reference", "target": "архивный шифр", "group": "test"}
+{"question": "archive reference бойынша көмек керек", "target": "архивный шифр", "group": "test"}
+{"question": "Could you explain archive reference for me?", "target": "архивный шифр", "group": "test"}
+{"question": "Меня интересует inventory number", "target": "архивный шифр", "group": "test"}
+{"question": "inventory number бойынша көмек керек", "target": "архивный шифр", "group": "test"}
+{"question": "Could you explain inventory number for me?", "target": "архивный шифр", "group": "test"}
+{"question": "Меня интересует каталог", "target": "поиск документов", "group": "test"}
+{"question": "каталог бойынша көмек керек", "target": "поиск документов", "group": "test"}
+{"question": "Could you explain каталог for me?", "target": "поиск документов", "group": "test"}
+{"question": "Меня интересует каталоге", "target": "поиск документов", "group": "test"}
+{"question": "каталоге бойынша көмек керек", "target": "поиск документов", "group": "test"}
+{"question": "Could you explain каталоге for me?", "target": "поиск документов", "group": "test"}
+{"question": "Меня интересует каталог документов", "target": "поиск документов", "group": "test"}
+{"question": "каталог документов бойынша көмек керек", "target": "поиск документов", "group": "test"}
+{"question": "Could you explain каталог документов for me?", "target": "поиск документов", "group": "test"}
+{"question": "Меня интересует құжаттар каталогы", "target": "поиск документов", "group": "test"}
+{"question": "құжаттар каталогы бойынша көмек керек", "target": "поиск документов", "group": "test"}
+{"question": "Could you explain құжаттар каталогы for me?", "target": "поиск документов", "group": "test"}
+{"question": "Меня интересует поиск документов", "target": "поиск документов", "group": "test"}
+{"question": "поиск документов бойынша көмек керек", "target": "поиск документов", "group": "test"}
+{"question": "Could you explain поиск документов for me?", "target": "поиск документов", "group": "test"}
+{"question": "Меня интересует искать документы", "target": "поиск документов", "group": "test"}
+{"question": "искать документы бойынша көмек керек", "target": "поиск документов", "group": "test"}
+{"question": "Could you explain искать документы for me?", "target": "поиск документов", "group": "test"}
+{"question": "Меня интересует найти документы", "target": "поиск документов", "group": "test"}
+{"question": "найти документы бойынша көмек керек", "target": "поиск документов", "group": "test"}
+{"question": "Could you explain найти документы for me?", "target": "поиск документов", "group": "test"}
+{"question": "Меня интересует найти материалы", "target": "поиск документов", "group": "test"}
+{"question": "найти материалы бойынша көмек керек", "target": "поиск документов", "group": "test"}
+{"question": "Could you explain найти материалы for me?", "target": "поиск документов", "group": "test"}
+{"question": "Меня интересует құжаттарды іздеу", "target": "поиск документов", "group": "test"}
+{"question": "құжаттарды іздеу бойынша көмек керек", "target": "поиск документов", "group": "test"}
+{"question": "Could you explain құжаттарды іздеу for me?", "target": "поиск документов", "group": "test"}
+{"question": "Меня интересует құжатты табу", "target": "поиск документов", "group": "test"}
+{"question": "құжатты табу бойынша көмек керек", "target": "поиск документов", "group": "test"}
+{"question": "Could you explain құжатты табу for me?", "target": "поиск документов", "group": "test"}
+{"question": "Меня интересует document search", "target": "поиск документов", "group": "test"}
+{"question": "document search бойынша көмек керек", "target": "поиск документов", "group": "test"}
+{"question": "Could you explain document search for me?", "target": "поиск документов", "group": "test"}
+{"question": "Меня интересует catalogue", "target": "поиск документов", "group": "test"}
+{"question": "catalogue бойынша көмек керек", "target": "поиск документов", "group": "test"}
+{"question": "Could you explain catalogue for me?", "target": "поиск документов", "group": "test"}
+{"question": "Меня интересует document catalog", "target": "поиск документов", "group": "test"}
+{"question": "document catalog бойынша көмек керек", "target": "поиск документов", "group": "test"}
+{"question": "Could you explain document catalog for me?", "target": "поиск документов", "group": "test"}
+{"question": "Меня интересует комментарии", "target": "правила комментариев", "group": "test"}
+{"question": "комментарии бойынша көмек керек", "target": "правила комментариев", "group": "test"}
+{"question": "Could you explain комментарии for me?", "target": "правила комментариев", "group": "test"}
+{"question": "Меня интересует комментариях", "target": "правила комментариев", "group": "test"}
+{"question": "комментариях бойынша көмек керек", "target": "правила комментариев", "group": "test"}
+{"question": "Could you explain комментариях for me?", "target": "правила комментариев", "group": "test"}
+{"question": "Меня интересует правила комментариев", "target": "правила комментариев", "group": "test"}
+{"question": "правила комментариев бойынша көмек керек", "target": "правила комментариев", "group": "test"}
+{"question": "Could you explain правила комментариев for me?", "target": "правила комментариев", "group": "test"}
+{"question": "Меня интересует нельзя материться", "target": "правила комментариев", "group": "test"}
+{"question": "нельзя материться бойынша көмек керек", "target": "правила комментариев", "group": "test"}
+{"question": "Could you explain нельзя материться for me?", "target": "правила комментариев", "group": "test"}
+{"question": "Меня интересует пікір", "target": "правила комментариев", "group": "test"}
+{"question": "пікір бойынша көмек керек", "target": "правила комментариев", "group": "test"}
+{"question": "Could you explain пікір for me?", "target": "правила комментариев", "group": "test"}
+{"question": "Меня интересует пікірлер", "target": "правила комментариев", "group": "test"}
+{"question": "пікірлер бойынша көмек керек", "target": "правила комментариев", "group": "test"}
+{"question": "Could you explain пікірлер for me?", "target": "правила комментариев", "group": "test"}
+{"question": "Меня интересует пікір ережелері", "target": "правила комментариев", "group": "test"}
+{"question": "пікір ережелері бойынша көмек керек", "target": "правила комментариев", "group": "test"}
+{"question": "Could you explain пікір ережелері for me?", "target": "правила комментариев", "group": "test"}
+{"question": "Меня интересует comment rules", "target": "правила комментариев", "group": "test"}
+{"question": "comment rules бойынша көмек керек", "target": "правила комментариев", "group": "test"}
+{"question": "Could you explain comment rules for me?", "target": "правила комментариев", "group": "test"}
+{"question": "Меня интересует comment moderation", "target": "правила комментариев", "group": "test"}
+{"question": "comment moderation бойынша көмек керек", "target": "правила комментариев", "group": "test"}
+{"question": "Could you explain comment moderation for me?", "target": "правила комментариев", "group": "test"}
+{"question": "Меня интересует избранное", "target": "избранное", "group": "test"}
+{"question": "избранное бойынша көмек керек", "target": "избранное", "group": "test"}
+{"question": "Could you explain избранное for me?", "target": "избранное", "group": "test"}
+{"question": "Меня интересует избранного", "target": "избранное", "group": "test"}
+{"question": "избранного бойынша көмек керек", "target": "избранное", "group": "test"}
+{"question": "Could you explain избранного for me?", "target": "избранное", "group": "test"}
+{"question": "Меня интересует синхронизировать избранное", "target": "избранное", "group": "test"}
+{"question": "синхронизировать избранное бойынша көмек керек", "target": "избранное", "group": "test"}
+{"question": "Could you explain синхронизировать избранное for me?", "target": "избранное", "group": "test"}
+{"question": "Меня интересует таңдаулылар", "target": "избранное", "group": "test"}
+{"question": "таңдаулылар бойынша көмек керек", "target": "избранное", "group": "test"}
+{"question": "Could you explain таңдаулылар for me?", "target": "избранное", "group": "test"}
+{"question": "Меня интересует таңдаулыларды сақтау", "target": "избранное", "group": "test"}
+{"question": "таңдаулыларды сақтау бойынша көмек керек", "target": "избранное", "group": "test"}
+{"question": "Could you explain таңдаулыларды сақтау for me?", "target": "избранное", "group": "test"}
+{"question": "Меня интересует favorites", "target": "избранное", "group": "test"}
+{"question": "favorites бойынша көмек керек", "target": "избранное", "group": "test"}
+{"question": "Could you explain favorites for me?", "target": "избранное", "group": "test"}
+{"question": "Меня интересует saved documents", "target": "избранное", "group": "test"}
+{"question": "saved documents бойынша көмек керек", "target": "избранное", "group": "test"}
+{"question": "Could you explain saved documents for me?", "target": "избранное", "group": "test"}
+{"question": "Меня интересует уведомления", "target": "уведомления", "group": "test"}
+{"question": "уведомления бойынша көмек керек", "target": "уведомления", "group": "test"}
+{"question": "Could you explain уведомления for me?", "target": "уведомления", "group": "test"}
+{"question": "Меня интересует уведомлений", "target": "уведомления", "group": "test"}
+{"question": "уведомлений бойынша көмек керек", "target": "уведомления", "group": "test"}
+{"question": "Could you explain уведомлений for me?", "target": "уведомления", "group": "test"}
+{"question": "Меня интересует отключить уведомления", "target": "уведомления", "group": "test"}
+{"question": "отключить уведомления бойынша көмек керек", "target": "уведомления", "group": "test"}
+{"question": "Could you explain отключить уведомления for me?", "target": "уведомления", "group": "test"}
+{"question": "Меня интересует хабарландырулар", "target": "уведомления", "group": "test"}
+{"question": "хабарландырулар бойынша көмек керек", "target": "уведомления", "group": "test"}
+{"question": "Could you explain хабарландырулар for me?", "target": "уведомления", "group": "test"}
+{"question": "Меня интересует хабарландыруларды өшіру", "target": "уведомления", "group": "test"}
+{"question": "хабарландыруларды өшіру бойынша көмек керек", "target": "уведомления", "group": "test"}
+{"question": "Could you explain хабарландыруларды өшіру for me?", "target": "уведомления", "group": "test"}
+{"question": "Меня интересует notifications", "target": "уведомления", "group": "test"}
+{"question": "notifications бойынша көмек керек", "target": "уведомления", "group": "test"}
+{"question": "Could you explain notifications for me?", "target": "уведомления", "group": "test"}
+{"question": "Меня интересует disable notifications", "target": "уведомления", "group": "test"}
+{"question": "disable notifications бойынша көмек керек", "target": "уведомления", "group": "test"}
+{"question": "Could you explain disable notifications for me?", "target": "уведомления", "group": "test"}
+{"question": "Меня интересует OCR", "target": "распознавание текста", "group": "test"}
+{"question": "OCR бойынша көмек керек", "target": "распознавание текста", "group": "test"}
+{"question": "Could you explain OCR for me?", "target": "распознавание текста", "group": "test"}
+{"question": "Меня интересует распознавание", "target": "распознавание текста", "group": "test"}
+{"question": "распознавание бойынша көмек керек", "target": "распознавание текста", "group": "test"}
+{"question": "Could you explain распознавание for me?", "target": "распознавание текста", "group": "test"}
+{"question": "Меня интересует распознавания", "target": "распознавание текста", "group": "test"}
+{"question": "распознавания бойынша көмек керек", "target": "распознавание текста", "group": "test"}
+{"question": "Could you explain распознавания for me?", "target": "распознавание текста", "group": "test"}
+{"question": "Меня интересует распознанный текст", "target": "распознавание текста", "group": "test"}
+{"question": "распознанный текст бойынша көмек керек", "target": "распознавание текста", "group": "test"}
+{"question": "Could you explain распознанный текст for me?", "target": "распознавание текста", "group": "test"}
+{"question": "Меня интересует танылған мәтін", "target": "распознавание текста", "group": "test"}
+{"question": "танылған мәтін бойынша көмек керек", "target": "распознавание текста", "group": "test"}
+{"question": "Could you explain танылған мәтін for me?", "target": "распознавание текста", "group": "test"}
+{"question": "Меня интересует мәтінді тану", "target": "распознавание текста", "group": "test"}
+{"question": "мәтінді тану бойынша көмек керек", "target": "распознавание текста", "group": "test"}
+{"question": "Could you explain мәтінді тану for me?", "target": "распознавание текста", "group": "test"}
+{"question": "Меня интересует text recognition", "target": "распознавание текста", "group": "test"}
+{"question": "text recognition бойынша көмек керек", "target": "распознавание текста", "group": "test"}
+{"question": "Could you explain text recognition for me?", "target": "распознавание текста", "group": "test"}
+{"question": "Меня интересует recognized text", "target": "распознавание текста", "group": "test"}
+{"question": "recognized text бойынша көмек керек", "target": "распознавание текста", "group": "test"}
+{"question": "Could you explain recognized text for me?", "target": "распознавание текста", "group": "test"}
+{"question": "Меня интересует источники", "target": "проверка источников", "group": "test"}
+{"question": "источники бойынша көмек керек", "target": "проверка источников", "group": "test"}
+{"question": "Could you explain источники for me?", "target": "проверка источников", "group": "test"}
+{"question": "Меня интересует источников", "target": "проверка источников", "group": "test"}
+{"question": "источников бойынша көмек керек", "target": "проверка источников", "group": "test"}
+{"question": "Could you explain источников for me?", "target": "проверка источников", "group": "test"}
+{"question": "Меня интересует проверить источники", "target": "проверка источников", "group": "test"}
+{"question": "проверить источники бойынша көмек керек", "target": "проверка источников", "group": "test"}
+{"question": "Could you explain проверить источники for me?", "target": "проверка источников", "group": "test"}
+{"question": "Меня интересует дереккөздер", "target": "проверка источников", "group": "test"}
+{"question": "дереккөздер бойынша көмек керек", "target": "проверка источников", "group": "test"}
+{"question": "Could you explain дереккөздер for me?", "target": "проверка источников", "group": "test"}
+{"question": "Меня интересует дереккөздерді тексеру", "target": "проверка источников", "group": "test"}
+{"question": "дереккөздерді тексеру бойынша көмек керек", "target": "проверка источников", "group": "test"}
+{"question": "Could you explain дереккөздерді тексеру for me?", "target": "проверка источников", "group": "test"}
+{"question": "Меня интересует source verification", "target": "проверка источников", "group": "test"}
+{"question": "source verification бойынша көмек керек", "target": "проверка источников", "group": "test"}
+{"question": "Could you explain source verification for me?", "target": "проверка источников", "group": "test"}
+{"question": "Меня интересует check sources", "target": "проверка источников", "group": "test"}
+{"question": "check sources бойынша көмек керек", "target": "проверка источников", "group": "test"}
+{"question": "Could you explain check sources for me?", "target": "проверка источников", "group": "test"}
+{"question": "Меня интересует привет", "target": "приветствие", "group": "test"}
+{"question": "привет бойынша көмек керек", "target": "приветствие", "group": "test"}
+{"question": "Could you explain привет for me?", "target": "приветствие", "group": "test"}
+{"question": "Меня интересует здравствуй", "target": "приветствие", "group": "test"}
+{"question": "здравствуй бойынша көмек керек", "target": "приветствие", "group": "test"}
+{"question": "Could you explain здравствуй for me?", "target": "приветствие", "group": "test"}
+{"question": "Меня интересует здравствуйте", "target": "приветствие", "group": "test"}
+{"question": "здравствуйте бойынша көмек керек", "target": "приветствие", "group": "test"}
+{"question": "Could you explain здравствуйте for me?", "target": "приветствие", "group": "test"}
+{"question": "Меня интересует добрый день", "target": "приветствие", "group": "test"}
+{"question": "добрый день бойынша көмек керек", "target": "приветствие", "group": "test"}
+{"question": "Could you explain добрый день for me?", "target": "приветствие", "group": "test"}
+{"question": "Меня интересует приветик", "target": "приветствие", "group": "test"}
+{"question": "приветик бойынша көмек керек", "target": "приветствие", "group": "test"}
+{"question": "Could you explain приветик for me?", "target": "приветствие", "group": "test"}
+{"question": "Меня интересует сәлем", "target": "приветствие", "group": "test"}
+{"question": "сәлем бойынша көмек керек", "target": "приветствие", "group": "test"}
+{"question": "Could you explain сәлем for me?", "target": "приветствие", "group": "test"}
+{"question": "Меня интересует сәлеметсіз бе", "target": "приветствие", "group": "test"}
+{"question": "сәлеметсіз бе бойынша көмек керек", "target": "приветствие", "group": "test"}
+{"question": "Could you explain сәлеметсіз бе for me?", "target": "приветствие", "group": "test"}
+{"question": "Меня интересует қайырлы күн", "target": "приветствие", "group": "test"}
+{"question": "қайырлы күн бойынша көмек керек", "target": "приветствие", "group": "test"}
+{"question": "Could you explain қайырлы күн for me?", "target": "приветствие", "group": "test"}
+{"question": "Меня интересует hello", "target": "приветствие", "group": "test"}
+{"question": "hello бойынша көмек керек", "target": "приветствие", "group": "test"}
+{"question": "Could you explain hello for me?", "target": "приветствие", "group": "test"}
+{"question": "Меня интересует hi there", "target": "приветствие", "group": "test"}
+{"question": "hi there бойынша көмек керек", "target": "приветствие", "group": "test"}
+{"question": "Could you explain hi there for me?", "target": "приветствие", "group": "test"}
+{"question": "Меня интересует good morning", "target": "приветствие", "group": "test"}
+{"question": "good morning бойынша көмек керек", "target": "приветствие", "group": "test"}
+{"question": "Could you explain good morning for me?", "target": "приветствие", "group": "test"}
+{"question": "Меня интересует спасибо", "target": "благодарность", "group": "test"}
+{"question": "спасибо бойынша көмек керек", "target": "благодарность", "group": "test"}
+{"question": "Could you explain спасибо for me?", "target": "благодарность", "group": "test"}
+{"question": "Меня интересует благодарю", "target": "благодарность", "group": "test"}
+{"question": "благодарю бойынша көмек керек", "target": "благодарность", "group": "test"}
+{"question": "Could you explain благодарю for me?", "target": "благодарность", "group": "test"}
+{"question": "Меня интересует спасибо большое", "target": "благодарность", "group": "test"}
+{"question": "спасибо большое бойынша көмек керек", "target": "благодарность", "group": "test"}
+{"question": "Could you explain спасибо большое for me?", "target": "благодарность", "group": "test"}
+{"question": "Меня интересует понятно спасибо", "target": "благодарность", "group": "test"}
+{"question": "понятно спасибо бойынша көмек керек", "target": "благодарность", "group": "test"}
+{"question": "Could you explain понятно спасибо for me?", "target": "благодарность", "group": "test"}
+{"question": "Меня интересует рақмет", "target": "благодарность", "group": "test"}
+{"question": "рақмет бойынша көмек керек", "target": "благодарность", "group": "test"}
+{"question": "Could you explain рақмет for me?", "target": "благодарность", "group": "test"}
+{"question": "Меня интересует рахмет", "target": "благодарность", "group": "test"}
+{"question": "рахмет бойынша көмек керек", "target": "благодарность", "group": "test"}
+{"question": "Could you explain рахмет for me?", "target": "благодарность", "group": "test"}
+{"question": "Меня интересует көп рақмет", "target": "благодарность", "group": "test"}
+{"question": "көп рақмет бойынша көмек керек", "target": "благодарность", "group": "test"}
+{"question": "Could you explain көп рақмет for me?", "target": "благодарность", "group": "test"}
+{"question": "Меня интересует thanks", "target": "благодарность", "group": "test"}
+{"question": "thanks бойынша көмек керек", "target": "благодарность", "group": "test"}
+{"question": "Could you explain thanks for me?", "target": "благодарность", "group": "test"}
+{"question": "Меня интересует thank you", "target": "благодарность", "group": "test"}
+{"question": "thank you бойынша көмек керек", "target": "благодарность", "group": "test"}
+{"question": "Could you explain thank you for me?", "target": "благодарность", "group": "test"}
+{"question": "Меня интересует кто ты", "target": "помощь по сайту", "group": "test"}
+{"question": "кто ты бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain кто ты for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует кто вы", "target": "помощь по сайту", "group": "test"}
+{"question": "кто вы бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain кто вы for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует как тебя зовут", "target": "помощь по сайту", "group": "test"}
+{"question": "как тебя зовут бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain как тебя зовут for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует ты кто", "target": "помощь по сайту", "group": "test"}
+{"question": "ты кто бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain ты кто for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует сен кімсің", "target": "помощь по сайту", "group": "test"}
+{"question": "сен кімсің бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain сен кімсің for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует помоги", "target": "помощь по сайту", "group": "test"}
+{"question": "помоги бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain помоги for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует что ты умеешь", "target": "помощь по сайту", "group": "test"}
+{"question": "что ты умеешь бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain что ты умеешь for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует чем можешь помочь", "target": "помощь по сайту", "group": "test"}
+{"question": "чем можешь помочь бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain чем можешь помочь for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует как пользоваться сайтом", "target": "помощь по сайту", "group": "test"}
+{"question": "как пользоваться сайтом бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain как пользоваться сайтом for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует расскажи о сайте", "target": "помощь по сайту", "group": "test"}
+{"question": "расскажи о сайте бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain расскажи о сайте for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует что здесь можно делать", "target": "помощь по сайту", "group": "test"}
+{"question": "что здесь можно делать бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain что здесь можно делать for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует помощь по сайту", "target": "помощь по сайту", "group": "test"}
+{"question": "помощь по сайту бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain помощь по сайту for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует сайт туралы", "target": "помощь по сайту", "group": "test"}
+{"question": "сайт туралы бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain сайт туралы for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует сен не істей аласың", "target": "помощь по сайту", "group": "test"}
+{"question": "сен не істей аласың бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain сен не істей аласың for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует көмектес", "target": "помощь по сайту", "group": "test"}
+{"question": "көмектес бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain көмектес for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует site help", "target": "помощь по сайту", "group": "test"}
+{"question": "site help бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain site help for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует what can you do", "target": "помощь по сайту", "group": "test"}
+{"question": "what can you do бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain what can you do for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует who are you", "target": "помощь по сайту", "group": "test"}
+{"question": "who are you бойынша көмек керек", "target": "помощь по сайту", "group": "test"}
+{"question": "Could you explain who are you for me?", "target": "помощь по сайту", "group": "test"}
+{"question": "Меня интересует вход", "target": "вход на сайт", "group": "test"}
+{"question": "вход бойынша көмек керек", "target": "вход на сайт", "group": "test"}
+{"question": "Could you explain вход for me?", "target": "вход на сайт", "group": "test"}
+{"question": "Меня интересует войти в аккаунт", "target": "вход на сайт", "group": "test"}
+{"question": "войти в аккаунт бойынша көмек керек", "target": "вход на сайт", "group": "test"}
+{"question": "Could you explain войти в аккаунт for me?", "target": "вход на сайт", "group": "test"}
+{"question": "Меня интересует как войти", "target": "вход на сайт", "group": "test"}
+{"question": "как войти бойынша көмек керек", "target": "вход на сайт", "group": "test"}
+{"question": "Could you explain как войти for me?", "target": "вход на сайт", "group": "test"}
+{"question": "Меня интересует авторизация", "target": "вход на сайт", "group": "test"}
+{"question": "авторизация бойынша көмек керек", "target": "вход на сайт", "group": "test"}
+{"question": "Could you explain авторизация for me?", "target": "вход на сайт", "group": "test"}
+{"question": "Меня интересует войти на сайт", "target": "вход на сайт", "group": "test"}
+{"question": "войти на сайт бойынша көмек керек", "target": "вход на сайт", "group": "test"}
+{"question": "Could you explain войти на сайт for me?", "target": "вход на сайт", "group": "test"}
+{"question": "Меня интересует жүйеге кіру", "target": "вход на сайт", "group": "test"}
+{"question": "жүйеге кіру бойынша көмек керек", "target": "вход на сайт", "group": "test"}
+{"question": "Could you explain жүйеге кіру for me?", "target": "вход на сайт", "group": "test"}
+{"question": "Меня интересует қалай кіру", "target": "вход на сайт", "group": "test"}
+{"question": "қалай кіру бойынша көмек керек", "target": "вход на сайт", "group": "test"}
+{"question": "Could you explain қалай кіру for me?", "target": "вход на сайт", "group": "test"}
+{"question": "Меня интересует sign in", "target": "вход на сайт", "group": "test"}
+{"question": "sign in бойынша көмек керек", "target": "вход на сайт", "group": "test"}
+{"question": "Could you explain sign in for me?", "target": "вход на сайт", "group": "test"}
+{"question": "Меня интересует log in to my account", "target": "вход на сайт", "group": "test"}
+{"question": "log in to my account бойынша көмек керек", "target": "вход на сайт", "group": "test"}
+{"question": "Could you explain log in to my account for me?", "target": "вход на сайт", "group": "test"}
+{"question": "Меня интересует скачать файл", "target": "скачивание файлов", "group": "test"}
+{"question": "скачать файл бойынша көмек керек", "target": "скачивание файлов", "group": "test"}
+{"question": "Could you explain скачать файл for me?", "target": "скачивание файлов", "group": "test"}
+{"question": "Меня интересует скачивание", "target": "скачивание файлов", "group": "test"}
+{"question": "скачивание бойынша көмек керек", "target": "скачивание файлов", "group": "test"}
+{"question": "Could you explain скачивание for me?", "target": "скачивание файлов", "group": "test"}
+{"question": "Меня интересует скачать документ", "target": "скачивание файлов", "group": "test"}
+{"question": "скачать документ бойынша көмек керек", "target": "скачивание файлов", "group": "test"}
+{"question": "Could you explain скачать документ for me?", "target": "скачивание файлов", "group": "test"}
+{"question": "Меня интересует можно скачать", "target": "скачивание файлов", "group": "test"}
+{"question": "можно скачать бойынша көмек керек", "target": "скачивание файлов", "group": "test"}
+{"question": "Could you explain можно скачать for me?", "target": "скачивание файлов", "group": "test"}
+{"question": "Меня интересует жүктеп алу", "target": "скачивание файлов", "group": "test"}
+{"question": "жүктеп алу бойынша көмек керек", "target": "скачивание файлов", "group": "test"}
+{"question": "Could you explain жүктеп алу for me?", "target": "скачивание файлов", "group": "test"}
+{"question": "Меня интересует файлды жүктеу", "target": "скачивание файлов", "group": "test"}
+{"question": "файлды жүктеу бойынша көмек керек", "target": "скачивание файлов", "group": "test"}
+{"question": "Could you explain файлды жүктеу for me?", "target": "скачивание файлов", "group": "test"}
+{"question": "Меня интересует download a file", "target": "скачивание файлов", "group": "test"}
+{"question": "download a file бойынша көмек керек", "target": "скачивание файлов", "group": "test"}
+{"question": "Could you explain download a file for me?", "target": "скачивание файлов", "group": "test"}
+{"question": "Меня интересует download a document", "target": "скачивание файлов", "group": "test"}
+{"question": "download a document бойынша көмек керек", "target": "скачивание файлов", "group": "test"}
+{"question": "Could you explain download a document for me?", "target": "скачивание файлов", "group": "test"}
+{"question": "Меня интересует а как", "target": "уточнение способа", "group": "test"}
+{"question": "а как бойынша көмек керек", "target": "уточнение способа", "group": "test"}
+{"question": "Could you explain а как for me?", "target": "уточнение способа", "group": "test"}
+{"question": "Меня интересует как это сделать", "target": "уточнение способа", "group": "test"}
+{"question": "как это сделать бойынша көмек керек", "target": "уточнение способа", "group": "test"}
+{"question": "Could you explain как это сделать for me?", "target": "уточнение способа", "group": "test"}
+{"question": "Меня интересует как мне это сделать", "target": "уточнение способа", "group": "test"}
+{"question": "как мне это сделать бойынша көмек керек", "target": "уточнение способа", "group": "test"}
+{"question": "Could you explain как мне это сделать for me?", "target": "уточнение способа", "group": "test"}
+{"question": "Меня интересует как этим воспользоваться", "target": "уточнение способа", "group": "test"}
+{"question": "как этим воспользоваться бойынша көмек керек", "target": "уточнение способа", "group": "test"}
+{"question": "Could you explain как этим воспользоваться for me?", "target": "уточнение способа", "group": "test"}
+{"question": "Меня интересует что нажать", "target": "уточнение способа", "group": "test"}
+{"question": "что нажать бойынша көмек керек", "target": "уточнение способа", "group": "test"}
+{"question": "Could you explain что нажать for me?", "target": "уточнение способа", "group": "test"}
+{"question": "Меня интересует покажи шаги", "target": "уточнение способа", "group": "test"}
+{"question": "покажи шаги бойынша көмек керек", "target": "уточнение способа", "group": "test"}
+{"question": "Could you explain покажи шаги for me?", "target": "уточнение способа", "group": "test"}
+{"question": "Меня интересует оны қалай жасауға болады", "target": "уточнение способа", "group": "test"}
+{"question": "оны қалай жасауға болады бойынша көмек керек", "target": "уточнение способа", "group": "test"}
+{"question": "Could you explain оны қалай жасауға болады for me?", "target": "уточнение способа", "group": "test"}
+{"question": "Меня интересует қалай жасауға болады", "target": "уточнение способа", "group": "test"}
+{"question": "қалай жасауға болады бойынша көмек керек", "target": "уточнение способа", "group": "test"}
+{"question": "Could you explain қалай жасауға болады for me?", "target": "уточнение способа", "group": "test"}
+{"question": "Меня интересует қалай істеймін", "target": "уточнение способа", "group": "test"}
+{"question": "қалай істеймін бойынша көмек керек", "target": "уточнение способа", "group": "test"}
+{"question": "Could you explain қалай істеймін for me?", "target": "уточнение способа", "group": "test"}
+{"question": "Меня интересует how can I do that", "target": "уточнение способа", "group": "test"}
+{"question": "how can I do that бойынша көмек керек", "target": "уточнение способа", "group": "test"}
+{"question": "Could you explain how can I do that for me?", "target": "уточнение способа", "group": "test"}
+{"question": "Меня интересует what should I click", "target": "уточнение способа", "group": "test"}
+{"question": "what should I click бойынша көмек керек", "target": "уточнение способа", "group": "test"}
+{"question": "Could you explain what should I click for me?", "target": "уточнение способа", "group": "test"}
+{"question": "Меня интересует а где", "target": "уточнение места", "group": "test"}
+{"question": "а где бойынша көмек керек", "target": "уточнение места", "group": "test"}
+{"question": "Could you explain а где for me?", "target": "уточнение места", "group": "test"}
+{"question": "Меня интересует где это", "target": "уточнение места", "group": "test"}
+{"question": "где это бойынша көмек керек", "target": "уточнение места", "group": "test"}
+{"question": "Could you explain где это for me?", "target": "уточнение места", "group": "test"}
+{"question": "Меня интересует где это находится", "target": "уточнение места", "group": "test"}
+{"question": "где это находится бойынша көмек керек", "target": "уточнение места", "group": "test"}
+{"question": "Could you explain где это находится for me?", "target": "уточнение места", "group": "test"}
+{"question": "Меня интересует где его найти", "target": "уточнение места", "group": "test"}
+{"question": "где его найти бойынша көмек керек", "target": "уточнение места", "group": "test"}
+{"question": "Could you explain где его найти for me?", "target": "уточнение места", "group": "test"}
+{"question": "Меня интересует в каком разделе", "target": "уточнение места", "group": "test"}
+{"question": "в каком разделе бойынша көмек керек", "target": "уточнение места", "group": "test"}
+{"question": "Could you explain в каком разделе for me?", "target": "уточнение места", "group": "test"}
+{"question": "Меня интересует куда перейти", "target": "уточнение места", "group": "test"}
+{"question": "куда перейти бойынша көмек керек", "target": "уточнение места", "group": "test"}
+{"question": "Could you explain куда перейти for me?", "target": "уточнение места", "group": "test"}
+{"question": "Меня интересует қайда", "target": "уточнение места", "group": "test"}
+{"question": "қайда бойынша көмек керек", "target": "уточнение места", "group": "test"}
+{"question": "Could you explain қайда for me?", "target": "уточнение места", "group": "test"}
+{"question": "Меня интересует қай жерден табамын", "target": "уточнение места", "group": "test"}
+{"question": "қай жерден табамын бойынша көмек керек", "target": "уточнение места", "group": "test"}
+{"question": "Could you explain қай жерден табамын for me?", "target": "уточнение места", "group": "test"}
+{"question": "Меня интересует ол қайда", "target": "уточнение места", "group": "test"}
+{"question": "ол қайда бойынша көмек керек", "target": "уточнение места", "group": "test"}
+{"question": "Could you explain ол қайда for me?", "target": "уточнение места", "group": "test"}
+{"question": "Меня интересует where is it", "target": "уточнение места", "group": "test"}
+{"question": "where is it бойынша көмек керек", "target": "уточнение места", "group": "test"}
+{"question": "Could you explain where is it for me?", "target": "уточнение места", "group": "test"}
+{"question": "Меня интересует where can I find it", "target": "уточнение места", "group": "test"}
+{"question": "where can I find it бойынша көмек керек", "target": "уточнение места", "group": "test"}
+{"question": "Could you explain where can I find it for me?", "target": "уточнение места", "group": "test"}
+{"question": "Меня интересует а почему", "target": "уточнение причины", "group": "test"}
+{"question": "а почему бойынша көмек керек", "target": "уточнение причины", "group": "test"}
+{"question": "Could you explain а почему for me?", "target": "уточнение причины", "group": "test"}
+{"question": "Меня интересует почему так", "target": "уточнение причины", "group": "test"}
+{"question": "почему так бойынша көмек керек", "target": "уточнение причины", "group": "test"}
+{"question": "Could you explain почему так for me?", "target": "уточнение причины", "group": "test"}
+{"question": "Меня интересует зачем это", "target": "уточнение причины", "group": "test"}
+{"question": "зачем это бойынша көмек керек", "target": "уточнение причины", "group": "test"}
+{"question": "Could you explain зачем это for me?", "target": "уточнение причины", "group": "test"}
+{"question": "Меня интересует почему это нужно", "target": "уточнение причины", "group": "test"}
+{"question": "почему это нужно бойынша көмек керек", "target": "уточнение причины", "group": "test"}
+{"question": "Could you explain почему это нужно for me?", "target": "уточнение причины", "group": "test"}
+{"question": "Меня интересует неге", "target": "уточнение причины", "group": "test"}
+{"question": "неге бойынша көмек керек", "target": "уточнение причины", "group": "test"}
+{"question": "Could you explain неге for me?", "target": "уточнение причины", "group": "test"}
+{"question": "Меня интересует неге олай", "target": "уточнение причины", "group": "test"}
+{"question": "неге олай бойынша көмек керек", "target": "уточнение причины", "group": "test"}
+{"question": "Could you explain неге олай for me?", "target": "уточнение причины", "group": "test"}
+{"question": "Меня интересует why is that", "target": "уточнение причины", "group": "test"}
+{"question": "why is that бойынша көмек керек", "target": "уточнение причины", "group": "test"}
+{"question": "Could you explain why is that for me?", "target": "уточнение причины", "group": "test"}
+{"question": "Меня интересует why do I need this", "target": "уточнение причины", "group": "test"}
+{"question": "why do I need this бойынша көмек керек", "target": "уточнение причины", "group": "test"}
+{"question": "Could you explain why do I need this for me?", "target": "уточнение причины", "group": "test"}
+{"question": "Меня интересует объясни подробнее", "target": "повтор объяснения", "group": "test"}
+{"question": "объясни подробнее бойынша көмек керек", "target": "повтор объяснения", "group": "test"}
+{"question": "Could you explain объясни подробнее for me?", "target": "повтор объяснения", "group": "test"}
+{"question": "Меня интересует расскажи подробнее", "target": "повтор объяснения", "group": "test"}
+{"question": "расскажи подробнее бойынша көмек керек", "target": "повтор объяснения", "group": "test"}
+{"question": "Could you explain расскажи подробнее for me?", "target": "повтор объяснения", "group": "test"}
+{"question": "Меня интересует можно попроще", "target": "повтор объяснения", "group": "test"}
+{"question": "можно попроще бойынша көмек керек", "target": "повтор объяснения", "group": "test"}
+{"question": "Could you explain можно попроще for me?", "target": "повтор объяснения", "group": "test"}
+{"question": "Меня интересует не понял", "target": "повтор объяснения", "group": "test"}
+{"question": "не понял бойынша көмек керек", "target": "повтор объяснения", "group": "test"}
+{"question": "Could you explain не понял for me?", "target": "повтор объяснения", "group": "test"}
+{"question": "Меня интересует объясни проще", "target": "повтор объяснения", "group": "test"}
+{"question": "объясни проще бойынша көмек керек", "target": "повтор объяснения", "group": "test"}
+{"question": "Could you explain объясни проще for me?", "target": "повтор объяснения", "group": "test"}
+{"question": "Меня интересует толығырақ", "target": "повтор объяснения", "group": "test"}
+{"question": "толығырақ бойынша көмек керек", "target": "повтор объяснения", "group": "test"}
+{"question": "Could you explain толығырақ for me?", "target": "повтор объяснения", "group": "test"}
+{"question": "Меня интересует түсінбедім", "target": "повтор объяснения", "group": "test"}
+{"question": "түсінбедім бойынша көмек керек", "target": "повтор объяснения", "group": "test"}
+{"question": "Could you explain түсінбедім for me?", "target": "повтор объяснения", "group": "test"}
+{"question": "Меня интересует қарапайым түсіндір", "target": "повтор объяснения", "group": "test"}
+{"question": "қарапайым түсіндір бойынша көмек керек", "target": "повтор объяснения", "group": "test"}
+{"question": "Could you explain қарапайым түсіндір for me?", "target": "повтор объяснения", "group": "test"}
+{"question": "Меня интересует explain more", "target": "повтор объяснения", "group": "test"}
+{"question": "explain more бойынша көмек керек", "target": "повтор объяснения", "group": "test"}
+{"question": "Could you explain explain more for me?", "target": "повтор объяснения", "group": "test"}
+{"question": "Меня интересует I do not understand", "target": "повтор объяснения", "group": "test"}
+{"question": "I do not understand бойынша көмек керек", "target": "повтор объяснения", "group": "test"}
+{"question": "Could you explain I do not understand for me?", "target": "повтор объяснения", "group": "test"}
+{"question": "Меня интересует а за 1930 год", "target": "уточнение периода", "group": "test"}
+{"question": "а за 1930 год бойынша көмек керек", "target": "уточнение периода", "group": "test"}
+{"question": "Could you explain а за 1930 год for me?", "target": "уточнение периода", "group": "test"}
+{"question": "Меня интересует а в 1905", "target": "уточнение периода", "group": "test"}
+{"question": "а в 1905 бойынша көмек керек", "target": "уточнение периода", "group": "test"}
+{"question": "Could you explain а в 1905 for me?", "target": "уточнение периода", "group": "test"}
+{"question": "Меня интересует за 1965", "target": "уточнение периода", "group": "test"}
+{"question": "за 1965 бойынша көмек керек", "target": "уточнение периода", "group": "test"}
+{"question": "Could you explain за 1965 for me?", "target": "уточнение периода", "group": "test"}
+{"question": "Меня интересует а до 1940", "target": "уточнение периода", "group": "test"}
+{"question": "а до 1940 бойынша көмек керек", "target": "уточнение периода", "group": "test"}
+{"question": "Could you explain а до 1940 for me?", "target": "уточнение периода", "group": "test"}
+{"question": "Меня интересует а после 1970", "target": "уточнение периода", "group": "test"}
+{"question": "а после 1970 бойынша көмек керек", "target": "уточнение периода", "group": "test"}
+{"question": "Could you explain а после 1970 for me?", "target": "уточнение периода", "group": "test"}
+{"question": "Меня интересует ал 1930 жылы", "target": "уточнение периода", "group": "test"}
+{"question": "ал 1930 жылы бойынша көмек керек", "target": "уточнение периода", "group": "test"}
+{"question": "Could you explain ал 1930 жылы for me?", "target": "уточнение периода", "group": "test"}
+{"question": "Меня интересует 1965 жылға дейін", "target": "уточнение периода", "group": "test"}
+{"question": "1965 жылға дейін бойынша көмек керек", "target": "уточнение периода", "group": "test"}
+{"question": "Could you explain 1965 жылға дейін for me?", "target": "уточнение периода", "group": "test"}
+{"question": "Меня интересует and before 1940", "target": "уточнение периода", "group": "test"}
+{"question": "and before 1940 бойынша көмек керек", "target": "уточнение периода", "group": "test"}
+{"question": "Could you explain and before 1940 for me?", "target": "уточнение периода", "group": "test"}
+{"question": "Меня интересует and for 1965", "target": "уточнение периода", "group": "test"}
+{"question": "and for 1965 бойынша көмек керек", "target": "уточнение периода", "group": "test"}
+{"question": "Could you explain and for 1965 for me?", "target": "уточнение периода", "group": "test"}
+{"question": "Меня интересует да", "target": "подтверждение", "group": "test"}
+{"question": "да бойынша көмек керек", "target": "подтверждение", "group": "test"}
+{"question": "Could you explain да for me?", "target": "подтверждение", "group": "test"}
+{"question": "Меня интересует давай", "target": "подтверждение", "group": "test"}
+{"question": "давай бойынша көмек керек", "target": "подтверждение", "group": "test"}
+{"question": "Could you explain давай for me?", "target": "подтверждение", "group": "test"}
+{"question": "Меня интересует хорошо", "target": "подтверждение", "group": "test"}
+{"question": "хорошо бойынша көмек керек", "target": "подтверждение", "group": "test"}
+{"question": "Could you explain хорошо for me?", "target": "подтверждение", "group": "test"}
+{"question": "Меня интересует ладно", "target": "подтверждение", "group": "test"}
+{"question": "ладно бойынша көмек керек", "target": "подтверждение", "group": "test"}
+{"question": "Could you explain ладно for me?", "target": "подтверждение", "group": "test"}
+{"question": "Меня интересует продолжай", "target": "подтверждение", "group": "test"}
+{"question": "продолжай бойынша көмек керек", "target": "подтверждение", "group": "test"}
+{"question": "Could you explain продолжай for me?", "target": "подтверждение", "group": "test"}
+{"question": "Меня интересует иә", "target": "подтверждение", "group": "test"}
+{"question": "иә бойынша көмек керек", "target": "подтверждение", "group": "test"}
+{"question": "Could you explain иә for me?", "target": "подтверждение", "group": "test"}
+{"question": "Меня интересует жарайды", "target": "подтверждение", "group": "test"}
+{"question": "жарайды бойынша көмек керек", "target": "подтверждение", "group": "test"}
+{"question": "Could you explain жарайды for me?", "target": "подтверждение", "group": "test"}
+{"question": "Меня интересует yes please", "target": "подтверждение", "group": "test"}
+{"question": "yes please бойынша көмек керек", "target": "подтверждение", "group": "test"}
+{"question": "Could you explain yes please for me?", "target": "подтверждение", "group": "test"}
+{"question": "Меня интересует okay continue", "target": "подтверждение", "group": "test"}
+{"question": "okay continue бойынша көмек керек", "target": "подтверждение", "group": "test"}
+{"question": "Could you explain okay continue for me?", "target": "подтверждение", "group": "test"}
+{"question": "Меня интересует филиалы архива", "target": "филиалы архива", "group": "test"}
+{"question": "филиалы архива бойынша көмек керек", "target": "филиалы архива", "group": "test"}
+{"question": "Could you explain филиалы архива for me?", "target": "филиалы архива", "group": "test"}
+{"question": "Меня интересует мұрағат филиалдары", "target": "филиалы архива", "group": "test"}
+{"question": "мұрағат филиалдары бойынша көмек керек", "target": "филиалы архива", "group": "test"}
+{"question": "Could you explain мұрағат филиалдары for me?", "target": "филиалы архива", "group": "test"}
+{"question": "Меня интересует archive branches", "target": "филиалы архива", "group": "test"}
+{"question": "archive branches бойынша көмек керек", "target": "филиалы архива", "group": "test"}
+{"question": "Could you explain archive branches for me?", "target": "филиалы архива", "group": "test"}
+{"question": "Меня интересует branch contacts", "target": "филиалы архива", "group": "test"}
+{"question": "branch contacts бойынша көмек керек", "target": "филиалы архива", "group": "test"}
+{"question": "Could you explain branch contacts for me?", "target": "филиалы архива", "group": "test"}
+{"question": "Меня интересует цифровая выставка", "target": "цифровые выставки", "group": "test"}
+{"question": "цифровая выставка бойынша көмек керек", "target": "цифровые выставки", "group": "test"}
+{"question": "Could you explain цифровая выставка for me?", "target": "цифровые выставки", "group": "test"}
+{"question": "Меня интересует цифрлық көрме", "target": "цифровые выставки", "group": "test"}
+{"question": "цифрлық көрме бойынша көмек керек", "target": "цифровые выставки", "group": "test"}
+{"question": "Could you explain цифрлық көрме for me?", "target": "цифровые выставки", "group": "test"}
+{"question": "Меня интересует digital exhibition", "target": "цифровые выставки", "group": "test"}
+{"question": "digital exhibition бойынша көмек керек", "target": "цифровые выставки", "group": "test"}
+{"question": "Could you explain digital exhibition for me?", "target": "цифровые выставки", "group": "test"}
+{"question": "Меня интересует online exhibition", "target": "цифровые выставки", "group": "test"}
+{"question": "online exhibition бойынша көмек керек", "target": "цифровые выставки", "group": "test"}
+{"question": "Could you explain online exhibition for me?", "target": "цифровые выставки", "group": "test"}
+{"question": "Меня интересует новости архива", "target": "новости архива", "group": "test"}
+{"question": "новости архива бойынша көмек керек", "target": "новости архива", "group": "test"}
+{"question": "Could you explain новости архива for me?", "target": "новости архива", "group": "test"}
+{"question": "Меня интересует мұрағат жаңалықтары", "target": "новости архива", "group": "test"}
+{"question": "мұрағат жаңалықтары бойынша көмек керек", "target": "новости архива", "group": "test"}
+{"question": "Could you explain мұрағат жаңалықтары for me?", "target": "новости архива", "group": "test"}
+{"question": "Меня интересует archive news", "target": "новости архива", "group": "test"}
+{"question": "archive news бойынша көмек керек", "target": "новости архива", "group": "test"}
+{"question": "Could you explain archive news for me?", "target": "новости архива", "group": "test"}
+{"question": "Меня интересует latest news", "target": "новости архива", "group": "test"}
+{"question": "latest news бойынша көмек керек", "target": "новости архива", "group": "test"}
+{"question": "Could you explain latest news for me?", "target": "новости архива", "group": "test"}
+{"question": "Меня интересует согласование публикации", "target": "редакционная проверка", "group": "test"}
+{"question": "согласование публикации бойынша көмек керек", "target": "редакционная проверка", "group": "test"}
+{"question": "Could you explain согласование публикации for me?", "target": "редакционная проверка", "group": "test"}
+{"question": "Меня интересует жарияланымды тексеру", "target": "редакционная проверка", "group": "test"}
+{"question": "жарияланымды тексеру бойынша көмек керек", "target": "редакционная проверка", "group": "test"}
+{"question": "Could you explain жарияланымды тексеру for me?", "target": "редакционная проверка", "group": "test"}
+{"question": "Меня интересует editorial review", "target": "редакционная проверка", "group": "test"}
+{"question": "editorial review бойынша көмек керек", "target": "редакционная проверка", "group": "test"}
+{"question": "Could you explain editorial review for me?", "target": "редакционная проверка", "group": "test"}
+{"question": "Меня интересует publication approval", "target": "редакционная проверка", "group": "test"}
+{"question": "publication approval бойынша көмек керек", "target": "редакционная проверка", "group": "test"}
+{"question": "Could you explain publication approval for me?", "target": "редакционная проверка", "group": "test"}
+{"question": "Меня интересует космонавты на Марсе", "target": "нет ответа", "group": "test"}
+{"question": "космонавты на Марсе бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain космонавты на Марсе for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует космонавтов", "target": "нет ответа", "group": "test"}
+{"question": "космонавтов бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain космонавтов for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует космос", "target": "нет ответа", "group": "test"}
+{"question": "космос бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain космос for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует Марс", "target": "нет ответа", "group": "test"}
+{"question": "Марс бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain Марс for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует на Марсе", "target": "нет ответа", "group": "test"}
+{"question": "на Марсе бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain на Марсе for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует планета Марс", "target": "нет ответа", "group": "test"}
+{"question": "планета Марс бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain планета Марс for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует свидетельство Иванова", "target": "нет ответа", "group": "test"}
+{"question": "свидетельство Иванова бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain свидетельство Иванова for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует зарплата", "target": "нет ответа", "group": "test"}
+{"question": "зарплата бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain зарплата for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует погода", "target": "нет ответа", "group": "test"}
+{"question": "погода бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain погода for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует футбол", "target": "нет ответа", "group": "test"}
+{"question": "футбол бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain футбол for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует рецепт супа", "target": "нет ответа", "group": "test"}
+{"question": "рецепт супа бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain рецепт супа for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует несуществующий материал", "target": "нет ответа", "group": "test"}
+{"question": "несуществующий материал бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain несуществующий материал for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует ғарышкерлер", "target": "нет ответа", "group": "test"}
+{"question": "ғарышкерлер бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain ғарышкерлер for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует ауа райы", "target": "нет ответа", "group": "test"}
+{"question": "ауа райы бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain ауа райы for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует туу туралы куәлік", "target": "нет ответа", "group": "test"}
+{"question": "туу туралы куәлік бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain туу туралы куәлік for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует билет на самолет", "target": "нет ответа", "group": "test"}
+{"question": "билет на самолет бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain билет на самолет for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует Mars colony", "target": "нет ответа", "group": "test"}
+{"question": "Mars colony бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain Mars colony for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует weather forecast", "target": "нет ответа", "group": "test"}
+{"question": "weather forecast бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain weather forecast for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует buy tickets", "target": "нет ответа", "group": "test"}
+{"question": "buy tickets бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain buy tickets for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует my private salary", "target": "нет ответа", "group": "test"}
+{"question": "my private salary бойынша көмек керек", "target": "нет ответа", "group": "test"}
+{"question": "Could you explain my private salary for me?", "target": "нет ответа", "group": "test"}
+{"question": "Меня интересует библиотека и площадь", "target": "библиотека ; площадь", "group": "test"}
+{"question": "Меня интересует библиотека и школа", "target": "библиотека ; школа", "group": "test"}
+{"question": "Меня интересует библиотека и музей", "target": "библиотека ; музей", "group": "test"}
+{"question": "Меня интересует библиотека и железная дорога", "target": "библиотека ; станция", "group": "test"}
+{"question": "Меня интересует площадь и школа", "target": "площадь ; школа", "group": "test"}
+{"question": "Меня интересует площадь и музей", "target": "площадь ; музей", "group": "test"}
+{"question": "Меня интересует площадь и железная дорога", "target": "площадь ; станция", "group": "test"}
+{"question": "Меня интересует школа и музей", "target": "школа ; музей", "group": "test"}
+{"question": "Меня интересует школа и железная дорога", "target": "школа ; станция", "group": "test"}
+{"question": "Меня интересует музей и железная дорога", "target": "музей ; станция", "group": "test"}

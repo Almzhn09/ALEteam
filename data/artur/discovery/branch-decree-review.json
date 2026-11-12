@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "state": "DRAFT",
+  "publicationAllowed": false,
+  "sourceId": "S06",
+  "original": "sources/archive-20261110/originals/Постановление обл акимата 142.pdf",
+  "sha256": "a0d390105cb014504b83f3fa7208e9254bad2cbb7bb12bbe8f5d066bf4caf7dd",
+  "visualInspection": {
+    "method": "Assistant inspected rendered original PDF pages 4, 5, 6 at 1600px; not solely OCR",
+    "independentHumanApproval": false,
+    "legalCurrencyConfirmed": false
+  },
+  "date": "2026-06-02",
+  "number": "142",
+  "title": "О некоторых вопросах архивных учреждений Восточно-Казахстанской области",
+  "subject": "creation and renaming of archive branches, not a price list",
+  "created": [
+    {
+      "shortNameInRuScan": "Глубоковский районный филиал",
+      "page": 5,
+      "S01SourceKey": "S01-Книга-7"
+    },
+    {
+      "shortNameInRuScan": "Катон-Карагайский районный филиал",
+      "page": 5,
+      "S01SourceKey": "S01-Книга-9"
+    },
+    {
+      "shortNameInRuScan": "Курчумский районный филиал",
+      "page": 5,
+      "S01SourceKey": "S01-Книга-10"
+    },
+    {
+      "shortNameInRuScan": "Филиал района Маркакол",
+      "page": 5,
+      "S01SourceKey": "S01-Книга-11"
+    },
+    {
+      "shortNameInRuScan": "Филиал района Самар",
+      "page": 5,
+      "S01SourceKey": "S01-Книга-13"
+    },
+    {
+      "shortNameInRuScan": "Тарбагатайский районный филиал",
+      "page": 5,
+      "S01SourceKey": "S01-Книга-14"
+    },
+    {
+      "shortNameInRuScan": "Уланский районный филиал",
+      "page": 5,
+      "S01SourceKey": "S01-Книга-15"
+    },
+    {
+      "shortNameInRuScan": "Филиал района Улкен Нарын",
+      "page": 5,
+      "S01SourceKey": "S01-Книга-16"
+    },
+    {
+      "shortNameInRuScan": "Шемонаихинский районный филиал",
+      "page": 5,
+      "S01SourceKey": "S01-Книга-18"
+    }
+  ],
+  "renamed": [
+    {
+      "oldShortName": "Усть-Каменогорский филиал по личному составу",
+      "newShortName": "Усть-Каменогорский городской филиал по личному составу",
+      "page": 6,
+      "S01SourceKey": "S01-Книга-17"
+    },
+    {
+      "oldShortName": "Риддерский филиал",
+      "newShortName": "Риддерский городской филиал",
+      "page": 6,
+      "S01SourceKey": "S01-Книга-12"
+    },
+    {
+      "oldShortName": "Филиал Алтай",
+      "newShortName": "Филиал района Алтай",
+      "page": 6,
+      "S01SourceKey": "S01-Книга-6"
+    },
+    {
+      "oldShortName": "Зайсанский филиал",
+      "newShortName": "Зайсанский районный филиал",
+      "page": 6,
+      "S01SourceKey": "S01-Книга-8"
+    }
+  ]
+}

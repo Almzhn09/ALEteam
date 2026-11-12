@@ -1,0 +1,9 @@
+{
+  "checks": [
+    "Reader registration and authenticated session",
+    "Conversational assistant greeting renders on mobile",
+    "Real fund answer still cites an actual source after greeting",
+    "Search and assistant fit a 360px viewport"
+  ],
+  "errors": []
+}

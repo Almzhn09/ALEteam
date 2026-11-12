@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "purpose": "Ready editorial UI copy for R-F01/F02; use real search and current published CMS endpoints, not hardcoded results.",
+  "ru": {
+    "heroTitle": "Откройте историю Восточного Казахстана",
+    "heroText": "История архива, памятные даты и справочники фондов — начните с интересующей темы.",
+    "searchPlaceholder": "Тема, имя или название фонда",
+    "searchButton": "Найти",
+    "primarySections": [
+      {
+        "id": "history",
+        "title": "История архива",
+        "description": "Как создавался и менялся архив области."
+      },
+      {
+        "id": "calendar",
+        "title": "Памятные даты",
+        "description": "События и люди региона в календарях 2022–2026 годов."
+      },
+      {
+        "id": "fonds",
+        "title": "Справочники фондов",
+        "description": "Учётные номера, названия и сведения о хранении газет."
+      },
+      {
+        "id": "branches",
+        "title": "Филиалы и контакты",
+        "description": "Адреса, телефоны и сведения о подразделениях."
+      }
+    ],
+    "sourceLanguage": "Материал на языке источника",
+    "noDigitalCopy": "Цифровая копия дела пока не добавлена. Доступные материалы и справочники можно найти в поиске.",
+    "missingBranchPhone": "Телефон в предоставленном источнике не указан.",
+    "fondsEdition": "Версия справочника указана у источника. Строка справочника не является цифровой копией дела.",
+    "footerProject": "Разработано командой ALEteam для Masters Hackathon 9.0.",
+    "footerSourceLabel": "Официальный сайт архива",
+    "aboutSource": "История, структура и контакты размещены по предоставленным материалам Государственного архива ВКО.",
+    "hours": "Понедельник–пятница: архив 8:00–17:00; читальный зал 9:00–16:00.",
+    "tourButton": "Как пользоваться",
+    "editorialLabel": "Рекомендуем",
+    "personalLabel": "По вашим интересам",
+    "address": "070000, г. Усть-Каменогорск, ул. Бейбітшілік, 26/1 (Головкова, 26/1)",
+    "officeHours": "понедельник–пятница, 8:00–17:00",
+    "readingHours": "понедельник–пятница, 9:00–16:00"
+  },
+  "kk": {
+    "heroTitle": "Шығыс Қазақстан тарихын ашыңыз",
+    "heroText": "Архив тарихы, атаулы күндер және қорлар анықтамалықтары — қызықты тақырыптан бастаңыз.",
+    "searchPlaceholder": "Тақырып, есім немесе қор атауы",
+    "searchButton": "Іздеу",
+    "primarySections": [
+      {
+        "id": "history",
+        "title": "Архив тарихы",
+        "description": "Облыс архивінің құрылуы мен өзгеруі."
+      },
+      {
+        "id": "calendar",
+        "title": "Атаулы күндер",
+        "description": "2022–2026 жылдар күнтізбелеріндегі өңір оқиғалары мен тұлғалары."
+      },
+      {
+        "id": "fonds",
+        "title": "Қорлар анықтамалықтары",
+        "description": "Есептік нөмірлер, атаулар және газеттердің сақталуы туралы мәліметтер."
+      },
+      {
+        "id": "branches",
+        "title": "Филиалдар мен байланыс",
+        "description": "Мекенжайлар, телефондар және бөлімшелер туралы мәліметтер."
+      }
+    ],
+    "sourceLanguage": "Материал түпнұсқа тілінде",
+    "noDigitalCopy": "Істің цифрлық көшірмесі әлі қосылмаған. Қолжетімді материалдар мен анықтамалықтарды іздеу арқылы табуға болады.",
+    "missingBranchPhone": "Берілген дереккөзде телефон көрсетілмеген.",
+    "fondsEdition": "Анықтамалық нұсқасы дереккөзде көрсетілген. Анықтамалық жолы істің цифрлық көшірмесі емес.",
+    "footerProject": "Masters Hackathon 9.0 үшін ALEteam командасы әзірлеген.",
+    "footerSourceLabel": "Архивтің ресми сайты",
+    "aboutSource": "Тарих, құрылым және байланыс ШҚО мемлекеттік архивінің берілген материалдары бойынша орналастырылған.",
+    "hours": "Дүйсенбі–жұма: архив 8:00–17:00; оқу залы 9:00–16:00.",
+    "tourButton": "Қалай пайдалану керек",
+    "editorialLabel": "Ұсынамыз",
+    "personalLabel": "Қызығушылықтарыңыз бойынша",
+    "address": "070000, Өскемен қ., Бейбітшілік көшесі, 26/1 (Головкова, 26/1)",
+    "officeHours": "дүйсенбі–жұма, 8:00–17:00",
+    "readingHours": "дүйсенбі–жұма, 9:00–16:00"
+  },
+  "en": {
+    "heroTitle": "Explore the history of East Kazakhstan",
+    "heroText": "Archive history, commemorative dates and fonds directories — start with a subject that interests you.",
+    "searchPlaceholder": "Subject, name or fonds title",
+    "searchButton": "Search",
+    "primarySections": [
+      {
+        "id": "history",
+        "title": "Archive history",
+        "description": "How the regional archive was established and changed."
+      },
+      {
+        "id": "calendar",
+        "title": "Commemorative dates",
+        "description": "Regional events and people in the 2022–2026 calendars."
+      },
+      {
+        "id": "fonds",
+        "title": "Fonds directories",
+        "description": "Reference numbers, names and newspaper holdings."
+      },
+      {
+        "id": "branches",
+        "title": "Branches and contacts",
+        "description": "Addresses, phone numbers and branch information."
+      }
+    ],
+    "sourceLanguage": "Material in its original language",
+    "noDigitalCopy": "A digital copy of this file has not been added. Use search to find available materials and directories.",
+    "missingBranchPhone": "The provided source does not list a phone number.",
+    "fondsEdition": "The source identifies the directory edition. A directory entry is not a digital copy of an archival file.",
+    "footerProject": "Developed by ALEteam for Masters Hackathon 9.0.",
+    "footerSourceLabel": "Official archive website",
+    "aboutSource": "History, structure and contacts are based on materials provided for the State Archive of East Kazakhstan.",
+    "hours": "Monday–Friday: archive 08:00–17:00; reading room 09:00–16:00.",
+    "tourButton": "How to use this site",
+    "editorialLabel": "Recommended reading",
+    "personalLabel": "Based on your interests",
+    "address": "070000, Ust-Kamenogorsk, 26/1 Beibitshilik St. (Golovkova, 26/1)",
+    "officeHours": "Monday–Friday, 08:00–17:00",
+    "readingHours": "Monday–Friday, 09:00–16:00"
+  },
+  "sourceUrl": "http://e-arhiv.vko.gov.kz/ru",
+  "sourceIds": [
+    "S02",
+    "S03",
+    "S05",
+    "S09"
+  ],
+  "implementationNotes": [
+    "Replace the old footer fiction disclaimer and 8 November hours with current source-based copy.",
+    "Do not show letter/photo/map document-type shortcuts when those record types have no real public content.",
+    "Missing translations use the published source language; do not claim a complete translated corpus.",
+    "Load recommendations before final screenshots; skeletons are not completed results."
+  ]
+}

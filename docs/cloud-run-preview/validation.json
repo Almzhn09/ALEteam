@@ -1,0 +1,20 @@
+{
+  "testedAt": "2026-11-12T14:29:01.634Z",
+  "checks": [
+    {
+      "name": "Cloud Run-style container restores real dataset and becomes healthy",
+      "startupMs": 4808
+    },
+    {
+      "name": "Real sources, modern layout, canonical URL, protected photos and local fonts survive packaging"
+    },
+    {
+      "name": "Bootstrap login and actual AI fund answer with source work in the deployed container"
+    },
+    {
+      "name": "Cold restart preserves original source IDs and identical file bytes from the baked snapshot",
+      "restartMs": 3578
+    }
+  ],
+  "limitation": "New user changes are ephemeral; the original snapshot is restored at each cold start."
+}

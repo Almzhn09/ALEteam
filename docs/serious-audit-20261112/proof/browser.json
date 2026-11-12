@@ -1,0 +1,27 @@
+{
+  "testedAt": "2026-11-12T15:56:54.006Z",
+  "checks": [
+    {
+      "name": "browser-normalized authentication destinations cannot send a visitor off site",
+      "passed": true
+    },
+    {
+      "name": "a delayed authenticated session response cannot restore account UI after logout",
+      "passed": true
+    },
+    {
+      "name": "a delayed guest response cannot erase a completed sign-in",
+      "passed": true
+    },
+    {
+      "name": "saved CMS search opens actual publications and keeps filters when resubmitted",
+      "passed": true
+    },
+    {
+      "name": "scope switching and leaving advanced search clear incompatible source filters",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "scope": "Private authentication tests on disposable _test DB; read-only real source search on local production"
+}

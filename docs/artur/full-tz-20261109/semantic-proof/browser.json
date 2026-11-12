@@ -1,0 +1,15 @@
+{
+  "locale": "ru",
+  "filters": {
+    "locale": "ru",
+    "sort": "year_asc",
+    "pageSize": 5,
+    "yearFrom": 1960,
+    "yearTo": 1969,
+    "type": "PHOTO",
+    "locality": "Усть-Каменогорск"
+  },
+  "sourceCount": 3,
+  "openedPublishedCard": true,
+  "syntheticData": true
+}

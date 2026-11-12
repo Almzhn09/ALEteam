@@ -1,0 +1,32 @@
+{
+  "generated": "2026-11-11T19:21:07.940947+00:00",
+  "testedSourceCommit": "91a4867e0e91847d8a2e4a8834482c4170b12f59",
+  "unit": {
+    "passed": 379,
+    "failed": 0
+  },
+  "dockerStream": {
+    "passed": 1,
+    "failed": 0
+  },
+  "realContentHttp": {
+    "passed": 7,
+    "failed": 0
+  },
+  "realContentUpgrade": {
+    "passed": 7,
+    "failed": 0
+  },
+  "i18n": {
+    "keys": 1038,
+    "missing": 0
+  },
+  "productionBuild": true,
+  "typecheck": true,
+  "sourceHashesVerified": true,
+  "sourceImageWorkflow": "Two complete contextual CMS image masters; incomplete source JPEGs blocked; unrelated event photo remains source-ready without a publication.",
+  "limitations": [
+    "Linux execution; no Windows-machine certification.",
+    "Public host/domain deployment was not part of this local review."
+  ]
+}

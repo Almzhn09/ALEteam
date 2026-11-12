@@ -1,0 +1,111 @@
+{
+  "recordedAt": "2026-11-10T08:12:55.766334+00:00",
+  "codeCommit": "32d585d1b0179857cd22d3d9a8ac535d6b7326ad",
+  "target": "Production Next.js with real owned temporary PostgreSQL and Chromium; synthetic fixtures, no mock API",
+  "baseline": {
+    "applicationCodeCommit": "14b6fb7",
+    "regressionCodeAt": "a11130e with new test",
+    "passed": 32,
+    "failed": 1,
+    "assertion": "hidden branch cannot remain searchable",
+    "expectedCatalogTotal": 0,
+    "actualCatalogTotal": 7,
+    "note": "Captured after correcting fixture slug preparation; fixture-preparation failure is not counted as a product defect."
+  },
+  "checks": {
+    "npm test": {
+      "passed": 289,
+      "total": 289
+    },
+    "npm run typecheck": {
+      "exitCode": 0
+    },
+    "npm run i18n:check": {
+      "keys": 410,
+      "translated": 410,
+      "missing": 0
+    },
+    "npm run build": {
+      "exitCode": 0
+    },
+    "npm run test:integration": {
+      "passed": 21,
+      "total": 21
+    },
+    "npm run test:cms": {
+      "passed": 14,
+      "total": 14
+    },
+    "npm run test:catalog": {
+      "passed": 12,
+      "total": 12
+    },
+    "npm run test:cms-assistant": {
+      "passed": 12,
+      "total": 12
+    },
+    "npm run test:semantic": {
+      "passed": 33,
+      "total": 33
+    },
+    "npm run test:release": {
+      "passed": 13,
+      "total": 13,
+      "screens": 54
+    }
+  },
+  "cleanup": {
+    "results": [
+      {
+        "command": "npm run test:integration",
+        "exitCode": 0,
+        "log": "test-integration.log"
+      },
+      {
+        "command": "npm run test:cms",
+        "exitCode": 0,
+        "log": "test-cms.log"
+      },
+      {
+        "command": "npm run test:catalog",
+        "exitCode": 0,
+        "log": "test-catalog.log"
+      },
+      {
+        "command": "npm run test:cms-assistant",
+        "exitCode": 0,
+        "log": "test-cms-assistant.log"
+      },
+      {
+        "command": "npm run test:semantic",
+        "exitCode": 0,
+        "log": "test-semantic.log"
+      },
+      {
+        "command": "npm run test:release",
+        "exitCode": 0,
+        "log": "test-release.log"
+      }
+    ],
+    "dedicatedDatabase": true,
+    "containerRemoved": true
+  },
+  "sha256": {
+    "src/server/public-visibility.ts": "f7901e2a17ee6819692c70f5912fea8637e7a85f0b8cd9919e294239043cd8c9",
+    "src/server/catalog.ts": "d42eaad6c021bb8ed69124f13506d15b90cede50692bc3574a4705d0ce17726f",
+    "src/server/cms.ts": "38865a8f5117ec22cad07422cdc7076926e8bec6b86a78b4b1201e46df3b080c",
+    "src/server/knowledge.ts": "1e9a36a4eb029ab64776821c15424e5487914bbb924cede0a0dec7b63ad3d905",
+    "src/server/similarity.ts": "ae890ac62aeef2fdee641b8507a822efcf03b673bff6e3076997cdb6422b590f",
+    "src/server/personal.ts": "909caf0b5fbd9a0a8d696ea9208fa9d1770332e6af62dfdf98c7c465ec37346f",
+    "src/server/notifications.ts": "c0e9a0f089f8a918b0af9f9b592b00298e2855cb972570541324c6b2368e567f",
+    "src/server/discussions.ts": "24db754ad3e51983887f41ef07b874ca5c3f5a2488445b156ec81a009eaf7f39",
+    "src/server/assistant.ts": "494cd213cdaa78a493248d44a71f8ff3450a496fe911081ecbb3834500db16f1",
+    "tests/semantic-catalog.integration.test.ts": "0dde0540baa7f7e9b42fc50bf24d0dbdd1afd15bbfaf49757f1f23f5ee0d216e"
+  },
+  "limitations": [
+    "Conservative technical branch visibility policy awaits archive approval.",
+    "No production or real archive data, public HTTPS, native-language review or independent team acceptance.",
+    "Staff and moderation endpoints have separate rights and are not public surfaces.",
+    "Previously delivered/downloaded material cannot be revoked from a visitor device."
+  ]
+}

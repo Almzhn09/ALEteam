@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "branchId": "import-test-a",
+  "sourceNamespace": "original-fixture-v1",
+  "isDemo": true,
+  "funds": [
+    {"key":"fund-a","number":"0007","name":"DEMO fund A","description":"Original synthetic hierarchy A"},
+    {"key":"fund-b","number":"0008","name":"DEMO fund B","description":"Original synthetic hierarchy B"}
+  ],
+  "inventories": [
+    {"key":"inventory-a","fundKey":"fund-a","number":"0001","title":"DEMO inventory A"},
+    {"key":"inventory-b","fundKey":"fund-b","number":"0001","title":"DEMO inventory B"}
+  ],
+  "cases": [
+    {"key":"case-a","inventoryKey":"inventory-a","number":"0003/А","title":"DEMO case A"},
+    {"key":"case-b","inventoryKey":"inventory-b","number":"0003/А","title":"DEMO case B"}
+  ],
+  "documents": [
+    {
+      "sourceId":"000009","fundKey":"fund-a","caseKey":"case-a",
+      "metadata":{"title":"ДЕМО: оригинал импорта 000009","description":"Оригинальный вымышленный материал для проверки импорта.","reference":"DEMO-IMPORT-000009","year":1960,"yearTo":1969,"type":"PHOTO","originalLanguage":"kk","leafCount":2,"rights":"ALEteam CC0-1.0","sourceNote":"Original synthetic fixture","allowDigitalCopy":true},
+      "translations":{
+        "kk":{"title":"ДЕМО: импорт 000009","description":"Импортты тексеруге арналған ойдан шығарылған материал.","rights":"ALEteam CC0-1.0","sourceNote":"Original synthetic fixture"},
+        "en":{"title":"DEMO import 000009","description":"Original fictional material for import validation.","rights":"ALEteam CC0-1.0","sourceNote":"Original synthetic fixture"}
+      }
+    },
+    {
+      "sourceId":"000010","fundKey":"fund-b","caseKey":"case-b",
+      "metadata":{"title":"ДЕМО: оригинал импорта 000010","description":"Второй оригинальный вымышленный материал для проверки импорта.","reference":"DEMO-IMPORT-000010","year":1970,"yearTo":1979,"type":"REPORT","originalLanguage":"ru","leafCount":3,"rights":"ALEteam CC0-1.0","sourceNote":"Original synthetic fixture","allowDigitalCopy":false},
+      "translations":{}
+    }
+  ]
+}

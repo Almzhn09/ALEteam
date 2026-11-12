@@ -1,0 +1,41 @@
+[
+  {
+    "width": 360,
+    "scrollWidth": 1052,
+    "unlabelledInputs": [
+      "find-text"
+    ]
+  },
+  {
+    "width": 768,
+    "scrollWidth": 1052,
+    "unlabelledInputs": [
+      "find-text"
+    ]
+  },
+  {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "unlabelledInputs": [
+      "find-text"
+    ]
+  },
+  {
+    "firstTab": {
+      "tag": "A",
+      "href": "#top"
+    }
+  },
+  {
+    "query": "архив",
+    "url": "http://e-arhiv.vko.gov.kz/ru/Search/FindResult",
+    "resultsSectionHasText": true,
+    "explicitEmptyMessage": false
+  },
+  {
+    "query": "alezznomatch987654",
+    "url": "http://e-arhiv.vko.gov.kz/ru/Search/FindResult",
+    "resultsSectionHasText": false,
+    "explicitEmptyMessage": false
+  }
+]

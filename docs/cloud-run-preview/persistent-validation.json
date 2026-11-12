@@ -1,0 +1,9 @@
+{
+  "testedAt": "2026-11-12T15:52:40.881Z",
+  "checks": [
+    "Empty external database restored, migrated and admin bootstrapped",
+    "Custom records and source IDs survive app restart without replacing database",
+    "Authenticated user session survives restart"
+  ],
+  "scope": "Local Docker external PostgreSQL acceptance, not a Neon production deployment"
+}

@@ -1,0 +1,821 @@
+{
+  "recordedAt": "2026-11-09T15:57:34.757Z",
+  "target": "local production build, real PostgreSQL and built-in modules; no stubs",
+  "checks": [
+    {
+      "name": "home search reaches real catalog and combined filters",
+      "passed": true
+    },
+    {
+      "name": "document renders real PNG, zoom, download policy and persisted favorites",
+      "passed": true
+    },
+    {
+      "name": "author signs in through the UI and cannot access moderation",
+      "passed": true
+    },
+    {
+      "name": "guest favorites transfer explicitly and synchronize across two browser sessions",
+      "passed": true
+    },
+    {
+      "name": "document exposes actual OCR text and similar document links",
+      "passed": true
+    },
+    {
+      "name": "assistant shows actual mode, document and guide links, and unknown-answer state",
+      "passed": true
+    },
+    {
+      "name": "comment UI publishes clean text, rejects a contextual Unicode bypass, and queues a quote",
+      "passed": true
+    },
+    {
+      "name": "moderator reviews the real pending comment through the UI",
+      "passed": true
+    },
+    {
+      "name": "report, hide and restore persist an auditable decision history",
+      "passed": true
+    },
+    {
+      "name": "reply form creates a private notification, preferences persist and another account cannot read it",
+      "passed": true
+    },
+    {
+      "name": "signing out in another tab immediately hides account favorites",
+      "passed": true
+    },
+    {
+      "name": "WCAG automated checks and responsive layout across RU/KK, light/dark and three widths",
+      "passed": true
+    },
+    {
+      "name": "keyboard skip link and logout revoke the actual browser session",
+      "passed": true
+    }
+  ],
+  "audits": [
+    {
+      "route": "/",
+      "width": 360,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 17,
+        "domContentLoadedMs": 39
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/catalog?q=библиотека",
+      "width": 360,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 13,
+        "domContentLoadedMs": 33
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/documents/demo-doc-01",
+      "width": 360,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 12,
+        "domContentLoadedMs": 33
+      },
+      "violations": [],
+      "manualReviewItems": 2
+    },
+    {
+      "route": "/favorites",
+      "width": 360,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 10,
+        "domContentLoadedMs": 32
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/assistant",
+      "width": 360,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 8,
+        "domContentLoadedMs": 30
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/about",
+      "width": 360,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 18,
+        "domContentLoadedMs": 46
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/timeline",
+      "width": 360,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 10,
+        "domContentLoadedMs": 44
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/moderation",
+      "width": 360,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 14,
+        "domContentLoadedMs": 39
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/me",
+      "width": 360,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 21,
+        "domContentLoadedMs": 47
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 24,
+        "domContentLoadedMs": 43
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/catalog?q=библиотека",
+      "width": 768,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 20,
+        "domContentLoadedMs": 48
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/documents/demo-doc-01",
+      "width": 768,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 10,
+        "domContentLoadedMs": 35
+      },
+      "violations": [],
+      "manualReviewItems": 2
+    },
+    {
+      "route": "/favorites",
+      "width": 768,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 11,
+        "domContentLoadedMs": 34
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/assistant",
+      "width": 768,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 12,
+        "domContentLoadedMs": 32
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/about",
+      "width": 768,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 20,
+        "domContentLoadedMs": 37
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/timeline",
+      "width": 768,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 12,
+        "domContentLoadedMs": 34
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/moderation",
+      "width": 768,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 10,
+        "domContentLoadedMs": 28
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/me",
+      "width": 768,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 12,
+        "domContentLoadedMs": 33
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 12,
+        "domContentLoadedMs": 32
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/catalog?q=библиотека",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 18,
+        "domContentLoadedMs": 39
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/documents/demo-doc-01",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 11,
+        "domContentLoadedMs": 46
+      },
+      "violations": [],
+      "manualReviewItems": 2
+    },
+    {
+      "route": "/favorites",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 14,
+        "domContentLoadedMs": 34
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/assistant",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 13,
+        "domContentLoadedMs": 36
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/about",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 22,
+        "domContentLoadedMs": 54
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/timeline",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 10,
+        "domContentLoadedMs": 35
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/moderation",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 15,
+        "domContentLoadedMs": 46
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/me",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "light",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 11,
+        "domContentLoadedMs": 43
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "dark",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 14,
+        "domContentLoadedMs": 37
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/catalog?q=библиотека",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "dark",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 13,
+        "domContentLoadedMs": 41
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/documents/demo-doc-01",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "dark",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 18,
+        "domContentLoadedMs": 76
+      },
+      "violations": [],
+      "manualReviewItems": 2
+    },
+    {
+      "route": "/favorites",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "dark",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 16,
+        "domContentLoadedMs": 32
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/assistant",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "dark",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 12,
+        "domContentLoadedMs": 37
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/about",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "dark",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 18,
+        "domContentLoadedMs": 44
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/timeline",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "dark",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 11,
+        "domContentLoadedMs": 47
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/moderation",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "dark",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 11,
+        "domContentLoadedMs": 47
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/me",
+      "width": 1440,
+      "lang": "ru",
+      "scheme": "dark",
+      "htmlLang": "ru",
+      "overflow": false,
+      "timing": {
+        "responseMs": 10,
+        "domContentLoadedMs": 39
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/",
+      "width": 360,
+      "lang": "kk",
+      "scheme": "light",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 21,
+        "domContentLoadedMs": 53
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/catalog?q=библиотека",
+      "width": 360,
+      "lang": "kk",
+      "scheme": "light",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 9,
+        "domContentLoadedMs": 37
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/documents/demo-doc-01",
+      "width": 360,
+      "lang": "kk",
+      "scheme": "light",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 11,
+        "domContentLoadedMs": 38
+      },
+      "violations": [],
+      "manualReviewItems": 2
+    },
+    {
+      "route": "/favorites",
+      "width": 360,
+      "lang": "kk",
+      "scheme": "light",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 9,
+        "domContentLoadedMs": 31
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/assistant",
+      "width": 360,
+      "lang": "kk",
+      "scheme": "light",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 17,
+        "domContentLoadedMs": 38
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/about",
+      "width": 360,
+      "lang": "kk",
+      "scheme": "light",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 14,
+        "domContentLoadedMs": 35
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/timeline",
+      "width": 360,
+      "lang": "kk",
+      "scheme": "light",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 22,
+        "domContentLoadedMs": 39
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/moderation",
+      "width": 360,
+      "lang": "kk",
+      "scheme": "light",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 9,
+        "domContentLoadedMs": 33
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/me",
+      "width": 360,
+      "lang": "kk",
+      "scheme": "light",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 17,
+        "domContentLoadedMs": 44
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "lang": "kk",
+      "scheme": "dark",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 15,
+        "domContentLoadedMs": 42
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/catalog?q=библиотека",
+      "width": 768,
+      "lang": "kk",
+      "scheme": "dark",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 42,
+        "domContentLoadedMs": 95
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/documents/demo-doc-01",
+      "width": 768,
+      "lang": "kk",
+      "scheme": "dark",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 24,
+        "domContentLoadedMs": 84
+      },
+      "violations": [],
+      "manualReviewItems": 2
+    },
+    {
+      "route": "/favorites",
+      "width": 768,
+      "lang": "kk",
+      "scheme": "dark",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 36,
+        "domContentLoadedMs": 91
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/assistant",
+      "width": 768,
+      "lang": "kk",
+      "scheme": "dark",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 28,
+        "domContentLoadedMs": 122
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/about",
+      "width": 768,
+      "lang": "kk",
+      "scheme": "dark",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 19,
+        "domContentLoadedMs": 57
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/timeline",
+      "width": 768,
+      "lang": "kk",
+      "scheme": "dark",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 14,
+        "domContentLoadedMs": 43
+      },
+      "violations": [],
+      "manualReviewItems": 1
+    },
+    {
+      "route": "/moderation",
+      "width": 768,
+      "lang": "kk",
+      "scheme": "dark",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 19,
+        "domContentLoadedMs": 65
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    },
+    {
+      "route": "/me",
+      "width": 768,
+      "lang": "kk",
+      "scheme": "dark",
+      "htmlLang": "kk",
+      "overflow": false,
+      "timing": {
+        "responseMs": 39,
+        "domContentLoadedMs": 102
+      },
+      "violations": [],
+      "manualReviewItems": 0
+    }
+  ],
+  "pageErrors": [],
+  "limitations": [
+    "Not a native-speaker or screen-reader review.",
+    "No public HTTPS or real LLM provider tested."
+  ]
+}

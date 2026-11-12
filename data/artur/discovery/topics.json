@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "draftsOnly": true,
+  "records": [
+    {
+      "id": "cities",
+      "labels": {
+        "ru": "История городов",
+        "kk": "Қалалар тарихы",
+        "en": "City history"
+      },
+      "review": "KK/EN editorial draft"
+    },
+    {
+      "id": "photos",
+      "labels": {
+        "ru": "Фотографии",
+        "kk": "Фотосуреттер",
+        "en": "Photographs"
+      },
+      "review": "KK/EN editorial draft"
+    },
+    {
+      "id": "newspapers",
+      "labels": {
+        "ru": "Газеты",
+        "kk": "Газеттер",
+        "en": "Newspapers"
+      },
+      "review": "KK/EN editorial draft"
+    },
+    {
+      "id": "education",
+      "labels": {
+        "ru": "Школы и образование",
+        "kk": "Мектептер мен білім",
+        "en": "Schools and education"
+      },
+      "review": "KK/EN editorial draft"
+    },
+    {
+      "id": "industry",
+      "labels": {
+        "ru": "Промышленность",
+        "kk": "Өнеркәсіп",
+        "en": "Industry"
+      },
+      "review": "KK/EN editorial draft"
+    },
+    {
+      "id": "people",
+      "labels": {
+        "ru": "Люди региона",
+        "kk": "Өңір тұлғалары",
+        "en": "People of the region"
+      },
+      "review": "KK/EN editorial draft"
+    },
+    {
+      "id": "archives",
+      "labels": {
+        "ru": "История архива",
+        "kk": "Архив тарихы",
+        "en": "Archive history"
+      },
+      "review": "KK/EN editorial draft"
+    }
+  ]
+}

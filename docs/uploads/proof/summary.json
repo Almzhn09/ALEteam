@@ -1,0 +1,109 @@
+{
+  "recordedAt": "2026-11-10T08:41:33.578368+00:00",
+  "codeCommit": "46eec228ab29e46a170d7ce5bbfd6770abf7d69d",
+  "target": "Production Next.js with real temporary PostgreSQL and original synthetic PNG/PDF bytes; real employee sessions and API, no mocks",
+  "checks": {
+    "npm test": {
+      "passed": 293,
+      "total": 293
+    },
+    "npm run typecheck": {
+      "exitCode": 0
+    },
+    "npm run i18n:check": {
+      "keys": 422,
+      "translated": 422,
+      "missing": 0
+    },
+    "npm run build": {
+      "exitCode": 0
+    },
+    "npm run test:integration": {
+      "passed": 21,
+      "total": 21
+    },
+    "npm run test:cms": {
+      "passed": 14,
+      "total": 14
+    },
+    "npm run test:catalog": {
+      "passed": 12,
+      "total": 12
+    },
+    "npm run test:uploads": {
+      "passed": 10,
+      "total": 10
+    },
+    "npm run test:cms-assistant": {
+      "passed": 12,
+      "total": 12
+    },
+    "npm run test:semantic": {
+      "passed": 33,
+      "total": 33
+    },
+    "npm run test:release": {
+      "passed": 13,
+      "total": 13,
+      "screens": 54
+    }
+  },
+  "cleanup": {
+    "results": [
+      {
+        "command": "npm run test:integration",
+        "exitCode": 0,
+        "log": "test-integration.log"
+      },
+      {
+        "command": "npm run test:cms",
+        "exitCode": 0,
+        "log": "test-cms.log"
+      },
+      {
+        "command": "npm run test:catalog",
+        "exitCode": 0,
+        "log": "test-catalog.log"
+      },
+      {
+        "command": "npm run test:uploads",
+        "exitCode": 0,
+        "log": "test-uploads.log"
+      },
+      {
+        "command": "npm run test:cms-assistant",
+        "exitCode": 0,
+        "log": "test-cms-assistant.log"
+      },
+      {
+        "command": "npm run test:semantic",
+        "exitCode": 0,
+        "log": "test-semantic.log"
+      },
+      {
+        "command": "npm run test:release",
+        "exitCode": 0,
+        "log": "test-release.log"
+      }
+    ],
+    "dedicatedDatabase": true,
+    "containerRemoved": true
+  },
+  "sha256": {
+    "src/server/uploads.ts": "e274eae57e54b50f8ec39db0155975bc846e5c9aaddb6e6b6da638abd6c79138",
+    "src/server/upload-storage.ts": "7b8a19e1a5290457d9f820f947ff64af46194e7b2ce92d643494fc53906c9718",
+    "src/server/catalog.ts": "d402534d87391e9c4ef7ff5a182a98bc844fd2981b1e796d1a6f6dc4991fa502",
+    "src/contracts/uploads.ts": "af13a3c051d52ea0e8a202699fc69babe32d3d8c1617d7bb826cb62f54e43103",
+    "prisma/schema.prisma": "47dc3d4a67ef504279b4540950bb54e8cfc8168f95748274874735319f27d45d",
+    "prisma/migrations/202611100001_archive_uploads/migration.sql": "a086b93bd3e6240b8bdf46069a4c90779af93441933ad8b68d8978ec233b06f2",
+    "tests/uploads.integration.test.ts": "85222666f25c71769642b52fd50b9d3cc4759bb0821dc9eac8cd7c84c2b37167",
+    "tests/upload-storage.test.ts": "b7fc1343e04988aee0db6b26d387a1860c8a67d7044837d0ca718ab6ee556950"
+  },
+  "limitations": [
+    "PDF/PNG/JPEG signature-size-SHA core only. Positive complete PNG and generated PDF byte workflows tested; no claim of full JPEG decoding.",
+    "No full format parser, antivirus, TIFF/audio/video processor, derivatives, new-file OCR or worker farm is claimed.",
+    "Hard-crash orphan .part files require operator review; metadata quota is not a free-disk measurement.",
+    "Upload UI belongs to Alinur and is not included in screenshots of the previous UI.",
+    "Synthetic developer tests do not establish archive rights, legal policy, real production load, public HTTPS or independent acceptance."
+  ]
+}

@@ -1,0 +1,518 @@
+{
+  "testedAt": "2026-11-12T04:46:12.794Z",
+  "commit": "16b6a1b4a2e6ec21361a91e7d0f36be56313c654",
+  "axeVersion": "4.10.2",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa"
+  ],
+  "target": "72 real loaded screens; anonymous local production server",
+  "rows": [
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/",
+      "violations": [],
+      "passes": 33
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/catalog?scope=cms",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/catalog?scope=fund",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/places?placeId=cmwd1ddpm00i5zmneaik1j3pw",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/about",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/calendar",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/services",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/about/compliance",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/directories",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/directories/funds",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "ru",
+      "theme": "light",
+      "route": "/directories/newspapers",
+      "violations": [],
+      "passes": 30
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/",
+      "violations": [],
+      "passes": 33
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/catalog?scope=cms",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/catalog?scope=fund",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/places?placeId=cmwd1ddpm00i5zmneaik1j3pw",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/about",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/calendar",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/services",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/about/compliance",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/directories",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/directories/funds",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "ru",
+      "theme": "dark",
+      "route": "/directories/newspapers",
+      "violations": [],
+      "passes": 30
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/",
+      "violations": [],
+      "passes": 33
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/catalog?scope=cms",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/catalog?scope=fund",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/places?placeId=cmwd1ddpm00i5zmneaik1j3pw",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/about",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/calendar",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/services",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/about/compliance",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/directories",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/directories/funds",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "kk",
+      "theme": "light",
+      "route": "/directories/newspapers",
+      "violations": [],
+      "passes": 30
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/",
+      "violations": [],
+      "passes": 33
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/catalog?scope=cms",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/catalog?scope=fund",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/places?placeId=cmwd1ddpm00i5zmneaik1j3pw",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/about",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/calendar",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/services",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/about/compliance",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/directories",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/directories/funds",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "kk",
+      "theme": "dark",
+      "route": "/directories/newspapers",
+      "violations": [],
+      "passes": 30
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/",
+      "violations": [],
+      "passes": 33
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/catalog?scope=cms",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/catalog?scope=fund",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/places?placeId=cmwd1ddpm00i5zmneaik1j3pw",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/about",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/calendar",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/services",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/about/compliance",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/directories",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/directories/funds",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "/directories/newspapers",
+      "violations": [],
+      "passes": 30
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/",
+      "violations": [],
+      "passes": 33
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/catalog?scope=cms",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/catalog?scope=fund",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/materials/archive-history-1?contentLang=ru",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/places?placeId=cmwd1ddpm00i5zmneaik1j3pw",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/about",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/calendar",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/services",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/about/compliance",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/directories",
+      "violations": [],
+      "passes": 27
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/directories/funds",
+      "violations": [],
+      "passes": 28
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "/directories/newspapers",
+      "violations": [],
+      "passes": 30
+    }
+  ]
+}

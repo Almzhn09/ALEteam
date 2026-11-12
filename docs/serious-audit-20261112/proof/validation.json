@@ -1,0 +1,18 @@
+{
+  "codeCommit": "e637757",
+  "build": "passed",
+  "typecheck": "passed",
+  "i18n": {
+    "keys": 1050,
+    "missing": 0
+  },
+  "unitTests": 381,
+  "httpTests": 22,
+  "browserScenarios": 5,
+  "browserErrors": 0,
+  "productionAccountsModified": false,
+  "temporaryTestDatabaseRemoved": true,
+  "patchBase": "d8b3971",
+  "patchApplyCheck": "passed",
+  "cloudRunDeployed": false
+}

@@ -1,0 +1,61 @@
+{
+  "results": [
+    {
+      "command": "npm run test:integration",
+      "exitCode": 0,
+      "log": "test-integration.log"
+    },
+    {
+      "command": "npm run test:cms",
+      "exitCode": 0,
+      "log": "test-cms.log"
+    },
+    {
+      "command": "npm run test:catalog",
+      "exitCode": 0,
+      "log": "test-catalog.log"
+    },
+    {
+      "command": "npm run test:imports",
+      "exitCode": 0,
+      "log": "test-imports.log"
+    },
+    {
+      "command": "npm run test:uploads",
+      "exitCode": 0,
+      "log": "test-uploads.log"
+    },
+    {
+      "command": "npm run test:discovery",
+      "exitCode": 0,
+      "log": "test-discovery.log"
+    },
+    {
+      "command": "npm run test:semantic",
+      "exitCode": 0,
+      "log": "test-semantic.log"
+    },
+    {
+      "command": "npm run test:cms-assistant",
+      "exitCode": 0,
+      "log": "test-cms-assistant.log"
+    },
+    {
+      "command": "npm run test:release",
+      "exitCode": 0,
+      "log": "test-release.log"
+    },
+    {
+      "command": "npm run check:display",
+      "exitCode": 0,
+      "log": "check-display.log"
+    },
+    {
+      "command": "npm run check:team-ui",
+      "exitCode": 0,
+      "log": "check-team-ui.log"
+    }
+  ],
+  "dedicatedDatabase": true,
+  "containerRemoved": true
+}

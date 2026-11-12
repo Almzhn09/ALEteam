@@ -1,0 +1,135 @@
+{
+  "recordedAt": "2026-11-10T09:09:23.041189+00:00",
+  "codeCommit": "cdf3721bf963593c1f9d343b97f49ba07b88c762",
+  "target": "Production Next.js with real temporary PostgreSQL, original synthetic metadata and actual staff API sessions; no mocks",
+  "checks": {
+    "npm test": {
+      "passed": 298,
+      "total": 298
+    },
+    "npm run typecheck": {
+      "exitCode": 0
+    },
+    "npm run i18n:check": {
+      "keys": 427,
+      "translated": 427,
+      "missing": 0
+    },
+    "npm run build": {
+      "exitCode": 0
+    },
+    "npm run test:integration": {
+      "passed": 21,
+      "total": 21
+    },
+    "npm run test:cms": {
+      "passed": 14,
+      "total": 14
+    },
+    "npm run test:catalog": {
+      "passed": 12,
+      "total": 12
+    },
+    "npm run test:imports": {
+      "passed": 9,
+      "total": 9
+    },
+    "npm run test:uploads": {
+      "passed": 10,
+      "total": 10
+    },
+    "npm run test:cms-assistant": {
+      "passed": 12,
+      "total": 12
+    },
+    "npm run test:semantic": {
+      "passed": 33,
+      "total": 33
+    },
+    "npm run test:release": {
+      "passed": 13,
+      "total": 13,
+      "screens": 54
+    }
+  },
+  "additionalVerification": {
+    "suite": "test:imports",
+    "passed": 9,
+    "total": 9,
+    "reason": "Added explicit read-only-editor denial and imported-draft assistant exclusion assertions; application code unchanged from the full eight-suite run.",
+    "cleanup": {
+      "results": [
+        {
+          "command": "npm run test:imports",
+          "exitCode": 0,
+          "log": "test-imports.log"
+        }
+      ],
+      "dedicatedDatabase": true,
+      "containerRemoved": true
+    }
+  },
+  "cleanup": {
+    "results": [
+      {
+        "command": "npm run test:integration",
+        "exitCode": 0,
+        "log": "test-integration.log"
+      },
+      {
+        "command": "npm run test:cms",
+        "exitCode": 0,
+        "log": "test-cms.log"
+      },
+      {
+        "command": "npm run test:catalog",
+        "exitCode": 0,
+        "log": "test-catalog.log"
+      },
+      {
+        "command": "npm run test:imports",
+        "exitCode": 0,
+        "log": "test-imports.log"
+      },
+      {
+        "command": "npm run test:uploads",
+        "exitCode": 0,
+        "log": "test-uploads.log"
+      },
+      {
+        "command": "npm run test:cms-assistant",
+        "exitCode": 0,
+        "log": "test-cms-assistant.log"
+      },
+      {
+        "command": "npm run test:semantic",
+        "exitCode": 0,
+        "log": "test-semantic.log"
+      },
+      {
+        "command": "npm run test:release",
+        "exitCode": 0,
+        "log": "test-release.log"
+      }
+    ],
+    "dedicatedDatabase": true,
+    "containerRemoved": true
+  },
+  "sha256": {
+    "src/server/catalog-import-schema.ts": "fa417145d149abfd10286cc2f500cadd85076d49b781fea6be09492e138ad8dc",
+    "src/server/catalog-import-plan.ts": "ae2a00a3dd9cc7add9ed4fbdfc15eadaeffecadb990ad9f5d289788c10ebe2ad",
+    "src/server/catalog-imports.ts": "4fa80c27c94f60d3c46e319f1934cb2d105494fa6ac77fb19855dff6573d16af",
+    "src/contracts/imports.ts": "9f8eaed2d099c99fd0bfe5c4880f9c949fdd9b0ffe6573daa2641b712d87d8ec",
+    "prisma/schema.prisma": "e5b376a995c922069d8ad049f4ebd797b30f9c5b0eea4d67ab80f55ae47bba4b",
+    "prisma/migrations/202611100002_catalog_import_staging/migration.sql": "6ab575c371c1bc728c58529e9573c42da4e06caab1d22096c8c20c918f041041",
+    "tests/catalog-import-schema.test.ts": "36ed3ecbdfe0bf7e00cbfec98838b8b0a7dd93ae9ced44d52ed0e0e105ce9a0b",
+    "tests/catalog-imports.integration.test.ts": "eed3100700d9596d7e94a7118ec5b8da3358ef74af95c7c91246d168d6750530"
+  },
+  "limitations": [
+    "JSON metadata only, up to 100 documents; no arbitrary CSV/XML converter or real archive migration.",
+    "Soft rollback retains hierarchy, source mapping and history and refuses any subsequent staff/publication/file work.",
+    "No original file bytes/private notes are imported or exported by this module.",
+    "Archive export, approved rights/translations and production-scale tests remain external/next-stage requirements.",
+    "No public deployment, native-language review, UI integration or independent team acceptance is claimed."
+  ]
+}

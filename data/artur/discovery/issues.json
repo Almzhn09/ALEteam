@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "draftsOnly": true,
+  "records": [
+    {
+      "id": "CAL-01",
+      "sourceId": "S03",
+      "record": "2026 / Ефим Пермитин",
+      "issue": "RU lifetime1896–1971; KK1896–1917",
+      "action": "exclude biography inference until review"
+    },
+    {
+      "id": "CAL-02",
+      "sourceId": "S03",
+      "record": "2025 / Евгений Курдаков",
+      "issue": "RU and KK both80 лет/жыл(1940); arithmetic2025–1940=85; previous audit incorrectly said KK85",
+      "action": "retain original; review before public correction"
+    },
+    {
+      "id": "CAL-03",
+      "sourceId": "S03",
+      "record": "2026 / телефонная станция Усть-Каменогорска",
+      "issue": "RU70 лет(1946), KK80; arithmetic2026–1946=80",
+      "action": "exclude anniversary count until review"
+    },
+    {
+      "id": "CAL-04",
+      "sourceId": "S03",
+      "record": "2026 / высшая начальная школа1886",
+      "issue": "RU130 лет, KK140; arithmetic2026–1886=140",
+      "action": "exclude anniversary count until review"
+    },
+    {
+      "id": "FUND-01",
+      "sourceId": "S09",
+      "record": "Фонды/газеты",
+      "issue": "Link labels2026; downloaded newspapers explicitly2018, XLSB filenames2018; historical titles repeat fund number",
+      "action": "no fabricated2026 refresh; group history, not rows as documents"
+    },
+    {
+      "id": "BRANCH-01",
+      "sourceId": "S01",
+      "record": "Глубокое/Зайсан/Марқакөл",
+      "issue": "Suspicious email domains in first2, missing phone in third; no coordinates/hours",
+      "action": "preserve raw values; require contact review"
+    },
+    {
+      "id": "DECREE-01",
+      "sourceId": "S06",
+      "record": "Постановление142",
+      "issue": "Creates/renames branches, not price list; OCR handwritten requisites uncertain",
+      "action": "not used as prices"
+    },
+    {
+      "id": "ALIAS-01",
+      "sourceId": "S02",
+      "record": "Алтай/Зыряновск",
+      "issue": "2018 city decree vs2019 branch registration",
+      "action": "do not conflate event dates; Altay region/city needs clarification"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "sourceId": "R01",
+  "sha256": "6480e6fd39bbf0f48c7c8396028da57d29cbec405c44a83a3ede7d575fad3b8f",
+  "state": "PUBLISHED",
+  "scope": "Compiled bundled CLI in compact Docker runtime against dedicated local _test database; existing attachment unchanged"
+}

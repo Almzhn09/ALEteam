@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "branches": [
+    {
+      "id": "fixture-a",
+      "name": "DEMO branch A"
+    },
+    {
+      "id": "fixture-b",
+      "name": "DEMO branch B"
+    }
+  ],
+  "funds": [
+    {
+      "id": "fixture-fund-a",
+      "branchId": "fixture-a",
+      "number": "0007"
+    },
+    {
+      "id": "fixture-fund-b",
+      "branchId": "fixture-b",
+      "number": "0007"
+    }
+  ],
+  "inventories": [
+    {
+      "id": "fixture-inv-a",
+      "fundId": "fixture-fund-a",
+      "number": "01"
+    },
+    {
+      "id": "fixture-inv-b",
+      "fundId": "fixture-fund-b",
+      "number": "01"
+    }
+  ],
+  "cases": [
+    {
+      "id": "fixture-case-a",
+      "inventoryId": "fixture-inv-a",
+      "number": "0003/А"
+    },
+    {
+      "id": "fixture-case-b",
+      "inventoryId": "fixture-inv-b",
+      "number": "0003/А"
+    }
+  ],
+  "documents": [
+    {
+      "id": "fixture-doc-a",
+      "caseId": "fixture-case-a",
+      "number": "000009",
+      "sourceId": "fixture-source-a",
+      "sourceUrl": null,
+      "originalLanguage": "kk",
+      "yearFrom": 1960,
+      "yearTo": 1969,
+      "metadataPublic": true,
+      "copyPublic": false,
+      "published": true,
+      "rightsConfirmed": true
+    }
+  ],
+  "files": [
+    {
+      "id": "fixture-master",
+      "documentId": "fixture-doc-a",
+      "kind": "MASTER",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "bytes": 42,
+      "mime": "image/tiff",
+      "public": false
+    }
+  ]
+}

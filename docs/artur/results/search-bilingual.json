@@ -1,0 +1,1531 @@
+{
+  "generatedAt": "2026-11-08T08:07:00.531Z",
+  "mode": "retrieval",
+  "corpus": {
+    "demoDocuments": 20,
+    "bilingualGuides": 8
+  },
+  "overall": {
+    "total": 63,
+    "legacyPassed": 40,
+    "expandedPassed": 63
+  },
+  "russian": {
+    "total": 32,
+    "legacyPassed": 24,
+    "expandedPassed": 32
+  },
+  "kazakh": {
+    "total": 31,
+    "legacyPassed": 16,
+    "expandedPassed": 31
+  },
+  "cases": [
+    {
+      "id": "library-ru",
+      "language": "ru",
+      "expectedIds": [
+        "demo-doc-01"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-01",
+          "demo-doc-06",
+          "demo-doc-11"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-01",
+          "demo-doc-06",
+          "demo-doc-11"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "library-kk",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-01"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-01",
+          "demo-doc-06",
+          "demo-doc-11"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-01",
+          "demo-doc-06",
+          "demo-doc-11"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "school-ru",
+      "language": "ru",
+      "expectedIds": [
+        "demo-doc-03"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-03",
+          "demo-doc-08",
+          "demo-doc-13"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-03",
+          "demo-doc-08",
+          "demo-doc-13"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "school-kk",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-03"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-03",
+          "demo-doc-08",
+          "demo-doc-13"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-03",
+          "demo-doc-08",
+          "demo-doc-13"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "museum",
+      "language": "ru",
+      "expectedIds": [
+        "demo-doc-04"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-04",
+          "demo-doc-09",
+          "demo-doc-14"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-04",
+          "demo-doc-09",
+          "demo-doc-14"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "square",
+      "language": "ru",
+      "expectedIds": [
+        "demo-doc-02"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-02",
+          "demo-doc-07",
+          "demo-doc-12"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-02",
+          "demo-doc-07",
+          "demo-doc-12"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "railway",
+      "language": "ru",
+      "expectedIds": [
+        "demo-doc-05"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-05",
+          "demo-doc-10",
+          "demo-doc-15"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-05",
+          "demo-doc-10",
+          "demo-doc-15"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "year",
+      "language": "ru",
+      "expectedIds": [
+        "demo-doc-01"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-01"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-01"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "reference",
+      "language": "ru",
+      "expectedIds": [
+        "demo-doc-01"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-01"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-01"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "unknown",
+      "language": "ru",
+      "expectedIds": [],
+      "expectedNoAnswer": true,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      }
+    },
+    {
+      "id": "false-year",
+      "language": "ru",
+      "expectedIds": [],
+      "expectedNoAnswer": true,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      }
+    },
+    {
+      "id": "injection-ru",
+      "language": "ru",
+      "expectedIds": [],
+      "expectedNoAnswer": true,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      }
+    },
+    {
+      "id": "injection-en",
+      "language": "ru",
+      "expectedIds": [],
+      "expectedNoAnswer": true,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      }
+    },
+    {
+      "id": "private-config",
+      "language": "ru",
+      "expectedIds": [],
+      "expectedNoAnswer": true,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      }
+    },
+    {
+      "id": "fund-guide",
+      "language": "ru",
+      "expectedIds": [
+        "guide-fund"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "guide-fund"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "guide-fund"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "reference-guide",
+      "language": "ru",
+      "expectedIds": [
+        "guide-reference"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "guide-reference"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "guide-reference"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "search-guide",
+      "language": "ru",
+      "expectedIds": [
+        "guide-search"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "guide-search"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "guide-search"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "comments-guide",
+      "language": "ru",
+      "expectedIds": [
+        "guide-comments"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "guide-comments"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "guide-comments"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "missing-topic",
+      "language": "ru",
+      "expectedIds": [],
+      "expectedNoAnswer": true,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      }
+    },
+    {
+      "id": "missing-period",
+      "language": "ru",
+      "expectedIds": [],
+      "expectedNoAnswer": true,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      }
+    },
+    {
+      "id": "frontend-example-kk-railway",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-05"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-05",
+          "demo-doc-10",
+          "demo-doc-15"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-05",
+          "demo-doc-10",
+          "demo-doc-15"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "frontend-example-kk-reference",
+      "language": "kk",
+      "expectedIds": [
+        "guide-reference"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "guide-reference"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "guide-reference"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "frontend-example-kk-library",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-01"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-01",
+          "demo-doc-06",
+          "demo-doc-11"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-01",
+          "demo-doc-06",
+          "demo-doc-11"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "reading-ru",
+      "language": "ru",
+      "expectedIds": [
+        "demo-doc-06"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-06"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-06"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "readers-kk",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-11"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-11"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "library-latin",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-16"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-16"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-16"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "students-ru",
+      "language": "ru",
+      "expectedIds": [
+        "demo-doc-08"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-08"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-08"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "students-kk",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-13"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-13"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "class-kk",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-18"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-18"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "school-latin",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-03"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-03"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-03"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "exhibits-ru",
+      "language": "ru",
+      "expectedIds": [
+        "demo-doc-09"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-09"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-09"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "exhibition-kk",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-14"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-14"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "museum-kk",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-19"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-19"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-19"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "improvement-ru",
+      "language": "ru",
+      "expectedIds": [
+        "demo-doc-07"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-07"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-07"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "square-kk",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-12"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-12"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-12"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "improvement-kk",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-17"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-17"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "station-ru",
+      "language": "ru",
+      "expectedIds": [
+        "demo-doc-10"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-10"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "station-kk",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-15"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-15"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "transport-kk",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-20"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-20"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "railway-latin",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-05"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-05"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "library-before-ru",
+      "language": "ru",
+      "expectedIds": [
+        "demo-doc-01"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [
+          "demo-doc-06"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-01"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "library-before-kk",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-01"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [
+          "demo-doc-06"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-01"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "school-after-ru",
+      "language": "ru",
+      "expectedIds": [
+        "demo-doc-18"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [
+          "demo-doc-13"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-18"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "school-after-kk",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-18"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [
+          "demo-doc-13"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-18"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "museum-range-kk",
+      "language": "kk",
+      "expectedIds": [
+        "demo-doc-09",
+        "demo-doc-14",
+        "demo-doc-19"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-09",
+          "demo-doc-14",
+          "demo-doc-19"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-09",
+          "demo-doc-14",
+          "demo-doc-19"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "library-range-ru",
+      "language": "ru",
+      "expectedIds": [
+        "demo-doc-06",
+        "demo-doc-11"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-06",
+          "demo-doc-11"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "demo-doc-06",
+          "demo-doc-11"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "fund-guide-kk",
+      "language": "kk",
+      "expectedIds": [
+        "guide-fund"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "guide-fund"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "search-guide-kk",
+      "language": "kk",
+      "expectedIds": [
+        "guide-search"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [
+          "guide-search"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "guide-search"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "favorites-guide-ru",
+      "language": "ru",
+      "expectedIds": [
+        "guide-favorites"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "guide-favorites"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "favorites-guide-kk",
+      "language": "kk",
+      "expectedIds": [
+        "guide-favorites"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "guide-favorites"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "notifications-guide-ru",
+      "language": "ru",
+      "expectedIds": [
+        "guide-notifications"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "guide-notifications"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "notifications-guide-kk",
+      "language": "kk",
+      "expectedIds": [
+        "guide-notifications"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "guide-notifications"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "ocr-guide-ru",
+      "language": "ru",
+      "expectedIds": [
+        "guide-ocr"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "guide-ocr"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "ocr-guide-kk",
+      "language": "kk",
+      "expectedIds": [
+        "guide-ocr"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "guide-ocr"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "source-guide-ru",
+      "language": "ru",
+      "expectedIds": [
+        "guide-sources"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "guide-sources"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "source-guide-kk",
+      "language": "kk",
+      "expectedIds": [
+        "guide-sources"
+      ],
+      "expectedNoAnswer": false,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [
+          "guide-sources"
+        ],
+        "noAnswer": false
+      }
+    },
+    {
+      "id": "wrong-year-kk",
+      "language": "kk",
+      "expectedIds": [],
+      "expectedNoAnswer": true,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      }
+    },
+    {
+      "id": "unknown-kk",
+      "language": "kk",
+      "expectedIds": [],
+      "expectedNoAnswer": true,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      }
+    },
+    {
+      "id": "injection-kk",
+      "language": "kk",
+      "expectedIds": [],
+      "expectedNoAnswer": true,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      }
+    },
+    {
+      "id": "secrets-kk",
+      "language": "kk",
+      "expectedIds": [],
+      "expectedNoAnswer": true,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      }
+    },
+    {
+      "id": "no-reference",
+      "language": "ru",
+      "expectedIds": [],
+      "expectedNoAnswer": true,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      }
+    },
+    {
+      "id": "early-school",
+      "language": "kk",
+      "expectedIds": [],
+      "expectedNoAnswer": true,
+      "legacy": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      }
+    },
+    {
+      "id": "future-railway",
+      "language": "ru",
+      "expectedIds": [],
+      "expectedNoAnswer": true,
+      "legacy": {
+        "passed": false,
+        "sourceIds": [
+          "demo-doc-20"
+        ],
+        "noAnswer": false
+      },
+      "expanded": {
+        "passed": true,
+        "sourceIds": [],
+        "noAnswer": true
+      }
+    }
+  ],
+  "similarity": {
+    "method": "tfidf-cosine-v1",
+    "total": 20,
+    "meanPrecisionAt3": 1,
+    "cases": [
+      {
+        "id": "demo-doc-01",
+        "resultIds": [
+          "demo-doc-06",
+          "demo-doc-11",
+          "demo-doc-16"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-02",
+        "resultIds": [
+          "demo-doc-07",
+          "demo-doc-12",
+          "demo-doc-17"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-03",
+        "resultIds": [
+          "demo-doc-08",
+          "demo-doc-13",
+          "demo-doc-18"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-04",
+        "resultIds": [
+          "demo-doc-09",
+          "demo-doc-14",
+          "demo-doc-19"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-05",
+        "resultIds": [
+          "demo-doc-10",
+          "demo-doc-15",
+          "demo-doc-20"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-06",
+        "resultIds": [
+          "demo-doc-01",
+          "demo-doc-11",
+          "demo-doc-16"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-07",
+        "resultIds": [
+          "demo-doc-02",
+          "demo-doc-12",
+          "demo-doc-17"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-08",
+        "resultIds": [
+          "demo-doc-03",
+          "demo-doc-13",
+          "demo-doc-18"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-09",
+        "resultIds": [
+          "demo-doc-04",
+          "demo-doc-14",
+          "demo-doc-19"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-10",
+        "resultIds": [
+          "demo-doc-05",
+          "demo-doc-15",
+          "demo-doc-20"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-11",
+        "resultIds": [
+          "demo-doc-01",
+          "demo-doc-06",
+          "demo-doc-16"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-12",
+        "resultIds": [
+          "demo-doc-02",
+          "demo-doc-07",
+          "demo-doc-17"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-13",
+        "resultIds": [
+          "demo-doc-03",
+          "demo-doc-08",
+          "demo-doc-18"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-14",
+        "resultIds": [
+          "demo-doc-04",
+          "demo-doc-09",
+          "demo-doc-19"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-15",
+        "resultIds": [
+          "demo-doc-05",
+          "demo-doc-10",
+          "demo-doc-20"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-16",
+        "resultIds": [
+          "demo-doc-01",
+          "demo-doc-06",
+          "demo-doc-11"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-17",
+        "resultIds": [
+          "demo-doc-02",
+          "demo-doc-07",
+          "demo-doc-12"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-18",
+        "resultIds": [
+          "demo-doc-03",
+          "demo-doc-08",
+          "demo-doc-13"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-19",
+        "resultIds": [
+          "demo-doc-04",
+          "demo-doc-09",
+          "demo-doc-14"
+        ],
+        "precisionAt3": 1
+      },
+      {
+        "id": "demo-doc-20",
+        "resultIds": [
+          "demo-doc-05",
+          "demo-doc-10",
+          "demo-doc-15"
+        ],
+        "precisionAt3": 1
+      }
+    ]
+  },
+  "limitations": [
+    "Curated synthetic corpus, not an independent or historical benchmark.",
+    "Expected IDs are required relevant sources; other retrieved public sources are not independently judged.",
+    "No live LLM call.",
+    "Kazakh wording requires native-speaker review."
+  ]
+}

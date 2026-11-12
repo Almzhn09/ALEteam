@@ -1,0 +1,853 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+	<link rel="alternate" href="http://e-arhiv.vko.gov.kz/kk" hreflang="kk" />
+	<link rel="alternate" href="http://e-arhiv.vko.gov.kz/ru" hreflang="ru" />
+    <title>Государственный архив Восточно-Казахстанской области и его филиалы</title>
+    <link href="/Content/css?v1.0" rel="stylesheet"/>
+
+    <link href="/Content/dropzonescss?v=_LwxzYcnE1rZO08BwoOGzDz2KH9-5gCjdgh-g5moIHU1" rel="stylesheet"/>
+
+
+    <script src="/bundles/dropzonescripts?v=sUxAkHVp92QYPFtzqFPlLpyXpRdRDSdZCcFmRP-AgXI1"></script>
+
+    <script src="/bundles/modernizr?v1.0"></script>
+
+    <script src="/bundles/jquery?v1.0"></script>
+<script src="/bundles/jqueryui?v1.0"></script>
+
+    <script src="/bundles/unobtrusive?v=jmjhTWiGrUMlGQS2hayanNTeGVZ9FC7i0HnCBpQ4IZ81"></script>
+
+
+    
+</head>
+<body>
+
+    <style>
+
+        div.navigationBtn {
+            text-align: center;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+            div.navigationBtn.back {
+                background-image: url(/Content/Images/navigate-to-back.png);
+            }
+
+                div.navigationBtn.back:hover {
+                    background-image: url(/Content/Images/navigate-to-back-hover.png);
+                }
+
+            div.navigationBtn.top {
+                background-image: url(/Content/Images/navigate-to-top.png);
+            }
+
+                div.navigationBtn.top:hover {
+                    background-image: url(/Content/Images/navigate-to-top-hover.png);
+                }
+
+            div.navigationBtn.bottom {
+                background-image: url(/Content/Images/navigate-to-bottom.png);
+            }
+
+                div.navigationBtn.bottom:hover {
+                    background-image: url(/Content/Images/navigate-to-bottom-hover.png);
+                }
+
+        a.navigationLink {
+            position: fixed;
+            z-index: 510;
+        }
+
+        #bn-panel a {
+            font-size: 0;
+            line-height: 0;
+            display: block;
+        }
+
+        #bn-panel div a {
+            display: block;
+            height: 65px;
+            width: 196px;
+            line-height: 0;
+            font-size: 0;
+        }
+
+        #bn-panel {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+        }
+
+        .futer_log {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+        }
+
+        #bn-panel div a img {
+            width: 100%;
+            height: 100%;
+            -o-object-fit: contain;
+            object-fit: contain;
+            margin: 0 !important;
+            padding: 0;
+        }
+
+        #bn-panel a {
+            padding-right: 15px;
+        }
+
+        #bn-panel img, #bn-panel div {
+            height: 130px;
+        }
+    </style>
+    <a onclick="NavigateBack()" class="navigationLink" style="left:0%; cursor:pointer;">
+        <div class="button-text navigationBtn back"></div>
+    </a>
+    <a href="#top" class="navigationLink" style="right:0%;">
+        <div class="button-text navigationBtn top"></div>
+    </a>
+    <a href="#bottom" class="navigationLink" style="bottom:0; right:0%;">
+        <div class="button-text navigationBtn bottom"></div>
+    </a>
+    <div id="interview-box" class="hide-box">
+        
+        <div id="request-box">
+            
+
+<form id="answer-form" method="post" action="">
+    <input data-val="true" data-val-number="Значением поля Id должно быть число." data-val-required="Требуется поле Id." id="Id" name="Id" type="hidden" value="5" />  
+    <div class="display-field">
+        <p>
+            Какой раздел сайта для Вас наиболее интересен?
+        </p>
+    </div>
+    
+    <div class="display-field">
+        <input id="answer__" name="answer[]" type="radio" value="pAV1" />
+        Научно-методическая база
+    </div>
+    
+    <div class="display-field">
+        <input id="answer__" name="answer[]" type="radio" value="pAV2" />
+        Личные фонды
+    </div>
+    
+    <div class="display-field">
+        <input id="answer__" name="answer[]" type="radio" value="pAV3" />
+        Сборники документов
+    </div>
+        
+    <div class="display-field">
+        <input id="answer__" name="answer[]" type="radio" value="pAV4" />
+        Публицистика
+    </div>
+
+    <div class="display-field">
+        <input id="answer__" name="answer[]" type="radio" value="pAV5" />
+        История края
+    </div>
+
+    <div class="display-field">
+        <input id="answer__" name="answer[]" type="radio" value="pAV6" />
+        Базы данных
+    </div>
+
+    <div class="display-field">
+        <input id="answer__" name="answer[]" type="radio" value="pAV7" />
+        Фотогалерея
+    </div>
+    
+
+</form>
+
+<div style="text-align: center;">
+    <div id="message-answer">
+        <a href="" id="answer-ok" class="button button-text answer">Проголосовать</a><br />       
+    </div>
+    <a class="one-link" href="/ru/Interview/Result">Архив опросов</a>
+</div>
+<script src="/bundles/FormScript?v=yLnKMV8iYAVZ4d52ejI3J7U7tPEiKWDfgvuShFMc7J41"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        ViewQuest = { Url: '/ru/Interview/ViewQuest/1330',
+            Target: "#message-answer", Method: "POST"
+        };
+
+        $("#answer-ok").click(function () {
+            var id = $("#answer-form #Id").val();
+            var answers = $("#answer-form input:radio:checked").val();
+            GetFormData(ViewQuest, { Id: id, Answers: answers });
+            return false;
+        });
+    });
+</script>
+
+        </div>
+        <div id="request-label">
+            <img alt="" src='/Content/Images/lang/opros_ru.png' />
+            
+        </div>
+    </div>
+    
+    <div id="left-body-border"></div>
+    <div id="right-body-border"></div>
+    <div id="top-block">
+        
+
+<div id="header">
+    <a  name="top"></a>
+    <div id="title-block" class="content-block">
+        <div id="logo">
+            <a href='/ru'>
+                <img alt="" src='/Content/Images/lang/Logo_ru.png' border="0" />
+            </a>
+        </div>
+        <div id="home-menu">
+            <a id="home" href='/ru'></a>
+            
+           
+        </div>
+        <div id="title" style="font-size: 15px; top:46px; left:242px; text-align:center; width:700px"><a href='/ru'><h1>Государственный архив Восточно-Казахстанской области и его филиалы</h1></a></div>
+        <div id="languages">
+
+
+
+<a href="/kk/Localize/ChangeCulture?ci=kk&amp;url=%2Fru%2FPage%2FIndex%2F1330">Қаз</a><a class="lang-selected" href="/ru/Localize/ChangeCulture?ci=ru&amp;url=%2Fru%2FPage%2FIndex%2F1330">Руc</a></div>
+    </div>
+</div>
+
+        <div id="title-line">
+            <div class="content-block">
+                <div class="left-box" style="margin-top: -7px;">
+                    <div>
+                        <h2>Государственный архив ВКО
+</h2>
+                    </div>
+                    <div style="word-wrap: break-word; width: 200px;">
+                        <div id="filials">
+                            Филиалы госархива ВКО
+                            <div class="dropdown">
+                                <div class="dropdown-body">
+                                    
+<ul>
+        <li>
+            <a href="/Admin/Group/SetGroup/2?url=%2Fru%2FPage%2FIndex%2F1330&amp;group=uka&amp;lang=ru">Усть-Каменогорский филиал по л/с</a>
+        </li>
+        <li>
+            <a href="/Admin/Group/SetGroup/4?url=%2Fru%2FPage%2FIndex%2F1330&amp;group=zaisan&amp;lang=ru">Зайсанский филиал ГАВКО</a>
+        </li>
+        <li>
+            <a href="/Admin/Group/SetGroup/5?url=%2Fru%2FPage%2FIndex%2F1330&amp;group=ridder&amp;lang=ru">Риддерский филиал ГАВКО</a>
+        </li>
+        <li>
+            <a href="/Admin/Group/SetGroup/7?url=%2Fru%2FPage%2FIndex%2F1330&amp;group=zirian&amp;lang=ru">Филиал Алтай ГАВКО</a>
+        </li>
+</ul>
+
+                                </div>
+                                <div class="dropdown-bottom"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="find">
+    <div id="find-box">
+        <form method="post" action='/ru/Search/FindResult'>
+            <div class="split"></div>
+            <div id="find-field">Поиск <input type="text" name="text" id="find-text" /></div> 
+            <input type="hidden" name="group" />
+            
+            <input type="submit" class="find-btn" value="" />
+        </form>
+    </div>                      
+</div>
+
+                </div>
+            </div>
+        </div>
+        <div id="top-content">
+            <div class="content-block">
+                <div id="top-content-panel">
+                    <div id="top-content-block">
+                        <a href='/ru/Page/Index/42426'>
+                            <div class="bd-panel"><div id="img-pen"><h2>Цифровая летопись ВКО</h2></div></div>
+                        </a>
+                        
+                        <a href='/ru/Page/Index/1350'>
+                            <div class="bd-panel"><div id="img-computer"><h2>Базы данных</h2></div></div>
+                        </a>
+                        <a href='/ru/GuestBook'>
+                            <div class="bd-panel"><div id="img-book"><h2>Гостевая книга</h2></div></div>
+                        </a>
+                    </div>
+                    <div id="banner-block">
+
+
+
+
+<div id="slider-box">
+    <div id="slider">
+            <img src="/akimsemey/Slides/1626981093_antikor.jpg" alt="" title="1626981093_antikor.jpg" />
+            <img src="/akimsemey/Slides/news6506.jpg" alt="" title="news6506.jpg" />
+            <img src="/akimsemey/Slides/415902_(www.GdeFon.ru).jpg" alt="" title="415902_(www.GdeFon.ru).jpg" />
+    </div>
+    <div id="arrow-left">
+    </div>
+    <div id="arrow-right">
+    </div>
+</div>
+<script type="text/javascript">
+    var moving = false;
+    var slideTimer;
+
+    $(document).ready(function () {
+        setTimer();
+
+        $("#arrow-left").click(LeftMove);
+        $("#arrow-right").click(RightMove);
+    });
+
+    function setTimer() {
+        slideTimer = setInterval(RightMove, 10000);
+    }
+
+    function stopTimer() {
+        clearInterval(slideTimer);
+    }
+
+    function MoveBegin() { moving = true; }
+
+    function MoveEnd() { moving = false; }
+
+    function LeftMove() {
+        var Len = $("#slider img").length;
+        var Left = $("#slider").css("left").replace("px", "");
+        Left = (600 + Left * 1);
+        if (0 >= Left && !moving) {
+            MoveBegin();
+            $("#slider").animate({ left: Left + "px" }, 700, MoveEnd);
+        }
+        else if (!moving) {
+            $("#slider").fadeOut(0);
+            $("#slider").fadeIn(400);   
+            $("#slider").css("left", Left - 600 * Len);
+        }
+    }
+
+    function RightMove() {
+        var Len = $("#slider img").length;
+        var Left = $("#slider").css("left").replace("px", "");
+        Left = (Left * 1 - 600);
+        if ((Len * (-600)) < Left && !moving) {
+            MoveBegin();
+            $("#slider").animate({ left: Left + "px" }, 700, MoveEnd);
+        }
+        else if (!moving) {
+            $("#slider").fadeOut(0);
+            $("#slider").fadeIn(400);  
+            $("#slider").css("left", Left + 600 * Len);
+        }
+    }
+    
+</script>
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="middle-content">
+        <div class="content-block">
+            <div id="top-menu">
+                
+
+
+
+
+
+
+
+<ul>
+        <li>
+<a href="/ru/Page/Index/1330">Контактная информация</a>        </li>
+        <li>
+<a href="/ru/Page/Index/1332">История архива</a>        </li>
+        <li>
+<a href="/ru/Page/Index/1340">Характеристика фондов</a>        </li>
+        <li>
+<a href="/ru/Page/Index/1336">Структура, функции</a>        </li>
+        <li>
+<a href="/ru/Page/Index/1342">Деятельность архива</a>        </li>
+        <li>
+<a href="/ru/Page/Index/1338">Читальный зал</a>        </li>
+</ul>
+            </div>
+            <div id="navigate" class="page">
+
+            </div>
+            <div class="page site-page">
+                <div id="main-content">
+                    <div>
+                        
+
+
+
+
+
+<div class="content-text">
+   <h2>Контактная информация</h2>
+   
+   <p><span style="font-family: 'times new roman', times; font-size: medium;"><strong>Адрес:</strong> Республика Казахстан,&nbsp;070000, г.Усть-Каменогорск,&nbsp;ул.Головкова, 26/1</span></p>
+<p><span style="font-family: 'times new roman', times; font-size: medium;"><img style="display: block; margin-left: auto; margin-right: auto; border: 2px solid #772f1a;" src="/akimsemey/upload/фото%201.jpg" alt="" width="422" height="317" /></span></p>
+<p><span style="font-family: 'times new roman', times; font-size: medium;"><strong><em style="font-family: 'times new roman', times;">Телефон приемной: </em></strong>8 (7232) 25-59-76&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>
+<p><span style="font-family: 'times new roman', times; font-size: medium;"><strong><em style="font-family: 'times new roman', times;">Факс: </em></strong>8 (7232) 25-59-76&nbsp;</span></p>
+<p><span style="font-family: 'times new roman', times; font-size: medium;"><em><strong>e-mail</strong>:</em>&nbsp;<span style="font-family: 'times new roman', times; font-size: medium;">arhiv-ukg@yandex.kz&nbsp;</span><br /></span></p>
+<p><span style="font-family: 'times new roman', times; font-size: medium;"><strong style="font-family: 'times new roman', times;"><em>Время работы:</em></strong> понедельник-пятница 9.00 &ndash; 18.00</span></p>
+<p><span style="font-family: 'times new roman', times; font-size: medium;"><strong><em>Время работы читального зала:</em></strong> понедельник-пятница 10.00-17.00</span></p>
+<p><span style="font-family: 'times new roman', times; font-size: medium;"><strong>Директор: Жапаров Аскар Кенжебаевич</strong></span><br /><span style="font-family: 'times new roman', times; font-size: medium;"><strong> <em>Телефон:</em></strong>&nbsp;8 (7232) 25-13-22</span></p>
+<p><span style="font-family: 'times new roman', times; font-size: medium;" data-mce-mark="1"><strong>Заместитель директора: </strong><strong><strong>Костина Елена Валерьевна</strong></strong></span><br /><span style="font-family: 'times new roman', times; font-size: medium;" data-mce-mark="1"><strong> <em>Телефон:</em></strong>&nbsp;8 (7232) 57-00-15</span></p>
+<p><span style="font-family: 'times new roman', times; font-size: medium;">&nbsp;&nbsp;</span></p>
+<p><span style="font-family: 'times new roman', times; font-size: medium;"><strong style="font-family: 'times new roman', times;">Адрес:</strong> Республика Казахстан,&nbsp;070004, г.Усть-Каменогорск,&nbsp;ул.Крылова, 39&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span></p>
+<p><span style="font-family: 'times new roman', times; font-size: medium;"><img style="display: block; margin-left: auto; margin-right: auto; border: 2px solid #772f1a;" src="/akimsemey/upload/крылова.jpg" alt="" width="430" /></span></p>
+<pre><span style="font-family: 'times new roman', times; font-size: medium;"><strong style="font-family: 'times new roman', times; text-align: justify;"><em>Телефон:</em></strong><em style="font-family: 'times new roman', times;">&nbsp;</em><span data-mce-mark="1">8 (7232) 25-13-47<br /></span><strong style="font-family: 'times new roman', times;"><em>Время работы читального зала:</em></strong><span data-mce-mark="1"> понедельник-пятница 10.00-17.00</span></span></pre>
+<pre><span style="font-family: 'times new roman', times; font-size: medium;">&nbsp;</span></pre>
+   &nbsp;
+</div>
+
+<script>
+	$('[data-fold-header]').click(function () {
+		var that = $(this);
+		var attr = that.attr('data-fold-header');
+		$('[data-fold-text="' + attr + '"]').each(function () {
+			var that = $(this);
+			if (that.css('display') === 'none')
+				that.css('display', 'block')
+			else
+				that.css('display', 'none')
+		})
+	});
+</script>
+
+                    </div>
+                </div>
+                <div id="right-menu-box">
+                    <div id="first-right-menu">
+                        
+
+
+
+
+
+
+
+<ul>
+        <li>
+<a href="/ru/Page/Index/42569">Государственные Символы РК</a>        </li>
+        <li>
+                <a href="/ru/NamedContent?type=Law">Законодательные и нормативные акты</a>
+        </li>
+        <li>
+                <a href="/ru/NamedContent?type=Method">Научно-методическая база</a>
+        </li>
+        <li>
+<a href="/ru/Page/Index/52679">Платные услуги</a>        </li>
+        <li>
+<a href="/ru/Page/Index/22187">Государственные услуги</a>        </li>
+        <li>
+<a href="/ru/Page/Index/52762">ГРАФИК приема граждан по личным вопросам</a>        </li>
+        <li>
+<a href="/ru/Page/Index/32297">Антикоррупция</a>        </li>
+        <li>
+<a href="/ru/Page/Index/52697">Система чтения с экрана для слабовидящих</a>        </li>
+        <li>
+<a href="/ru/Page/Index/52670">Документы</a>        </li>
+        <li>
+<a href="/ru/Page/Index/1588">Доклады, информации</a>        </li>
+        <li>
+<a href="/ru/Page/Index/1348">Публицистика</a>        </li>
+        <li>
+<a href="/ru/Page/Index/1749">Выступления</a>        </li>
+        <li>
+                <a href="/ru/NamedContent?type=Document">Сборники документов</a>
+        </li>
+        <li>
+<a href="/ru/Page/Index/1603">Архивные видеоматериалы</a>        </li>
+        <li>
+<a href="/ru/Page/Index/1352">Личные фонды</a>        </li>
+        <li>
+<a href="/ru/Page/Index/1354">История края</a>        </li>
+        <li>
+                <a href="/ru/SiteGallery">Фотогалерея</a>
+        </li>
+        <li>
+<a href="/ru/Page/Index/1478">Глоссарий</a>        </li>
+</ul>
+                    </div>
+                    
+                    <div>
+                        <a href='/ru/Page/Index/1926' id="but-metrics" class="button-text" style="margin-bottom:7px;"><span>Метрические книги</span></a>
+                        <a href='/ru/Page/Index/1362' id="but-calendar" class="button-text"><span>Календарь памятных дат</span></a>
+                    </div>
+                    <div id="calendar-menu" style="padding:20px">
+                        <!--
+                                                <a href="http://pogoda.yandex.ru/36403/details/" target="_blank" title="Погода">
+                                                        <img id="ctl00_DtLst_BnrA_ctl01_Image1" src="http://info.weather.yandex.net/informer/200x100/36403.png" style="border-width:0px;padding-top: 5px;" alt=""/>
+                                                </a>
+                        -->
+                        <!-- Gismeteo informer START -->
+                        <link rel="stylesheet" type="text/css" href="http://www.gismeteo.ru/static/css/informer2/gs_informerClient.min.css">
+                        <div id="gsInformerID-3K0E82B14r6138" class="gsInformer" style="width:240px;height:143px">
+                            <div class="gsIContent">
+                                <div id="cityLink">
+                                    <a href="http://www.gismeteo.ru/city/daily/5201/" target="_blank">Погода в Усть-Каменогорске</a>
+                                </div>
+                                <div class="gsLinks">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <div class="leftCol">
+                                                    <a href="http://www.gismeteo.ru" target="_blank">
+                                                        <img alt="Gismeteo" title="Gismeteo" src="http://www.gismeteo.ru/static/images/informer2/logo-mini2.png" align="absmiddle" border="0" />
+                                                        <span>Gismeteo</span>
+                                                    </a>
+                                                </div>
+                                                <div class="rightCol">
+                                                    <a href="http://www.gismeteo.ru/city/weekly/5201/" target="_blank">Прогноз на 2 недели</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <script src="http://www.gismeteo.ru/api/informer/getinformer/3K0E82B14r6138/" type="text/javascript"></script>
+                        <!-- Gismeteo informer END -->
+                    </div>
+                    <div id="but-box">
+                        <a href='/ru/Page/Index/1376' id="but-show" class="button-text"><span>Выставки</span></a>
+                        <a href='/ru/Page/Index/1479' id="but-advert" class="button-text"><span>Объявления</span></a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div id="bottom-content">
+        <div class="content-block">
+            <div id="bottom-box">
+                <div class="site-info">
+                    070004, РК, Восточно-Казахстанская область  г. Усть-Каменогорск, ул. Головкова, 26/1<br />Администратор сайта:  Бекниязқызы Жангуль. Copyright © 2010-2026
+                </div>
+                <div class="counters">
+
+<!-- Rating@Mail.ru counter -->
+<script type="text/javascript">//<![CDATA[
+    var _tmr = _tmr || [];
+    _tmr.push({ id: "2397584", type: "pageView", start: (new Date()).getTime() });
+    (function (d, w) {
+        var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true;
+        ts.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//top-fwz1.mail.ru/js/code.js";
+        var f = function () { var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s); };
+        if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
+    })(document, window);
+//]]></script><noscript><div style="position:absolute;left:-10000px;">
+<img src="//top-fwz1.mail.ru/counter?id=2397584;js=na" style="border:0;" height="1" width="1" alt="Рейтинг@Mail.ru" />
+</div></noscript>
+<!-- //Rating@Mail.ru counter -->
+<!-- Rating@Mail.ru logo -->
+<a target="_blank" href="http://top.mail.ru/jump?from=2397584">
+<img src="//top-fwz1.mail.ru/counter?id=2397584;t=425;l=1" 
+border="0" height="31" width="88" alt="Рейтинг@Mail.ru"></a>
+<!-- //Rating@Mail.ru logo -->
+
+
+<!--LiveInternet counter--><script type="text/javascript"><!--
+                               document.write("<a href='http://www.liveinternet.ru/click' " +
+"target=_blank><img src='//counter.yadro.ru/hit?t18.6;r" +
+escape(document.referrer) + ((typeof (screen) == "undefined") ? "" :
+";s" + screen.width + "*" + screen.height + "*" + (screen.colorDepth ?
+screen.colorDepth : screen.pixelDepth)) + ";u" + escape(document.URL) +
+";" + Math.random() +
+"' alt='' title='LiveInternet: показано число просмотров за 24" +
+" часа, посетителей за 24 часа и за сегодня' " +
+"border='0' width='88' height='31'><\/a>")
+//--></script><!--/LiveInternet-->
+
+<!-- HotLog -->
+<script type="text/javascript">
+    var hotlog_counter_id = 2117725;
+    var hotlog_hit = 36;
+    var hotlog_counter_type = 515;
+</script>
+<script src="http://js.hotlog.ru/counter.js" type="text/javascript"></script>
+<noscript>
+<a href="http://click.hotlog.ru/?2117725" target="_blank"><img
+src="http://hit36.hotlog.ru/cgi-bin/hotlog/count?s=2117725&amp;im=515" border="0"
+alt="HotLog"></a>
+</noscript>
+<!-- /HotLog -->
+                </div>
+                <div class="clear"></div>
+                <br />
+                <div id="bn-panel">
+                    <a href=""><div></div></a>
+                    
+                            <a href="http://www.akorda.kz/" target="_blank"><img alt="" src='/akimsemey/bn-img/prez_ru.jpg' title="Официальный сайт Президента Республики Казахстан" /></a>
+                            <!--<a href="http://cultura-arhiv.vko.gov.kz/" target="_blank"><img alt="" src='/akimsemey/bn-img/arhiv_gov_ru.png' title="Управление архивов, культуры и документации ВКО" /></a>-->
+                            <a href="https://www.gov.kz/memleket/entities/vko-uca/activities/11180?lang=ru" target="_blank"><img alt="" src='/akimsemey/bn-img/bn_e_archive.jpg' title="Управление цифровизации и архивов Восточно-Казахстанской области" /></a>
+                            <a href="http://veteran-vko.kz/ru/" target="_blank"><img alt="" src='/akimsemey/bn-img/b_earhiv_ru.jpg' title="Ветераны Восточно-Казахстанской Области" /></a>
+                            <div class="futer_log">
+                                <a href="https://e-vko.gov.kz/ru/services/index?id=38" target="_blank"><img alt="" src='/akimsemey/bn-img/ceu_ru.png' title="Центр электронных услуг : Выдача архивных справок, копий архивных документов или архивных выписок" /></a>
+                                <a href="https://egov.kz/cms/ru/services/apostil/e_059" target="_blank"><img alt="" src='/akimsemey/bn-img/egov_ru.jpg' title="Госуслуги и информация онлайн : Выдача архивных справок, копий архивных документов или архивных выписок" /></a>
+                            </div>
+                            <a href="https://www.qazlatyn.kz/converter/text" target="_blank"><img alt="" src='/akimsemey/bn-img/logo_konverter.jpg' title="Текстовый конвертер" /></a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <a name="bottom"></a>
+
+
+    <link href="/Content/admin/styles/list_control.css" rel="stylesheet" />
+
+    
+    <script type="text/javascript">
+    var galleryUrl = '/ru/SiteGallery/Album';
+    //var windowBoxUrl = '/ru/Gallery/qOverlayControl';
+
+    $(document).ready(function () {
+
+        $("#interview-box").addClass("hide-box");
+
+        $("#request-label").click(function () {
+            if ($("#interview-box").is('.hide-box')) {
+                $("#interview-box").removeClass("hide-box");
+            }
+            else {
+                $("#interview-box").addClass("hide-box");
+            }
+        });
+
+        GalleryPlugin();
+
+    });
+
+    function GalleryPlugin() {
+    	var galleries = $(".gallery-album");
+    	for (var i = 0; i < galleries.length; i++) {
+    	    var t = function (elem){
+    	        var id = elem.find("input").val();
+    	        var dt = {
+    	            albumId: id,
+    	            partial: true
+    	        };
+    	        $.ajax({
+    	            url: galleryUrl,
+    	            type: "GET",
+    	            data: dt,
+    	            success: function (data) {
+    	                elem.append(data);
+    	            }
+    	        });
+    	    }
+    	    t(galleries.eq(i));
+    	}
+    }
+
+    //Новые галереи
+
+    function ShowPhoto(element) {
+        var id = $(element).attr('data-id');
+        if (id > 0) {
+            $('.photo-overlay').addClass('enabled').data('elem', { id: id, element: element });
+            LoadPhoto();
+        }
+    }
+
+    function LoadPhoto() {
+        var id = $('.photo-overlay').data('elem').id;
+        $.ajax({
+            url: "/ru/SiteGallery/GetSinglePhotoData_JSON",
+            data: { photoId: id },
+            type: "GET",
+            success: function (d) {
+                if (d.error) {
+                    HidePhotoOverlay();
+                } else {
+                    $('.photo-overlay-header').html(d.Title);
+                    $('.photo-overlay-description').html(d.Description);
+                    var imageUrl = "url('/ru/SiteGallery/GetPhoto?id=" + id + "')";
+                    $('.photo-overlay-image').css('background-image', imageUrl)
+                }
+            }
+        });
+    }
+
+    function NextPhoto(event) {
+        event = event || window.event;
+        var data = $('.photo-overlay').data('elem');
+        console.log(data);
+        if (data != null && data != void 0) {
+            var e = $(data.element).next();
+            if (e.length > 0) {
+                ShowPhoto(e[0]);
+            }
+        }
+        event.stopPropagation();
+        return false;
+    }
+
+    function PrevPhoto(event) {
+        event = event || window.event;
+        var data = $('.photo-overlay').data('elem');
+        console.log(data);
+        if (data != null && data != void 0) {
+            var e = $(data.element).prev();
+            if (e.length > 0) {
+                ShowPhoto(e[0]);
+            }
+        }
+        event.stopPropagation();
+        return false;
+    }
+
+    function HidePhotoOverlay() {
+        $('.photo-overlay').removeClass('enabled');
+    }
+
+    function NavigateBack() {
+        window.history.back();
+    }
+    </script>
+
+    <style>
+        .photo-overlay.enabled {
+            display: block;
+        }
+
+        .photo-overlay {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0,0,0, 0.75);
+            z-index: 600;
+            display: none;
+        }
+
+        .photo-overlay-content {
+            top: 5%;
+            left: 15%;
+            position: absolute;
+            /*min-height: 800px;*/
+            height: 80%;
+            min-width: 600px;
+            width: 70%;
+            background-color: rgba(0,0,0,0.75);
+        }
+
+        .photo-overlay-header {
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            color: white;
+            font-size: 20px;
+        }
+
+            .photo-overlay-header:empty {
+                display: none;
+            }
+
+        .photo-overlay-data {
+            overflow: hidden;
+            height: calc(100% - 32px);
+            width: 100%;
+            position: relative;
+        }
+
+        /*.photo-overlay-header:empty + .photo-overlay-data {
+            height: 100%;
+        }*/
+
+        .photo-overlay-image {
+            height: calc(100% - 64px);
+            width: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-image: url('/Content/admin/images/no_image.png');
+        }
+
+        .photo-overlay-description {
+            width: 100%;
+            height: 32px;
+            line-height: 32px;
+            color: white;
+            font-size: 20px;
+            display: block;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+            .photo-overlay-description:empty {
+                display: none;
+            }
+
+        /*.photo-overlay-description:empty + .photo-overlay-image {
+                    width: 100%;
+                }*/
+
+        .photo-overlay-prev,
+        .photo-overlay-next {
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            background-size: 48px;
+            background-repeat: no-repeat;
+            background-position: center;
+            top: calc(50% - 32px);
+            cursor: pointer;
+        }
+
+        .photo-overlay-prev {
+            left: 0;
+            background-image: url('/Content/Images/arrow-left.png');
+        }
+
+        .photo-overlay-next {
+            right: 0;
+            background-image: url('/Content/Images/arrow-right.png');
+        }
+    </style>
+
+    <div class="photo-overlay" onclick="HidePhotoOverlay()">
+        <div class="photo-overlay-content">
+            <header class="photo-overlay-header"></header>
+            <div class="photo-overlay-image" onclick="NextPhoto(event)">
+                <div class="photo-overlay-prev" onclick="PrevPhoto(event)"></div>
+                <div class="photo-overlay-next" onclick="NextPhoto(event)"></div>
+            </div>
+            <div class="photo-overlay-description"></div>
+        </div>
+    </div>
+</body>
+
+</html>

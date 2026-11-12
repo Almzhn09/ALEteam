@@ -1,0 +1,32 @@
+[
+  {
+    "width": 360,
+    "keyboardFocus": true,
+    "overflow": false,
+    "health": 200,
+    "guide": 200,
+    "pageErrors": [],
+    "screenshot": ".local/reports/screenshots/technical-360.png",
+    "target": "technical landing only; final frontend absent"
+  },
+  {
+    "width": 768,
+    "keyboardFocus": true,
+    "overflow": false,
+    "health": 200,
+    "guide": 200,
+    "pageErrors": [],
+    "screenshot": ".local/reports/screenshots/technical-768.png",
+    "target": "technical landing only; final frontend absent"
+  },
+  {
+    "width": 1440,
+    "keyboardFocus": true,
+    "overflow": false,
+    "health": 200,
+    "guide": 200,
+    "pageErrors": [],
+    "screenshot": ".local/reports/screenshots/technical-1440.png",
+    "target": "technical landing only; final frontend absent"
+  }
+]

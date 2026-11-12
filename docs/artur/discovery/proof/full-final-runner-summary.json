@@ -1,0 +1,36 @@
+{
+  "results": [
+    {
+      "command": "npm run test:uploads",
+      "exitCode": 0,
+      "log": "test-uploads.log"
+    },
+    {
+      "command": "npm run test:discovery",
+      "exitCode": 0,
+      "log": "test-discovery.log"
+    },
+    {
+      "command": "npm run test:release",
+      "exitCode": 0,
+      "log": "test-release.log"
+    },
+    {
+      "command": "npm run check:display",
+      "exitCode": 0,
+      "log": "check-display.log"
+    },
+    {
+      "command": "npm run check:team-ui",
+      "exitCode": 0,
+      "log": "check-team-ui.log"
+    },
+    {
+      "command": "npm run check:performance",
+      "exitCode": 0,
+      "log": "check-performance.log"
+    }
+  ],
+  "dedicatedDatabase": true,
+  "containerRemoved": true
+}

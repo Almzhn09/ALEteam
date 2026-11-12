@@ -1,0 +1,466 @@
+{
+  "schemaVersion": 1,
+  "received": "2026-11-10",
+  "provenance": "User uploads; organizer clarification recorded separately; not independent publication approval",
+  "sources": [
+    {
+      "id": "S01",
+      "file": "Адреса и контакты филиалов.xls",
+      "bytes": 55808,
+      "sha256": "7b10400e17eecde1284d6b07b441a4d68011dfddd672a075dd64bce5acba85cd",
+      "original": "originals/Адреса и контакты филиалов.xls",
+      "texts": [
+        {
+          "member": "Адреса и контакты филиалов.xls",
+          "path": "text/S01--Адреса и контакты филиалов.xls.txt",
+          "characters": 6503,
+          "sha256": "3600bc078054065d9552345ef51ee42faeb5eaa9b9756e633a6d3c9a6fd9f596"
+        }
+      ]
+    },
+    {
+      "id": "S02",
+      "file": "История архива.docx",
+      "bytes": 11424,
+      "sha256": "a7fe9a0dc02c62f2143fbc55c9c677cbbad7b1b05eb981be6ab4addf544aac59",
+      "original": "originals/История архива.docx",
+      "texts": [
+        {
+          "member": "История архива.docx",
+          "path": "text/S02--История архива.docx.txt",
+          "characters": 12337,
+          "sha256": "752bdbe469e558be73e14f526028b933cf372ea2a2f08b241fee69961e9ac3e0"
+        }
+      ]
+    },
+    {
+      "id": "S03",
+      "file": "Календарь памятных дат.7z",
+      "bytes": 107216,
+      "sha256": "63173799c069869a37104f3edf6529fa28364f2af8946922232960619ce1b077",
+      "original": "originals/Календарь памятных дат.7z",
+      "members": [
+        {
+          "path": "Календарь памятных дат/календарь 2022 год каз рус.docx",
+          "bytes": 30048,
+          "sha256": "5bc0722597c928f41e7d3c495ccd4547bfdf13fae635161700402fdd5717e2fe"
+        },
+        {
+          "path": "Календарь памятных дат/календарь 2023 год каз рус.docx",
+          "bytes": 25204,
+          "sha256": "f8633fbfa4063d3a209f07f9c7d2709e2544ef2ab5bef2e7b922a1ce6895b90f"
+        },
+        {
+          "path": "Календарь памятных дат/календарь 2024 год каз рус.docx",
+          "bytes": 27625,
+          "sha256": "7920a24940ec1336233e53d71cd9edf0d3c8159b4b57c31be0e7012d3dab3747"
+        },
+        {
+          "path": "Календарь памятных дат/календарь 2025 год каз рус.docx",
+          "bytes": 28872,
+          "sha256": "c549d827022b99c09beca17997b55cfe150e09d2bc1e1c2eb671514705bba488"
+        },
+        {
+          "path": "Календарь памятных дат/календарь 2026 год каз рус.docx",
+          "bytes": 25558,
+          "sha256": "744855e8e0971656ab407ea04a3734b4f6d03c258c79dd93a8ad6b4bba9a9ec7"
+        }
+      ],
+      "texts": [
+        {
+          "member": "Календарь памятных дат/календарь 2022 год каз рус.docx",
+          "path": "text/S03--календарь 2022 год каз рус.docx.txt",
+          "characters": 10634,
+          "sha256": "3a3875cc06bd882277481e109ac679d36f2e88de0f895e35fa8dcd2009b27e2c"
+        },
+        {
+          "member": "Календарь памятных дат/календарь 2023 год каз рус.docx",
+          "path": "text/S03--календарь 2023 год каз рус.docx.txt",
+          "characters": 6647,
+          "sha256": "68cf920bb979594edcdb12fda0918304a58db4dc8d72eb7c2b22ce19c5041c75"
+        },
+        {
+          "member": "Календарь памятных дат/календарь 2024 год каз рус.docx",
+          "path": "text/S03--календарь 2024 год каз рус.docx.txt",
+          "characters": 8242,
+          "sha256": "597fe938adb558ce725f876a03aa6330d8f979aad5906ab2238a96f730e9f200"
+        },
+        {
+          "member": "Календарь памятных дат/календарь 2025 год каз рус.docx",
+          "path": "text/S03--календарь 2025 год каз рус.docx.txt",
+          "characters": 10073,
+          "sha256": "32f4a1f1a0cc72a340f720ce23eada196043d19ba7814adffcacccecb9c74a06"
+        },
+        {
+          "member": "Календарь памятных дат/календарь 2026 год каз рус.docx",
+          "path": "text/S03--календарь 2026 год каз рус.docx.txt",
+          "characters": 7814,
+          "sha256": "44b6b1d1e1e181bd851e404aa8bcaaec685d03dd46e2da80746a8d9a82b0f0ed"
+        }
+      ],
+      "externalLinks": [
+        {
+          "member": "Календарь памятных дат/календарь 2022 год каз рус.docx",
+          "label": "Павла Петровича Бурова (1902-1944)",
+          "url": "http://imena.pushkinlibrary.kz/ex.htm"
+        },
+        {
+          "member": "Календарь памятных дат/календарь 2022 год каз рус.docx",
+          "label": "Алексея Николаевича Белослюдова (1887-1939)",
+          "url": "http://imena.pushkinlibrary.kz/ex.htm"
+        },
+        {
+          "member": "Календарь памятных дат/календарь 2022 год каз рус.docx",
+          "label": "Оралбека Бейсембаевича  Малдыбаева (1922-2010)",
+          "url": "http://imena.pushkinlibrary.kz/poch.htm"
+        },
+        {
+          "member": "Календарь памятных дат/календарь 2022 год каз рус.docx",
+          "label": "Ахата Салемхатовича Куленова (1932-2007)",
+          "url": "http://imena.pushkinlibrary.kz/poch.htm"
+        },
+        {
+          "member": "Календарь памятных дат/календарь 2022 год каз рус.docx",
+          "label": "Дмитрия Гордеевича Панкратьева (1867-1956)",
+          "url": "http://imena.pushkinlibrary.kz/ex.htm"
+        },
+        {
+          "member": "Календарь памятных дат/календарь 2022 год каз рус.docx",
+          "label": "Замзы Кыдылшановича Кырыкбаева (1942)",
+          "url": "http://imena.pushkinlibrary.kz/poch.htm"
+        },
+        {
+          "member": "Календарь памятных дат/календарь 2022 год каз рус.docx",
+          "label": "Валиахмета Нурахметовича Байдельдинова (1932)",
+          "url": "http://imena.pushkinlibrary.kz/poch.htm"
+        },
+        {
+          "member": "Календарь памятных дат/календарь 2022 год каз рус.docx",
+          "label": "Тургазы Нукаева (1937-2001)",
+          "url": "http://imena.pushkinlibrary.kz/lit.htm"
+        }
+      ]
+    },
+    {
+      "id": "S04",
+      "file": "Комплаенс служба.7z",
+      "bytes": 29498413,
+      "sha256": "1bdb30b95094faeb2d00db8d1a1f12a8c07382c78fa818e4a5a03a0e78f03834",
+      "original": "originals/Комплаенс служба.7z",
+      "members": [
+        {
+          "path": "Комплаенс служба/Аналитикалық анықтама СЖТІТ 2026.pdf",
+          "bytes": 13888667,
+          "sha256": "33e5247b84e6a237f8af354c21dda28ed785b429880b65fd5a111130e55612e5"
+        },
+        {
+          "path": "Комплаенс служба/Аналитическая справка ВАКР 2026.pdf",
+          "bytes": 10695055,
+          "sha256": "fe0975c5428359f8c78c7787bfbe65e932f008f15037a2d208544a27f89ae640"
+        },
+        {
+          "path": "Комплаенс служба/Информация каз.docx",
+          "bytes": 18488,
+          "sha256": "fc6b6566ee2882489cd15a127ecd2602fe5dd75cacfddc277500b49725455657"
+        },
+        {
+          "path": "Комплаенс служба/Информация о работе комплаенс службы.docx",
+          "bytes": 15471,
+          "sha256": "2fbcf5f47f56418c9f9771883ac13c177b122fe856f08677de5be59fb2837577"
+        },
+        {
+          "path": "Комплаенс служба/Комплаенс-офицер.txt",
+          "bytes": 90,
+          "sha256": "6095ad61e13ff882adcb607377443db29c24b6b475fa3dafef20a78b687e15ca"
+        },
+        {
+          "path": "Комплаенс служба/О проведении внутреннего анализа коррупционных рисков.docx",
+          "bytes": 13812,
+          "sha256": "78f3e6133fb9ff85981b91471f14d4ab8addc23c2fc6eb9f31fb0d4be2eb5177"
+        },
+        {
+          "path": "Комплаенс служба/Перечень должностей каз.pdf",
+          "bytes": 247132,
+          "sha256": "a2e51204036a00b059299599a4a344cd67b8386ba0fbf798ffb51958ad4ece3d"
+        },
+        {
+          "path": "Комплаенс служба/Перечень должностей.pdf",
+          "bytes": 243773,
+          "sha256": "73ef6b499f789b52fb6b32247724f7f0fb3e06568e2f1313b9237b98290d1158"
+        },
+        {
+          "path": "Комплаенс служба/План мероприятий каз.pdf",
+          "bytes": 1985135,
+          "sha256": "63b2717c252f8f743702c44352570da6f9f13ea3b899d3a3d616a28c7dfcf620"
+        },
+        {
+          "path": "Комплаенс служба/План мероприятий рус.pdf",
+          "bytes": 1920838,
+          "sha256": "0dae7a7694c8a2c7607e874cf037fc3f5b05c8132ea9ab2d645f34bd3e72c73e"
+        },
+        {
+          "path": "Комплаенс служба/Положение об антикор..pdf",
+          "bytes": 5536588,
+          "sha256": "c884e438c91dc5bb3653b3f72c3f89130f24d612fd7476fb06cb58329ce77434"
+        },
+        {
+          "path": "Комплаенс служба/Сыбайлас жемқорлық тәуекелдеріне ішкі талдау жүргізу туралы.docx",
+          "bytes": 13981,
+          "sha256": "33220f353090468249c80179cdc15c99a519db06e36b930f46fc0329e115317c"
+        },
+        {
+          "path": "Комплаенс служба/Сыбайлас жемқорлыққа қарсы комплаене қызметі туралы ереже.pdf",
+          "bytes": 1597580,
+          "sha256": "ceab9f738c6ca0224a015fa30ca74971d2e1a8f0c82c7fecc3e2f5fb183b813d"
+        }
+      ],
+      "texts": [
+        {
+          "member": "Комплаенс служба/Аналитикалық анықтама СЖТІТ 2026.pdf",
+          "path": "text/S04--Аналитикалық анықтама СЖТІТ 2026.pdf.txt",
+          "characters": 39122,
+          "method": "tesseract rus+kaz; 2200px; unverified",
+          "pages": 17,
+          "sha256": "d99a42f46a679372a5719112b888123293a105e2778654f90fb9c0382a9c0eb3"
+        },
+        {
+          "member": "Комплаенс служба/Аналитическая справка ВАКР 2026.pdf",
+          "path": "text/S04--Аналитическая справка ВАКР 2026.pdf.txt",
+          "characters": 37605,
+          "method": "tesseract rus+kaz; 2200px; unverified",
+          "pages": 16,
+          "sha256": "61b83df797b2e91d3341bc694985616a0f450174549b88ee658e2fe8ef449699"
+        },
+        {
+          "member": "Комплаенс служба/Информация каз.docx",
+          "path": "text/S04--Информация каз.docx.txt",
+          "characters": 1869,
+          "sha256": "320252e00abd63de1410c26603a77ba920bbc35373f96441924464943d1a7620"
+        },
+        {
+          "member": "Комплаенс служба/Информация о работе комплаенс службы.docx",
+          "path": "text/S04--Информация о работе комплаенс службы.docx.txt",
+          "characters": 1783,
+          "sha256": "411880df7a24f24ac1a033c285d44a2a0e8fd624e788fcffaa122073810f1c55"
+        },
+        {
+          "member": "Комплаенс служба/О проведении внутреннего анализа коррупционных рисков.docx",
+          "path": "text/S04--О проведении внутреннего анализа коррупционных рисков.docx.txt",
+          "characters": 398,
+          "sha256": "418aa3d967f654672df4467726d84df95b6b518add6c8ec87d5c79507556c52d"
+        },
+        {
+          "member": "Комплаенс служба/Перечень должностей каз.pdf",
+          "path": "text/S04--Перечень должностей каз.pdf.txt",
+          "characters": 12672,
+          "sha256": "ce785d437ca03ee73d05021aa8840cae6adcef8d17e0861177748e7e9f91bf72"
+        },
+        {
+          "member": "Комплаенс служба/Перечень должностей.pdf",
+          "path": "text/S04--Перечень должностей.pdf.txt",
+          "characters": 13052,
+          "sha256": "261112f98316aa407c9b1499f8ea4424567e5cade6d6e93936025ac5409278f6"
+        },
+        {
+          "member": "Комплаенс служба/План мероприятий каз.pdf",
+          "path": "text/S04--План мероприятий каз.pdf.txt",
+          "characters": 5363,
+          "method": "tesseract rus+kaz; 2200px; unverified",
+          "pages": 4,
+          "sha256": "640f0113a3096d8c687a0c0a49d047af2877f0c105500365b0b1682d52a0a4ee"
+        },
+        {
+          "member": "Комплаенс служба/План мероприятий рус.pdf",
+          "path": "text/S04--План мероприятий рус.pdf.txt",
+          "characters": 5075,
+          "method": "tesseract rus+kaz; 2200px; unverified",
+          "pages": 4,
+          "sha256": "78e7ed66e191254ee5fcc54ac9a38077548c475a1dcf521c32bff262b258f1e6"
+        },
+        {
+          "member": "Комплаенс служба/Положение об антикор..pdf",
+          "path": "text/S04--Положение об антикор..pdf.txt",
+          "characters": 12383,
+          "method": "tesseract rus+kaz; 2200px; unverified",
+          "pages": 6,
+          "sha256": "27c60025644b28bacb11bf005e5788894ee2054b05fcf5cb6f6c7c2e3133b80d"
+        },
+        {
+          "member": "Комплаенс служба/Сыбайлас жемқорлық тәуекелдеріне ішкі талдау жүргізу туралы.docx",
+          "path": "text/S04--Сыбайлас жемқорлық тәуекелдеріне ішкі талдау жүргізу туралы.docx.txt",
+          "characters": 412,
+          "sha256": "ab293544693289bf61904aac187b97cf66f23e064eccc1be7379ccc921ce5470"
+        },
+        {
+          "member": "Комплаенс служба/Сыбайлас жемқорлыққа қарсы комплаене қызметі туралы ереже.pdf",
+          "path": "text/S04--Сыбайлас жемқорлыққа қарсы комплаене қызметі туралы ереже.pdf.txt",
+          "characters": 14056,
+          "method": "tesseract rus+kaz; 2200px; unverified",
+          "pages": 6,
+          "sha256": "447930645872d0e8caaae9315a9f26da6b098def3fe28c19ea926efc08a41977"
+        },
+        {
+          "member": "Комплаенс служба/Комплаенс-офицер.txt",
+          "path": "text/S04--Комплаенс-офицер.txt.txt",
+          "characters": 48,
+          "sha256": "6095ad61e13ff882adcb607377443db29c24b6b475fa3dafef20a78b687e15ca"
+        }
+      ]
+    },
+    {
+      "id": "S05",
+      "file": "Контакты.docx",
+      "bytes": 7614,
+      "sha256": "b9fdc6060ab279171e66736178a75452191ca8b6abc69c0c61065eeb1a77df65",
+      "original": "originals/Контакты.docx",
+      "texts": [
+        {
+          "member": "Контакты.docx",
+          "path": "text/S05--Контакты.docx.txt",
+          "characters": 744,
+          "sha256": "ae50e7ec7822927a76778144d82bff4b28b21d7c8a52ef49d9c590120f5447e2"
+        }
+      ],
+      "externalLinks": [
+        {
+          "member": "Контакты.docx",
+          "label": "arhiv-ukg@yandex.kz",
+          "url": "mailto:arhiv-ukg@yandex.kz"
+        }
+      ]
+    },
+    {
+      "id": "S06",
+      "file": "Постановление обл акимата 142.pdf",
+      "bytes": 1349711,
+      "sha256": "a0d390105cb014504b83f3fa7208e9254bad2cbb7bb12bbe8f5d066bf4caf7dd",
+      "original": "originals/Постановление обл акимата 142.pdf",
+      "texts": [
+        {
+          "member": "Постановление обл акимата 142.pdf",
+          "path": "text/S06--Постановление обл акимата 142.pdf.txt",
+          "characters": 10857,
+          "method": "tesseract rus+kaz; 2200px; unverified",
+          "pages": 6,
+          "sha256": "03bff418d56ccdc778456955da00ba569a88d3f9c3e8198b072fa5224206dcfc"
+        }
+      ]
+    },
+    {
+      "id": "S07",
+      "file": "Структура.docx",
+      "bytes": 10069,
+      "sha256": "a8678998fada92018f8fe49802e927e248cb942f05939438a8397b5689e72275",
+      "original": "originals/Структура.docx",
+      "texts": [
+        {
+          "member": "Структура.docx",
+          "path": "text/S07--Структура.docx.txt",
+          "characters": 2016,
+          "sha256": "5f26f5320664e4d00402b7aee9ab9b163d739d875eb861020591f172954405cc"
+        }
+      ],
+      "externalLinks": [
+        {
+          "member": "Структура.docx",
+          "label": "ak.zhaparov@akimvko.gov.kz",
+          "url": "mailto:ak.zhaparov@akimvko.gov.kz"
+        },
+        {
+          "member": "Структура.docx",
+          "label": "e.kostina@akimvko.gov.kz",
+          "url": "mailto:e.kostina@akimvko.gov.kz"
+        },
+        {
+          "member": "Структура.docx",
+          "label": "k.uvalzhanova@akimvko.gov.kz",
+          "url": "mailto:k.uvalzhanova@akimvko.gov.kz"
+        },
+        {
+          "member": "Структура.docx",
+          "label": "a.baelova@akimvko.gov.kz",
+          "url": "mailto:a.baelova@akimvko.gov.kz"
+        },
+        {
+          "member": "Структура.docx",
+          "label": "a.baelova@akimvko.gov.kz",
+          "url": "mailto:a.baelova@akimvko.gov.kz"
+        },
+        {
+          "member": "Структура.docx",
+          "label": "g.sarsembaeva@akimvko.gov.kz",
+          "url": "mailto:g.sarsembaeva@akimvko.gov.kz"
+        },
+        {
+          "member": "Структура.docx",
+          "label": "t.shustova@akimvko.gov.kz",
+          "url": "mailto:t.shustova@akimvko.gov.kz"
+        },
+        {
+          "member": "Структура.docx",
+          "label": "zh.bekniazkyzy@akimvko.gov.kz",
+          "url": "mailto:zh.bekniazkyzy@akimvko.gov.kz"
+        },
+        {
+          "member": "Структура.docx",
+          "label": "arhivvko_ekspertiza@yandex.kz",
+          "url": "mailto:arhivvko_ekspertiza@yandex.kz"
+        }
+      ]
+    },
+    {
+      "id": "S08",
+      "file": "ТЗ_дополнения_ГосАрхив ВКО.docx",
+      "bytes": 83134,
+      "sha256": "4e5009e6f16b286c149610b088d9e8f079db6caf3645b5e3562fc48d9699eaa6",
+      "original": "originals/ТЗ_дополнения_ГосАрхив ВКО.docx",
+      "texts": [
+        {
+          "member": "ТЗ_дополнения_ГосАрхив ВКО.docx",
+          "path": "text/S08--ТЗ_дополнения_ГосАрхив ВКО.docx.txt",
+          "characters": 20333,
+          "sha256": "eacfcd35b5e9e5bf7a38d44b8d768f5e053bbd73e3072724d6f4879924af177f"
+        }
+      ]
+    },
+    {
+      "id": "S09",
+      "file": "Фонды.7z",
+      "bytes": 12435,
+      "sha256": "e9690bae3ad792e31eee246ca07b5226a68f4b473734d8ea69bc17c75f28b19d",
+      "original": "originals/Фонды.7z",
+      "members": [
+        {
+          "path": "Фонды/Фонды.docx",
+          "bytes": 15161,
+          "sha256": "62d6ec35bbe5054e865e4bd6cca0da78da7224d7b7031765784da5d2ba7ecf5e"
+        }
+      ],
+      "texts": [
+        {
+          "member": "Фонды/Фонды.docx",
+          "path": "text/S09--Фонды.docx.txt",
+          "characters": 414,
+          "sha256": "cdae9979288e1931f7e08fb9e54691e50452310e936ee705099eebb9bfd71a88"
+        }
+      ],
+      "externalLinks": [
+        {
+          "member": "Фонды/Фонды.docx",
+          "label": "Перечень газет, хранящихся в государственном архиве Восточно-Казахстанской области за 1935-2011гг. по состоянию на 01.01.2026г.",
+          "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%B3%D0%B0%D0%B7%D0%B5%D1%82%D1%8B%20%D0%B7%D0%B0%201935-2017.docx"
+        },
+        {
+          "member": "Фонды/Фонды.docx",
+          "label": "Фонды государственного архива Восточно-Казахстанской области по состоянию на 01.01.2026г.",
+          "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%A4%D0%BE%D0%BD%D0%B4%D1%8B%20%D0%B3%D0%BE%D1%81%D0%B0%D1%80%D1%85%D0%B8%D0%B2%D0%B0%20%D0%92%D0%9A%D0%9E%20%D0%BD%D0%B0%202018%D0%B3..xlsb"
+        },
+        {
+          "member": "Фонды/Фонды.docx",
+          "label": "Партийные фонды государственного архива Восточно-Казахстанской области по состоянию на 01.01.2026г.",
+          "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%BF%D0%B0%D1%80%D1%82%20%D1%84%D0%BE%D0%BD%D0%B4%D1%8B%20%D0%B3%D0%BE%D1%81%D0%B0%D1%80%D1%85%D0%B8%D0%B2%D0%B0%20%D0%92%D0%9A%D0%9E%20%D0%BD%D0%B0%202018%D0%B3..xlsb"
+        }
+      ]
+    }
+  ]
+}

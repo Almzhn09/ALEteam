@@ -1,0 +1,112 @@
+{
+  "rows": [
+    {
+      "width": 360,
+      "theme": "light",
+      "lang": "ru",
+      "textSize": 150,
+      "departments": 7,
+      "leadership": 3,
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "theme": "light",
+      "lang": "kk",
+      "textSize": 150,
+      "departments": 7,
+      "leadership": 3,
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "theme": "light",
+      "lang": "en",
+      "textSize": 150,
+      "departments": 7,
+      "leadership": 3,
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "lang": "ru",
+      "textSize": 150,
+      "departments": 7,
+      "leadership": 3,
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "lang": "kk",
+      "textSize": 150,
+      "departments": 7,
+      "leadership": 3,
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "lang": "en",
+      "textSize": 150,
+      "departments": 7,
+      "leadership": 3,
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "lang": "ru",
+      "textSize": 150,
+      "departments": 7,
+      "leadership": 3,
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "lang": "kk",
+      "textSize": 150,
+      "departments": 7,
+      "leadership": 3,
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "lang": "en",
+      "textSize": 150,
+      "departments": 7,
+      "leadership": 3,
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "lang": "ru",
+      "textSize": 150,
+      "departments": 7,
+      "leadership": 3,
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "lang": "kk",
+      "textSize": 150,
+      "departments": 7,
+      "leadership": 3,
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "lang": "en",
+      "textSize": 150,
+      "departments": 7,
+      "leadership": 3,
+      "overflow": 0
+    }
+  ]
+}

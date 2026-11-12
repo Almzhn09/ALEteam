@@ -1,0 +1,97 @@
+{
+  "testedAt": "2026-11-12T17:47:55.276568+00:00",
+  "scope": "In-process public handlers, local disposable real-corpus PostgreSQL _test database; warm connections; no guarantee for Google Cloud latency",
+  "before": [
+    {
+      "name": "search",
+      "runs": [
+        {
+          "ms": 327,
+          "queries": 220,
+          "total": 1048
+        },
+        {
+          "ms": 310,
+          "queries": 220,
+          "total": 1048
+        },
+        {
+          "ms": 287,
+          "queries": 220,
+          "total": 1048
+        }
+      ]
+    },
+    {
+      "name": "home",
+      "runs": [
+        {
+          "ms": 203,
+          "queries": 259,
+          "total": 3
+        },
+        {
+          "ms": 204,
+          "queries": 259,
+          "total": 3
+        },
+        {
+          "ms": 200,
+          "queries": 259,
+          "total": 3
+        }
+      ]
+    }
+  ],
+  "after": [
+    {
+      "name": "search",
+      "runs": [
+        {
+          "ms": 102,
+          "queries": 7,
+          "total": 1048
+        },
+        {
+          "ms": 118,
+          "queries": 7,
+          "total": 1048
+        },
+        {
+          "ms": 128,
+          "queries": 7,
+          "total": 1048
+        }
+      ]
+    },
+    {
+      "name": "home",
+      "runs": [
+        {
+          "ms": 77,
+          "queries": 21,
+          "total": 3
+        },
+        {
+          "ms": 56,
+          "queries": 21,
+          "total": 3
+        },
+        {
+          "ms": 48,
+          "queries": 21,
+          "total": 3
+        }
+      ]
+    }
+  ],
+  "factParity": [
+    "PASS TOPIC 8",
+    "PASS PLACE 3",
+    "PASS ALIAS 14",
+    "PASS HISTORY 9",
+    "PASS LINK 16",
+    "PASS EDITORIAL 49"
+  ],
+  "privacy": "Only current public and independently reviewed CMS revisions and current verified facts; no data retained across requests. Final recommendation evidence revalidation remains in place."
+}

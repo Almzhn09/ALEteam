@@ -1,0 +1,30 @@
+[
+  {
+    "label": "Государственные символы РК",
+    "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/42569",
+    "checkedAt": "2026-11-12T04:34:10.153Z",
+    "status": 200,
+    "exitCode": 0
+  },
+  {
+    "label": "Законодательство",
+    "url": "http://e-arhiv.vko.gov.kz/ru/NamedContent?type=Law",
+    "checkedAt": "2026-11-12T04:34:10.296Z",
+    "status": 200,
+    "exitCode": 0
+  },
+  {
+    "label": "Научно-методическая база",
+    "url": "http://e-arhiv.vko.gov.kz/ru/NamedContent?type=Method",
+    "checkedAt": "2026-11-12T04:34:10.038Z",
+    "status": 500,
+    "exitCode": 0
+  },
+  {
+    "label": "График приёма граждан",
+    "url": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52762",
+    "checkedAt": "2026-11-12T04:34:09.997Z",
+    "status": 200,
+    "exitCode": 0
+  }
+]

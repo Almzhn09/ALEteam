@@ -1,0 +1,45 @@
+[
+  {
+    "path": "linked/S09-link-1.docx",
+    "source": "S09",
+    "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%B3%D0%B0%D0%B7%D0%B5%D1%82%D1%8B%20%D0%B7%D0%B0%201935-2017.docx",
+    "verifiedAsCurrent": false,
+    "macrosExecuted": false,
+    "tables": 1,
+    "tableRows": 1468,
+    "extractedPath": "text/S09-link-1.docx.txt",
+    "extractedSha256": "9a4959300416dffe8502a55c84fea33b8322d522eea2d77686e3871c60e05c98"
+  },
+  {
+    "path": "linked/S09-link-2.xlsb",
+    "source": "S09",
+    "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%A4%D0%BE%D0%BD%D0%B4%D1%8B%20%D0%B3%D0%BE%D1%81%D0%B0%D1%80%D1%85%D0%B8%D0%B2%D0%B0%20%D0%92%D0%9A%D0%9E%20%D0%BD%D0%B0%202018%D0%B3..xlsb",
+    "verifiedAsCurrent": false,
+    "macrosExecuted": false,
+    "embeddedCodeMembers": [],
+    "sheets": [
+      {
+        "name": "Фонды",
+        "nonemptyRows": 3755
+      }
+    ],
+    "extractedPath": "text/S09-link-2.xlsb.json",
+    "extractedSha256": "437e527ac4f3441540fcdfa6f8adaed9c67e3fe36c43aa40423cec84bf074778"
+  },
+  {
+    "path": "linked/S09-link-3.xlsb",
+    "source": "S09",
+    "url": "http://e-arhiv.vko.gov.kz/akimsemey/other/%D0%BF%D0%B0%D1%80%D1%82%20%D1%84%D0%BE%D0%BD%D0%B4%D1%8B%20%D0%B3%D0%BE%D1%81%D0%B0%D1%80%D1%85%D0%B8%D0%B2%D0%B0%20%D0%92%D0%9A%D0%9E%20%D0%BD%D0%B0%202018%D0%B3..xlsb",
+    "verifiedAsCurrent": false,
+    "macrosExecuted": false,
+    "embeddedCodeMembers": [],
+    "sheets": [
+      {
+        "name": "Фонды",
+        "nonemptyRows": 318
+      }
+    ],
+    "extractedPath": "text/S09-link-3.xlsb.json",
+    "extractedSha256": "aa2b8ed1e372850d282926687d97a35e1577f82e581c8c609489b363987520c5"
+  }
+]

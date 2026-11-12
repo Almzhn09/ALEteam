@@ -1,0 +1,7 @@
+{
+  "syntheticData": true,
+  "successiveBoundsAndCorrection": true,
+  "unresolvedTypeNeverBroadens": true,
+  "explicitGenericQueriesKeepTheirScope": true,
+  "exactLabelledReferencesAndLetteredIdentifiers": true
+}

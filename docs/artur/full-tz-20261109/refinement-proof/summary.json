@@ -1,0 +1,125 @@
+{
+  "recordedAt": "2026-11-10T09:43:09.210532+00:00",
+  "codeCommit": "28a0a19e7835444f383caf334afac9e453f61305",
+  "target": "Production Next.js; real owned PostgreSQL and Chromium, synthetic reviewed records; no mocks",
+  "baseline": {
+    "plannerRegressionsPassed": 14,
+    "plannerRegressionsFailed": 4,
+    "total": 18,
+    "confirmedNodeExitCode": 1
+  },
+  "after": {
+    "plannerRegressionsPassed": 18,
+    "total": 18
+  },
+  "checks": {
+    "npm test": {
+      "passed": 302,
+      "total": 302
+    },
+    "npm run typecheck": {
+      "exitCode": 0
+    },
+    "npm run i18n:check": {
+      "keys": 427,
+      "translated": 427,
+      "missing": 0
+    },
+    "npm run build": {
+      "exitCode": 0
+    },
+    "npm run evaluate:semantic": {
+      "exitCode": 0
+    },
+    "npm run test:integration": {
+      "passed": 21,
+      "total": 21
+    },
+    "npm run test:cms": {
+      "passed": 14,
+      "total": 14
+    },
+    "npm run test:catalog": {
+      "passed": 12,
+      "total": 12
+    },
+    "npm run test:imports": {
+      "passed": 9,
+      "total": 9
+    },
+    "npm run test:uploads": {
+      "passed": 10,
+      "total": 10
+    },
+    "npm run test:cms-assistant": {
+      "passed": 12,
+      "total": 12
+    },
+    "npm run test:semantic": {
+      "passed": 36,
+      "total": 36
+    },
+    "npm run test:release": {
+      "passed": 13,
+      "total": 13,
+      "screens": 54
+    }
+  },
+  "cleanup": {
+    "results": [
+      {
+        "command": "npm run test:integration",
+        "exitCode": 0,
+        "log": "test-integration.log"
+      },
+      {
+        "command": "npm run test:cms",
+        "exitCode": 0,
+        "log": "test-cms.log"
+      },
+      {
+        "command": "npm run test:catalog",
+        "exitCode": 0,
+        "log": "test-catalog.log"
+      },
+      {
+        "command": "npm run test:imports",
+        "exitCode": 0,
+        "log": "test-imports.log"
+      },
+      {
+        "command": "npm run test:uploads",
+        "exitCode": 0,
+        "log": "test-uploads.log"
+      },
+      {
+        "command": "npm run test:cms-assistant",
+        "exitCode": 0,
+        "log": "test-cms-assistant.log"
+      },
+      {
+        "command": "npm run test:semantic",
+        "exitCode": 0,
+        "log": "test-semantic.log"
+      },
+      {
+        "command": "npm run test:release",
+        "exitCode": 0,
+        "log": "test-release.log"
+      }
+    ],
+    "dedicatedDatabase": true,
+    "containerRemoved": true
+  },
+  "sha256": {
+    "src/server/semantic-catalog-plan.ts": "bf98185cd7355b69f3f8f5515ccd7e8c5ef6e1b0d4366ded87cf497d55d2eb5e",
+    "src/server/assistant.ts": "69e8705df71a48d96e87c6f85cac083c58892704569f704bb61603a6b86178e6",
+    "tests/semantic-catalog-plan.test.ts": "65f9301d0a0d94086e66148edb055ffc0cb913b6c7e4c79cdb7b8e6a66a9b5e9",
+    "tests/semantic-catalog.integration.test.ts": "211706a883698efa97b0b7d21575479529ab451e74911be8a03f50e6d40a3cca"
+  },
+  "limitations": [
+    "Author-written functional regressions, not independent neural accuracy. Original 27-case acceptance remains separate.",
+    "Known bounded metadata grammar and one city alias group only; no arbitrary archive semantics or new trained weights claimed.",
+    "No new frontend branch, public HTTPS, archive data/rights approval, native-language review or team rehearsal."
+  ]
+}

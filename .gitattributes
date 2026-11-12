@@ -1,0 +1,18 @@
+*.sh text eol=lf
+Dockerfile text eol=lf
+deploy/Caddyfile text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.mjs text eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+# Preserve uploaded originals, extracted transcriptions and their recorded SHA-256 byte for byte.
+sources/** -text
+# Raw evidence snapshots retain CRLF/whitespace and are not source-code patches.
+sources/**/pages/*.html binary
+# Preserve dataset/model evidence bytes across Windows checkout filters too.
+data/** -text
+
+# Reference audit snapshots are retained byte-for-byte, including original CRLF.
+sources/reference-design-20261112/*.html binary
