@@ -1,0 +1,18 @@
+{
+  "scope": "Mocked bounded text transport on a real source page; checks UI query and append, not full-file parsing",
+  "calls": [
+    {
+      "reader": 1,
+      "offset": 0
+    },
+    {
+      "reader": 1,
+      "offset": 0
+    },
+    {
+      "reader": 1,
+      "offset": 12000
+    }
+  ],
+  "passed": true
+}
