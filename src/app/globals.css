@@ -676,3 +676,4 @@ label.row > input[type="checkbox"], label.row > input[type="radio"] { flex: none
 .skeleton-line { height: 18px; width: min(760px, 100%); }
 .skeleton-line.short { width: min(460px, 70%); }
 .skeleton-block { height: 240px; width: 100%; }
+.read-original-link { display: inline-flex; align-items: center; gap: var(--space-1); margin-top: var(--space-2); font-weight: 600; font-size: .9375rem; }
