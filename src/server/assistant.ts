@@ -16,7 +16,7 @@ import {conversation,followUps,talkLocale,type Conversation} from './assistant-c
 import {guideTitle} from './guides';
 import {publicDocumentWhere} from './public-visibility';
 import {planResearch} from './artur-discovery/research';
-import {retrievePublicSearchPassages,revalidatePublicSearchPassages,publicSearchAnswer,type PublicSearchPassage} from './public-search-knowledge';
+import {retrievePublicSearchPassages,revalidatePublicSearchPassages,publicSearchAnswer,publicSearchQuery,type PublicSearchPassage} from './public-search-knowledge';
 import {directoryIntent,retrieveDirectoryPassages,revalidateDirectoryPassages,directoryAnswer,type DirectoryPassage} from './directory-knowledge';
 import {retrieveCmsFilePassages,revalidateCmsFilePassages,cmsFileAnswer,type CmsFilePassage} from './cms-file-knowledge';
 import type {NameExpansion as TransportNameExpansion,ResearchStep,ResearchAction} from '../contracts/discovery';
@@ -109,5 +109,6 @@ export async function assistant(request: Request) {
   const researchActions:ResearchAction[]=research?.actions.map(a=>({type:'catalogSearch',filters:a.query}))??[];
   const researchSteps:ResearchStep[]=research?.steps.map(s=>({id:s.id,text:s.title+'. '+s.description,status:'suggested',sources:[],...(s.kind==='search'&&researchActions[0]?{action:researchActions[0]}:{})}))??[];
   const expansion:TransportNameExpansion|undefined=plan.nameExpansion?{mode:'expanded',applied:plan.nameExpansion.status==='resolved',variants:plan.nameExpansion.variants,entityIds:[],clarificationRequired:plan.nameExpansion.status==='ambiguous',sources:[]}:undefined;
-  return json({...(research?{researchSteps,actions:researchActions,researchLimitations:research.limitations}:{}),...(expansion?{nameExpansion:expansion,nameExpansionProvenance:{kind:'project_dictionary',sourceIds:[...new Set(plan.nameExpansion!.matches.flatMap(m=>m.sourceIds))]}}:{}), answer: (talk.greeting?talk.greeting+' ':'')+result.answer, noAnswer: result.noAnswer, mode: result.mode ?? 'external', sources,...(result.noAnswer&&!process.env.ASSISTANT_SERVICE_URL?{suggestions:followUps(originalQuestion,input.locale??'ru',true)}:{}),...(plan.handled&&!directoryQuery&&!plan.clarification&&!cmsPassages.length&&!filePassages.length&&!searchPassages.length&&!process.env.ASSISTANT_SERVICE_URL?{catalogQuery:plan.filters}:{}) });
+  const searchHref=searchPassages.length?'/search?'+new URLSearchParams({q:publicSearchQuery(plan)!,lang:locale}):undefined;
+  return json({...(searchHref?{searchHref}:{}),...(research?{researchSteps,actions:researchActions,researchLimitations:research.limitations}:{}),...(expansion?{nameExpansion:expansion,nameExpansionProvenance:{kind:'project_dictionary',sourceIds:[...new Set(plan.nameExpansion!.matches.flatMap(m=>m.sourceIds))]}}:{}), answer: (talk.greeting?talk.greeting+' ':'')+result.answer, noAnswer: result.noAnswer, mode: result.mode ?? 'external', sources,...(result.noAnswer&&!process.env.ASSISTANT_SERVICE_URL?{suggestions:followUps(originalQuestion,input.locale??'ru',true)}:{}),...(plan.handled&&!directoryQuery&&!plan.clarification&&!cmsPassages.length&&!filePassages.length&&!searchPassages.length&&!process.env.ASSISTANT_SERVICE_URL?{catalogQuery:plan.filters}:{}) });
 }

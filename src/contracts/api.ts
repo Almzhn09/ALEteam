@@ -41,6 +41,8 @@ export interface ModerationInput {
 }
 export interface AssistantInput { question: string; locale?: 'ru' | 'kk' | 'en'; history?: { role: 'user' | 'assistant'; content: string }[] }
 export interface AssistantAnswer {
+  /** Full public search, including CMS and holdings; never a fabricated evidence source. */
+  searchHref?:string;
   nameExpansion?:NameExpansion;
   nameExpansionProvenance?:{kind:'project_dictionary';sourceIds:string[]};
   researchSteps?:ResearchStep[];

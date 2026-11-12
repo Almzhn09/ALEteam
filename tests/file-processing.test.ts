@@ -45,3 +45,19 @@ test('real DOCX uses original paragraphs; malformed XML, active objects and DTD 
   for(const xml of ['<!DOCTYPE x [<!ENTITY secret SYSTEM "file:///etc/passwd">]><w:document/>','<w:document><unclosed>']){const data=zipSync({'[Content_Types].xml':strToU8('<Types/>'),'word/document.xml':strToU8(xml)});writeFileSync(file,data);rejected({mode:'inspect',path:file,expectedBytes:data.length,expectedSha256:hash(data),mime:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});}
  }finally{rmSync(folder,{recursive:true,force:true});}
 });
+
+test('DOCX reader retrieves the original past the inspection excerpt without rewriting the saved parsed metadata',async()=>{
+ const folder=mkdtempSync(path.join(tmpdir(),'ale-docx-reader-'));const {zipSync,strToU8}=await import('fflate');
+ try{
+  const paragraphs=['А'.repeat(15001),'Последний абзац исходного документа'];
+  const xml='<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+paragraphs.map(text=>'<w:p><w:r><w:t>'+text+'</w:t></w:r></w:p>').join('')+'</w:body></w:document>';
+  const bytes=zipSync({'[Content_Types].xml':strToU8('<Types/>'),'word/document.xml':strToU8(xml)}),file=path.join(folder,'long.docx');writeFileSync(file,bytes);
+  const input={path:file,expectedBytes:bytes.length,expectedSha256:hash(bytes),mime:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'};
+  const inspected=worker({...input,mode:'inspect'});assert.equal(inspected.fragments.map((f:{text:string})=>f.text).join('\n').length,12000);
+  const first=worker({...input,mode:'read-docx',offset:0});assert.equal(first.parser,'openxml-docx-reader');assert.equal(first.nextOffset,12000);assert.equal(first.totalCharacters,paragraphs.join('\n').length);
+  const next=worker({...input,mode:'read-docx',offset:first.nextOffset});assert.equal(next.nextOffset,null);assert.ok(next.fragments.some((f:{text:string})=>f.text===paragraphs[1]));
+  assert.equal(first.fragments.map((f:{text:string})=>f.text).join('')+next.fragments.map((f:{text:string})=>f.text).join(''),paragraphs.join(''));
+  assert.equal(rejected({...input,mode:'read-docx',offset:-1}).error,'INVALID_WINDOW');assert.equal(rejected({...input,mode:'read-docx',offset:0,expectedSha256:'0'.repeat(64)}).error,'SOURCE_CHANGED');
+  assert.equal(hash(readFileSync(file)),hash(bytes));
+ }finally{rmSync(folder,{recursive:true,force:true});}
+});
