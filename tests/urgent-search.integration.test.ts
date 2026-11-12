@@ -7,6 +7,7 @@ const {db}=await import('../src/server/db');const {contentPayload}=await import(
 async function get(path:string){const r=await GET(new Request('http://localhost:3132/api'+path),{params:Promise.resolve({path:path.split('?')[0].slice(1).split('/')})});assert.equal(r.status,200,await r.clone().text());return r.json();}
 before(async()=>{
  execFileSync(process.execPath,['--import','tsx','scripts/migrate.ts'],{env:process.env,stdio:'pipe'});
+ await db.$executeRawUnsafe('TRUNCATE "ContentItem", "ReferenceDataset", "ArchiveBranch", "User" CASCADE');
  await db.user.createMany({data:[{id:'urgent-author',name:'Fixture author',email:'urgent-author@example.test'},{id:'urgent-reviewer',name:'Fixture reviewer',email:'urgent-reviewer@example.test'}]});
  await db.archiveBranch.create({data:{id:'urgent-hidden',code:'urgent-hidden',name:'Private fixture',isPublic:false}});
  for(const [id,status,branchId,reviewerId]of [['visible','PUBLISHED',null,'urgent-reviewer'],['draft','DRAFT',null,null],['hidden','PUBLISHED','urgent-hidden','urgent-reviewer'],['self','PUBLISHED',null,'urgent-author']]as const){
@@ -24,4 +25,11 @@ test('B1 literal mode, source, exact fund number and CMS filters remain restrict
  assert.equal((await get('/search?scope=cms&q='+encodeURIComponent('Оскемен')+'&yearFrom=2000')).total,0);
  const found=await get('/directories/funds?q='+encodeURIComponent('Өскемен')+'&number=0007');assert.equal(found.total,1);assert.equal(found.items[0].number,'0007');assert.equal((await get('/directories/funds?q='+encodeURIComponent('Өскемен')+'&number=7')).total,0);
  await db.referenceDataset.update({where:{id:'urgent-fund-true'},data:{isPublic:false}});assert.equal((await get('/search?scope=fund&q='+encodeURIComponent('Өскемен'))).total,0);await db.referenceDataset.update({where:{id:'urgent-fund-true'},data:{isPublic:true}});
+});
+
+test('B2 city questions use CMS and both directory kinds, honor periods and reject source withdrawal',async()=>{
+ const {publicCitySources,validatePublicCitySources}=await import('../src/server/assistant-public-search');const {semanticConversationPlan}=await import('../src/server/semantic-catalog-plan');const {normalizePlaceSpelling}=await import('../src/server/search-names');
+ for(const city of ['Өскемен','Оскемен','Усть-Каменогорск']){const q='покажи документы про '+city;const plan=semanticConversationPlan(normalizePlaceSpelling(q),[],'ru',true);const sources=await publicCitySources(q,plan);assert.deepEqual([...new Set(sources.map(s=>s.kind))].sort(),['cms','fund','newspaper']);assert.ok(await validatePublicCitySources(sources));assert.ok(sources.every(s=>!s.key.includes('hidden')&&!s.key.includes('draft')));}
+ const q='покажи документы про Өскемен';const plan=semanticConversationPlan(q,[],'ru',true);const sources=await publicCitySources(q,plan);await db.contentRevision.updateMany({where:{itemId:'urgent-visible'},data:{status:'ARCHIVED'}});assert.equal(await validatePublicCitySources(sources),false);await db.contentRevision.updateMany({where:{itemId:'urgent-visible'},data:{status:'PUBLISHED'}});
+ assert.deepEqual(await publicCitySources(q,{...plan,filters:{...plan.filters,reference:'NO-SUCH-REF'}}),[]);
 });
