@@ -9,6 +9,7 @@ interface SessionApi {
   user: CurrentUser | null;
   refresh(): Promise<void>;
   signIn(email: string, password: string): Promise<CurrentUser>;
+  signUp(name: string, email: string, password: string): Promise<CurrentUser>;
   signOut(): Promise<void>;
 }
 const SessionContext = createContext<SessionApi | null>(null);
@@ -46,8 +47,15 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     setState({ status: 'guest' });
     channel.current?.postMessage('changed');
   }, []);
+  const signUp = useCallback(async (name: string, email: string, password: string) => {
+    await apiSend('/auth/sign-up/email', 'POST', { name, email, password });
+    const { item } = await apiGet<{ item: CurrentUser }>('/me');
+    setState({ status: 'user', user: item });
+    channel.current?.postMessage('changed');
+    return item;
+  }, []);
   const user = state.status === 'user' ? state.user : null;
-  return <SessionContext value={{ state, user, refresh, signIn, signOut }}>{children}</SessionContext>;
+  return <SessionContext value={{ state, user, refresh, signIn, signUp, signOut }}>{children}</SessionContext>;
 }
 
 export function useSession() {

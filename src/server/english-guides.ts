@@ -8,7 +8,7 @@ export const englishGuides:Record<string,string>={
  "guide-notifications":"Open /me for notifications and subscriptions. Subscribe from search or a place history to receive notices about new matching publications in your account. You can unsubscribe and change reply or moderation notifications. Email and push delivery are not connected.",
  "guide-ocr":"OCR recognizes text in an image. It can make mistakes: compare names, dates and numbers with the original. Text availability and quality are shown for each file. Automatic explanations may be unavailable when quality is low.",
  "guide-sources":"The assistant quotes published sources and links to them. Open the source and compare the quotation with its text or page. Check the edition and date precision of calendars and legal documents. When no evidence is available, the assistant says no answer was found.",
- "guide-login":"Open /login and enter your account email and password. Public self-registration is not available. Your administrator provides account access. Never send a password to the assistant.",
+ "guide-login":"Open /login and enter your account email and password. To create an account, open /register and enter your name, email and a password of at least 12 characters. Never send a password to the assistant.",
  'guide-download':'Open a document card and use Download for a permitted file. A public card does not imply that its digital copy or download is permitted. The assistant cannot bypass file restrictions.',
  "guide-site":"I can help you search /catalog, read archive history and calendars, find branch contacts and explore place histories. Select recommendation topics on the home page. Reading settings control the color theme and font size. The short site tour is optional.",
 };

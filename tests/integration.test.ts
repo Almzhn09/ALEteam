@@ -105,8 +105,31 @@ test('file API serves PDF and enforces download permission and storage boundarie
 test('anonymous users cannot post; author cannot access moderator queue or assign roles', async () => {
   assert.equal((await call('/api/documents/demo-doc-01/comments', 'POST', { body: 'text' })).status, 401);
   assert.equal((await call('/api/moderation/comments', 'GET', undefined, authorCookie)).status, 403);
-  assert.equal((await call('/api/auth/sign-up/email', 'POST', { email: 'new@example.test', password: 'no', role: 'MODERATOR' })).status, 404);
+  assert.equal((await call('/api/auth/sign-up/email', 'POST', { email: 'new@example.test', password: 'no', role: 'MODERATOR' })).status, 400);
   assert.equal((await call('/api/auth/update-user', 'POST', { role: 'MODERATOR' }, authorCookie)).status, 404);
+});
+test('public registration creates a reader session, hashes the password and cannot grant staff permissions', async () => {
+  const email='reader-'+randomUUID()+'@example.test',password=randomBytes(24).toString('hex');
+  const body={name:'Новый читатель',email:email.toUpperCase(),password};
+  assert.equal((await call('/api/auth/sign-up/email','POST',body,undefined,{origin:'https://attacker.example'})).status,403);
+  for(const extra of [{role:'MODERATOR'},{isActive:false},{emailVerified:true},{staffAssignments:[{roleId:'admin'}]}])
+    assert.equal((await call('/api/auth/sign-up/email','POST',{...body,...extra})).status,400);
+  assert.equal((await call('/api/auth/sign-up/email','POST',{...body,password:'short'})).status,400);
+  const response=await call('/api/auth/sign-up/email','POST',body);assert.equal(response.status,200);
+  const result=await response.json();assert.equal(result.user.role,'AUTHOR');assert.equal(result.user.email,email);assert.equal('password' in result.user,false);
+  assert.match(response.headers.get('cache-control')??'',/no-store/);
+  const cookies=response.headers.getSetCookie();assert.ok(cookies.some(c=>c.includes('HttpOnly')));const cookie=cookies.map(c=>c.split(';')[0]).join('; ');
+  assert.equal((await call('/api/me','GET',undefined,cookie)).status,200);
+  assert.equal((await call('/api/admin/me','GET',undefined,cookie)).status,403);
+  assert.equal((await call('/api/moderation/comments','GET',undefined,cookie)).status,403);
+  const user=await db.user.findUniqueOrThrow({where:{email},include:{accounts:true,staffAssignments:true}});
+  assert.equal(user.role,'AUTHOR');assert.equal(user.emailVerified,false);assert.equal(user.staffAssignments.length,0);assert.ok(user.accounts[0].password);assert.notEqual(user.accounts[0].password,password);
+  const duplicate=await call('/api/auth/sign-up/email','POST',body);assert.ok([400,409,422].includes(duplicate.status));assert.equal(await db.user.count({where:{email}}),1);
+  assert.equal((await call('/api/auth/sign-out','POST',{},cookie)).status,200);
+  assert.equal((await call('/api/me','GET',undefined,cookie)).status,401);
+  const relogin=await login(email,password);assert.equal((await call('/api/me','GET',undefined,relogin)).status,200);
+  await db.user.update({where:{id:user.id},data:{isActive:false}});
+  assert.equal((await call('/api/auth/sign-in/email','POST',{email,password})).status,401);
 });
 test('CSRF, large JSON, malformed JSON and status injection are rejected', async () => {
   assert.equal((await call('/api/documents/demo-doc-01/comments', 'POST', { body: 'x' }, authorCookie, { origin: 'https://attacker.example' })).status, 403);

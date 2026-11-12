@@ -13,11 +13,11 @@ function createAuth() {
   return betterAuth({
     appName: 'ALEteam Archive', secret, baseURL,
     database: prismaAdapter(db, { provider: 'postgresql' }),
-    emailAndPassword: { enabled: true, disableSignUp: true, minPasswordLength: 12 },
+    emailAndPassword: { enabled: true, disableSignUp: false, autoSignIn: true, minPasswordLength: 12, maxPasswordLength: 128 },
     user: { additionalFields: { role: { type: ['AUTHOR', 'MODERATOR'], defaultValue: 'AUTHOR', input: false } } },
     session: { expiresIn: 60 * 60 * 24, updateAge: 60 * 60, cookieCache: { enabled: false } },
     rateLimit: { enabled: true, storage: 'database', window: 60, max: 30,
-      customRules: { '/sign-in/email': { window: 60, max: 5 } } },
+      customRules: { '/sign-in/email': { window: 60, max: 5 }, '/sign-up/email': { window: 60, max: 5 } } },
     // No proxy headers are trusted by default: use a shared login bucket.
     // Configure trusted infrastructure before adding per-IP buckets in production.
     advanced: { ipAddress: { ipAddressHeaders: [] } },
