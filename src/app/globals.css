@@ -678,3 +678,8 @@ label.row > input[type="checkbox"], label.row > input[type="radio"] { flex: none
 .skeleton-block { height: 240px; width: 100%; }
 .read-original-link { display: inline-flex; align-items: center; gap: var(--space-1); margin-top: var(--space-2); font-weight: 600; font-size: .9375rem; }
 .original-more { align-items: center; gap: var(--space-3); margin-top: var(--space-3); }
+
+/* Visible before the server's loading boundary arrives; does not block another navigation. */
+.navigation-feedback {position:fixed;right:max(var(--space-4),env(safe-area-inset-right));bottom:max(var(--space-4),env(safe-area-inset-bottom));z-index:120;display:flex;align-items:center;gap:var(--space-3);max-width:calc(100vw - var(--space-4)*2);padding:var(--space-3) var(--space-4);border:1px solid var(--accent);border-radius:var(--radius);background:var(--surface);color:var(--text);box-shadow:var(--shadow);font-size:.9rem;line-height:1.5;pointer-events:none}
+main[aria-busy="true"] {cursor:progress}
+@media(prefers-reduced-motion:reduce){.navigation-feedback .spinner{animation:none}}
