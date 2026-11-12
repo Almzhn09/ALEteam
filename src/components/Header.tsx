@@ -9,16 +9,12 @@ import { useI18n } from '@/lib/lang';
 import { DisplayPreferences, type DisplayTheme, type TextSize } from './DisplayPreferences';
 import { TourButton } from './Tour';
 import { AssistantWidget } from './AssistantWidget';
+import {ArchiveIcon} from './ArchiveDecor';
+import referenceCopy from '../../data/artur/reference-design/copy.json';
+import referenceBlocks from '../../data/artur/reference-design/blocks.json';
 import { LANGS, langName, type Lang } from '@/lib/i18n-core';
 
-const links = [
-  { href: '/catalog', label: 'Поиск' },
-  { href: '/calendar', label: 'Памятные даты' },
-  { href: '/directories', label: 'Справочники' },
-  { href: '/branches', label: 'Филиалы' },
-  { href: '/about', label: 'Об архиве' },
-  { href: '/help', label: 'Справка' },
-];
+const navigation = referenceBlocks.navigation;
 
 function LanguageSelect() {
   const { t, lang, setLang } = useI18n();
@@ -46,7 +42,8 @@ function LanguageSelect() {
 export function Header({ initialTheme, initialSize }: { initialTheme: DisplayTheme; initialSize: TextSize }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { t } = useI18n();
+  const { t,lang } = useI18n();
+  const copy=referenceCopy[lang];
   const { state, user, signOut } = useSession();
   const favorites = useFavorites();
   const [open, setOpen] = useState(false);
@@ -67,13 +64,11 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
   }, []);
 
   const params = useSearchParams();
-  useEffect(() => { setOpen(false); account.current?.removeAttribute('open'); }, [pathname,params]);
+  useEffect(() => { setOpen(false); header.current?.querySelectorAll<HTMLDetailsElement>('details[open]').forEach(node=>node.open=false); }, [pathname,params]);
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') { setOpen(false); toggle.current?.focus(); } };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [open]);
+    const outside=(event:PointerEvent)=>{if(header.current&&!header.current.contains(event.target as Node)){setOpen(false);header.current.querySelectorAll<HTMLDetailsElement>('details[open]').forEach(node=>node.open=false);}};
+    document.addEventListener('pointerdown',outside);return()=>document.removeEventListener('pointerdown',outside);
+  }, []);
   // Only decides whether to offer the link; the server re-checks every admin request.
   useEffect(() => {
     if (!user) { setStaff(false); return; }
@@ -91,18 +86,26 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
   }
 
   return (
-    <header className="site-header" ref={header}>
+    <header className="site-header reference-header" ref={header} onKeyDown={event=>{
+      if(event.key!=='Escape')return;
+      const details=(event.target as HTMLElement).closest('details');
+      if(details?.open){details.open=false;details.querySelector('summary')?.focus();event.preventDefault();event.stopPropagation();}
+      else if(open){setOpen(false);toggle.current?.focus();}
+    }}>
       <div className="container header-inner">
         <Link href="/" className="brand" aria-label={t('Электронный архив — на главную')}>
           <span className="brand-mark" aria-hidden="true">ЭА</span>
-          <span>{t('Электронный архив')}<small>{t('Восточно-Казахстанская область')}</small></span>
+          <span><span className="brand-long">{copy.brand}</span><span className="brand-short">{copy.shortBrand}</span><small>{copy.branchSubtitle}</small></span>
         </Link>
-        <form className="header-search" action="/catalog" method="get" role="search" aria-label={t('Поиск по архиву')}>
-          <label htmlFor={searchId} className="visually-hidden">{t('Поиск по архиву')}</label>
-          <input id={searchId} name="q" className="input" type="search" maxLength={200} autoComplete="off" placeholder={t('Поиск по архиву')} />
-          <button type="submit" className="btn btn-primary btn-sm">{t('Найти')}</button>
-        </form>
         <div className="header-tools">
+          <details className="site-search" onToggle={event=>{if(event.currentTarget.open)event.currentTarget.querySelector('input')?.focus();}}>
+            <summary className="btn btn-secondary btn-icon" aria-label={t('Поиск по архиву')}><ArchiveIcon kind="search"/></summary>
+            <form className="header-search" action="/search" method="get" role="search" aria-label={t('Поиск по архиву')}>
+              <label htmlFor={searchId} className="visually-hidden">{t('Поиск по архиву')}</label>
+              <input id={searchId} name="q" className="input" type="search" maxLength={100} autoComplete="off" placeholder={t('Поиск по архиву')}/>
+              <button type="submit" className="btn btn-primary btn-sm">{t('Найти')}</button>
+            </form>
+          </details>
           <Suspense><LanguageSelect /></Suspense>
           <DisplayPreferences initialTheme={initialTheme} initialSize={initialSize} />
           <TourButton />
@@ -112,13 +115,11 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
           {open ? t('Закрыть') : t('Меню')}
         </button>
         <div className="nav-wrap" id="site-nav" data-open={open}>
-          <form className="menu-search" action="/catalog" method="get" role="search" aria-label={t('Поиск по архиву')}>
-            <label htmlFor={`${searchId}-menu`} className="visually-hidden">{t('Поиск по архиву')}</label>
-            <input id={`${searchId}-menu`} name="q" className="input" type="search" maxLength={200} autoComplete="off" placeholder={t('Поиск по архиву')} />
-            <button type="submit" className="btn btn-primary btn-sm">{t('Найти')}</button>
-          </form>
           <nav className="nav" aria-label={t('Основная навигация')}>
-            {links.map(l => <Link key={l.href} href={l.href} aria-current={current(l.href)}>{t(l.label)}</Link>)}
+            {navigation.map(group=>group.children?<details className="nav-group" key={group.label} data-active={group.children.some(link=>current(link.href.split('?')[0]))} onToggle={event=>{if(event.currentTarget.open){const selected=event.currentTarget;selected.parentElement?.querySelectorAll<HTMLDetailsElement>('.nav-group[open]').forEach(node=>{if(node!==selected)node.open=false;});}}}>
+              <summary>{t(group.label)}<span className="nav-chevron" aria-hidden="true">⌄</span></summary>
+              <ul className="nav-group-panel">{group.children.map(link=><li key={link.href}><Link href={link.href} aria-current={current(link.href)}>{t(link.label)}</Link></li>)}</ul>
+            </details>:<Link key={group.label} href={group.href!} aria-current={current(group.href!.split('?')[0])}>{t(group.label)}</Link>)}
           </nav>
           <div className="user-chip">
             <Link href="/favorites" className="small" aria-current={current('/favorites')}>
@@ -146,6 +147,7 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
           </div>
         </div>
       </div>
+      <noscript><style>{`.nav-wrap {display:block!important;position:static!important;max-height:none!important}.menu-toggle {display:none!important}`}</style></noscript>
     </header>
   );
 }

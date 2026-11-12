@@ -1,0 +1,23 @@
+{
+  "checked": "2026-11-12",
+  "source": "http://e-arhiv.vko.gov.kz/ru",
+  "snapshots": [
+    {
+      "path": "sources/reference-design-20261112/official-anticor.html",
+      "sha256": "dfe7ac7e66b79ec9ec8c7871f7462fb3ae1d09d94456752700b8d640e4a6b91a",
+      "bytes": 36295
+    },
+    {
+      "path": "sources/reference-design-20261112/official-contacts.html",
+      "sha256": "049ad5bf4f14f78f436d40bcdd5d4eb7e63115d5415486ede094aae7a5043dc5",
+      "bytes": 35059
+    },
+    {
+      "path": "sources/reference-design-20261112/official-home.html",
+      "sha256": "43cb10c8a2443f19cae79dbf040dc45fe96f80161dc104cfb153b01b33e573c4",
+      "bytes": 37125
+    }
+  ],
+  "contactPriority": "User-provided S05 over undated/older official-site fields. No merged contradictory contact edition.",
+  "hotline": "No current primary-source confirmation of1424/free-call claim. CMS compliance links appear without the number."
+}

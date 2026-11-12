@@ -44,7 +44,7 @@ export async function publishSourceImages(apply=false){
    if(await db.cmsAttachment.count({where:{revisionId:revision.id,state:{notIn:['REJECTED','WITHDRAWN']}}})>=20)throw Error('SOURCE_IMAGE_ATTACHMENT_QUOTA');
    const mime=image.path.endsWith('.png')?'image/png' as const:'image/jpeg' as const;
    const staged=await stageUpload(new Request('http://source-import.invalid/',{method:'PUT',body:new Uint8Array(bytes)}),{bytes:image.bytes,sha256:image.sha256,mime},storage);
-   row=await db.cmsAttachment.create({data:{revisionId:revision.id,name:path.basename(image.path),mimeType:mime,expectedBytes:image.bytes,expectedSha256:image.sha256,storageKey:staged.storageKey,state:'QUARANTINED',uploaderId,rights:'Предоставленный официальный источник; техническая публикация ALEteam по поручению пользователя, не подпись госархива.',sourceLabel:image.caption,sourceVersion:'Снимок источника '+manifest.retrieved,sourceNote:image.sourceImageUrl+'; '+image.sourceUrl}});
+   row=await db.cmsAttachment.create({data:{revisionId:revision.id,name:path.basename(image.path),mimeType:mime,expectedBytes:image.bytes,expectedSha256:image.sha256,storageKey:staged.storageKey,state:'QUARANTINED',uploaderId,rights:'Предоставленный официальный источник; техническая публикация ALEteam по поручению пользователя, не подпись госархива.',sourceLabel:image.caption,sourceVersion:'Снимок источника '+(('downloadedAt' in image&&typeof image.downloadedAt==='string')?image.downloadedAt.slice(0,10):manifest.retrieved),sourceNote:image.sourceImageUrl+'; '+image.sourceUrl}});
    await db.auditEvent.create({data:{actorId:uploaderId,action:'SOURCE_IMAGE_STAGED',entityId:row.id}});
   }
   if(!row.storageKey)throw Error('SOURCE_IMAGE_STORAGE_MISSING');

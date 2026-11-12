@@ -38,6 +38,12 @@ for (const file of files) {
 // Visual captions now come from the source manifest rather than duplicated TypeScript strings.
 const visuals=JSON.parse(readFileSync('sources/archive-visual-20261111/manifest.json','utf8'));
 for(const image of visuals.images.filter(image=>image.origin==='official_archive_site'))for(const field of ['caption','alt','credit'])add(image[field]);
+const referenceBlocks=JSON.parse(readFileSync('data/artur/reference-design/blocks.json','utf8'));
+for(const row of referenceBlocks.sections)add(row.label);
+for(const row of referenceBlocks.footerLinks)add(row.label);
+for(const group of referenceBlocks.navigation){add(group.label);for(const child of group.children??[])add(child.label);}
+const referenceCopy=JSON.parse(readFileSync('data/artur/reference-design/copy.json','utf8'));
+for(const locale of ['kk','en'])if(JSON.stringify(Object.keys(referenceCopy[locale]).sort())!==JSON.stringify(Object.keys(referenceCopy.ru).sort())||Object.values(referenceCopy[locale]).some(value=>typeof value!=='string'||!value.trim()))throw Error('REFERENCE_COPY_INCOMPLETE_'+locale);
 const lang = process.argv.find(a => a.startsWith('--lang='))?.slice(7);
 const { kk } = await import(new URL('../src/lib/kk.ts', import.meta.url));
 const { en } = await import(new URL('../src/lib/en.ts', import.meta.url));

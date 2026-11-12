@@ -1,0 +1,253 @@
+{
+  "version": 1,
+  "reference": "задачи/ТЗ-2026-11-12/reference-home.jpg",
+  "referenceIsSource": false,
+  "checked": "2026-11-12",
+  "quick": [
+    {
+      "icon": "calendar",
+      "href": "/calendar",
+      "labelKey": "quickCalendar",
+      "textKey": "calendarText",
+      "source": "S03, calendars 2022–2026"
+    },
+    {
+      "icon": "fonds",
+      "href": "/directories/funds",
+      "labelKey": "quickFunds",
+      "textKey": "fundsText",
+      "source": "S09, 1705 fund groups"
+    },
+    {
+      "icon": "assistant",
+      "href": "/assistant",
+      "labelKey": "quickAssistant",
+      "textKey": "assistantText",
+      "source": "Existing source-grounded assistant"
+    }
+  ],
+  "sections": [
+    {
+      "label": "Государственные символы РК",
+      "href": "http://e-arhiv.vko.gov.kz/ru/Page/Index/42569",
+      "external": true
+    },
+    {
+      "label": "Законодательство",
+      "href": "http://e-arhiv.vko.gov.kz/ru/NamedContent?type=Law",
+      "external": true
+    },
+    {
+      "label": "Научно-методическая база",
+      "href": "http://e-arhiv.vko.gov.kz/ru/NamedContent?type=Method",
+      "external": true
+    },
+    {
+      "label": "Платные услуги",
+      "slug": "archive-paid-services-info"
+    },
+    {
+      "label": "Государственные услуги",
+      "slug": "archive-public-services-info"
+    },
+    {
+      "label": "График приёма граждан",
+      "href": "http://e-arhiv.vko.gov.kz/ru/Page/Index/52762",
+      "external": true
+    },
+    {
+      "label": "Комплаенс-служба",
+      "href": "/about/compliance",
+      "slug": "archive-compliance"
+    },
+    {
+      "label": "Вид сайта",
+      "href": "#display-settings",
+      "action": "display"
+    },
+    {
+      "label": "Материалы архива",
+      "href": "/catalog?scope=cms"
+    },
+    {
+      "label": "Анализ коррупционных рисков",
+      "slug": "archive-compliance-analysis-2026"
+    }
+  ],
+  "lower": [
+    {
+      "icon": "newspaper",
+      "href": "/directories/newspapers",
+      "labelKey": "lowerNewspapers",
+      "textKey": "newspaperText",
+      "source": "S02"
+    },
+    {
+      "icon": "calendar",
+      "href": "/calendar",
+      "labelKey": "quickCalendar",
+      "textKey": "calendarText",
+      "source": "S03"
+    },
+    {
+      "icon": "place",
+      "href": "/places",
+      "labelKey": "lowerHistory",
+      "textKey": "historyText",
+      "source": "Published source-bound places/history"
+    }
+  ],
+  "decisions": {
+    "guestbook": "Omit: no guestbook/moderation feature",
+    "metricBooks": "Replace with the real newspaper directory; no metric-book corpus",
+    "weather": "Replace with source-bound place history; no weather data",
+    "personalFonds": "Omit: no dedicated verified source or directory",
+    "publicisticsSpeechesCollectionsVideos": "Omit unfilled reference categories; genuine published CMS sections remain accessible",
+    "contacts": "Live public CMS archive-contacts, structured address/phone/email/hours; leadership derived from its actual body; no reference facts",
+    "fax": "Omit: not supplied in S05; reception phone is not re-labelled as fax",
+    "krylova39": "Present on the old official contact page, but absent from current supplied S05/S01; use the live branch directory and link the preserved old page instead of silently merging versions.",
+    "buildingPhoto": "Published complete original from the official contact page, visually inspected; caption is dated as unknown and does not claim a new photograph.",
+    "emblem": "Use original EA monogram; archive crest/Antikor logo rights not established",
+    "anticorruptionNumber": "No hardcoded number. Only a CMS compliance link until an official source is verified.",
+    "footer": "Existing contact/history/fonds/structure/services links and project credit",
+    "publicistics": "Omit: no curated published category",
+    "speeches": "Omit: no published category",
+    "documentCollections": "Omit as an unfilled reference category; all actually published originals remain in the catalogue",
+    "videos": "Omit: no verified video package"
+  },
+  "imageSlots": [
+    "home",
+    "reading"
+  ],
+  "photoDelivery": "Published CMS attachments only, live access checks and private,no-store",
+  "sourceLinksFrom": "sources/reference-design-20261112/official-home.html",
+  "navigation": [
+    {
+      "label": "Главная",
+      "href": "/",
+      "source": "Public home"
+    },
+    {
+      "label": "Об архиве",
+      "children": [
+        {
+          "label": "Об архиве",
+          "href": "/about",
+          "source": "S01,S05,S07"
+        },
+        {
+          "label": "История архива",
+          "href": "/materials/archive-history-1",
+          "source": "S01:history-1"
+        },
+        {
+          "label": "Структура",
+          "href": "/materials/archive-structure",
+          "source": "S07:structure"
+        },
+        {
+          "label": "Комплаенс-служба",
+          "href": "/about/compliance",
+          "source": "S04"
+        },
+        {
+          "label": "Памятные даты",
+          "href": "/calendar",
+          "source": "S03"
+        }
+      ]
+    },
+    {
+      "label": "Фонды",
+      "children": [
+        {
+          "label": "Справочник фондов",
+          "href": "/directories/funds",
+          "source": "S09"
+        },
+        {
+          "label": "Газетный справочник",
+          "href": "/directories/newspapers",
+          "source": "S02"
+        },
+        {
+          "label": "Справочники",
+          "href": "/directories",
+          "source": "S02,S09"
+        }
+      ]
+    },
+    {
+      "label": "Услуги",
+      "children": [
+        {
+          "label": "Услуги",
+          "href": "/services",
+          "source": "R01–R05"
+        },
+        {
+          "label": "Читальный зал",
+          "href": "/materials/archive-reading-room-info",
+          "source": "R02,S05"
+        },
+        {
+          "label": "Платные услуги",
+          "href": "/materials/archive-paid-services-info",
+          "source": "R01"
+        },
+        {
+          "label": "Государственные услуги",
+          "href": "/materials/archive-public-services-info",
+          "source": "R03–R05"
+        },
+        {
+          "label": "Справка",
+          "href": "/help",
+          "source": "Existing guide features"
+        }
+      ]
+    },
+    {
+      "label": "Документы",
+      "href": "/catalog?scope=cms",
+      "source": "Published CMS sources only"
+    },
+    {
+      "label": "Контакты",
+      "href": "/materials/archive-contacts",
+      "source": "S05"
+    }
+  ],
+  "footerLinks": [
+    {
+      "href": "/materials/archive-contacts",
+      "source": "S05",
+      "label": "Контактная информация"
+    },
+    {
+      "href": "/materials/archive-history-1",
+      "source": "S01",
+      "label": "История архива"
+    },
+    {
+      "href": "/directories/funds",
+      "source": "S09",
+      "label": "Справочник фондов"
+    },
+    {
+      "href": "/materials/archive-structure",
+      "source": "S07",
+      "label": "Структура"
+    },
+    {
+      "href": "/services",
+      "source": "R01–R05",
+      "label": "Услуги"
+    },
+    {
+      "href": "/guide",
+      "source": "Existing voluntary help",
+      "label": "Как пользоваться сайтом"
+    }
+  ]
+}

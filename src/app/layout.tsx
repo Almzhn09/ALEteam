@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import './fonts.css';
 import './globals.css';
+import './reference-design.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { SessionProvider } from '@/lib/session';
@@ -24,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 export const viewport: Viewport = {
   width: 'device-width', initialScale: 1,
-  themeColor: [{ media: '(prefers-color-scheme: light)', color: '#fffdf8' }, { media: '(prefers-color-scheme: dark)', color: '#1a202b' }],
+  themeColor: [{ media: '(prefers-color-scheme: light)', color: '#fffaf2' }, { media: '(prefers-color-scheme: dark)', color: '#26201a' }],
 };
 
 export default async function Layout({ children }: { children: ReactNode }) {

@@ -277,6 +277,50 @@
         "tool": "sharp failOn:warning; full raw().toBuffer() decode"
       },
       "publicationParentSourceKey": null
+    },
+    {
+      "id": "archive-central-building",
+      "path": "sources/archive-visual-20261111/originals/archive-central-building-97bdab95bc59.jpg",
+      "sha256": "97bdab95bc598fb6a8cc95b4676b2377f0e12e95499af5592b0840408fd1f8f7",
+      "bytes": 287040,
+      "width": 1024,
+      "height": 768,
+      "caption": "Здание архива на официальной странице контактной информации. Дата съёмки не указана.",
+      "alt": "Светлое многоэтажное здание архива с узкими окнами и деревьями у входа.",
+      "eventDate": null,
+      "usage": "central-archive-contact-page",
+      "crop": "Full original frame; no invented replacement or photographic editing.",
+      "inspected": true,
+      "credit": "Государственный архив Восточно-Казахстанской области",
+      "author": "Не указан в источнике",
+      "licenseClaim": null,
+      "publicAssetPolicy": "Published CMS attachment only; no public copy or optimizer cache.",
+      "sourceUrl": "http://e-arhiv.vko.gov.kz/ru/Page/Index/1330",
+      "sourceImageUrl": "http://e-arhiv.vko.gov.kz/akimsemey/upload/%D1%84%D0%BE%D1%82%D0%BE%201.jpg",
+      "pageSnapshot": "sources/reference-design-20261112/official-contacts.html",
+      "pageSha256": "049ad5bf4f14f78f436d40bcdd5d4eb7e63115d5415486ede094aae7a5043dc5",
+      "origin": "official_archive_site",
+      "localized": {
+        "ru": {
+          "caption": "Здание архива на официальной странице контактной информации. Дата съёмки не указана.",
+          "alt": "Светлое многоэтажное здание архива с узкими окнами и деревьями у входа."
+        },
+        "kk": {
+          "caption": "Ресми байланыс парағында көрсетілген архив ғимараты. Түсірілген күні көрсетілмеген.",
+          "alt": "Кіреберісінде ағаштары бар, терезелері жіңішке көпқабатты ашық түсті архив ғимараты."
+        },
+        "en": {
+          "caption": "The archive building shown on its official contact page. The photograph is undated.",
+          "alt": "A light-coloured multi-storey archive building with narrow windows and trees by the entrance."
+        }
+      },
+      "publicationParentSourceKey": "contacts",
+      "decoderValidation": {
+        "checked": "2026-11-12T04:04:08.459879+00:00",
+        "status": "complete_decode",
+        "tool": "sharp strict metadata and full raw decode"
+      },
+      "downloadedAt": "2026-11-12T04:04:08.459890+00:00"
     }
   ]
 }

@@ -1,4 +1,7 @@
 import Link from 'next/link';
+import {ArchiveMountains,ArchiveOrnament} from './ArchiveDecor';
+import referenceCopy from '../../data/artur/reference-design/copy.json';
+import referenceBlocks from '../../data/artur/reference-design/blocks.json';
 import { getLang, getT } from '@/lib/i18n-server';
 import { listContent } from '@/server/public-read';
 import editorial from '../../data/artur/real-content-v2/ui-copy.json';
@@ -16,27 +19,16 @@ export async function Footer() {
   const hint = t('(откроется в новой вкладке)');
   const copy=editorial[lang];
   return (
-    <footer className="site-footer">
+    <footer className="site-footer reference-footer"><ArchiveMountains/><ArchiveOrnament/>
       <div className="container footer-grid">
         <section aria-labelledby="footer-about">
           <h2 id="footer-about">{t('Электронный архив')}</h2>
-          <p>{copy.footerProject}</p>
+          <p>{copy.footerProject}</p><p className="small">{referenceCopy[lang].footerCopyright}</p>
         </section>
         <section aria-labelledby="footer-nav">
           <h2 id="footer-nav">{t('Разделы')}</h2>
           <ul>
-            <li><Link href="/catalog">{t('Поиск по архиву')}</Link></li>
-            <li><Link href="/calendar">{t('Памятные даты')}</Link></li>
-            <li><Link href="/directories">{t('Справочники')}</Link></li>
-            <li><Link href="/services">{t('Услуги')}</Link></li>
-            <li><Link href="/places">{t('История места')}</Link></li>
-            <li><Link href="/exhibitions">{t('Онлайн-выставки')}</Link></li>
-            <li><Link href="/memory">{t('Большой архив памяти')}</Link></li>
-            <li><Link href="/branches">{t('Филиалы и подразделения')}</Link></li>
-            <li><Link href="/news">{t('Новости и события')}</Link></li>
-            <li><Link href="/help">{t('Справка и частые вопросы')}</Link></li>
-            <li><Link href="/guide">{t('Как пользоваться сайтом')}</Link></li>
-            <li><Link href="/about">{t('Об архиве и помощь')}</Link></li>
+            {referenceBlocks.footerLinks.map(link=><li key={link.href}><Link href={link.href}>{t(link.label)}</Link></li>)}
           </ul>
         </section>
         <section aria-labelledby="footer-source">

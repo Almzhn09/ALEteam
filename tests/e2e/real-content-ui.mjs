@@ -25,8 +25,8 @@ const place=(await api('/places?locale=ru&limit=3')).items[0];assert.ok(place);
  await check('home shows source-backed recommendations, a loaded credited photo, local font and voluntary help',async()=>{
   await page.goto(base);await page.locator('section[aria-labelledby="recommendations-title"] .result-list a').first().waitFor();
   assert.equal(await page.locator('dialog[open]').count(),0);
-  const photo=page.locator('.archive-photo img');await photo.evaluate(img=>img.decode());assert.ok(await photo.evaluate(img=>img.naturalWidth>0));
-  assert.ok(await page.locator('.archive-photo figcaption a').getAttribute('href'));await page.evaluate(()=>document.fonts.ready);
+  const photo=page.locator('.archive-photo img').first();await photo.evaluate(img=>img.decode());assert.ok(await photo.evaluate(img=>img.naturalWidth>0));
+  assert.ok(await page.locator('.archive-photo figcaption a').first().getAttribute('href'));await page.evaluate(()=>document.fonts.ready);
   assert.ok(await page.evaluate(()=>document.fonts.check('400 16px "Noto Sans"','ӘҒҚҢӨҰҮҺІ')));
   await page.screenshot({path:out+'/home-desktop.png',fullPage:true});
   await page.locator('#hero-q').fill('1940');await page.locator('.hero-search button').click();await page.getByRole('link',{name:'История архива · 1',exact:true}).waitFor();assert.ok(page.url().includes('/catalog?'));

@@ -16,5 +16,6 @@ export const visualSlots = {
   home: ['archive-next-generation-ridder', 'thematic-exhibition-altay'],
   about: ['reading-room-researcher', 'archive-next-generation-ridder'],
   reading: ['reading-room-researcher'],
+  contacts: ['archive-central-building'],
 } as const;
 export type VisualSlot = keyof typeof visualSlots;

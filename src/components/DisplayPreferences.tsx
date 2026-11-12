@@ -17,13 +17,13 @@ export function DisplayPreferences({ initialTheme, initialSize }: { initialTheme
   }
 
   return (
-    <details className="display-preferences" ref={panel} onKeyDown={event => {
+    <details id="display-settings" className="display-preferences" ref={panel} onKeyDown={event => {
       if (event.key === 'Escape') {
         panel.current?.removeAttribute('open');
         panel.current?.querySelector('summary')?.focus();
       }
     }}>
-      <summary className="btn btn-secondary">{t('Вид сайта')}</summary>
+      <summary className="btn btn-secondary"><span className="display-symbol" aria-hidden="true">Aa</span><span className="display-label">{t('Вид сайта')}</span></summary>
       <div className="display-panel">
         <div className="field">
           <label htmlFor="display-theme">{t('Цветовая тема')}</label>

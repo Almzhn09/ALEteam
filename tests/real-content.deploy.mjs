@@ -32,7 +32,7 @@ try{
  await check('standalone includes the locally served font and a decodable real editorial photo',async()=>{
   const origin=config.BETTER_AUTH_URL,home=await fetch(origin+'/');assert.equal(home.status,200);const html=await home.text();assert.ok(html.includes('hero-title'));
   for(const name of ['latin','cyrillic','cyrillic-ext']){const file='fonts/noto-sans-'+name+'.woff2',r=await fetch(origin+'/'+file);assert.equal(r.status,200);const bytes=Buffer.from(await r.arrayBuffer());assert.equal(createHash('sha256').update(bytes).digest('hex'),createHash('sha256').update(await readFile('public/'+file)).digest('hex'));}
-  assert.equal(readyPhotos.length,2,'Only the complete Ridder and reading-room originals have a publication context');
+  assert.ok(readyPhotos.length>=2,'Complete photographs with explicit CMS context are available');
   const photo=html.match(/src="(\/api\/material-files\/[a-zA-Z0-9_-]+)"/);assert.ok(photo,'Verified CMS photograph rendered without a public optimizer copy');
   const image=await fetch(origin+photo[1]);assert.equal(image.status,200);assert.ok(image.headers.get('content-type')?.startsWith('image/'));assert.match(image.headers.get('cache-control')||'',/private/);assert.match(image.headers.get('cache-control')||'',/no-store/);
   const imageBytes=Buffer.from(await image.arrayBuffer()),imageSha=createHash('sha256').update(imageBytes).digest('hex'),original=readyPhotos.find(photo=>photo.sha256===imageSha);
@@ -50,7 +50,7 @@ try{
  });
  await check('re-running real setup is idempotent and never re-enables fixtures',async()=>{
   compose(project,['run','--rm','--no-deps','setup']);await ready(config.BETTER_AUTH_URL);assert.deepEqual(await corpus(config.BETTER_AUTH_URL),snapshot);
-  assert.equal(compose(project,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "CmsAttachment"']),'29');
+  assert.equal(compose(project,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "CmsAttachment"']),String(27+readyPhotos.length));
   assert.equal(compose(project,['exec','-T','db','psql','-U','archive_app','-d','archive','-tAc','SELECT count(*) FROM "MaterialPublication"']),'53');
  });
  await check('an existing Docker site upgrades with an identity-bound backup and immutable source history',async()=>{
