@@ -1,0 +1,7 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args: ['build', '--target', 'tools', '-t', 'aleteam-cloud-tools:build', '.']
+  - name: gcr.io/cloud-builders/docker
+    args: ['build', '-f', 'deploy/cloud-run/Dockerfile', '-t', '${_IMAGE}', '.']
+images: ['${_IMAGE}']
+timeout: 1800s
