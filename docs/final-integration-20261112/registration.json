@@ -1,0 +1,35 @@
+{
+  "testedAt": "2026-11-12T18:41:51.490Z",
+  "checks": [
+    {
+      "name": "login links to a translated public form, return destination and enlarged mobile layout survive in RU/KK/EN",
+      "passed": true
+    },
+    {
+      "name": "short passwords and mismatch fail locally without creating accounts",
+      "passed": true
+    },
+    {
+      "name": "public registration signs a new reader in, redirects to their account and grants no staff rights",
+      "passed": true
+    },
+    {
+      "name": "a registered visitor can sign out and sign in with the new password",
+      "passed": true
+    },
+    {
+      "name": "duplicate registration exposes a sign-in path, preserves entered identity and does not sign the visitor in",
+      "passed": true
+    },
+    {
+      "name": "temporary and rate-limit failures stay actionable, and the form passes axe",
+      "passed": true
+    },
+    {
+      "name": "the registration endpoint rate-limits direct clients with spoofed forwarded addresses",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "scope": "Local production application with disposable dedicated _test database; no production accounts or credentials"
+}
