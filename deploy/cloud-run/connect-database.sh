@@ -14,10 +14,18 @@ printf '\n'
 printf '%s' "$database_url" > "$private/url"
 unset database_url
 chmod 600 "$private/url"
-node --input-type=module - "$private/url" <<'JS'
-import {readFileSync} from 'node:fs';
-try{const u=new URL(readFileSync(process.argv[2],'utf8').trim());if(!['postgres:','postgresql:'].includes(u.protocol)||!u.hostname||!u.username||!u.password||u.pathname.length<2||u.hostname.includes('-pooler.')||!['require','verify-full'].includes(u.searchParams.get('sslmode')))throw Error();}catch{console.error('Нужна прямая PostgreSQL URL с паролем и sslmode=require, без Connection pooling.');process.exit(1);}
-JS
+python3 - "$private/url" <<'PY_VALIDATE'
+import sys
+from pathlib import Path
+from urllib.parse import urlparse, parse_qs
+try:
+    u = urlparse(Path(sys.argv[1]).read_text().strip())
+    assert u.scheme in ('postgres', 'postgresql') and u.hostname and u.username and u.password and len(u.path) > 1
+    assert '-pooler.' not in u.hostname and parse_qs(u.query).get('sslmode', [''])[0] in ('require', 'verify-full')
+except Exception:
+    print('Нужна прямая PostgreSQL URL с паролем и sslmode=require, без Connection pooling.', file=sys.stderr)
+    sys.exit(1)
+PY_VALIDATE
 image="${region}-docker.pkg.dev/${project}/ale-archive-preview/site:$(git rev-parse --short HEAD)"
 gcloud builds submit --project="$project" --region="$region" --config=deploy/cloud-run/cloudbuild.yaml --substitutions="_IMAGE=${image}" .
 gcloud services enable secretmanager.googleapis.com --project="$project"

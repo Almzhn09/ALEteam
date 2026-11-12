@@ -1,0 +1,24 @@
+{
+  "checks": [
+    {
+      "width": 360,
+      "theme": "light",
+      "violations": []
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "violations": []
+    }
+  ]
+}
