@@ -1147,4 +1147,5 @@ export const en: Record<string,string> = {
   "Ещё нет аккаунта?": "New here?",
   "Руководство": "Leadership",
   "Подразделения": "Departments",
+"Открыть все результаты": "Open all results",
 };

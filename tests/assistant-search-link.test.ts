@@ -1,0 +1,3 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {assistantSearchLink} from '../src/lib/assistant-source-link';
+test('assistant search destination keeps the query and language on the public route',()=>{assert.equal(assistantSearchLink('/search?q=%D3%A8%D1%81%D0%BA%D0%B5%D0%BC%D0%B5%D0%BD&lang=kk'),'/search?q=%D3%A8%D1%81%D0%BA%D0%B5%D0%BC%D0%B5%D0%BD&lang=kk');});
+test('untrusted saved messages cannot turn result navigation into an external or privileged link',()=>{for(const value of [undefined,'https://evil.example/search','//evil.example/search','javascript:alert(1)','/admin','/search/../admin','/search\\evil','/search?x=\n'])assert.equal(assistantSearchLink(value),undefined);});
