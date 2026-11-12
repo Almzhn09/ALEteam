@@ -405,6 +405,8 @@ export const en: Record<string,string> = {
   "Применить": "Apply",
   "Примеры вопросов": "Example questions",
   "Читать документ": "Read the document",
+  "Читать дальше": "Continue reading",
+  "Показано": "Shown",
   "Загрузка страницы…": "Loading page…",
   "Изображение временно недоступно": "Image temporarily unavailable",
   "Оригинал можно прочитать на странице, открыть или скачать.": "Read the original on this page, open it or download it.",
