@@ -8,7 +8,7 @@ import {staffContext,audit} from './staff';
 import {resolveMaterial} from './discovery-materials';
 import {stageUpload,readStagedUpload,removeStagedUpload,uploadMaxBytes} from './upload-storage';
 import {isolatedProcessing} from './isolated-processing';
-import {boundedFileFragments} from './authorized-file-text';
+import {pagedFileFragments} from './authorized-file-text';
 import type {AttachmentRef} from '../contracts/real-content';
 import {Prisma,type CmsAttachment} from '../generated/prisma/index.js';
 import type {UploadMime} from '../contracts/uploads';
@@ -79,7 +79,7 @@ export async function cmsFileResponse(request:Request,id:string){
  if(id.startsWith('preview-')){if(!row.previewKey||!row.previewSha256||p.download)throw new ApiError(404,'NOT_FOUND','Файл не найден.');const base=await realpath(root()),location=await realpath(path.join(base,row.previewKey));if(!location.startsWith(base+path.sep))throw new ApiError(404,'NOT_FOUND','Файл не найден.');bytes=await readFile(location);if(bytes.length!==row.previewBytes||sha(bytes)!==row.previewSha256)throw new ApiError(404,'NOT_FOUND','Файл не найден.');mime='image/png';}
  return new Response(new Uint8Array(bytes),{headers:{'Content-Type':mime,'Content-Length':String(bytes.length),'Content-Disposition':`${p.download||mime===docxMime?'attachment':'inline'}; filename="source-${id}.${mime===docxMime?'docx':mime==='application/pdf'?'pdf':mime==='image/png'?'png':'jpg'}"`,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"sandbox; default-src 'none'"}});
 }
-export async function cmsFileText(id:string,page?:number){
+export async function cmsFileText(id:string,page?:number,offset=0){
  const {row}=await visible(id);await cmsFileResponse(new Request('http://text.invalid/'),id);const parsed=row.parsed as any;if(!parsed?.fragments?.length||id.startsWith('preview-'))throw new ApiError(404,'NOT_FOUND','Распознанный текст пока недоступен.');
- const fragments=parsed.fragments.map((f:any,index:number)=>({...f,id:row.id+'-'+(index+1)})).filter((f:any)=>page!==undefined?f.page===page:!parsed.publicationPages||parsed.publicationPages.includes(f.page));if(!fragments.length)throw new ApiError(404,'NOT_FOUND','Распознанный текст пока недоступен.');const bounded=boundedFileFragments(fragments);return {id,totalPages:parsed.pages,publicationPages:parsed.publicationPages??null,...bounded,sourceSha256:row.expectedSha256,textSha256:sha(bounded.text),isOcr:parsed.ocr?.used??false,corrected:parsed.ocr?.quality==='reviewed',engine:parsed.parser,ocr:parsed.ocr??{used:false,quality:'not_applicable'},...(parsed.ocr?.confidence!==undefined?{confidence:parsed.ocr.confidence}:{})};
+ const fragments=parsed.fragments.map((f:any,index:number)=>({...f,id:row.id+'-'+(index+1)})).filter((f:any)=>page!==undefined?f.page===page:!parsed.publicationPages||parsed.publicationPages.includes(f.page));if(!fragments.length)throw new ApiError(404,'NOT_FOUND','Распознанный текст пока недоступен.');const bounded=pagedFileFragments(fragments,offset);return {id,totalPages:parsed.pages,publicationPages:parsed.publicationPages??null,...bounded,sourceSha256:row.expectedSha256,textSha256:sha(bounded.text),isOcr:parsed.ocr?.used??false,corrected:parsed.ocr?.quality==='reviewed',engine:parsed.parser,ocr:parsed.ocr??{used:false,quality:'not_applicable'},...(parsed.ocr?.confidence!==undefined?{confidence:parsed.ocr.confidence}:{})};
 }
