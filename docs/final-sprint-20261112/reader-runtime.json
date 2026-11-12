@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "parser": "openxml-docx-reader",
+  "offset": 12000,
+  "totalCharacters": 12316,
+  "nextOffset": null,
+  "scope": "Compact runtime dependency check with current worker and real original, not a complete final image build"
+}
