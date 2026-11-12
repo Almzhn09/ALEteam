@@ -1,0 +1,140 @@
+{
+  "testedAt": "2026-11-12T04:43:44.996Z",
+  "commit": "16b6a1b4a2e6ec21361a91e7d0f36be56313c654",
+  "checks": [
+    {
+      "name": "current CMS contacts, source-based leadership, source-linked sections and no invented reference categories",
+      "passed": true
+    },
+    {
+      "name": "manual slides support next/previous, keyboard, touch scrolling and remain still without user input",
+      "passed": true
+    },
+    {
+      "name": "every displayed photograph is an original published CMS attachment with immediate-access headers",
+      "passed": true
+    },
+    {
+      "name": "navigation groups, search disclosure and display shortcut work with keyboard and restore focus",
+      "passed": true
+    },
+    {
+      "name": "reading colors meet AA, local serif contains Kazakh glyphs and no font CDN is requested",
+      "passed": true
+    },
+    {
+      "name": "mobile header uses two layout rows and its dialogs/disclosures fit at 360px with 150% text",
+      "passed": true
+    },
+    {
+      "name": "without JavaScript the first cover and every slide remain reachable through real anchors",
+      "passed": true
+    },
+    {
+      "name": "print omits abstract ornament and interactive navigation while retaining source content",
+      "passed": true
+    }
+  ],
+  "colors": [
+    {
+      "theme": "light",
+      "foreground": "text",
+      "background": "bg",
+      "ratio": 13.18,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "foreground": "muted",
+      "background": "bg",
+      "ratio": 6.61,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.9,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "foreground": "muted",
+      "background": "surface-2",
+      "ratio": 5.82,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "foreground": "accent",
+      "background": "bg",
+      "ratio": 6.06,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "foreground": "on-accent",
+      "background": "accent",
+      "ratio": 6.58,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "foreground": "border-strong",
+      "background": "bg",
+      "ratio": 3.91,
+      "minimum": 3
+    },
+    {
+      "theme": "dark",
+      "foreground": "text",
+      "background": "bg",
+      "ratio": 14.84,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "foreground": "muted",
+      "background": "bg",
+      "ratio": 9.83,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 8.97,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "foreground": "muted",
+      "background": "surface-2",
+      "ratio": 7.73,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "foreground": "accent",
+      "background": "bg",
+      "ratio": 9.71,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "foreground": "on-accent",
+      "background": "accent",
+      "ratio": 9.32,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "foreground": "border-strong",
+      "background": "bg",
+      "ratio": 4.87,
+      "minimum": 3
+    }
+  ],
+  "errors": [],
+  "target": "Local production server; supplied real CMS corpus; no seed or mocked sources"
+}

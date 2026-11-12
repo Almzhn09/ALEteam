@@ -1,0 +1,378 @@
+{
+  "generated": "2026-11-12T04:44:36.517Z",
+  "commit": "16b6a1b4a2e6ec21361a91e7d0f36be56313c654",
+  "target": "Actual source corpus; local production review; no seed",
+  "checks": [
+    {
+      "name": "home shows source-backed recommendations, a loaded credited photo, local font and voluntary help",
+      "passed": true
+    },
+    {
+      "name": "fund directory keeps literal numbers, exposes source names, sorting, pagination and a safe complete export",
+      "passed": true
+    },
+    {
+      "name": "newspaper entry is readable at its own link with original periods and source edition",
+      "passed": true
+    },
+    {
+      "name": "advanced archival filters keep their existing API while honest empty and retry states work",
+      "passed": true
+    },
+    {
+      "name": "real CMS DOCX offers original bytes, paragraph text, source-bound explanation and related reading",
+      "passed": true
+    },
+    {
+      "name": "decree preview displays the actual page without copying restricted material through image optimisation",
+      "passed": true
+    },
+    {
+      "name": "help and display controls are keyboard accessible, Escape restores focus and reduced motion is respected",
+      "passed": true
+    },
+    {
+      "name": "published section hubs, standalone directory entries and alternate search use the integrated real corpus",
+      "passed": true
+    },
+    {
+      "name": "36 real-page reading layouts: 36 size/language/theme/text variants × 1 screens, no overflow or overlapping controls; axe checks on 2 desktop screens",
+      "passed": true
+    },
+    {
+      "name": "display and mobile navigation panels fit at 360px / 150% text and close with Escape",
+      "passed": true
+    }
+  ],
+  "matrix": [
+    {
+      "width": 360,
+      "lang": "ru",
+      "theme": "light",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 360,
+      "lang": "ru",
+      "theme": "light",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 360,
+      "lang": "ru",
+      "theme": "dark",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 360,
+      "lang": "ru",
+      "theme": "dark",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 360,
+      "lang": "kk",
+      "theme": "light",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 360,
+      "lang": "kk",
+      "theme": "light",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 360,
+      "lang": "kk",
+      "theme": "dark",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 360,
+      "lang": "kk",
+      "theme": "dark",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 360,
+      "lang": "en",
+      "theme": "light",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 360,
+      "lang": "en",
+      "theme": "light",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 360,
+      "lang": "en",
+      "theme": "dark",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 360,
+      "lang": "en",
+      "theme": "dark",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 768,
+      "lang": "ru",
+      "theme": "light",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 768,
+      "lang": "ru",
+      "theme": "light",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 768,
+      "lang": "ru",
+      "theme": "dark",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 768,
+      "lang": "ru",
+      "theme": "dark",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 768,
+      "lang": "kk",
+      "theme": "light",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 768,
+      "lang": "kk",
+      "theme": "light",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 768,
+      "lang": "kk",
+      "theme": "dark",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 768,
+      "lang": "kk",
+      "theme": "dark",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 1440,
+      "lang": "ru",
+      "theme": "light",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 1440,
+      "lang": "ru",
+      "theme": "light",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 1440,
+      "lang": "ru",
+      "theme": "dark",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 1440,
+      "lang": "ru",
+      "theme": "dark",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 1440,
+      "lang": "kk",
+      "theme": "light",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 1440,
+      "lang": "kk",
+      "theme": "light",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 1440,
+      "lang": "kk",
+      "theme": "dark",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 1440,
+      "lang": "kk",
+      "theme": "dark",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 1440,
+      "lang": "en",
+      "theme": "light",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 1440,
+      "lang": "en",
+      "theme": "light",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 1440,
+      "lang": "en",
+      "theme": "dark",
+      "size": "100",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    },
+    {
+      "width": 1440,
+      "lang": "en",
+      "theme": "dark",
+      "size": "150",
+      "page": "home",
+      "overflow": 0,
+      "problems": []
+    }
+  ],
+  "errors": [],
+  "limitations": [
+    "Reflow and text scaling; not a physical-device or native browser-zoom accessibility certification.",
+    "Browser evidence is technical acceptance, not official archive/editorial or native-language approval."
+  ]
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "open-day-altay",
+    "url": "http://e-arhiv.vko.gov.kz/akimsemey/state/zirian/photo_2026-09-17_16-34-20.jpg",
+    "curlExit": 0,
+    "bytes": 81920,
+    "sha256": "f7e21d3e70ce0b5b4a43899ab7352d7f322c9424e307debd50f64cab33b547b9",
+    "completeDecode": false
+  },
+  {
+    "id": "thematic-exhibition-altay",
+    "url": "http://e-arhiv.vko.gov.kz/akimsemey/state/ajaguz/photo_2026-09-04_15-33-39.jpg",
+    "curlExit": 0,
+    "bytes": 81920,
+    "sha256": "f6a84b8dc208388b33ac570bd89c84be2ba7c175232c5aaf0a96e1899a4a0443",
+    "completeDecode": false
+  }
+]

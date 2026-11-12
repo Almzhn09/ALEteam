@@ -1,0 +1,37 @@
+{
+  "generated": "2026-11-12T04:52:15.318724+00:00",
+  "testedReleaseCommit": "16b6a1b4a2e6ec21361a91e7d0f36be56313c654",
+  "unitTests": {
+    "passed": 379,
+    "failed": 0
+  },
+  "typecheck": true,
+  "productionBuild": true,
+  "interfaceDictionaryKeys": 1034,
+  "missingTranslations": 0,
+  "editorialCopyFieldsPerLanguage": 43,
+  "localSerifSubsets": 6,
+  "scriptedInteractions": 8,
+  "readingLayouts": 432,
+  "native200Layouts": 432,
+  "finalHomeRechecks": 72,
+  "axeScreens": 72,
+  "sourceCorpus": {
+    "cmsItems": 39,
+    "publishedEditions": 53,
+    "branches": 13,
+    "documentAttachmentRelations": 27,
+    "photoMasters": 3,
+    "totalAttachmentRelations": 30,
+    "uniqueDocumentOriginals": 21,
+    "uniquePhotoOriginals": 3,
+    "fundGroups": 1705,
+    "newspaperRows": 1466
+  },
+  "layoutEvidenceNote": "Full432+432 matrix precedes an accessible brand-label correction and removal of one failing external sidebar link. Styles and remaining pages did not change; final home repeated36+36, final interactions8 and multilingual axe72. Each artifact retains its actual commit.",
+  "limitations": [
+    "Two exact original Altay JPEGs remain incomplete at the official origin; published photos are complete independent originals.",
+    "1424/free-call claim, fax and Krylova39 are not substituted for the supplied current S05 contact edition.",
+    "Docker images were not rebuilt in this design stage; the existing deployment script derives the current photo count."
+  ]
+}
