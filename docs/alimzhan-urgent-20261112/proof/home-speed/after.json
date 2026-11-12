@@ -1,0 +1,46 @@
+{
+  "scope": "Local real corpus, read-only anonymous recommendations",
+  "counter": "Prisma top-level operations, not individual SQL statements",
+  "samples": [
+    {
+      "ms": 516.74,
+      "ormCalls": 101,
+      "ids": [
+        "cmwboop850000q4o3p5rhb5da",
+        "cmwbooqcz003kq4o3p14anacs",
+        "cmwbootqd00c6q4o3c3aok2qm"
+      ],
+      "mode": "editorial"
+    },
+    {
+      "ms": 186.89,
+      "ormCalls": 101,
+      "ids": [
+        "cmwboop850000q4o3p5rhb5da",
+        "cmwbooqcz003kq4o3p14anacs",
+        "cmwbootqd00c6q4o3c3aok2qm"
+      ],
+      "mode": "editorial"
+    },
+    {
+      "ms": 172.34,
+      "ormCalls": 101,
+      "ids": [
+        "cmwboop850000q4o3p5rhb5da",
+        "cmwbooqcz003kq4o3p14anacs",
+        "cmwbootqd00c6q4o3c3aok2qm"
+      ],
+      "mode": "editorial"
+    },
+    {
+      "ms": 162.32,
+      "ormCalls": 101,
+      "ids": [
+        "cmwboop850000q4o3p5rhb5da",
+        "cmwbooqcz003kq4o3p14anacs",
+        "cmwbootqd00c6q4o3c3aok2qm"
+      ],
+      "mode": "editorial"
+    }
+  ]
+}
