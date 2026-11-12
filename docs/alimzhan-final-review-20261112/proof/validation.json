@@ -1,0 +1,17 @@
+{
+  "baseCommit": "2d198dc",
+  "FIN-B1": "implemented; one common retrieval module",
+  "FIN-B2": "6 integration cases plus 18 real-corpus router cases passed",
+  "FIN-B3": "final backend handler measurements recorded; full HTML requires integrator production server",
+  "unitTests": 403,
+  "typecheck": "passed",
+  "i18n": {
+    "keys": 1059,
+    "missing": 0
+  },
+  "productionBuildRunHere": false,
+  "rootProduction3125": "connection refused",
+  "cloudRunDeployed": false,
+  "testDatabasesRemoved": true,
+  "workingDatabaseModified": false
+}
