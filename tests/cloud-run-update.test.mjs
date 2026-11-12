@@ -6,7 +6,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
 const script=fileURLToPath(new URL('../deploy/cloud-run/update.sh',import.meta.url));
-async function run(configured,input=''){
+async function run(configured,input='',command=script){
  const folder=await mkdtemp(path.join(tmpdir(),'ale-update-test-'));const log=path.join(folder,'calls.jsonl');
  try{
   await writeFile(path.join(folder,'gcloud'),`#!/usr/bin/env python3
@@ -21,7 +21,8 @@ if args[:3]==['run','services','describe']:
  else: print('https://archive.example.test')
 elif args[:3]==['secrets','versions','add']: print('projects/test/secrets/database-secret/versions/2')
 `,{mode:0o700});
-  const result=spawnSync('bash',[script],{encoding:'utf8',input,env:{...process.env,PATH:folder+':'+process.env.PATH,ALE_SKIP_PUBLIC_CHECK:'1',ALE_TEST_CALLS:log,ALE_TEST_CONFIGURED:configured?'1':'0'}});
+  await writeFile(path.join(folder,'git'),'#!/bin/sh\nif [ "$1" = "rev-parse" ]; then echo test-release; fi\n',{mode:0o700});
+  const result=spawnSync('bash',[command],{encoding:'utf8',input,timeout:10000,env:{...process.env,PATH:folder+':'+process.env.PATH,ALE_RELEASE_BUILD_AT:'2000-01-01T00:00:00Z',ALE_SKIP_PUBLIC_CHECK:'1',ALE_TEST_CALLS:log,ALE_TEST_CONFIGURED:configured?'1':'0'}});
   const calls=(await readFile(log,'utf8')).trim().split('\n').filter(Boolean).map(x=>JSON.parse(x));
   return {result,calls};
  }finally{await rm(folder,{recursive:true,force:true});}
@@ -39,4 +40,12 @@ test('a service without a database requests a direct URL and connects it using a
 });
 test('an invalid pooled URL is rejected before building or changing secrets',async()=>{
  const {result,calls}=await run(false,'postgresql://reader:fake-password@ep-example-pooler.neon.tech/archive?sslmode=require\n');assert.notEqual(result.status,0);assert.ok(!calls.some(a=>['builds','secrets'].includes(a[0])));
+});
+test('the deadline helper publishes without further input when the database is already configured',async()=>{
+ const deadline=fileURLToPath(new URL('../deploy/cloud-run/release-deadline.sh',import.meta.url));
+ const {result,calls}=await run(true,'',deadline);assert.equal(result.status,0,result.stderr);assert.equal(calls.filter(a=>a[0]==='builds').length,1);assert.ok(calls.some(a=>a.slice(0,3).join(' ')==='run services update'));assert.ok(!calls.some(a=>a[0]==='secrets'));
+});
+test('the deadline helper accepts the hidden URL before waiting and needs no later input',async()=>{
+ const deadline=fileURLToPath(new URL('../deploy/cloud-run/release-deadline.sh',import.meta.url));
+ const {result,calls}=await run(false,'postgresql://reader:fake-password@ep-example.neon.tech/archive?sslmode=require\n',deadline);assert.equal(result.status,0,result.stderr);assert.equal(calls.filter(a=>a[0]==='builds').length,1);assert.ok(calls.some(a=>a.some(v=>v==='--update-secrets=DATABASE_URL=ale-archive-database-url:2')));assert.ok(!(result.stdout+result.stderr+JSON.stringify(calls)).includes('fake-password'));
 });
