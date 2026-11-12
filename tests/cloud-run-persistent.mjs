@@ -52,6 +52,20 @@ try{
  docker(['restart',app]);await ready();assert.equal((await verifyPriceOriginal(origin)).id,updatedPrice.id);
  assert.equal((await client.query('SELECT count(*)::int AS n FROM "CmsAttachment" WHERE "expectedSha256"=$1 AND state=\'PUBLISHED\'',[priceOriginal.sha256])).rows[0].n,1);
  checks.push('Repeated persistent startup retains R01 identity without duplicate attachments');
+ if(process.env.ALE_CLOUD_BROWSER_CHECKS==='1'){
+  const env={...process.env,BASE_URL:origin,TEST_DATABASE_URL:`postgresql://postgres:${password}@127.0.0.1:${dbPort}/archive_release_test?sslmode=disable`,ALE_BROWSER_COOKIE:cookie};
+  for(const [name,command,args] of [
+   ['public-files', 'python3', ['deploy/cloud-run/check-public.py',origin]],
+   ['main-path',process.execPath,['tests/e2e/final-release.mjs']],
+   ['registration',process.execPath,['tests/e2e/registration.mjs']],
+   ['languages',process.execPath,['tests/e2e/language-navigation.mjs']],
+  ]){
+   const result=spawnSync(command,args,{env,encoding:'utf8',timeout:300000,maxBuffer:8*1024*1024});
+   const log='.local/final-'+name+'.log';await writeFile(log,String(result.stdout??'')+String(result.stderr??''),{mode:0o600});
+   assert.equal(result.status,0,name+' acceptance failed; inspect '+log);
+   checks.push('Final local acceptance passed: '+name);
+  }
+ }
  console.log(JSON.stringify({checks,passed:checks.length}));await writeFile('.local/cloud-run-persistent-proof.json',JSON.stringify({testedAt:new Date().toISOString(),checks,scope:'Local Docker external PostgreSQL acceptance, not a Neon production deployment'},null,2)+'\n');
 }finally{
  await client?.end().catch(()=>{});

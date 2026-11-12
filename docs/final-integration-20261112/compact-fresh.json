@@ -1,13 +1,13 @@
 {
-  "testedAt": "2026-11-12T18:29:42.004Z",
+  "testedAt": "2026-11-12T18:45:53.108Z",
   "checks": [
     {
       "name": "Cloud Run-style container restores real dataset and becomes healthy",
-      "startupMs": 2985
+      "startupMs": 4283
     },
     {
       "name": "Fresh compact container serves the exact full official 15-page R01 PDF",
-      "id": "cmwdvsbw40000bwa2f77ez622"
+      "id": "cmwdwdos00000bxa2fzcvxwse"
     },
     {
       "name": "Real sources, modern layout, canonical URL, protected photos and local fonts survive packaging"
@@ -17,7 +17,7 @@
     },
     {
       "name": "Cold restart preserves original source IDs and identical file bytes from the baked snapshot",
-      "restartMs": 2943
+      "restartMs": 4127
     },
     {
       "name": "Full R01 original remains downloadable after cold restart"

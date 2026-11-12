@@ -1,5 +1,5 @@
 {
-  "testedAt": "2026-11-12T18:30:33.554Z",
+  "testedAt": "2026-11-12T18:47:03.662Z",
   "checks": [
     "Empty external database restored, migrated and admin bootstrapped",
     "Empty external database serves the exact PDF with all 15 pages parsed",
@@ -7,7 +7,11 @@
     "Compact runtime publishes missing R01 into an existing database, parses 15 pages and preserves every account",
     "All 42 source originals and previews survive changed staging paths across builds",
     "Authenticated user session survives restart",
-    "Repeated persistent startup retains R01 identity without duplicate attachments"
+    "Repeated persistent startup retains R01 identity without duplicate attachments",
+    "Final local acceptance passed: public-files",
+    "Final local acceptance passed: main-path",
+    "Final local acceptance passed: registration",
+    "Final local acceptance passed: languages"
   ],
   "scope": "Local Docker external PostgreSQL acceptance, not a Neon production deployment"
 }

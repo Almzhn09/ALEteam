@@ -1,5 +1,5 @@
 {
-  "testedAt": "2026-11-12T18:41:51.490Z",
+  "testedAt": "2026-11-12T18:46:44.055Z",
   "checks": [
     {
       "name": "login links to a translated public form, return destination and enlarged mobile layout survive in RU/KK/EN",
