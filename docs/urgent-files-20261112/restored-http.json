@@ -1,0 +1,13 @@
+{
+  "testedAt": "2026-11-12T17:19:08.479Z",
+  "publishedOriginals": 30,
+  "checkedOriginalsAndPreviews": 42,
+  "types": {
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": 18,
+    "application/pdf": 9,
+    "image/png": 12,
+    "image/jpeg": 3
+  },
+  "result": "All 200 with exact expected SHA256 after restoring a different snapshot into persistent database paths",
+  "scope": "Dedicated local real corpus _test database, published Cloud Run is not updated yet"
+}
