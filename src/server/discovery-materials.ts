@@ -20,7 +20,12 @@ export async function resolveMaterial(key:MaterialKey,locale:ContentLocale,fallb
   return {material,source,text,fundId:d.fundId,topicIds:[],placeIds:[],eventRevision:t.revisionId??fingerprint};
  }
  const item=await client.contentItem.findFirst({where:{id:key.id,...publicContentScope,kind:{notIn:['SETTING','ARCHIVE_DOCUMENT']}},include:{revisions:{where:{status:'PUBLISHED'},orderBy:{locale:'asc'}}}});if(!item)return;
- const eligible=item.revisions.filter(r=>r.reviewerId&&r.authorId!==r.reviewerId&&contentPayload.safeParse(r.payload).success);
+ return resolveCmsItem(item,locale,fallback);
+}
+export type CmsItemWithRevisions=Prisma.ContentItemGetPayload<{include:{revisions:true}}>
+/** The caller must obtain this item through the publicContentScope query. */
+export function resolveCmsItem(item:CmsItemWithRevisions,locale:ContentLocale,fallback=true):ResolvedMaterial|undefined{
+ const eligible=item.revisions.filter(r=>r.status==='PUBLISHED'&&r.reviewerId&&r.authorId!==r.reviewerId&&contentPayload.safeParse(r.payload).success);
  const r=selectLocale(eligible,locale,fallback);if(!r)return;
  const p=contentPayload.parse(r.payload),text=p.body.slice(0,10000),fingerprint=digest([r.id,r.locale,p,r.updatedAt.toISOString(),item.isDemo]);
  const source:SourceRef={kind:'cms',id:item.id,locale:r.locale as ContentLocale,revision:fingerprint,title:p.title,isDemo:item.isDemo,href:`/api/content/${encodeURIComponent(item.slug)}?locale=${r.locale}`};

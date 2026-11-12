@@ -1,6 +1,7 @@
 import {createHash} from 'node:crypto';
 import {documentList,publicDocument} from './catalog';
 import {db} from './db';
+import {publicDocumentWhere} from './public-visibility';
 import {unsafeInstructions} from './assistant-safety';
 import type {ContentLocale} from '../contracts/cms';
 import type {SemanticPlan} from './semantic-catalog-plan';
@@ -25,6 +26,8 @@ async function source(id:string,locale:ContentLocale):Promise<CatalogPassage|und
 }
 export async function retrieveSemanticCatalog(plan:SemanticPlan):Promise<CatalogPassage[]>{
  if(!plan.handled||plan.clarification)return [];
+ // An empty public document corpus cannot satisfy any locality variant.
+ if(!await db.document.findFirst({where:publicDocumentWhere,select:{id:true}}))return [];
  const ids=new Set<string>();
  for(const locality of plan.localityVariants.length?plan.localityVariants:[undefined]){
   const params=new URLSearchParams();for(const [key,value] of Object.entries({...plan.filters,...(locality?{locality}:{})}))if(value!==undefined)params.set(key,String(value));

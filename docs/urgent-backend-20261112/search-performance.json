@@ -1,0 +1,89 @@
+{
+  "testedAt": "2026-11-12T17:43:20.018775+00:00",
+  "scope": "In-process public handlers, local PostgreSQL disposable real-corpus _test database; warmed connections, no cloud latency guarantee",
+  "before": [
+    {
+      "name": "search",
+      "runs": [
+        {
+          "ms": 327,
+          "queries": 220,
+          "total": 1048
+        },
+        {
+          "ms": 310,
+          "queries": 220,
+          "total": 1048
+        },
+        {
+          "ms": 287,
+          "queries": 220,
+          "total": 1048
+        }
+      ]
+    },
+    {
+      "name": "home",
+      "runs": [
+        {
+          "ms": 203,
+          "queries": 259,
+          "total": 3
+        },
+        {
+          "ms": 204,
+          "queries": 259,
+          "total": 3
+        },
+        {
+          "ms": 200,
+          "queries": 259,
+          "total": 3
+        }
+      ]
+    }
+  ],
+  "after": [
+    {
+      "name": "search",
+      "runs": [
+        {
+          "ms": 114,
+          "queries": 7,
+          "total": 1048
+        },
+        {
+          "ms": 105,
+          "queries": 7,
+          "total": 1048
+        },
+        {
+          "ms": 109,
+          "queries": 7,
+          "total": 1048
+        }
+      ]
+    },
+    {
+      "name": "home",
+      "runs": [
+        {
+          "ms": 212,
+          "queries": 259,
+          "total": 3
+        },
+        {
+          "ms": 661,
+          "queries": 259,
+          "total": 3
+        },
+        {
+          "ms": 221,
+          "queries": 259,
+          "total": 3
+        }
+      ]
+    }
+  ],
+  "result": "All city aliases retain total1048 (9CMS,1020fund groups,19newspaper rows); empty directories retain1705/1466; no private/shared cache added."
+}
