@@ -1,0 +1,27 @@
+{
+  "testedAt": "2026-11-12T09:12:22.979Z",
+  "checks": [
+    {
+      "name": "PDF failure exposes retry and direct source link; retry loads actual bytes, closing restores focus",
+      "passed": true
+    },
+    {
+      "name": "successful HTML response cannot be displayed as a PDF",
+      "passed": true
+    },
+    {
+      "name": "empty recognised text explains the absence and retains original access",
+      "passed": true
+    },
+    {
+      "name": "material without initial files still exposes a failed availability check and permits retry",
+      "passed": true
+    },
+    {
+      "name": "reading and error controls fit both themes at 360px/150%; axe reports no violations",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "scope": "Real published sources, read-only; fault injection for unavailable transport and empty OCR only"
+}
