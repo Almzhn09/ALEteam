@@ -71,7 +71,7 @@ export function BranchFacts({ item }: { item: PublicContentItem }) {
 }
 
 export function BranchExplorer({ branches }: { branches: PublicContentItem[] }) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [q, setQ] = useState('');
   const [type, setType] = useState('');
   const [selected, setSelected] = useState<string | null>(null);
@@ -96,6 +96,7 @@ export function BranchExplorer({ branches }: { branches: PublicContentItem[] }) 
           {current && (
             <div className="card" lang={current.locale}>
               <h2 style={{ fontSize: '1.15rem' }}><Link href={`/branches/${current.slug}`}>{current.payload.title}</Link></h2>
+              {current.locale!==lang&&<p className="source-language small muted" lang={lang}>{t('Материал на языке источника')} · {current.locale.toUpperCase()}</p>}
               <BranchFacts item={current} />
               {current.payload.latitude !== undefined && <BranchRoute title={current.payload.title} target={{ latitude: current.payload.latitude, longitude: current.payload.longitude! }} />}
             </div>
@@ -104,6 +105,7 @@ export function BranchExplorer({ branches }: { branches: PublicContentItem[] }) 
             {visible.map(b => (
               <li key={b.id} className="card card-flat" lang={b.locale}>
                 <div className="row" style={{ gap: 'var(--space-2)' }}><Link href={`/branches/${b.slug}`}>{b.payload.title}</Link><DemoBadge show={b.isDemo} /></div>
+                {b.locale!==lang&&<p className="source-language small muted" lang={lang}>{t('Материал на языке источника')} · {b.locale.toUpperCase()}</p>}
                 <p className="small muted" style={{ margin: 'var(--space-1) 0' }}>{b.payload.address}</p>
                 <button type="button" className="btn btn-ghost btn-sm btn-wrap" aria-pressed={b.id === selected} onClick={() => setSelected(b.id)}>{t('Показать на карте и построить маршрут')}<span className="visually-hidden">: {b.payload.title}</span></button>
               </li>

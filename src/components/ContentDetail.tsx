@@ -16,7 +16,7 @@ import { allContentById, getDocument, getLocalized } from '@/server/public-read'
 
 export async function detailMetadata(slug: string, path: string, kinds: readonly ContentKind[],contentLocale?:ContentLocale) {
   const lang = contentLocale??await getLang();
-  const { item, available } = await getLocalized(slug, lang, kinds);
+  const { item, available } = await getLocalized(slug, lang, kinds, !contentLocale);
   if (item) return contentMetadata(item, path);
   return available.length ? { title: (await getT())('Нет перевода на выбранный язык'), robots: { index: false } } : { robots: { index: false } };
 }
@@ -31,7 +31,7 @@ export async function related(item: PublicContentItem, lang: Lang) {
 
 export async function ContentDetail({ slug, path, kinds, crumb, children,contentLocale }: { slug: string; path: string; kinds: readonly ContentKind[]; crumb: { href: string; label: string }; children?: (item: PublicContentItem) => ReactNode;contentLocale?:ContentLocale }) {
   const [t, lang] = await Promise.all([getT(), getLang()]);
-  const { item, available } = await getLocalized(slug, contentLocale??lang, kinds);
+  const { item, available } = await getLocalized(slug, contentLocale??lang, kinds, !contentLocale);
   if (!item) {
     if (!available.length) notFound();
     return <NoTranslation available={available} t={t} crumbs={[crumb, { label: t('Нет перевода') }]} path={path} />;
@@ -42,6 +42,7 @@ export async function ContentDetail({ slug, path, kinds, crumb, children,content
   return (
     <div className="container page measure-narrow stack">
       <Breadcrumbs items={[crumb, { label: p.title }]} />
+      {item.locale!==lang&&<p className="source-language notice notice-info" role="status">{t('Материал на языке источника')} · <span lang={lang}>{item.locale.toUpperCase()}</span></p>}
       <nav className="reader-jumps row" aria-label={t('На этой странице')}>
         <a href="#material-body">{t('Читать материал')}</a>
         {originals.length>0&&<a href="#material-originals">{t('Оригиналы документов')}</a>}
@@ -54,7 +55,6 @@ export async function ContentDetail({ slug, path, kinds, crumb, children,content
           <DemoBadge show={item.isDemo} />
         </div>
         <h1 style={{ marginBottom: 0 }}>{p.title}</h1>
-        {item.locale!==lang&&<p className="small muted">{t('Материал показан на языке источника.')}</p>}
         <Body item={item} t={t} />
         {children?.(item)}
       </article>

@@ -4,7 +4,7 @@ import { ContentCard, EmptyList, FilterBar, Pager, includes, inPeriod, one, page
 import { Breadcrumbs, DemoBadge } from '@/components/ui';
 import { getLang, getT } from '@/lib/i18n-server';
 import { languageAlternates } from '@/lib/seo';
-import { listContent } from '@/server/public-read';
+import { listWithSource } from '@/lib/sections-server';
 
 const tabs = [
   { kind: 'EVENT', slug: 'events', label: 'События' }, { kind: 'COLLECTION', slug: 'collections', label: 'Коллекции' },
@@ -21,7 +21,7 @@ export default async function MemoryPage({ searchParams }: { searchParams: Promi
   const tab = tabs.find(x => x.slug === one(sp.section)) ?? tabs[0];
   const q = one(sp.q); const place = one(sp.place); const fromText = one(sp.from); const toText = one(sp.to);
   const from = yearOf(fromText); const to = yearOf(toText);
-  const all = await listContent(lang, tab.kind as ContentKind);
+  const all = (await listWithSource(lang, tab.kind as ContentKind)).map(({item})=>item);
   const items = all.filter(i => (!q || includes(i.payload.title, q) || includes(i.payload.body, q) || i.payload.tags.some(x => includes(x, q)))
     && (!place || includes(i.payload.category, place) || i.payload.tags.some(x => includes(x, place)) || includes(i.payload.body, place))
     && inPeriod(i.payload, from, to))
@@ -52,6 +52,7 @@ export default async function MemoryPage({ searchParams }: { searchParams: Promi
               <li key={i.id} className="timeline-decade" style={{ paddingBottom: 'var(--space-5)' }}>
                 <h2 className="timeline-year">{period(i.payload) || t('Дата не указана')}</h2>
                 <div className="card card-flat" lang={i.locale}>
+                  {i.locale!==lang&&<p className="source-language small muted" lang={lang}>{t('Материал на языке источника')} · {i.locale.toUpperCase()}</p>}
                   <div className="row" style={{ gap: 'var(--space-2)', marginBottom: 'var(--space-1)' }}>{i.payload.category && <span className="badge badge-neutral">{i.payload.category}</span>}<DemoBadge show={i.isDemo} /></div>
                   <Link href={`/memory/${i.slug}`}>{i.payload.title}</Link>
                   <p className="small muted clamp-2" style={{ margin: 0 }}>{i.payload.body}</p>
