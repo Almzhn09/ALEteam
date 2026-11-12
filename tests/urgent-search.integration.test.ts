@@ -43,3 +43,17 @@ test('B2 API handles bare city aliases and combines existing documents with CMS 
  const mixed=await ask('покажи документы про Усть-Каменогорск');assert.deepEqual([...new Set(mixed.sources.map((s:any)=>s.kind))].sort(),['cms','document','fund','newspaper']);assert.ok(mixed.sources.length<=5);
  await db.document.update({where:{id:'urgent-document'},data:{isPublic:false}});const hidden=await ask('покажи документы про Усть-Каменогорск');assert.ok(hidden.sources.every((s:any)=>s.id!=='urgent-document'));assert.equal(hidden.noAnswer,false);
 });
+
+test('catalog empty fast path is fresh across publication, branch hiding and document deletion',async()=>{
+ const {retrieveSemanticCatalog}=await import('../src/server/semantic-catalog');const {semanticConversationPlan}=await import('../src/server/semantic-catalog-plan');const plan=semanticConversationPlan('покажи документы про Усть-Каменогорск',[],'ru',true);
+ assert.deepEqual(await retrieveSemanticCatalog(plan),[]);
+ await db.document.update({where:{id:'urgent-document'},data:{isPublic:true}});
+ assert.deepEqual((await retrieveSemanticCatalog(plan)).map(s=>s.id),['urgent-document']);
+ await db.fund.update({where:{id:'urgent-document-fund'},data:{branchId:'urgent-hidden'}});
+ assert.deepEqual(await retrieveSemanticCatalog(plan),[]);
+ await db.fund.update({where:{id:'urgent-document-fund'},data:{branchId:null}});
+ await db.document.update({where:{id:'urgent-document'},data:{deletedAt:new Date()}});
+ assert.deepEqual(await retrieveSemanticCatalog(plan),[]);
+ await db.document.update({where:{id:'urgent-document'},data:{deletedAt:null}});
+ assert.deepEqual((await retrieveSemanticCatalog(plan)).map(s=>s.id),['urgent-document']);
+});
