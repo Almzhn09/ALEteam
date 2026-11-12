@@ -38,11 +38,6 @@
       "external": true
     },
     {
-      "label": "Научно-методическая база",
-      "href": "http://e-arhiv.vko.gov.kz/ru/NamedContent?type=Method",
-      "external": true
-    },
-    {
       "label": "Платные услуги",
       "slug": "archive-paid-services-info"
     },
@@ -113,7 +108,8 @@
     "publicistics": "Omit: no curated published category",
     "speeches": "Omit: no published category",
     "documentCollections": "Omit as an unfilled reference category; all actually published originals remain in the catalogue",
-    "videos": "Omit: no verified video package"
+    "videos": "Omit: no verified video package",
+    "methodology": "Omit from the live sidebar: the official homepage advertises this link, but two fresh GET checks on12 November2026 returned HTTP500. No verified local methodology category replaces it."
   },
   "imageSlots": [
     "home",
