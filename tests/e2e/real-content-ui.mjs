@@ -68,7 +68,7 @@ const place=(await api('/places?locale=ru&limit=3')).items[0];assert.ok(place);
  });
  await check('help and display controls are keyboard accessible, Escape restores focus and reduced motion is respected',async()=>{
   await page.goto(base);const help=page.getByRole('button',{name:'Как пользоваться',exact:true});await help.click();await page.locator('dialog.tour[open]').waitFor();await page.keyboard.press('Escape');assert.equal(await page.locator('dialog.tour[open]').count(),0);assert.ok(await help.evaluate(el=>el===document.activeElement));
-  const motion=await page.locator('.reveal').first().evaluate(el=>({animation:getComputedStyle(el).animationDuration,transition:getComputedStyle(el).transitionDuration}));assert.ok(motion.animation.split(',').every(v=>parseFloat(v)===0));
+  const motion=await page.locator('.reference-tile').first().evaluate(el=>({animation:getComputedStyle(el).animationDuration,transition:getComputedStyle(el).transitionDuration}));assert.ok(motion.animation.split(',').every(v=>parseFloat(v)===0));assert.ok(motion.transition.split(',').every(v=>parseFloat(v)===0));
  });
  await check('published section hubs, standalone directory entries and alternate search use the integrated real corpus',async()=>{
   for(const route of ['/about','/calendar','/services','/about/compliance','/directories','/directories/funds','/directories/newspapers']){await page.goto(base+route);assert.equal(await page.locator('main h1').count(),1);assert.equal(await page.getByRole('alert').filter({hasText:/\S/}).count(),0);}
