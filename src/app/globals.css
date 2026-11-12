@@ -662,3 +662,19 @@ label.row > input[type="checkbox"], label.row > input[type="radio"] { flex: none
 }
 
 .reading-photo { max-width: min(100%,448px); }
+
+/* P0-F2: visible entry to the original, and no broken-image icon with spilling alt text. */
+.read-original-cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin: var(--space-2) 0 0; }
+.archive-photo > img, .source-preview { overflow: hidden; font-size: .75rem; color: var(--muted); overflow-wrap: anywhere; }
+.image-unavailable { display: flex; align-items: center; justify-content: center; min-height: 160px; max-width: 100%; padding: var(--space-4); border: 1px dashed var(--border-strong); border-radius: var(--radius); background: var(--surface-2); color: var(--muted); font-size: .875rem; text-align: center; overflow-wrap: anywhere; }
+.archive-photo > .image-unavailable { aspect-ratio: 4 / 3; min-height: 0; }
+
+/* P1-F3: page skeleton shown immediately while the server renders the next page (app/loading.tsx). */
+.page-skeleton .skeleton { min-height: 0; }
+.skeleton-crumbs { height: 18px; width: 180px; }
+.skeleton-title { height: 48px; width: min(520px, 90%); }
+.skeleton-line { height: 18px; width: min(760px, 100%); }
+.skeleton-line.short { width: min(460px, 70%); }
+.skeleton-block { height: 240px; width: 100%; }
+.read-original-link { display: inline-flex; align-items: center; gap: var(--space-1); margin-top: var(--space-2); font-weight: 600; font-size: .9375rem; }
+.original-more { align-items: center; gap: var(--space-3); margin-top: var(--space-3); }

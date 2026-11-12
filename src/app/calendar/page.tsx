@@ -4,6 +4,7 @@ import { SectionHero } from '@/components/SectionHero';
 import { getLang, getT } from '@/lib/i18n-server';
 import { listWithSource, materialHref } from '@/lib/sections-server';
 import { languageAlternates } from '@/lib/seo';
+import { readableOriginals, ReadOriginalLink } from '@/components/SectionCards';
 
 export async function generateMetadata() { return { title: (await getT())('Памятные даты'), alternates: languageAlternates('/calendar') }; }
 
@@ -13,6 +14,7 @@ export default async function CalendarPage() {
   const items = (await listWithSource(lang, 'PAGE', 'calendar'))
     .map(entry => ({ entry, year: entry.item.payload.title.match(/(19|20)\d{2}/)?.[0] ?? '' }))
     .sort((a, b) => b.year.localeCompare(a.year));
+  const withOriginal = await readableOriginals(items.map(i => i.entry));
   return (
     <div className="container page stack-lg">
       <Breadcrumbs items={[{ label: t('Памятные даты') }]} />
@@ -24,6 +26,7 @@ export default async function CalendarPage() {
             <span className="year-card-title">{entry.item.payload.title}</span>
           </Link>
           {entry.original && <p className="small muted">{t('Материал на языке источника')}</p>}
+          {withOriginal.has(entry.item.id) && <p><ReadOriginalLink href={materialHref(entry)} t={t} /></p>}
         </li>)}
       </ol> : <p className="muted">{t('Материалы раздела пока не опубликованы.')}</p>}
       <p className="small muted measure">{t('Даты указаны так, как в календарях архива. Спорные даты отмечены в тексте календаря.')}</p>
