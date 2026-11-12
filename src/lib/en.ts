@@ -405,6 +405,7 @@ export const en: Record<string,string> = {
   "Применить": "Apply",
   "Примеры вопросов": "Example questions",
   "Читать документ": "Read the document",
+  "Файл сейчас недоступен на сервере. Сообщите об этом архиву или попробуйте позже.": "The file is not available on the server right now. Please tell the archive or try later.",
   "Читать дальше": "Continue reading",
   "Показано": "Shown",
   "Загрузка страницы…": "Loading page…",
