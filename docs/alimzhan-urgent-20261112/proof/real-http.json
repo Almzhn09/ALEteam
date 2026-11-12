@@ -1,0 +1,115 @@
+{
+  "scope": "Local production HTTP; real working corpus read only",
+  "examples": [
+    {
+      "query": "Өскемен",
+      "total": 1048,
+      "counts": {
+        "materials": 9,
+        "funds": 1020,
+        "newspapers": 19
+      },
+      "firstKinds": [
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "fund"
+      ]
+    },
+    {
+      "query": "Оскемен",
+      "total": 1048,
+      "counts": {
+        "materials": 9,
+        "funds": 1020,
+        "newspapers": 19
+      },
+      "firstKinds": [
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "fund"
+      ]
+    },
+    {
+      "query": "Усть-Каменогорск",
+      "total": 1048,
+      "counts": {
+        "materials": 9,
+        "funds": 1020,
+        "newspapers": 19
+      },
+      "firstKinds": [
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "fund"
+      ]
+    },
+    {
+      "query": "УСТЬ — КАМЕНОГОРСК",
+      "total": 1048,
+      "counts": {
+        "materials": 9,
+        "funds": 1020,
+        "newspapers": 19
+      },
+      "firstKinds": [
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "material",
+        "fund"
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "path": "/",
+      "ms": [
+        549,
+        305,
+        279
+      ]
+    },
+    {
+      "path": "/catalog?scope=cms&q=1940",
+      "ms": [
+        78,
+        80,
+        72
+      ]
+    },
+    {
+      "path": "/materials/archive-contacts",
+      "ms": [
+        155,
+        91,
+        72
+      ]
+    }
+  ]
+}

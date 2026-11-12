@@ -1,0 +1,53 @@
+{
+  "counter": "Prisma top-level operations, not individual SQL statements; nested relation loads may issue additional SQL",
+  "database": "Existing real local corpus, read only",
+  "before": [
+    {
+      "ms": 473,
+      "queries": 88,
+      "total": 9
+    },
+    {
+      "ms": 144,
+      "queries": 88,
+      "total": 9
+    },
+    {
+      "ms": 179,
+      "queries": 88,
+      "total": 9
+    },
+    {
+      "ms": 233,
+      "queries": 88,
+      "total": 9
+    }
+  ],
+  "after": [
+    {
+      "ms": 228,
+      "queries": 1,
+      "total": 9
+    },
+    {
+      "ms": 15,
+      "queries": 1,
+      "total": 9
+    },
+    {
+      "ms": 13,
+      "queries": 1,
+      "total": 9
+    },
+    {
+      "ms": 12,
+      "queries": 1,
+      "total": 9
+    }
+  ],
+  "warmMedianMs": {
+    "before": 179,
+    "after": 13
+  },
+  "warmup": "First observation of each process excluded from warm median; all observations retained"
+}

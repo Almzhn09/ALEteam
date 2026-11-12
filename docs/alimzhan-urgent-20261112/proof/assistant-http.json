@@ -1,0 +1,176 @@
+{
+  "scope": "Actual HTTP API; synthetic isolated _test fixtures only",
+  "examples": [
+    {
+      "request": "покажи документы про Өскемен",
+      "response": {
+        "nameExpansion": {
+          "mode": "expanded",
+          "applied": true,
+          "variants": [
+            "Усть-Каменогорск",
+            "Усть Каменогорск",
+            "Өскемен",
+            "Ust-Kamenogorsk",
+            "Ust Kamenogorsk",
+            "Oskemen",
+            "Öskemen"
+          ],
+          "entityIds": [],
+          "clarificationRequired": false,
+          "sources": []
+        },
+        "nameExpansionProvenance": {
+          "kind": "project_dictionary",
+          "sourceIds": [
+            "S05",
+            "S03--календарь 2026"
+          ]
+        },
+        "answer": "Жарияланған материалдар мен анықтамалықтардан табылған мәліметтер:\n\nDEMO Усть-Каменогорск visible\n0007 — DEMO Усть-Каменогорск\nDEMO Усть-Каменогорск\n\nҚорлар мен газеттердің сипаттамалары цифрлық көшірмелер емес.",
+        "noAnswer": false,
+        "mode": "retrieval",
+        "sources": [
+          {
+            "id": "cms_cmwdtkmf50000m7nsbs2ivfd1",
+            "kind": "cms",
+            "title": "DEMO Усть-Каменогорск visible",
+            "href": "/api/content/urgent-visible?locale=ru",
+            "locale": "ru",
+            "isDemo": true
+          },
+          {
+            "id": "urgent-fund-true",
+            "kind": "fund",
+            "title": "0007 — DEMO Усть-Каменогорск",
+            "href": "/api/directories/funds/urgent-fund-true",
+            "locale": "ru",
+            "isDemo": false
+          },
+          {
+            "id": "urgent-newspaper-true",
+            "kind": "newspaper",
+            "title": "DEMO Усть-Каменогорск",
+            "href": "/api/directories/newspapers/urgent-newspaper-true",
+            "locale": "ru",
+            "isDemo": false
+          }
+        ]
+      }
+    },
+    {
+      "request": "покажи документы про Оскемен",
+      "response": {
+        "nameExpansion": {
+          "mode": "expanded",
+          "applied": true,
+          "variants": [
+            "Усть-Каменогорск",
+            "Усть Каменогорск",
+            "Өскемен",
+            "Ust-Kamenogorsk",
+            "Ust Kamenogorsk",
+            "Oskemen",
+            "Öskemen"
+          ],
+          "entityIds": [],
+          "clarificationRequired": false,
+          "sources": []
+        },
+        "nameExpansionProvenance": {
+          "kind": "project_dictionary",
+          "sourceIds": [
+            "S05",
+            "S03--календарь 2026"
+          ]
+        },
+        "answer": "Найдены сведения в опубликованных материалах и справочниках:\n\nDEMO Усть-Каменогорск visible\n0007 — DEMO Усть-Каменогорск\nDEMO Усть-Каменогорск\n\nОписания фондов и газет — справочные сведения, а не цифровые копии документов.",
+        "noAnswer": false,
+        "mode": "retrieval",
+        "sources": [
+          {
+            "id": "cms_cmwdtkmf50000m7nsbs2ivfd1",
+            "kind": "cms",
+            "title": "DEMO Усть-Каменогорск visible",
+            "href": "/api/content/urgent-visible?locale=ru",
+            "locale": "ru",
+            "isDemo": true
+          },
+          {
+            "id": "urgent-fund-true",
+            "kind": "fund",
+            "title": "0007 — DEMO Усть-Каменогорск",
+            "href": "/api/directories/funds/urgent-fund-true",
+            "locale": "ru",
+            "isDemo": false
+          },
+          {
+            "id": "urgent-newspaper-true",
+            "kind": "newspaper",
+            "title": "DEMO Усть-Каменогорск",
+            "href": "/api/directories/newspapers/urgent-newspaper-true",
+            "locale": "ru",
+            "isDemo": false
+          }
+        ]
+      }
+    },
+    {
+      "request": "покажи документы про Усть-Каменогорск",
+      "response": {
+        "nameExpansion": {
+          "mode": "expanded",
+          "applied": true,
+          "variants": [
+            "Усть-Каменогорск",
+            "Усть Каменогорск",
+            "Өскемен",
+            "Ust-Kamenogorsk",
+            "Ust Kamenogorsk",
+            "Oskemen",
+            "Öskemen"
+          ],
+          "entityIds": [],
+          "clarificationRequired": false,
+          "sources": []
+        },
+        "nameExpansionProvenance": {
+          "kind": "project_dictionary",
+          "sourceIds": [
+            "S05",
+            "S03--календарь 2026"
+          ]
+        },
+        "answer": "Найдены сведения в опубликованных материалах и справочниках:\n\nDEMO Усть-Каменогорск visible\n0007 — DEMO Усть-Каменогорск\nDEMO Усть-Каменогорск\n\nОписания фондов и газет — справочные сведения, а не цифровые копии документов.",
+        "noAnswer": false,
+        "mode": "retrieval",
+        "sources": [
+          {
+            "id": "cms_cmwdtkmf50000m7nsbs2ivfd1",
+            "kind": "cms",
+            "title": "DEMO Усть-Каменогорск visible",
+            "href": "/api/content/urgent-visible?locale=ru",
+            "locale": "ru",
+            "isDemo": true
+          },
+          {
+            "id": "urgent-fund-true",
+            "kind": "fund",
+            "title": "0007 — DEMO Усть-Каменогорск",
+            "href": "/api/directories/funds/urgent-fund-true",
+            "locale": "ru",
+            "isDemo": false
+          },
+          {
+            "id": "urgent-newspaper-true",
+            "kind": "newspaper",
+            "title": "DEMO Усть-Каменогорск",
+            "href": "/api/directories/newspapers/urgent-newspaper-true",
+            "locale": "ru",
+            "isDemo": false
+          }
+        ]
+      }
+    }
+  ]
+}

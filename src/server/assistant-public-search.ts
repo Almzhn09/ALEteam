@@ -8,7 +8,7 @@ import {expandNames} from './artur-discovery/names';
 import {normalizePlaceSpelling} from './search-names';
 import {unsafeInstructions} from './assistant-safety';
 import type {SemanticPlan} from './semantic-catalog-plan';
-export interface PublicSearchSource {id:string;kind:'cms'|'fund'|'newspaper';title:string;href:string;locale:string;isDemo:boolean;key:string;stamp:string}
+export interface PublicSearchSource {id:string;kind:'cms'|'fund'|'newspaper';title:string;href:string;locale?:string;isDemo:boolean;key:string;stamp:string}
 export async function publicCitySources(question:string,plan:SemanticPlan):Promise<PublicSearchSource[]>{
  const f=plan.filters;if(plan.clarification||unsafeInstructions(question)||f.reference||f.fundNumber||f.inventoryNumber||f.caseNumber||f.type||f.author||f.organization||f.originalLanguage||f.branchId||f.fundId||f.tag)return [];
  const names=expandNames(normalizePlaceSpelling(question),plan.locale);if(names.status!=='resolved')return [];
@@ -23,7 +23,7 @@ export async function publicCitySources(question:string,plan:SemanticPlan):Promi
   if(hit.kind==='material'){
    const item=await resolveMaterial({kind:'cms',id:hit.material.id},hit.material.contentLocale,false);if(!item)continue;
    result.push({id:'cms_'+item.eventRevision,key:item.material.id,kind:'cms',title:item.material.title,href:item.source.href,locale:item.source.locale,isDemo:!!item.source.isDemo,stamp:item.source.revision});
-  }else result.push({id:hit.id,key:hit.id,kind:hit.kind,title:hit.kind==='fund'?`${hit.number} — ${hit.names[0]?.name??hit.source.title}`:hit.title,href:hit.href,locale:'ru',isDemo:false,stamp:digest(hit)});
+  }else result.push({id:hit.id,key:hit.id,kind:hit.kind,title:hit.kind==='fund'?`${hit.number} — ${hit.names[0]?.name??hit.source.title}`:hit.title,href:hit.href,isDemo:false,stamp:digest(hit)});
  }
  return result.slice(0,5);
 }
