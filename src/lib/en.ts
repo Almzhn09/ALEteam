@@ -997,7 +997,7 @@ export const en: Record<string,string> = {
   "Материал и источник": "Material and source",
   "Открыть «Об архиве»": "Open “About the archive”",
   "На странице материала есть исходный файл, сведения о публикации, объяснение терминов с точными выдержками и связанные материалы.": "A material page has the original file, publication details, explained terms with exact excerpts and related materials.",
-  "Когда был образован архив области?": "When was the regional archive established?",
+  "Когда был образован архив?": "When was the archive founded?",
   "Какие часы работы читального зала?": "What are the reading room's opening hours?",
   "Что такое архивный фонд?": "What is an archival fonds?",
   "Рекомендуем": "Recommended reading",

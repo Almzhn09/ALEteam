@@ -39,9 +39,9 @@ export function talkKind(question:string):Kind|undefined{
 }
 
 const suggestions:Record<Locale,string[]>={
- ru:['Когда был образован архив области?','Какие часы работы читального зала?','Что такое архивный фонд?','Как найти документ по шифру?','Какие филиалы есть у архива?'],
- kk:['Облыс мұрағаты қашан құрылды?','Оқу залының жұмыс уақыты қандай?','Мұрағат қоры дегеніміз не?','Құжатты шифр бойынша қалай табамын?','Мұрағаттың қандай филиалдары бар?'],
- en:['When was the regional archive founded?','What are the reading room opening hours?','What is an archival fond?','How do I find a document by its reference code?','What branches does the archive have?'],
+ ru:['Когда был образован архив?','Какие часы работы читального зала?','Что такое архивный фонд?','Как найти документ по шифру?','Где находится архив?'],
+ kk:['Мұрағат қашан құрылды?','Оқу залының жұмыс уақыты қандай?','Мұрағат қоры дегеніміз не?','Құжатты шифр бойынша қалай табамын?','Мұрағат қайда орналасқан?'],
+ en:['When was the archive founded?','What are the reading room opening hours?','What is an archival fond?','How do I find a document by its reference code?','Where is the archive located?'],
 };
 
 const replies:Record<Kind,Record<Locale,string[]>>={
