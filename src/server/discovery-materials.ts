@@ -32,12 +32,13 @@ export function resolveCmsItem(item:CmsItemWithRevisions,locale:ContentLocale,fa
  const material:MaterialRef={kind:'cms',id:item.id,href:source.href,title:p.title,contentLocale:source.locale,availableLocales:eligible.map(x=>x.locale as ContentLocale).sort(),translationStatus:source.locale===locale?'published':'original',isDemo:item.isDemo,...(p.yearFrom!==undefined?{yearFrom:p.yearFrom}:{}),...(p.yearTo!==undefined?{yearTo:p.yearTo}:{}),reason:{code:'editorial',text:'',evidence:[]}};
  return {material,source,text,topicIds:[],placeIds:[],eventRevision:r.id};
 }
-export async function resolveEvidence(refs:unknown,client:ReadClient=db):Promise<SourceRef[]|undefined>{
+export type EvidenceMaterialReader=(key:MaterialKey,locale:ContentLocale)=>Promise<ResolvedMaterial|undefined>;
+export async function resolveEvidence(refs:unknown,client:ReadClient=db,reader?:EvidenceMaterialReader):Promise<SourceRef[]|undefined>{
  if(!Array.isArray(refs)||refs.length===0||refs.length>20)return;
  const result:SourceRef[]=[];
  for(const ref of refs){
   if(!ref||typeof ref!=='object'||!['document','cms'].includes(ref.kind)||!['ru','kk','en'].includes(ref.locale)||typeof ref.id!=='string'||typeof ref.revision!=='string')return;
-  const current=await resolveMaterial({kind:ref.kind,id:ref.id},ref.locale,false,client);if(!current||current.source.revision!==ref.revision)return;
+  const current=reader?await reader({kind:ref.kind,id:ref.id},ref.locale):await resolveMaterial({kind:ref.kind,id:ref.id},ref.locale,false,client);if(!current||current.source.revision!==ref.revision)return;
   result.push(current.source);
  }
  return result;

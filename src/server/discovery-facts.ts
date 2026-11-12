@@ -1,11 +1,12 @@
 import {z} from 'zod';
 import {db} from './db';
 import {digest} from './discovery-utils';
-import {publicBranchScope} from './public-visibility';
+import {publicBranchScope,publicContentScope} from './public-visibility';
 import {ApiError,idSchema,json,queryParams,readJson,rateLimit} from './http';
 import {staffContext,audit} from './staff';
 import {localeSchema,materialKey,boundedPage,decodeCursor,encodeCursor,conflict,unavailable} from './discovery-utils';
-import {resolveEvidence,resolveMaterial} from './discovery-materials';
+import {resolveEvidence,resolveMaterial,resolveCmsItem,type ResolvedMaterial} from './discovery-materials';
+import type {MaterialKey} from '../contracts/discovery';
 import type {ContentLocale} from '../contracts/cms';
 const caption=z.object({title:z.string().trim().min(1).max(200),body:z.string().trim().max(3000).default('')}).strict();
 export const labelsSchema=z.object({ru:caption.optional(),kk:caption.optional(),en:caption.optional()}).strict().refine(v=>Object.values(v).some(Boolean));
@@ -34,13 +35,29 @@ function independent(row:{authorId:string;reviewerId:string|null}){return Boolea
 export async function liveFacts(kind:FactKind){
  const rows=await db.discoveryFact.findMany({where:{kind,status:'VERIFIED',...publicBranchScope},orderBy:{id:'asc'},take:201});
  if(rows.length>200)throw new ApiError(503,'DISCOVERY_CORPUS_LIMIT','Сервис временно недоступен.');
+ // Load dependencies and CMS evidence once for this invocation only. No shared cache
+ // survives a request or bypasses current publication/branch/reviewer checks.
+ const validRows=rows.filter(row=>independent(row)&&shapes[kind].safeParse(row.data).success);
+ const dependencyIds=[...new Set(validRows.flatMap(row=>{const data=row.data as {topicId?:string;placeId?:string};return [row.parentId,...(kind==='EDITORIAL'?[data.topicId,data.placeId]:[])].filter((id):id is string=>!!id);}))];
+ const dependencies=dependencyIds.length?await db.discoveryFact.findMany({where:{id:{in:dependencyIds},kind:{in:['PLACE','TOPIC']},status:'VERIFIED',...publicBranchScope}}):[];
+ const dependencyMap=new Map(dependencies.map(row=>[row.kind+':'+row.id,row]));
+ const values=[...validRows,...dependencies].map(row=>row.sources);
+ const cmsIds=[...new Set(values.flatMap(value=>Array.isArray(value)&&value.length<=20?value.flatMap(ref=>ref&&typeof ref==='object'&&!Array.isArray(ref)&&ref.kind==='cms'&&typeof ref.id==='string'?[ref.id]:[]):[]))];
+ const cmsRows=cmsIds.length?await db.contentItem.findMany({where:{id:{in:cmsIds},...publicContentScope,kind:{notIn:['SETTING','ARCHIVE_DOCUMENT']}},include:{revisions:{where:{status:'PUBLISHED'},orderBy:{locale:'asc'}}}}):[];
+ const cmsMap=new Map(cmsRows.map(row=>[row.id,row]));
+ const materialCache=new Map<string,Promise<ResolvedMaterial|undefined>>();
+ async function readMaterial(key:MaterialKey,locale:ContentLocale){
+  const cacheKey=key.kind+':'+key.id+':'+locale;
+  if(!materialCache.has(cacheKey))materialCache.set(cacheKey,key.kind==='cms'?Promise.resolve(cmsMap.has(key.id)?resolveCmsItem(cmsMap.get(key.id)!,locale,false):undefined):resolveMaterial(key,locale,false));
+  return materialCache.get(cacheKey)!;
+ }
  const result=[];const cache=new Map<string,Awaited<ReturnType<typeof resolveEvidence>>>();
- async function evidenceFor(value:unknown){const key=digest(value);if(!cache.has(key))cache.set(key,await resolveEvidence(value));return cache.get(key);}
- for(const row of rows){if(!independent(row)||!shapes[kind].safeParse(row.data).success)continue;const refs=await evidenceFor(row.sources);if(!refs)continue;
-  if(row.parentId){const parent=await db.discoveryFact.findFirst({where:{id:row.parentId,kind:'PLACE',status:'VERIFIED',...publicBranchScope}});if(!parent||!independent(parent)||!await evidenceFor(parent.sources))continue;}
+ async function evidenceFor(value:unknown){const key=digest(value);if(!cache.has(key))cache.set(key,await resolveEvidence(value,db,readMaterial));return cache.get(key);}
+ for(const row of validRows){const refs=await evidenceFor(row.sources);if(!refs)continue;
+  if(row.parentId){const parent=dependencyMap.get('PLACE:'+row.parentId);if(!parent||!independent(parent)||!await evidenceFor(parent.sources))continue;}
   if(kind==='EDITORIAL'){
    const data=row.data as {topicId?:string;placeId?:string};let valid=true;
-   for(const [type,id] of [['TOPIC',data.topicId],['PLACE',data.placeId]])if(id){const target=await db.discoveryFact.findFirst({where:{id,kind:type,status:'VERIFIED',...publicBranchScope}});if(!target||!independent(target)||!await evidenceFor(target.sources)){valid=false;break;}}
+   for(const [type,id] of [['TOPIC',data.topicId],['PLACE',data.placeId]])if(id){const target=dependencyMap.get(type+':'+id);if(!target||!independent(target)||!await evidenceFor(target.sources)){valid=false;break;}}
    if(!valid)continue;
   }
   result.push({...row,evidence:refs});
