@@ -1,0 +1,291 @@
+{
+ "checkedAt": "2026-11-12T17:56:59.671Z",
+ "target": "local production build, real corpus (not Cloud Run)",
+ "results": [
+  {
+   "check": "pdf",
+   "slug": "archive-paid-services-info",
+   "tag": "1440-light",
+   "status": 200,
+   "originals": 0,
+   "bytes": null,
+   "pdfPageObjects": null,
+   "inlineViewer": 0,
+   "missingNotice": 0,
+   "newTab": 0,
+   "download": 0,
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "pdf",
+   "slug": "archive-paid-services-info",
+   "tag": "360-dark-150",
+   "status": 200,
+   "originals": 0,
+   "bytes": null,
+   "pdfPageObjects": null,
+   "inlineViewer": 0,
+   "missingNotice": 0,
+   "newTab": 0,
+   "download": 0,
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "pdf",
+   "slug": "archive-compliance-73ef6b499f78",
+   "tag": "1440-light",
+   "status": 200,
+   "originals": 1,
+   "bytes": 243773,
+   "pdfPageObjects": 4,
+   "inlineViewer": 1,
+   "missingNotice": 0,
+   "newTab": 1,
+   "download": 1,
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "pdf",
+   "slug": "archive-compliance-73ef6b499f78",
+   "tag": "360-dark-150",
+   "status": 200,
+   "originals": 1,
+   "bytes": 243773,
+   "pdfPageObjects": 4,
+   "inlineViewer": 1,
+   "missingNotice": 0,
+   "newTab": 1,
+   "download": 1,
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "pdf",
+   "slug": "archive-branch-decree-142",
+   "tag": "1440-light",
+   "status": 200,
+   "originals": 1,
+   "bytes": 1349711,
+   "pdfPageObjects": 6,
+   "inlineViewer": 1,
+   "missingNotice": 0,
+   "newTab": 1,
+   "download": 1,
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "pdf",
+   "slug": "archive-branch-decree-142",
+   "tag": "360-dark-150",
+   "status": 200,
+   "originals": 1,
+   "bytes": 1349711,
+   "pdfPageObjects": 6,
+   "inlineViewer": 1,
+   "missingNotice": 0,
+   "newTab": 1,
+   "download": 1,
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "docx",
+   "slug": "archive-history-1",
+   "tag": "1440-light",
+   "calls": [
+    "?reader=1",
+    "?reader=1&offset=12000"
+   ],
+   "firstChars": 11960,
+   "lastChars": 12276,
+   "clicks": 1,
+   "failedNextPartKeptChars": null,
+   "tail": "ния культуры, развития языков и архивного дела области Абай.",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "docx",
+   "slug": "archive-history-1",
+   "tag": "360-dark-150",
+   "calls": [
+    "?reader=1",
+    "?reader=1&offset=12000",
+    "?reader=1&offset=12000"
+   ],
+   "firstChars": 11960,
+   "lastChars": 12276,
+   "clicks": 2,
+   "failedNextPartKeptChars": 11960,
+   "tail": "ния культуры, развития языков и архивного дела области Абай.",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "docx",
+   "slug": "archive-history-2",
+   "tag": "1440-light",
+   "calls": [
+    "?reader=1",
+    "?reader=1&offset=12000"
+   ],
+   "firstChars": 11960,
+   "lastChars": 12276,
+   "clicks": 1,
+   "failedNextPartKeptChars": null,
+   "tail": "ния культуры, развития языков и архивного дела области Абай.",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "docx",
+   "slug": "archive-history-2",
+   "tag": "360-dark-150",
+   "calls": [
+    "?reader=1",
+    "?reader=1&offset=12000"
+   ],
+   "firstChars": 11960,
+   "lastChars": 12276,
+   "clicks": 1,
+   "failedNextPartKeptChars": null,
+   "tail": "ния культуры, развития языков и архивного дела области Абай.",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "page",
+   "path": "/",
+   "tag": "1440-light",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "page",
+   "path": "/materials/archive-structure",
+   "tag": "1440-light",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "search",
+   "q": "Өскемен",
+   "tag": "1440-light",
+   "found": "1047",
+   "firstMaterial": "/materials/archive-history-1?contentLang=ru",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "search",
+   "q": "Оскемен",
+   "tag": "1440-light",
+   "found": "1047",
+   "firstMaterial": "/materials/archive-history-1?contentLang=ru",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "search",
+   "q": "Усть-Каменогорск",
+   "tag": "1440-light",
+   "found": "1047",
+   "firstMaterial": "/materials/archive-history-1?contentLang=ru",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "search",
+   "q": "усть каменогорск",
+   "tag": "1440-light",
+   "found": "1047",
+   "firstMaterial": "/materials/archive-history-1?contentLang=ru",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "page",
+   "path": "/",
+   "tag": "360-dark-150",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "page",
+   "path": "/materials/archive-structure",
+   "tag": "360-dark-150",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "search",
+   "q": "Өскемен",
+   "tag": "360-dark-150",
+   "found": "1047",
+   "firstMaterial": "/materials/archive-history-1?contentLang=ru",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "search",
+   "q": "Оскемен",
+   "tag": "360-dark-150",
+   "found": "1047",
+   "firstMaterial": "/materials/archive-history-1?contentLang=ru",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "search",
+   "q": "Усть-Каменогорск",
+   "tag": "360-dark-150",
+   "found": "1047",
+   "firstMaterial": "/materials/archive-history-1?contentLang=ru",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "search",
+   "q": "усть каменогорск",
+   "tag": "360-dark-150",
+   "found": "1047",
+   "firstMaterial": "/materials/archive-history-1?contentLang=ru",
+   "axe": [],
+   "overflow": 0,
+   "broken": 0
+  },
+  {
+   "check": "path",
+   "from": "search Усть-Каменогорск",
+   "to": "/materials/archive-history-1?contentLang=ru",
+   "skeletonVisibleAfterMs": 100,
+   "readButton": 1,
+   "originalsBlock": 1
+  }
+ ]
+}

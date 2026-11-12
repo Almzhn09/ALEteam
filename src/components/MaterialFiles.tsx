@@ -4,6 +4,9 @@ import type {AttachmentRef} from '@/contracts/real-content';
 import {apiGet} from '@/lib/api';
 import {useI18n} from '@/lib/lang';
 import {ErrorNotice,Loading} from './ui';
+import {ApiClientError} from '@/lib/api';
+// No text or no access (404/403/410) will not change on retry; only transient failures offer it.
+const finalError=(e:unknown)=>e instanceof ApiClientError&&[403,404,410].includes(e.status);
 import {PdfViewer} from './PdfViewer';
 import {SafeImage} from './SafeImage';
 interface Fragment {text:string;page?:number;paragraph?:number}
@@ -26,7 +29,7 @@ function ReadOriginal({file,initiallyOpen=false}:{file:AttachmentRef;initiallyOp
   catch(e){setMore({loading:false,error:e});}
  }
  const shown=data?.fragments.reduce((n,f)=>n+f.text.length,0)??0;
- return <details className="original-text" open={initiallyOpen||undefined} onToggle={e=>setOpen(e.currentTarget.open)}><summary>{t('Читать документ')}</summary>{open&&(error?<ErrorNotice error={error} onRetry={()=>retry(v=>v+1)}/>:!data?<Loading rows={1}/>:<div className="stack">{data.isOcr&&<p className="small muted">{t('Автоматическое распознавание может содержать ошибки. Сравните текст с изображением; исходный документ не изменён.')}</p>}<div className="original-fragments" lang={file.locale}>{!data.fragments.some(fragment=>fragment.text.trim())&&<p className="muted" role="status">{t('Текст не распознан. Просмотрите оригинал документа.')}</p>}{data.fragments.map((fragment,i)=>{const label=fragmentLabel(fragment,t);const repeat=i>0&&label&&label===fragmentLabel(data.fragments[i-1],t);return <div className="source-fragment" key={i} ref={i===focusIndex.current?firstNew:undefined} tabIndex={i===focusIndex.current?-1:undefined}>{!repeat&&<span className="small muted">{label}</span>}<p className="pre-wrap">{fragment.text}</p></div>;})}</div>
+ return <details className="original-text" open={initiallyOpen||undefined} onToggle={e=>setOpen(e.currentTarget.open)}><summary>{t('Читать документ')}</summary>{open&&(error?<ErrorNotice error={error} onRetry={finalError(error)?undefined:()=>retry(v=>v+1)}/>:!data?<Loading rows={1}/>:<div className="stack">{data.isOcr&&<p className="small muted">{t('Автоматическое распознавание может содержать ошибки. Сравните текст с изображением; исходный документ не изменён.')}</p>}<div className="original-fragments" lang={file.locale}>{!data.fragments.some(fragment=>fragment.text.trim())&&<p className="muted" role="status">{t('Текст не распознан. Просмотрите оригинал документа.')}</p>}{data.fragments.map((fragment,i)=>{const label=fragmentLabel(fragment,t);const repeat=i>0&&label&&label===fragmentLabel(data.fragments[i-1],t);return <div className="source-fragment" key={i} ref={i===focusIndex.current?firstNew:undefined} tabIndex={i===focusIndex.current?-1:undefined}>{!repeat&&<span className="small muted">{label}</span>}<p className="pre-wrap">{fragment.text}</p></div>;})}</div>
   {data.nextOffset!=null&&<div className="row original-more">
    {more.error?<ErrorNotice error={more.error} onRetry={()=>void loadMore()}/>:<button type="button" className="btn btn-secondary" onClick={()=>void loadMore()} disabled={more.loading} aria-busy={more.loading}>{more.loading?t('Загрузка…'):t('Читать дальше')}</button>}
    {data.totalCharacters?<span className="small muted">{t('Показано')} {Math.min(100,Math.round(shown/data.totalCharacters*100))}%</span>:null}
