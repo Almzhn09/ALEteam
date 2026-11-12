@@ -1,0 +1,10 @@
+{
+  "codeCommit": "165e511",
+  "unitTests": 395,
+  "integrationTests": 5,
+  "typecheck": "passed",
+  "build": "passed",
+  "measuredScope": "Catalog retrieval stage; real local corpus read only",
+  "cacheAdded": false,
+  "deploymentPerformed": false
+}

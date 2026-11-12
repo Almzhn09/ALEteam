@@ -1,0 +1,26 @@
+{
+  "scope": "Read-only local real corpus; catalog retrieval stage only",
+  "counter": "Top-level Prisma operations, not individual SQL statements",
+  "samples": [
+    {
+      "ms": 253.06,
+      "ormCalls": 1,
+      "sourceIds": []
+    },
+    {
+      "ms": 1.67,
+      "ormCalls": 1,
+      "sourceIds": []
+    },
+    {
+      "ms": 1.13,
+      "ormCalls": 1,
+      "sourceIds": []
+    },
+    {
+      "ms": 0.98,
+      "ormCalls": 1,
+      "sourceIds": []
+    }
+  ]
+}
