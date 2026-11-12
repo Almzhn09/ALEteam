@@ -405,6 +405,7 @@ export const en: Record<string,string> = {
   "Предыдущий экспонат": "Previous exhibit",
   "Применить": "Apply",
   "Примеры вопросов": "Example questions",
+  "Можно спросить": "You can ask",
   "Причина жалобы": "Reason for the report",
   "Причина или комментарий": "Reason or comment",
   "Причина решения": "Reason for the decision",

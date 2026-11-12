@@ -50,7 +50,7 @@ export async function revalidateCmsFilePassages(passages:readonly CmsFilePassage
  return true;
 }
 export function cmsFileAnswer(passages:readonly CmsFilePassage[],locale:ContentLocale,question:string):GroundedAnswer{
- const heading=locale==='en'?'Excerpts from published original files:':locale==='kk'?'Жарияланған түпнұсқа файлдардан үзінділер:':'Фрагменты опубликованных исходных файлов:';
+ const heading=locale==='en'?'Here is what I found in the published original files:':locale==='kk'?'Жарияланған түпнұсқа файлдардан мынаны таптым:':'Вот что я нашёл в опубликованных исходных файлах архива:';
  const ocr=passages.some(p=>p.isOcr)?'\n'+(locale==='en'?'Recognized text may contain errors; compare it with the original.':locale==='kk'?'Танылған мәтінде қате болуы мүмкін; түпнұсқамен салыстырыңыз.':'В распознанном тексте возможны ошибки; сравните с оригиналом.'):'';
  const demo=passages.some(p=>p.isDemo)?'\n'+(locale==='en'?'DEMO: fictional test material.':locale==='kk'?'ДЕМО: ойдан шығарылған сынақ материалы.':'ДЕМО: вымышленный тестовый материал.'):'';
  return {answer:(heading+ocr+demo+'\n\n'+passages.map(p=>p.title+'\n«'+sourceExcerpt(p.text,question).text+'»').join('\n\n')).slice(0,8000),sourceIds:passages.map(p=>p.id),noAnswer:passages.length===0,mode:'retrieval'};

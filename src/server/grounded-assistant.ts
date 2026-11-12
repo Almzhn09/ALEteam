@@ -5,7 +5,7 @@ import { unsafeInstructions } from './knowledge';
 export interface GroundedAnswer { answer: string; sourceIds: string[]; noAnswer: boolean; mode: 'retrieval' | 'llm' | 'local-model' }
 export function isKazakh(question: string) { return /[әғқңөұүһі]|рақмет|мектеп|kitaphana|mektep|temir\s*zhol/iu.test(question); }
 export function noAnswer(question: string, mode: GroundedAnswer['mode'] = 'retrieval'): GroundedAnswer {
-  return { answer: isKazakh(question) ? 'Қолжетімді дереккөздерден жауап табылмады. Каталогтағы іздеуді нақтылап көріңіз.' : 'В доступных источниках ответа нет. Уточните тему, период или архивный шифр в каталоге.', sourceIds: [], noAnswer: true, mode };
+  return { answer: isKazakh(question) ? 'Жарияланған материалдардан бұл туралы таба алмадым. Сұрақты басқаша жазып көріңіз: тақырыпты, орынды немесе кезеңді атаңыз, не каталогтан шифр бойынша іздеңіз.' : 'К сожалению, в опубликованных материалах архива я этого не нашёл. Попробуйте сформулировать иначе: назовите тему, место или период — или поищите по архивному шифру в каталоге.', sourceIds: [], noAnswer: true, mode };
 }
 const selectionSchema = z.object({ selections: z.array(z.object({ sourceId: z.string(), quote: z.string().min(20).max(1500) }).strict()).max(3) }).strict();
 export function validatedSelections(value: unknown, passages: Passage[]) {
@@ -24,7 +24,7 @@ export function assembleAnswer(question: string, passages: Passage[], selections
   const ids = [...new Set(selected.map(s => s.sourceId))];
   if (selected.some(s => !passages.some(p => p.id === s.sourceId && p.text.includes(s.quote)))) throw new Error('UNSUPPORTED_QUOTE');
   const demo = ids.some(id => passages.find(p => p.id === id)?.isDemo);
-  const heading = isKazakh(question) ? 'Дереккөздерден үзінділер (түпнұсқа тілінде):' : 'Найденные фрагменты источников:';
+  const heading = isKazakh(question) ? 'Дереккөздерден мынаны таптым (түпнұсқа тілінде):' : 'Вот что я нашёл в источниках:';
   const warning = demo ? (isKazakh(question) ? '\nДЕМО: бұл ойдан шығарылған оқу материалдары, тарихи деректер емес.' : '\nДЕМО: это вымышленные учебные материалы, а не исторические сведения.') : '';
   const answer = heading + warning + '\n\n' + selected.map(s => {
     const p = passages.find(p => p.id === s.sourceId)!;

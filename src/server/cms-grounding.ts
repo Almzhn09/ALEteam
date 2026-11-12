@@ -4,9 +4,9 @@ import type {CmsPassage} from './cms-knowledge';
 import type {GroundedAnswer} from './grounded-assistant';
 import {sourceExcerpt} from './artur-discovery/source-excerpts';
 export function cmsAnswer(passages:readonly CmsPassage[],locale:ContentLocale,question=''):GroundedAnswer{
- if(!passages.length)return {answer:locale==='en'?'No answer was found in the published sources for this language.':locale==='kk'?'Осы тілдегі жарияланған дереккөздерден жауап табылмады.':'В опубликованных источниках на этом языке ответа нет.',sourceIds:[],noAnswer:true,mode:'retrieval'};
+ if(!passages.length)return {answer:locale==='en'?'I could not find this in the published materials in this language. Try other words, a place or a period.':locale==='kk'?'Бұл тілдегі жарияланған материалдардан таба алмадым. Басқа сөздермен, орынды немесе кезеңді қосып көріңіз.':'Не нашёл этого в опубликованных материалах на этом языке. Попробуйте другие слова или добавьте место и период.',sourceIds:[],noAnswer:true,mode:'retrieval'};
  const selected=passages.slice(0,3);
- const title=locale==='en'?'Excerpts from published sources:':locale==='kk'?'Жарияланған дереккөздерден үзінділер:':'Фрагменты опубликованных источников:';
+ const title=locale==='en'?'Here is what I found in the published archive materials:':locale==='kk'?'Жарияланған мұрағат материалдарынан мынаны таптым:':'Вот что я нашёл в опубликованных материалах архива:';
  const demo=selected.some(p=>p.isDemo)?'\n'+(locale==='en'?'DEMO: fictional learning materials, not historical records.':locale==='kk'?'ДЕМО: ойдан шығарылған оқу материалдары, тарихи деректер емес.':'ДЕМО: вымышленные учебные материалы, не исторические сведения.'):'';
  return {answer:(title+demo+'\n\n'+selected.map(p=>`${p.title}\n«${sourceExcerpt(p.text,question).text}»`).join('\n\n')).slice(0,8000),sourceIds:selected.map(p=>p.id),noAnswer:false,mode:'retrieval'};
 }
