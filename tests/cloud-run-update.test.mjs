@@ -21,7 +21,7 @@ if args[:3]==['run','services','describe']:
  else: print('https://archive.example.test')
 elif args[:3]==['secrets','versions','add']: print('projects/test/secrets/database-secret/versions/2')
 `,{mode:0o700});
-  const result=spawnSync('bash',[script],{encoding:'utf8',input,env:{...process.env,PATH:folder+':'+process.env.PATH,ALE_TEST_CALLS:log,ALE_TEST_CONFIGURED:configured?'1':'0'}});
+  const result=spawnSync('bash',[script],{encoding:'utf8',input,env:{...process.env,PATH:folder+':'+process.env.PATH,ALE_SKIP_PUBLIC_CHECK:'1',ALE_TEST_CALLS:log,ALE_TEST_CONFIGURED:configured?'1':'0'}});
   const calls=(await readFile(log,'utf8')).trim().split('\n').filter(Boolean).map(x=>JSON.parse(x));
   return {result,calls};
  }finally{await rm(folder,{recursive:true,force:true});}

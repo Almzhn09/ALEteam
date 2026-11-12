@@ -25,4 +25,8 @@ image="${region}-docker.pkg.dev/${project}/ale-archive-preview/site:$(git rev-pa
 gcloud builds submit --project="$project" --region="$region" --config=deploy/cloud-run/cloudbuild.yaml --substitutions="_IMAGE=${image}" .
 gcloud run services update "$service" --project="$project" --region="$region" --image="$image"
 echo 'Обновлённая версия опубликована. Подключение БД и настройки входа сохранены.'
-gcloud run services describe "$service" --project="$project" --region="$region" --format='value(status.url)'
+actual=$(gcloud run services describe "$service" --project="$project" --region="$region" --format='value(status.url)')
+printf '%s\n' "$actual"
+if [[ "${ALE_SKIP_PUBLIC_CHECK:-0}" != 1 ]]; then
+ python3 deploy/cloud-run/check-public.py "$actual"
+fi
