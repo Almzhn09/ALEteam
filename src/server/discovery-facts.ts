@@ -34,13 +34,18 @@ function independent(row:{authorId:string;reviewerId:string|null}){return Boolea
 export async function liveFacts(kind:FactKind){
  const rows=await db.discoveryFact.findMany({where:{kind,status:'VERIFIED',...publicBranchScope},orderBy:{id:'asc'},take:201});
  if(rows.length>200)throw new ApiError(503,'DISCOVERY_CORPUS_LIMIT','Сервис временно недоступен.');
+ const eligible=rows.filter(row=>independent(row)&&shapes[kind].safeParse(row.data).success);
+ const targetIds=new Set<string>();for(const row of eligible){if(row.parentId)targetIds.add(row.parentId);if(kind==='EDITORIAL'){const data=row.data as {topicId?:string;placeId?:string};if(data.topicId)targetIds.add(data.topicId);if(data.placeId)targetIds.add(data.placeId);}}
+ // Bounded, fresh, request-local read; no process cache of publication/access decisions.
+ const targets=targetIds.size?await db.discoveryFact.findMany({where:{id:{in:[...targetIds]},status:'VERIFIED',...publicBranchScope}}):[];
+ const byId=new Map(targets.map(row=>[row.id,row]));
  const result=[];const cache=new Map<string,Awaited<ReturnType<typeof resolveEvidence>>>();
  async function evidenceFor(value:unknown){const key=digest(value);if(!cache.has(key))cache.set(key,await resolveEvidence(value));return cache.get(key);}
- for(const row of rows){if(!independent(row)||!shapes[kind].safeParse(row.data).success)continue;const refs=await evidenceFor(row.sources);if(!refs)continue;
-  if(row.parentId){const parent=await db.discoveryFact.findFirst({where:{id:row.parentId,kind:'PLACE',status:'VERIFIED',...publicBranchScope}});if(!parent||!independent(parent)||!await evidenceFor(parent.sources))continue;}
+ for(const row of eligible){const refs=await evidenceFor(row.sources);if(!refs)continue;
+  if(row.parentId){const parent=byId.get(row.parentId);if(!parent||parent.kind!=='PLACE'||!independent(parent)||!await evidenceFor(parent.sources))continue;}
   if(kind==='EDITORIAL'){
    const data=row.data as {topicId?:string;placeId?:string};let valid=true;
-   for(const [type,id] of [['TOPIC',data.topicId],['PLACE',data.placeId]])if(id){const target=await db.discoveryFact.findFirst({where:{id,kind:type,status:'VERIFIED',...publicBranchScope}});if(!target||!independent(target)||!await evidenceFor(target.sources)){valid=false;break;}}
+   for(const [type,id] of [['TOPIC',data.topicId],['PLACE',data.placeId]])if(id){const target=byId.get(id);if(!target||target.kind!==type||!independent(target)||!await evidenceFor(target.sources)){valid=false;break;}}
    if(!valid)continue;
   }
   result.push({...row,evidence:refs});

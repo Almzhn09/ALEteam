@@ -57,3 +57,18 @@ test('catalog empty fast path is fresh across publication, branch hiding and doc
  await db.document.update({where:{id:'urgent-document'},data:{deletedAt:null}});
  assert.deepEqual((await retrieveSemanticCatalog(plan)).map(s=>s.id),['urgent-document']);
 });
+
+test('home batching keeps topic, parent, reviewer and source revocation rules for anonymous and selected topics',async()=>{
+ const {resolveMaterial}=await import('../src/server/discovery-materials');const {liveFacts}=await import('../src/server/discovery-facts');const {home}=await import('../src/server/discovery-home');
+ const material=await resolveMaterial({kind:'cms',id:'urgent-visible'},'ru',false);assert.ok(material);const proof=[material.source];
+ const common={status:'VERIFIED',authorId:'urgent-author',reviewerId:'urgent-reviewer',sources:proof as any};
+ for(const [id,kind,branchId,status,reviewerId]of [['topic','TOPIC',null,'VERIFIED','urgent-reviewer'],['private-topic','TOPIC','urgent-hidden','VERIFIED','urgent-reviewer'],['draft-topic','TOPIC',null,'DRAFT','urgent-reviewer'],['place','PLACE',null,'VERIFIED','urgent-reviewer'],['private-place','PLACE','urgent-hidden','VERIFIED','urgent-reviewer'],['self-topic','TOPIC',null,'DRAFT','urgent-author']]as const){await db.discoveryFact.create({data:{...common,id:'urgent-'+id,kind,branchId,status,reviewerId,data:{labels:{ru:{title:'Synthetic '+id,body:'Fixture only'}}}}});}
+ for(const [id,topicId,parentId]of [['valid','urgent-topic',null],['private-topic','urgent-private-topic',null],['draft-topic','urgent-draft-topic',null],['wrong-kind','urgent-place',null],['missing','urgent-no-such-topic',null],['self-topic','urgent-self-topic',null],['parent',undefined,'urgent-private-place']]as const){await db.discoveryFact.create({data:{...common,id:'urgent-ed-'+id,kind:'EDITORIAL',parentId,data:{material:{kind:'cms',id:'urgent-visible'},...(topicId?{topicId}:{}),order:0}}});}
+ await assert.rejects(db.discoveryFact.update({where:{id:'urgent-self-topic'},data:{status:'VERIFIED'}}));
+ assert.deepEqual((await liveFacts('EDITORIAL')).map(r=>r.id),['urgent-ed-valid']);
+ const normal=await(await home(new Request('http://localhost:3132/api/discovery/home?locale=ru&limit=3'))).json();assert.deepEqual(normal.recommended.items.map((i:any)=>i.id),['urgent-visible']);
+ const chosen=await(await home(new Request('http://localhost:3132/api/discovery/home?locale=ru&topicIds=urgent-topic'))).json();assert.equal(chosen.recommended.mode,'interests');assert.deepEqual(chosen.recommended.items.map((i:any)=>i.id),['urgent-visible']);
+ await db.discoveryFact.update({where:{id:'urgent-topic'},data:{branchId:'urgent-hidden'}});assert.deepEqual(await liveFacts('EDITORIAL'),[]);
+ await db.discoveryFact.update({where:{id:'urgent-topic'},data:{branchId:null}});assert.equal((await liveFacts('EDITORIAL')).length,1);
+ await db.contentRevision.updateMany({where:{itemId:'urgent-visible'},data:{status:'ARCHIVED'}});assert.deepEqual(await liveFacts('EDITORIAL'),[]);assert.equal((await(await home(new Request('http://localhost:3132/api/discovery/home?locale=ru'))).json()).recommended.items.length,0);
+});

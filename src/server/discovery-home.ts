@@ -16,7 +16,8 @@ export async function home(request:Request){
  let personalizationEnabled=false,topicIds=p.topicIds?p.topicIds.split(',').filter(Boolean):[];
  topicIds=z.array(idSchema).max(20).parse(topicIds);
  try{const user=await requireUser(request),preference=await db.discoveryPreference.findUnique({where:{userId:user.id}});personalizationEnabled=preference?.personalizationEnabled??false;topicIds=personalizationEnabled?preference!.topicIds:[];}catch(error){if(!(error instanceof ApiError&&error.status===401))throw error;personalizationEnabled=topicIds.length>0;}
- const known=new Set((await liveFacts('TOPIC')).map(row=>row.id));topicIds=topicIds.filter(id=>known.has(id));
+ // The empty topic selection needs no topic/evidence reads. Explicit selections still validate live facts.
+ if(topicIds.length){const known=new Set((await liveFacts('TOPIC')).map(row=>row.id));topicIds=topicIds.filter(id=>known.has(id));}
  const facts=(await liveFacts('EDITORIAL')).sort((a,b)=>(a.data as {order:number}).order-(b.data as {order:number}).order||a.id.localeCompare(b.id));
  const candidates:(ResolvedMaterial&{evidence:SourceRef[]})[]=[];
  for(const row of facts){const data=row.data as {material:MaterialKey;topicId?:string;placeId?:string};
