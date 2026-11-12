@@ -13,3 +13,6 @@ sources/** -text
 sources/**/pages/*.html binary
 # Preserve dataset/model evidence bytes across Windows checkout filters too.
 data/** -text
+
+# Reference audit snapshots are retained byte-for-byte, including original CRLF.
+sources/reference-design-20261112/*.html binary
