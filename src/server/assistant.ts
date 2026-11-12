@@ -55,7 +55,7 @@ export async function assistant(request: Request) {
   const directoryQuery=!plan.clarification&&!plan.filters.reference&&!plan.filters.inventoryNumber&&!plan.filters.caseNumber?directoryIntent(input.question):undefined;
   try {
     if(!process.env.ASSISTANT_SERVICE_URL&&plan.handled&&requiresCatalogEvidence(plan,input.question))catalogPassages=await retrieveSemanticCatalog(plan);
-    if(!process.env.ASSISTANT_SERVICE_URL&&plan.handled&&requiresCatalogEvidence(plan,input.question)&&!plan.clarification&&!directoryQuery&&!catalogPassages.length)searchPassages=await retrievePublicSearchPassages(plan);
+    if(!process.env.ASSISTANT_SERVICE_URL&&!plan.clarification&&!directoryQuery&&(requiresCatalogEvidence(plan,input.question)||!plan.handled))searchPassages=await retrievePublicSearchPassages(plan);
     if(!process.env.ASSISTANT_SERVICE_URL&&directoryQuery&&!catalogPassages.length)directoryPassages=await retrieveDirectoryPassages(directoryQuery);
     if(!process.env.ASSISTANT_SERVICE_URL&&!directoryQuery&&(!plan.handled||!requiresCatalogEvidence(plan,input.question)))cmsPassages=await retrieveCmsPassages(cmsQuestionContext(input.question,input.history),locale);
     if(!process.env.ASSISTANT_SERVICE_URL&&plan.handled&&!requiresCatalogEvidence(plan,input.question)&&!cmsPassages.length)catalogPassages=await retrieveSemanticCatalog(plan);
@@ -66,7 +66,7 @@ export async function assistant(request: Request) {
     if(!process.env.ASSISTANT_SERVICE_URL&&!directoryQuery&&!checkedRequisites&&!catalogPassages.length&&(!cmsPassages.length||cmsPassages.some(p=>p.text.length<600)))filePassages=await retrieveCmsFilePassages(cmsQuestionContext(input.question,input.history),locale);
     result = assistantOutput.parse(process.env.ASSISTANT_SERVICE_URL
       ? await serviceRequest(process.env.ASSISTANT_SERVICE_URL, process.env.ASSISTANT_SERVICE_TOKEN, { ...input, maxOutputTokens: 500 }, 15000)
-      : searchPassages.length ? publicSearchAnswer(searchPassages,locale)
+      : searchPassages.length ? publicSearchAnswer(searchPassages,locale,catalogPassages)
       : directoryQuery&&!catalogPassages.length ? directoryAnswer(directoryPassages,locale)
       : filePassages.length ? cmsFileAnswer(filePassages,locale,cmsQuestionContext(input.question,input.history))
       : cmsPassages.length ? cmsAnswer(cmsPassages,locale,cmsQuestionContext(input.question,input.history))
@@ -90,7 +90,7 @@ export async function assistant(request: Request) {
   const documents = await db.document.findMany({ where: { id: { in: ids }, ...publicDocumentWhere, allowDigitalCopy: true }, select: { id: true, title: true, isDemo: true,translations:{where:{locale:documentLocale},select:{title:true}} } });
   const sources = ids.map(id => {
     const found=selectedSearch.find(p=>p.id===id);
-    if(found)return {id,title:found.title,isDemo:false,kind:found.kind,locale:found.locale,href:found.href};
+    if(found)return {id,title:found.title,isDemo:found.isDemo??false,kind:found.kind,locale:found.locale,href:found.href};
     const file=selectedFiles.find(p=>p.id===id);
     if(file)return {id,title:file.title,isDemo:file.isDemo,kind:'cms',locale,href:file.href};
     const directory=selectedDirectory.find(p=>p.id===id);
