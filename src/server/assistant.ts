@@ -59,7 +59,7 @@ export async function assistant(request: Request) {
     if(!process.env.ASSISTANT_SERVICE_URL&&directoryQuery&&!catalogPassages.length)directoryPassages=await retrieveDirectoryPassages(directoryQuery);
     if(!process.env.ASSISTANT_SERVICE_URL&&!directoryQuery&&(!plan.handled||!requiresCatalogEvidence(plan,input.question)))cmsPassages=await retrieveCmsPassages(cmsQuestionContext(input.question,input.history),locale);
     if(!process.env.ASSISTANT_SERVICE_URL&&plan.handled&&!requiresCatalogEvidence(plan,input.question)&&!cmsPassages.length)catalogPassages=await retrieveSemanticCatalog(plan);
-    if(!process.env.ASSISTANT_SERVICE_URL&&plan.handled&&requiresCatalogEvidence(plan,input.question)&&!catalogPassages.length&&!directoryQuery)publicMatches=await publicCitySources(input.question,plan);
+    if(!process.env.ASSISTANT_SERVICE_URL&&!directoryQuery&&(requiresCatalogEvidence(plan,input.question)||!cmsPassages.length))publicMatches=await publicCitySources(input.question,plan);
     const exactPublicationNumber=input.question.match(/(?:№|номер|number|no\.)\s*(\d{1,10})(?!\d)/iu)?.[1];
     // Handwritten requisites can have a high aggregate OCR score and still be
     // misread. Prefer the checked published record for its explicit identifier.
@@ -67,7 +67,7 @@ export async function assistant(request: Request) {
     if(!process.env.ASSISTANT_SERVICE_URL&&!directoryQuery&&!checkedRequisites&&!catalogPassages.length&&(!cmsPassages.length||cmsPassages.some(p=>p.text.length<600)))filePassages=await retrieveCmsFilePassages(cmsQuestionContext(input.question,input.history),locale);
     result = assistantOutput.parse(process.env.ASSISTANT_SERVICE_URL
       ? await serviceRequest(process.env.ASSISTANT_SERVICE_URL, process.env.ASSISTANT_SERVICE_TOKEN, { ...input, maxOutputTokens: 500 }, 15000)
-      : publicMatches.length ? publicCityAnswer(publicMatches,locale)
+      : publicMatches.length ? publicCityAnswer(publicMatches,locale,catalogPassages)
       : directoryQuery&&!catalogPassages.length ? directoryAnswer(directoryPassages,locale)
       : filePassages.length ? cmsFileAnswer(filePassages,locale,cmsQuestionContext(input.question,input.history))
       : cmsPassages.length ? cmsAnswer(cmsPassages,locale,cmsQuestionContext(input.question,input.history))

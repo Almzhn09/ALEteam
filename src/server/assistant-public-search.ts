@@ -25,7 +25,8 @@ export async function publicCitySources(question:string,plan:SemanticPlan):Promi
    result.push({id:'cms_'+item.eventRevision,key:item.material.id,kind:'cms',title:item.material.title,href:item.source.href,locale:item.source.locale,isDemo:!!item.source.isDemo,stamp:item.source.revision});
   }else result.push({id:hit.id,key:hit.id,kind:hit.kind,title:hit.kind==='fund'?`${hit.number} — ${hit.names[0]?.name??hit.source.title}`:hit.title,href:hit.href,isDemo:false,stamp:digest(hit)});
  }
- return result.slice(0,5);
+ const balanced:PublicSearchSource[]=[];for(const kind of ['cms','fund','newspaper']){const first=result.find(s=>s.kind===kind);if(first)balanced.push(first);}
+ return [...balanced,...result.filter(s=>!balanced.includes(s))].slice(0,5);
 }
 export async function validatePublicCitySources(sources:PublicSearchSource[]){
  const checks=await Promise.all(sources.map(async s=>{
@@ -33,8 +34,9 @@ export async function validatePublicCitySources(sources:PublicSearchSource[]){
   const row=await db.referenceEntry.findFirst({where:{id:s.key,...directoryWhere(s.kind,{q:''})},include:{dataset:true}});return !!row&&digest(directoryDTO(row))===s.stamp;
  }));return checks.every(Boolean);
 }
-export function publicCityAnswer(sources:PublicSearchSource[],locale:string){
+export function publicCityAnswer(sources:PublicSearchSource[],locale:string,documents:{id:string;title:string}[]=[]){
  const title=locale==='kk'?'Жарияланған материалдар мен анықтамалықтардан табылған мәліметтер:':locale==='en'?'Matches in published materials and directories:':'Найдены сведения в опубликованных материалах и справочниках:';
  const note=locale==='kk'?'Қорлар мен газеттердің сипаттамалары цифрлық көшірмелер емес.':locale==='en'?'Fonds and newspaper descriptions are metadata, not digital copies.':'Описания фондов и газет — справочные сведения, а не цифровые копии документов.';
- return {answer:title+'\n\n'+sources.map(s=>s.title).join('\n')+'\n\n'+note,sourceIds:sources.map(s=>s.id),noAnswer:false,mode:'retrieval' as const};
+ const selected=[...documents.slice(0,1),...sources].slice(0,5);
+ return {answer:title+'\n\n'+selected.map(s=>s.title).join('\n')+'\n\n'+note,sourceIds:selected.map(s=>s.id),noAnswer:false,mode:'retrieval' as const};
 }
