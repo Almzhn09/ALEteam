@@ -1,6 +1,7 @@
 // External PostgreSQL: initialize only an empty database, then apply tracked migrations.
 import {spawn, execFileSync} from 'node:child_process';
-import {mkdtemp, cp} from 'node:fs/promises';
+import {mkdtemp} from 'node:fs/promises';
+import {restoreSourceFiles} from './restore-source-files.mjs';
 import pg from 'pg';
 const env={...process.env,ARCHIVE_CONTENT_MODE:'real',ALLOW_DEMO_SEED:'0',HOSTNAME:'0.0.0.0',PORT:process.env.PORT||'8080'};
 delete env.TEST_DATABASE_URL;delete env.SYNTHETIC_FIXTURE_DATABASE;
@@ -32,9 +33,12 @@ try{
    if(admin.rowCount===0)run('bootstrap');
   }
  }finally{await client.query('SELECT pg_advisory_unlock(782032102)');}
+ // A rebuild gives staging paths new random UUIDs. Preserve the IDs and paths
+ // already stored in Neon, matching originals by their verified immutable bytes.
+ const attachments=await client.query(`SELECT "storageKey","expectedSha256","expectedBytes","previewKey","previewSha256","previewBytes" FROM "CmsAttachment" WHERE state='PUBLISHED'`);
+ const restored=await restoreSourceFiles({sourceRoot:'/app/.cloud-preview-seed/files',targetRoot:files,attachments:attachments.rows});
+ console.log('PERSISTENT_SOURCE_FILES',JSON.stringify(restored));
  await client.end();
- // Repository originals are recreated locally; future uploads need durable file storage.
- await cp('/app/.cloud-preview-seed/files',files,{recursive:true});
  jobs=spawn(process.execPath,['/app/.cloud-preview-seed/bin/jobs.mjs'],{env,stdio:'inherit'});
  app=spawn(process.execPath,['--use-env-proxy','server.js'],{env,stdio:'inherit'});
  for(const child of [app,jobs]){child.on('error',()=>stop(1));child.on('exit',code=>stop(code??1));}

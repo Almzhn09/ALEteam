@@ -1,5 +1,7 @@
 // Server-rendered building blocks for CMS publications. Bodies are plain text and are never parsed as HTML.
 import Link from 'next/link';
+import { archiveStructure } from '@/lib/archive-structure';
+import { ArchiveStructure } from './ArchiveStructure';
 import type { ReactNode } from 'react';
 import type { PublicContentItem } from '@/contracts/cms';
 import { dayFormatter, langName, type Lang, type Translate } from '@/lib/i18n';
@@ -92,6 +94,8 @@ export function bodyBlocks(body: string): Block[] {
 }
 
 export function Body({ item, t }: { item: PublicContentItem; t?: Translate }) {
+  const structure = item.payload.category === 'structure' ? archiveStructure(item.payload.body) : null;
+  if (structure && t) return <div className="prose body-text" lang={item.locale}><ArchiveStructure structure={structure} t={t}/></div>;
   const blocks = bodyBlocks(item.payload.body);
   const firstTableIndex=blocks.findIndex(b=>b.type==='table');
   return <div className="prose body-text" lang={item.locale}>{blocks.map((b, i) => {

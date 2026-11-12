@@ -43,3 +43,9 @@ gcloud secrets add-iam-policy-binding "$secret" --project="$project" --member="s
 gcloud run services update "$service" --project="$project" --region="$region" --image="$image" --update-secrets="DATABASE_URL=${secret}:${version}"
 echo 'Постоянная база подключена. Существующие материалы восстановлены; новые аккаунты и записи сохраняются после перезапуска.'
 echo 'Загружаемые пользователями файлы пока не имеют постоянного хранилища.'
+
+actual=$(gcloud run services describe "$service" --project="$project" --region="$region" --format='value(status.url)')
+printf '%s\n' "$actual"
+if [[ "${ALE_SKIP_PUBLIC_CHECK:-0}" != 1 ]]; then
+ python3 deploy/cloud-run/check-public.py "$actual"
+fi
