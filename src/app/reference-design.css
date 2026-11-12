@@ -178,3 +178,6 @@
  .hero-slide,.reference-tile,.contact-section {break-inside:avoid;margin-bottom:16px}
  .site-sections h2 {background:none;color:#000}
 }
+
+/* Active search tab counter: light pill with accent digits. White on translucent ochre measured 3.97:1 (axe). */
+.scope-tab[aria-current="page"] .scope-count { background: var(--on-accent); color: var(--accent); }
