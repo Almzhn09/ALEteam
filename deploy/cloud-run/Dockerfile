@@ -20,6 +20,7 @@ COPY --from=snapshot --chown=node:node /app/scripts/isolated-file-worker.mjs ./s
 COPY --from=snapshot --chown=node:node /app/.cloud-preview-seed ./.cloud-preview-seed
 COPY --from=snapshot --chown=node:node /app/deploy/cloud-run/start.mjs /app/deploy/cloud-run/persistent.mjs /app/deploy/cloud-run/restore-source-files.mjs ./deploy/cloud-run/
 COPY --from=snapshot --chown=node:node /app/prisma/migrations ./prisma/migrations
+COPY --from=snapshot --chown=node:node /app/sources/archive-reference-20261110 ./sources/archive-reference-20261110
 USER node
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=8080 HOSTNAME=0.0.0.0 ARCHIVE_CONTENT_MODE=real ALLOW_DEMO_SEED=0
 EXPOSE 8080

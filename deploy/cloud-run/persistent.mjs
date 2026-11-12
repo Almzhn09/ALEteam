@@ -9,7 +9,7 @@ const files=await mkdtemp('/tmp/ale-source-files-');env.FILE_STORAGE_ROOT=files;
 let app,jobs,stopping=false;
 function stop(code=0){if(stopping)return;stopping=true;process.exitCode=code;app?.kill('SIGTERM');jobs?.kill('SIGTERM');setTimeout(()=>process.exit(code),1000).unref();}
 process.on('SIGTERM',()=>stop());process.on('SIGINT',()=>stop());
-function run(name){execFileSync(process.execPath,['/app/.cloud-preview-seed/bin/'+name+'.mjs'],{env,stdio:'inherit'});}
+function run(name,args=[]){execFileSync(process.execPath,['/app/.cloud-preview-seed/bin/'+name+'.mjs',...args],{env,stdio:'inherit'});}
 const client=new pg.Client({connectionString:env.DATABASE_URL,connectionTimeoutMillis:30000});
 try{
  await client.connect();
@@ -38,6 +38,7 @@ try{
  const attachments=await client.query(`SELECT "storageKey","expectedSha256","expectedBytes","previewKey","previewSha256","previewBytes" FROM "CmsAttachment" WHERE state='PUBLISHED'`);
  const restored=await restoreSourceFiles({sourceRoot:'/app/.cloud-preview-seed/files',targetRoot:files,attachments:attachments.rows});
  console.log('PERSISTENT_SOURCE_FILES',JSON.stringify(restored));
+ run('reference-originals',['--apply']);
  await client.end();
  jobs=spawn(process.execPath,['/app/.cloud-preview-seed/bin/jobs.mjs'],{env,stdio:'inherit'});
  app=spawn(process.execPath,['--use-env-proxy','server.js'],{env,stdio:'inherit'});

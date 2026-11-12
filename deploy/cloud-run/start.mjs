@@ -30,6 +30,7 @@ try{
   await cp('/app/.cloud-preview-seed/files',folder+'/files',{recursive:true});
  }else{run('scripts/migrate.ts');run('scripts/real-content.ts',['--apply','--report='+folder+'/import.json']);}
  if(process.env.ALE_PREPARE_ONLY==='1'){
+  run('scripts/publish-reference-originals.ts',['--apply']);
   const client=new pg.Client({connectionString:env.DATABASE_URL});await client.connect();
   try{const users=await client.query('SELECT count(*)::int AS count FROM "User" WHERE "isActive"=true');if(users.rows[0].count!==0)throw Error('SNAPSHOT_HAS_ACTIVE_USERS');}finally{await client.end();}
   await mkdir('/app/.cloud-preview-seed',{recursive:true});

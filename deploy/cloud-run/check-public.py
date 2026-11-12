@@ -3,6 +3,7 @@
 import concurrent.futures
 import hashlib
 import json
+from pathlib import Path
 import re
 import sys
 import time
@@ -40,13 +41,19 @@ try:
     for locale in ['ru', 'kk', 'en']:
         data = fetch('/api/content?' + urllib.parse.urlencode({'locale': locale, 'pageSize': 50}))
         require(isinstance(data.get('items'), list), 'content_list:' + locale)
-        editions.extend((item['id'], locale) for item in data['items'])
+        editions.extend((item['id'], locale, item['slug']) for item in data['items'])
         if data.get('total', 0) > 50:
             raise ValueError('CONTENT_PAGINATION_EXCEEDS_RELEASE_FIXTURE')
 
     def attachments(edition):
-        item, locale = edition
-        return fetch('/api/discovery/materials/cms/' + urllib.parse.quote(item, safe='') + '/attachments?locale=' + locale).get('items', [])
+        item, locale, slug = edition
+        refs = fetch('/api/discovery/materials/cms/' + urllib.parse.quote(item, safe='') + '/attachments?locale=' + locale).get('items', [])
+        if slug == 'archive-paid-services-info' and locale == 'ru':
+            manifest = json.loads((Path(__file__).resolve().parents[2] / 'sources/archive-reference-20261110/manifest.json').read_text())
+            prices = next(row for row in manifest['files'] if row['id'] == 'R01')
+            if not any(ref.get('variant') == 'master' and ref.get('sha256') == prices['sha256'] and ref.get('bytes') == prices['bytes'] for ref in refs):
+                raise ValueError('PAID_SERVICES_ORIGINAL_R01_NOT_ATTACHED')
+        return refs
 
     originals = {}
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
