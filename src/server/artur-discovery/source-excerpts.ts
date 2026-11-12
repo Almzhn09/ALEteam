@@ -14,15 +14,19 @@ export function sourceExcerpt(text:string,question:string,limit=1400):SourceExce
  if(!Number.isInteger(limit)||limit<100||limit>4000)throw Error('INVALID_EXCERPT_LIMIT');
  if(text.length<=limit)return {text,start:0,end:text.length};
  const terms=sourceQueryTerms(question);const lower=text.toLowerCase();
+ // The source says "образован", while visitors also ask "создан" or "основан".
+ // Score these as one concept so a later literal mention of creating a branch
+ // does not displace the archive's own founding paragraph. Quotes remain verbatim.
+ const groups=terms.map(term=>/^(?:созд|основ|образо)/u.test(term)?['созда','основа','образо']:[term]);
  const starts=new Set<number>([0]);
- for(const term of terms){
+ for(const term of groups.flat()){
   let at=0,count=0;
   while((at=lower.indexOf(term,at))>=0&&count++<100){starts.add(Math.max(0,at-180));at+=term.length;}
  }
  let best=0,bestScore=-1;
  for(const start of starts){
   const value=lower.slice(start,start+limit);
-  const score=terms.reduce((n,t)=>n+(value.includes(t)?1:0),0);
+  const score=groups.reduce((n,variants)=>n+(variants.some(term=>value.includes(term))?1:0),0);
   if(score>bestScore){best=start;bestScore=score;}
  }
  // Prefer a nearby paragraph or sentence boundary without removing the matched text.

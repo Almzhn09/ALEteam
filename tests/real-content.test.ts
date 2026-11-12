@@ -97,6 +97,18 @@ test('answers quote a matching late history paragraph instead of truncating the 
  assert.ok(!answer.answer.includes('ДЕМО'));
 });
 
+test('archive founding synonyms quote its own date while a named branch keeps its separate date',()=>{
+ const body=packet.records.find(r=>r.sourceKey==='history-1')!.request.payload.body;
+ for(const question of ['Когда был создан архив?','Когда был основан архив?','Когда был образован архив?']){
+  const excerpt=sourceExcerpt(body,question,450);
+  assert.match(excerpt.text,/образован в 1940 году/u,question);
+  assert.equal(excerpt.text,body.slice(excerpt.start,excerpt.end));
+ }
+ const branch=sourceExcerpt(body,'Когда был создан Зайсанский филиал?',450);
+ assert.match(branch.text,/1963/u);assert.match(branch.text,/Зайсанский/u);
+ assert.equal(branch.text,body.slice(branch.start,branch.end));
+});
+
 test('real source evaluation cases have matching verbatim evidence and useful bounded query terms',()=>{
  for(const c of cases.cases){
   for(const key of c.sourceKeys){
