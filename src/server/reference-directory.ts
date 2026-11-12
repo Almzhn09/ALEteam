@@ -1,10 +1,11 @@
 import {z} from 'zod';
 import {db} from './db';
+import {searchQueryVariants} from './search-names';
 import {Prisma,type ReferenceEntry,type ReferenceDataset} from '../generated/prisma/index.js';
 import {json,queryParams,idSchema,ApiError} from './http';
 import type {FundDirectoryEntry,NewspaperEntry,RegistrySource} from '../contracts/real-content';
-export const directoryQuery=z.object({q:z.string().trim().max(200).default(''),sourceId:idSchema.optional(),number:z.string().max(100).optional(),page:z.coerce.number().int().min(1).max(10000).default(1),pageSize:z.coerce.number().int().min(1).max(100).default(20),sort:z.enum(['source','title']).default('source')}).strict();
-export function directoryWhere(kind:'fund'|'newspaper',p:{q:string;sourceId?:string;number?:string}):Prisma.ReferenceEntryWhereInput{return {isPublic:true,dataset:{kind,isPublic:true,...(p.sourceId?{id:p.sourceId}:{})},...(p.number!==undefined?{number:p.number}:{}),AND:p.q.split(/\s+/).filter(Boolean).map(term=>({searchText:{contains:term,mode:'insensitive' as const}}))};}
+export const directoryQuery=z.object({q:z.string().trim().max(200).default(''),nameMode:z.enum(['literal','expanded']).default('expanded'),sourceId:idSchema.optional(),number:z.string().max(100).optional(),page:z.coerce.number().int().min(1).max(10000).default(1),pageSize:z.coerce.number().int().min(1).max(100).default(20),sort:z.enum(['source','title']).default('source')}).strict();
+export function directoryWhere(kind:'fund'|'newspaper',p:{q:string;sourceId?:string;number?:string;nameMode?:'literal'|'expanded'}):Prisma.ReferenceEntryWhereInput{return {isPublic:true,dataset:{kind,isPublic:true,...(p.sourceId?{id:p.sourceId}:{})},...(p.number!==undefined?{number:p.number}:{}),...(p.q.trim()?{OR:searchQueryVariants(p.q,p.nameMode).map(query=>({AND:query.split(/\s+/).filter(Boolean).map(term=>({searchText:{contains:term,mode:'insensitive' as const}}))}))}:{})};}
 export function directoryDTO(row:ReferenceEntry&{dataset:ReferenceDataset}):FundDirectoryEntry|NewspaperEntry{
  const source={id:row.dataset.id,title:row.dataset.title,...row.dataset.source as Omit<RegistrySource,'id'|'title'>};
  if(row.dataset.kind==='fund'){const p=row.payload as {names:FundDirectoryEntry['names']};return {kind:'fund',id:row.id,number:row.number!,names:p.names,renameStatus:'source_rows',source,href:'/api/directories/funds/'+row.id};}

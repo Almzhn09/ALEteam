@@ -15,6 +15,19 @@ export function boundedFileFragments(fragments:{id:string;page?:number;paragraph
  const text=result.map(f=>f.text).join('\n');
  return {text,fragments:result,truncated:fragments.map(f=>f.text).join('\n').length>text.length};
 }
+/** Bounded reader pages; the default window preserves the assistant's existing excerpts. */
+export function pagedFileFragments(fragments:{id:string;page?:number;paragraph?:number;text:string}[],offset=0,limit=12000){
+ const available:typeof fragments=[];const positions=new Map<string,{start:number;end:number}>();let cursor=0;
+ for(const fragment of fragments){
+  const start=cursor,end=start+fragment.text.length;cursor=end+1;
+  if(offset===0||end>offset||fragment.text.length===0&&start>=offset){
+   const skip=Math.max(0,offset-start);available.push({...fragment,text:fragment.text.slice(skip)});positions.set(fragment.id,{start:start+skip,end});
+  }
+ }
+ const totalCharacters=Math.max(0,cursor-1),bounded=boundedFileFragments(available,limit),last=bounded.fragments.at(-1);let nextOffset:number|null=null;
+ if(last){const position=positions.get(last.id)!;const end=position.start+last.text.length;const next=end<position.end?end:end+1;if(next<totalCharacters)nextOffset=next;}
+ return {...bounded,truncated:offset>0||nextOffset!==null,offset,nextOffset,totalCharacters};
+}
 export async function authorizedFileText(id:string){
  // Every read checks current card, branch, file rights and source bytes, including legacy OCR.
  const source=await fileResponse(new Request('http://text.invalid/'),id),bytes=Buffer.from(await source.arrayBuffer()),sourceSha256=hash(bytes);
