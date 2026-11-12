@@ -1139,4 +1139,6 @@ export const en: Record<string,string> = {
   "Зарегистрироваться": "Register",
   "Уже есть аккаунт?": "Already have an account?",
   "Ещё нет аккаунта?": "New here?",
+  "Руководство": "Leadership",
+  "Подразделения": "Departments",
 };
