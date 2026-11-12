@@ -4,7 +4,7 @@ import type {SearchResult,FundDirectoryEntry,NewspaperEntry} from '@/contracts/r
 
 export const ARCHIVE_SCOPES=['all','cms','fund','newspaper','document'] as const;
 export type ArchiveScope=typeof ARCHIVE_SCOPES[number];
-export interface ArchiveParams {scope:ArchiveScope;q:string;entry:string;sort:'source'|'title';number:string;page:number;legacy:boolean}
+export interface ArchiveParams {scope:ArchiveScope;q:string;entry:string;sort:'source'|'title';number:string;page:number;legacy:boolean;materialFilters:Record<string,string>;contentLocale?:string}
 export type ArchiveEntry=FundDirectoryEntry|NewspaperEntry;
 type DirectoryPage={items:ArchiveEntry[];total:number;page:number;pageSize:number};
 export type ArchiveResponse=SearchResult|DirectoryPage|{item:ArchiveEntry};
@@ -17,16 +17,19 @@ export function archiveParams(params:QueryValues):ArchiveParams {
  const rawPage=params.get('page')??'';
  const page=/^\d{1,5}$/.test(rawPage)&&Number(rawPage)>=1&&Number(rawPage)<=10000?Number(rawPage):1;
  const entry=params.get('entry')??'';
- return {scope,q:(params.get('q')??'').trim().slice(0,100),entry:/^[a-zA-Z0-9_-]{1,80}$/.test(entry)?entry:'',sort:params.get('sort')==='title'?'title':'source',number:(params.get('number')??'').slice(0,100),page,legacy:params.get('advanced')==='1'||legacyFilters.some(key=>params.has(key))||['year_desc','year_asc'].includes(params.get('sort')??'')};
+ const materialFilters=Object.fromEntries(['category','contentKind','yearFrom','yearTo'].flatMap(key=>{const value=params.get(key);return value?[[key,value.slice(0,100)]]:[];}));
+ const contentLocale=['ru','kk','en'].includes(params.get('contentLang')??'')?params.get('contentLang')!:undefined;
+ const cmsKeys=new Set(['category','yearFrom','yearTo','contentLang']);
+ return {scope,q:(params.get('q')??'').trim().slice(0,100),entry:/^[a-zA-Z0-9_-]{1,80}$/.test(entry)?entry:'',sort:params.get('sort')==='title'?'title':'source',number:(params.get('number')??'').slice(0,100),page,materialFilters,contentLocale,legacy:params.get('advanced')==='1'||legacyFilters.some(key=>params.has(key)&&!(scope==='cms'&&cmsKeys.has(key)))||['year_desc','year_asc'].includes(params.get('sort')??'')};
 }
-export function archiveKey(params:ArchiveParams,lang:string){return JSON.stringify([lang,params.scope,params.q,params.page,params.sort,params.number,params.entry]);}
+export function archiveKey(params:ArchiveParams,lang:string){return JSON.stringify([lang,params.scope,params.q,params.page,params.sort,params.number,params.entry,params.materialFilters,params.contentLocale]);}
 export function archiveRequest(params:ArchiveParams,lang:string){
  const {scope,q,page,sort,number,entry}=params;
  if(scope==='fund'||scope==='newspaper'){
   const base='/directories/'+(scope==='fund'?'funds':'newspapers');
   return entry?base+'/'+encodeURIComponent(entry):base+'?'+new URLSearchParams({q,page:String(page),pageSize:'10',sort,...(scope==='fund'&&number?{number}:{})});
  }
- return '/search?'+new URLSearchParams({q,scope,locale:lang,page:String(page),pageSize:'10'});
+ return '/search?'+new URLSearchParams({q,scope,locale:params.contentLocale??lang,...params.materialFilters,page:String(page),pageSize:'10'});
 }
 export function archiveResult(response:ArchiveResponse,params:ArchiveParams,lang:string):ArchiveInitial {
  if('item'in response)return {data:null,single:response.item};

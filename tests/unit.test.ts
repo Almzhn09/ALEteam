@@ -1,3 +1,5 @@
+import {safeReturnTo} from '../src/lib/return-to';
+import {archiveParams,archiveRequest,archiveKey} from '../src/app/catalog/shared';
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { catalogSchema } from '../src/server/catalog';
@@ -54,4 +56,16 @@ test('service destination cannot be user-controlled credentials or insecure remo
   assert.throws(() => serviceUrl('http://external.example/api'));
   assert.throws(() => serviceUrl('https://user:password@external.example/api'));
   assert.equal(serviceUrl('http://127.0.0.1:3002').hostname, '127.0.0.1');
+});
+
+test('authentication return targets cannot become a foreign browser origin after URL normalization',()=>{
+ for(const target of ['https://evil.example','//evil.example','/a/..//evil.example','/a/%2e%2e//evil.example','/\\evil.example','/\t/evil.example','/\n/evil.example','/\r/evil.example','/\u0000/evil.example'])assert.equal(safeReturnTo(target),'/');
+ for(const target of ['/me','/catalog?q=архив#results','/register?returnTo=%2Fme'])assert.equal(new URL(safeReturnTo(target),'https://archive.invalid').origin,'https://archive.invalid');
+ assert.equal(safeReturnTo('/me?tab=comments#my-comments'),'/me?tab=comments#my-comments');
+});
+test('saved CMS searches keep their corpus, source language and category across pagination',()=>{
+ const p=archiveParams(new URLSearchParams('scope=cms&q=архив&category=history&contentKind=PAGE&contentLang=ru&yearFrom=1900&page=2'));
+ assert.equal(p.legacy,false);const query=new URL(archiveRequest(p,'en'),'http://local');assert.equal(query.pathname,'/search');for(const [key,value]of Object.entries({scope:'cms',category:'history',contentKind:'PAGE',locale:'ru',page:'2',yearFrom:'1900'}))assert.equal(query.searchParams.get(key),value);
+ const other=archiveParams(new URLSearchParams('scope=cms&category=compliance'));assert.notEqual(archiveKey(p,'en'),archiveKey(other,'en'));
+ assert.equal(archiveParams(new URLSearchParams('scope=document&reference=DEMO-1&contentLang=ru')).legacy,true);
 });

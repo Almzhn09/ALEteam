@@ -34,7 +34,10 @@ export function ArchiveSearch({initial=null,initialKey=''}:{initial?:ArchiveInit
  const round=attempt.key===key?attempt.round:0;
  const current=round===0&&matchingInitial?matchingInitial:response?.key===key?response.value:null;
  const data=current?.data??null,single=current?.single??null,error=failure?.key===key?failure.error:null;
- const query=(next:Record<string,string|number>={})=>'/catalog?'+new URLSearchParams({...{scope,q,...(number?{number}:{}),...(sort==='title'?{sort}:{}),...(page>1?{page:String(page)}:{})},...Object.fromEntries(Object.entries(next).map(([k,v])=>[k,String(v)]))});
+ const query=(next:Record<string,string|number>={})=>{
+  const values={scope,q,...state.materialFilters,...(state.contentLocale?{contentLang:state.contentLocale}:{}),...(number?{number}:{}),...(sort==='title'?{sort}:{}),...(page>1?{page:String(page)}:{}),...next};
+  return '/catalog?'+new URLSearchParams(Object.entries(values).filter(([,value])=>value!=='').map(([key,value])=>[key,String(value)]));
+ };
  useEffect(()=>setDraft(q),[q]);
  useEffect(()=>setNumberDraft(number),[number]);
  useEffect(()=>{
@@ -49,10 +52,10 @@ export function ArchiveSearch({initial=null,initialKey=''}:{initial?:ArchiveInit
  },[key,legacy,round,initial,initialKey]);
 
  function submit(e:FormEvent){e.preventDefault();router.push(query({q:draft.trim(),number:numberDraft.trim(),page:1,entry:''}));}
- const navigateScope=(s:Scope)=>query({scope:s,page:1,entry:'',number:''});
+ const navigateScope=(s:Scope)=>query({scope:s,page:1,entry:'',number:'',category:'',contentKind:'',yearFrom:'',yearTo:'',contentLang:''});
  return <div className="stack archive-search">
   <nav className="search-scopes" aria-label={t('Где искать')}>{scopes.map(s=><Link key={s.id} href={navigateScope(s.id)} aria-current={scope===s.id&&!legacy?'page':undefined}>{t(s.label)}</Link>)}</nav>
-  {legacy?<><Link href={query({scope:'all',advanced:'',page:1})}>{t('Вернуться к общему поиску')}</Link><Catalog/></>:<>
+  {legacy?<><Link href={navigateScope('all')}>{t('Вернуться к общему поиску')}</Link><Catalog/></>:<>
   <form className="archive-search-form" role="search" onSubmit={submit}><label className="visually-hidden" htmlFor="archive-query">{t('Что вы ищете')}</label><input id="archive-query" className="input" type="search" maxLength={100} value={draft} onChange={e=>setDraft(e.target.value)} placeholder={t('Название, тема или номер фонда')}/><button className="btn btn-primary" type="submit">{t('Найти')}</button>{scope==='fund'&&<div className="field exact-number"><label htmlFor="fund-exact-number">{t('Точный номер фонда')}</label><input id="fund-exact-number" className="input" maxLength={100} value={numberDraft} onChange={e=>setNumberDraft(e.target.value)} placeholder="Р-1 ч.с."/></div>}</form>
   <div className="row spread"><p className="small muted search-hint">{t(scope==='fund'?'Названия и номера фондов из справочника. Цифровые копии дел здесь не представлены.':scope==='newspaper'?'Сведения о хранении газет. Годы и объёмы приведены как в источнике.':'Ищите публикации, фондовые названия и сведения о газетах в одном месте.')}</p>{scope==='document'&&<Link href="/catalog?advanced=1">{t('Расширенный поиск')}</Link>}</div>
   {error?<ErrorNotice error={error} onRetry={()=>retry(previous=>({key,round:previous.key===key?previous.round+1:1}))}/>:single?<><Link href={navigateScope(scope)}>← {t('К результатам поиска')}</Link><DirectoryCard item={single} detail/></>:!data?<Loading label={t('Поиск…')} rows={2}/>:<>
