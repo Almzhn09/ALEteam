@@ -4,23 +4,13 @@ USER root
 RUN apt-get update && apt-get install -y --no-install-recommends postgresql-15 postgresql-client-15 && rm -rf /var/lib/apt/lists/*
 COPY --chown=node:node deploy/cloud-run /app/deploy/cloud-run
 USER node
-RUN node deploy/cloud-run/bundle.mjs && ALE_PREPARE_ONLY=1 node deploy/cloud-run/start.mjs
+RUN node deploy/cloud-run/bundle.mjs && ALE_PREPARE_ONLY=1 node deploy/cloud-run/start.mjs && node deploy/cloud-run/package-runtime.mjs
 
 FROM node:24.22.1-bookworm-slim@sha256:be8204d4bd327363357f532187b752ff62759c31bedf98e9e18fc08c9cbd605c
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends postgresql-15 postgresql-client-15 && rm -rf /var/lib/apt/lists/* && mkdir -p /app && chown node:node /app
 WORKDIR /app
-COPY --from=snapshot --chown=node:node /app/.next/standalone ./
-COPY --from=snapshot --chown=node:node /app/.next/static ./.next/static
-COPY --from=snapshot --chown=node:node /app/public ./public
-COPY --from=snapshot --chown=node:node /app/src/generated ./src/generated
-COPY --from=snapshot --chown=node:node /app/node_modules/@prisma/client ./node_modules/@prisma/client
-COPY --from=snapshot --chown=node:node /app/node_modules/@prisma/client-runtime-utils ./node_modules/@prisma/client-runtime-utils
-COPY --from=snapshot --chown=node:node /app/scripts/isolated-file-worker.mjs ./scripts/isolated-file-worker.mjs
-COPY --from=snapshot --chown=node:node /app/.cloud-preview-seed ./.cloud-preview-seed
-COPY --from=snapshot --chown=node:node /app/deploy/cloud-run/start.mjs /app/deploy/cloud-run/persistent.mjs /app/deploy/cloud-run/restore-source-files.mjs ./deploy/cloud-run/
-COPY --from=snapshot --chown=node:node /app/prisma/migrations ./prisma/migrations
-COPY --from=snapshot --chown=node:node /app/sources/archive-reference-20261110 ./sources/archive-reference-20261110
+COPY --from=snapshot --chown=node:node /app/.cloud-runtime ./
 USER node
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=8080 HOSTNAME=0.0.0.0 ARCHIVE_CONTENT_MODE=real ALLOW_DEMO_SEED=0
 EXPOSE 8080

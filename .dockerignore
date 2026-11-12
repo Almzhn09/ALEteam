@@ -1,5 +1,6 @@
 .git
 .next
+.cloud-runtime
 .local
 node_modules
 src/generated
