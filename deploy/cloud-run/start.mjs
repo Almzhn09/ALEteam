@@ -4,6 +4,9 @@ import {mkdtemp,mkdir,open,writeFile,unlink,cp,access} from 'node:fs/promises';
 import {randomBytes} from 'node:crypto';
 import {setTimeout as delay} from 'node:timers/promises';
 import pg from 'pg';
+if(process.env.DATABASE_URL && process.env.ALE_PREPARE_ONLY!=='1'){
+ await import('./persistent.mjs');
+}else{
 const folder=await mkdtemp('/tmp/ale-cloud-run-');await mkdir(folder+'/socket');await mkdir(folder+'/files');
 const bin='/usr/lib/postgresql/15/bin/',password=randomBytes(32).toString('hex'),adminPassword=randomBytes(32).toString('hex');
 await writeFile(folder+'/pg-password',adminPassword,{mode:0o600});
@@ -40,3 +43,5 @@ try{
  jobs.on('exit',code=>{if(!stopping)void stop(code??1);});
  app.on('exit',code=>void stop(code??1));postgres.on('exit',()=>{if(!stopping)void stop(1);});
 }catch(error){console.error('CLOUD_RUN_PREVIEW_START_FAILED',error?.code||error?.name);await stop(1);}
+
+}
