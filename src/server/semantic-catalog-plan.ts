@@ -7,6 +7,7 @@ import {generateLocalQuery} from './local-model';
 import {archiveSearchIntent} from './archive-search-intent';
 import {unsafeInstructions} from './assistant-safety';
 import {expandNames,type NameExpansion} from './artur-discovery/names';
+import {normalizePlaceSpelling} from './search-names';
 import {researchQuestion,stripResearchFraming} from './artur-discovery/research';
 export interface SemanticPlan {
  handled:boolean;locale:ContentLocale;filters:CatalogFilters;localityVariants:string[];
@@ -52,7 +53,7 @@ export function semanticCatalogPlan(question:string,locale:ContentLocale,useMode
  let residual=text;for(const [pattern,type] of typePatterns){pattern.lastIndex=0;if(pattern.test(text)){detectedTypes.add(type);if(!filters.type)filters.type=type;}pattern.lastIndex=0;residual=residual.replace(pattern,' ');}
  const negativeType=/(?<!\p{L})(?:не|кроме)\s+(?:фото|фотограф|карт|письм|отч[её]т)|(?<!\p{L})(?:not|except|exclude|excluding|without)\s+(?:photos?|photographs?|maps?|letters?|reports?)|(?:фотосурет\p{L}*|карта\p{L}*|хат\p{L}*|есеп\p{L}*)\s+емес/iu.test(text);
  const typeConflict=detectedTypes.size>1||negativeType;if(typeConflict)delete filters.type;
- const expansion=expandNames(residual,locale);const place=expansion.status==='resolved'||expansion.status==='ambiguous';residual=expansion.normalizedQuestion;
+ const expansion=expandNames(normalizePlaceSpelling(residual),locale);const place=expansion.status==='resolved'||expansion.status==='ambiguous';residual=expansion.normalizedQuestion;
  residual=stripPeriods(residual).toLowerCase();
  const labels:string[]=[];const translated:string[]=[];
  for(const topic of dictionary.topics){const pattern=new RegExp(`(?<!\\p{L})(?:${topic.pattern})(?!\\p{L})`,'giu');if(pattern.test(residual)){labels.push(topic.label);translated.push(topic.query[locale]);pattern.lastIndex=0;residual=residual.replace(pattern,' ');}}
