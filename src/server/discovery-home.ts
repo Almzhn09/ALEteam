@@ -1,8 +1,9 @@
 import {z} from 'zod';
 import {db} from './db';
+import {publicContentScope} from './public-visibility';
 import {liveFacts,localLabel} from './discovery-facts';
 import {boundedPage,materialKey,decodeCursor,encodeCursor} from './discovery-utils';
-import {resolveMaterial,resolveEvidence,materialWithReason,type ResolvedMaterial} from './discovery-materials';
+import {resolveMaterial,resolveCmsItem,resolveEvidence,materialWithReason,type ResolvedMaterial} from './discovery-materials';
 import {json,queryParams,requireUser,ApiError,idSchema} from './http';
 import {discoveryEngines} from './discovery-engine-registry';
 import type {MaterialKey,MaterialRef,SourceRef} from '../contracts/discovery';
@@ -18,10 +19,15 @@ export async function home(request:Request){
  try{const user=await requireUser(request),preference=await db.discoveryPreference.findUnique({where:{userId:user.id}});personalizationEnabled=preference?.personalizationEnabled??false;topicIds=personalizationEnabled?preference!.topicIds:[];}catch(error){if(!(error instanceof ApiError&&error.status===401))throw error;personalizationEnabled=topicIds.length>0;}
  const known=new Set((await liveFacts('TOPIC')).map(row=>row.id));topicIds=topicIds.filter(id=>known.has(id));
  const facts=(await liveFacts('EDITORIAL')).sort((a,b)=>(a.data as {order:number}).order-(b.data as {order:number}).order||a.id.localeCompare(b.id));
+ const cmsIds=[...new Set(facts.flatMap(row=>{const key=(row.data as {material:MaterialKey}).material;return key.kind==='cms'?[key.id]:[];}))];
+ const cmsRows=cmsIds.length?await db.contentItem.findMany({where:{id:{in:cmsIds},...publicContentScope,kind:{notIn:['SETTING','ARCHIVE_DOCUMENT']}},include:{revisions:{where:{status:'PUBLISHED'},orderBy:{locale:'asc'}}}}):[];
+ const cmsMap=new Map(cmsRows.map(row=>[row.id,row]));
+ const materialCache=new Map<string,ResolvedMaterial|undefined>();
+ async function candidateMaterial(key:MaterialKey){const id=key.kind+':'+key.id;if(!materialCache.has(id))materialCache.set(id,key.kind==='cms'?(cmsMap.has(key.id)?resolveCmsItem(cmsMap.get(key.id)!,p.locale):undefined):await resolveMaterial(key,p.locale));return materialCache.get(id);}
  const candidates:(ResolvedMaterial&{evidence:SourceRef[]})[]=[];
  for(const row of facts){const data=row.data as {material:MaterialKey;topicId?:string;placeId?:string};
   if(personalizationEnabled&&topicIds.length&&(!data.topicId||!topicIds.includes(data.topicId)))continue;
-  const material=await resolveMaterial(data.material,p.locale);if(!material)continue;
+  const material=await candidateMaterial(data.material);if(!material)continue;
   const duplicate=candidates.find(c=>c.material.kind===data.material.kind&&c.material.id===data.material.id);
   if(duplicate){if(data.topicId&&!duplicate.topicIds.includes(data.topicId))duplicate.topicIds.push(data.topicId);if(data.placeId&&!duplicate.placeIds.includes(data.placeId))duplicate.placeIds.push(data.placeId);duplicate.evidence.push(...row.evidence.filter(s=>!duplicate.evidence.some(e=>e.id===s.id&&e.kind===s.kind&&e.locale===s.locale&&e.revision===s.revision)));continue;}
   material.topicIds=data.topicId?[data.topicId]:[];material.placeIds=data.placeId?[data.placeId]:[];candidates.push({...material,evidence:row.evidence});
