@@ -7,6 +7,7 @@ import { ApiError, idSchema, json, pageSchema, queryParams } from './http';
 import { archiveLocale } from './archive-schema';
 import {publicDocumentWhere, publicDocumentSql} from './public-visibility';
 import {expandCatalogNames} from './discovery-names';
+import {searchQueryVariants} from './search-names';
 import {createHash} from 'node:crypto';
 
 const filterText = z.string().trim().min(1).max(200);
@@ -28,7 +29,7 @@ export async function documentList(request: Request) {
   const p = catalogSchema.parse(queryParams(request));
   const {allowedDocumentIds,...expansion}=await expandCatalogNames(p,p.locale);
   if(expansion.clarificationRequired)return json({items:[],total:0,page:p.page,pageSize:p.pageSize,locale:p.locale,nameExpansion:expansion});
-  const queries=expansion.applied&&!p.locality&&!p.placeId&&expansion.variants.length?expansion.variants:[p.q];
+  const queries=expansion.applied&&!p.locality&&!p.placeId&&expansion.variants.length?expansion.variants:searchQueryVariants(p.q,p.nameMode);
   const queryFilters=queries.filter(Boolean).map(q=>Prisma.sql`(t."searchVector" @@ plainto_tsquery('simple', ${q})
     OR ${p.locale==='ru'?Prisma.sql`t."russianVector" @@ plainto_tsquery('russian', ${q})`:Prisma.sql`false`}
     OR t.title ILIKE ${contains(q)} OR d.reference ILIKE ${contains(q)}
