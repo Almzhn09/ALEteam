@@ -1,0 +1,214 @@
+{
+  "testedAt": "2026-11-12T18:05:53.428Z",
+  "scope": "Native API router on isolated copy of real public corpus; one disposable reader; not Cloud Run",
+  "samples": [
+    {
+      "route": "search",
+      "city": "Өскемен",
+      "total": 1048,
+      "counts": {
+        "materials": 9,
+        "funds": 1020,
+        "newspapers": 19
+      }
+    },
+    {
+      "route": "assistant",
+      "question": "Өскемен",
+      "sourceKinds": [
+        "cms",
+        "fund",
+        "newspaper"
+      ],
+      "searchHref": "/search?q=%D0%A3%D1%81%D1%82%D1%8C-%D0%9A%D0%B0%D0%BC%D0%B5%D0%BD%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA&lang=ru"
+    },
+    {
+      "route": "assistant",
+      "question": "покажи документы про Өскемен",
+      "sourceKinds": [
+        "cms",
+        "fund",
+        "newspaper"
+      ],
+      "searchHref": "/search?q=%D0%A3%D1%81%D1%82%D1%8C-%D0%9A%D0%B0%D0%BC%D0%B5%D0%BD%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA&lang=ru"
+    },
+    {
+      "route": "search",
+      "city": "Оскемен",
+      "total": 1048,
+      "counts": {
+        "materials": 9,
+        "funds": 1020,
+        "newspapers": 19
+      }
+    },
+    {
+      "route": "assistant",
+      "question": "Оскемен",
+      "sourceKinds": [
+        "cms",
+        "fund",
+        "newspaper"
+      ],
+      "searchHref": "/search?q=%D0%A3%D1%81%D1%82%D1%8C-%D0%9A%D0%B0%D0%BC%D0%B5%D0%BD%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA&lang=ru"
+    },
+    {
+      "route": "assistant",
+      "question": "покажи документы про Оскемен",
+      "sourceKinds": [
+        "cms",
+        "fund",
+        "newspaper"
+      ],
+      "searchHref": "/search?q=%D0%A3%D1%81%D1%82%D1%8C-%D0%9A%D0%B0%D0%BC%D0%B5%D0%BD%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA&lang=ru"
+    },
+    {
+      "route": "search",
+      "city": "Усть-Каменогорск",
+      "total": 1048,
+      "counts": {
+        "materials": 9,
+        "funds": 1020,
+        "newspapers": 19
+      }
+    },
+    {
+      "route": "assistant",
+      "question": "Усть-Каменогорск",
+      "sourceKinds": [
+        "cms",
+        "fund",
+        "newspaper"
+      ],
+      "searchHref": "/search?q=%D0%A3%D1%81%D1%82%D1%8C-%D0%9A%D0%B0%D0%BC%D0%B5%D0%BD%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA&lang=ru"
+    },
+    {
+      "route": "assistant",
+      "question": "покажи документы про Усть-Каменогорск",
+      "sourceKinds": [
+        "cms",
+        "fund",
+        "newspaper"
+      ],
+      "searchHref": "/search?q=%D0%A3%D1%81%D1%82%D1%8C-%D0%9A%D0%B0%D0%BC%D0%B5%D0%BD%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA&lang=ru"
+    },
+    {
+      "route": "search",
+      "city": "усть — каменогорск",
+      "total": 1048,
+      "counts": {
+        "materials": 9,
+        "funds": 1020,
+        "newspapers": 19
+      }
+    },
+    {
+      "route": "assistant",
+      "question": "усть — каменогорск",
+      "sourceKinds": [
+        "cms",
+        "fund",
+        "newspaper"
+      ],
+      "searchHref": "/search?q=%D0%A3%D1%81%D1%82%D1%8C-%D0%9A%D0%B0%D0%BC%D0%B5%D0%BD%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA&lang=ru"
+    },
+    {
+      "route": "assistant",
+      "question": "покажи документы про усть — каменогорск",
+      "sourceKinds": [
+        "cms",
+        "fund",
+        "newspaper"
+      ],
+      "searchHref": "/search?q=%D0%A3%D1%81%D1%82%D1%8C-%D0%9A%D0%B0%D0%BC%D0%B5%D0%BD%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA&lang=ru"
+    },
+    {
+      "route": "search",
+      "city": "Усть  -  Каменогорск",
+      "total": 1048,
+      "counts": {
+        "materials": 9,
+        "funds": 1020,
+        "newspapers": 19
+      }
+    },
+    {
+      "route": "assistant",
+      "question": "Усть  -  Каменогорск",
+      "sourceKinds": [
+        "cms",
+        "fund",
+        "newspaper"
+      ],
+      "searchHref": "/search?q=%D0%A3%D1%81%D1%82%D1%8C-%D0%9A%D0%B0%D0%BC%D0%B5%D0%BD%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA&lang=ru"
+    },
+    {
+      "route": "assistant",
+      "question": "покажи документы про Усть  -  Каменогорск",
+      "sourceKinds": [
+        "cms",
+        "fund",
+        "newspaper"
+      ],
+      "searchHref": "/search?q=%D0%A3%D1%81%D1%82%D1%8C-%D0%9A%D0%B0%D0%BC%D0%B5%D0%BD%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA&lang=ru"
+    },
+    {
+      "route": "literal",
+      "total": 8
+    },
+    {
+      "route": "assistant-filter",
+      "question": "Найди фотографии Өскемен",
+      "noAnswer": true
+    },
+    {
+      "route": "assistant-filter",
+      "question": "покажи документы про Усть-Каменогорск после 2099",
+      "noAnswer": true
+    }
+  ],
+  "firstRequestsBeforeMatrix": [
+    {
+      "route": "/discovery/home?locale=ru&limit=3",
+      "ms": 91.78
+    },
+    {
+      "route": "/search?q=%D3%A8%D1%81%D0%BA%D0%B5%D0%BC%D0%B5%D0%BD",
+      "ms": 156.68
+    },
+    {
+      "route": "/assistant",
+      "ms": 202.44
+    }
+  ],
+  "timings": [
+    {
+      "route": "/discovery/home?locale=ru&limit=3",
+      "runsMs": [
+        30.26,
+        32.73,
+        37.75,
+        29.17
+      ]
+    },
+    {
+      "route": "/search?q=%D3%A8%D1%81%D0%BA%D0%B5%D0%BC%D0%B5%D0%BD",
+      "runsMs": [
+        83.47,
+        82.77,
+        85.28,
+        83.41
+      ]
+    },
+    {
+      "route": "/assistant",
+      "runsMs": [
+        115.91,
+        88.13,
+        87.9,
+        84.85
+      ]
+    }
+  ],
+  "counter": "Wall-clock API handler timing includes authorization for assistant; not browser or network latency"
+}

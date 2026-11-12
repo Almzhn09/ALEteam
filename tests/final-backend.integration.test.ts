@@ -41,6 +41,8 @@ test('B2 API handles bare city aliases and combines existing documents with CMS 
  await db.fund.create({data:{id:'urgent-document-fund',name:'Synthetic fund',description:'Fixture only'}});
  await db.document.create({data:{id:'urgent-document',title:'DEMO Усть-Каменогорск',description:'Synthetic Усть-Каменогорск fixture',reference:'URGENT-0001',year:1940,type:'REPORT',rights:'Synthetic fixture',isPublic:true,allowDigitalCopy:true,locality:'Усть-Каменогорск',fundId:'urgent-document-fund',translations:{create:{locale:'ru',locality:'Усть-Каменогорск',title:'DEMO Усть-Каменогорск',description:'Synthetic Усть-Каменогорск fixture',rights:'Synthetic fixture'}}}});
  const mixed=await ask('покажи документы про Усть-Каменогорск');assert.deepEqual([...new Set(mixed.sources.map((s:any)=>s.kind))].sort(),['cms','document','fund','newspaper']);assert.ok(mixed.sources.length<=5);assert.ok(mixed.searchHref?.startsWith('/search?'));assert.ok(!mixed.answer.includes('Отдельных карточек архивных документов по этому запросу не нашёл'));
+ const compound=await ask('покажи документы про Усть-Каменогорск запись');assert.equal(compound.noAnswer,false);assert.deepEqual([...new Set(compound.sources.map((s:any)=>s.kind))],['cms']);
+ const unknown=await ask('покажи документы про Усть-Каменогорск несуществующееуточнение');assert.equal(unknown.noAnswer,true);
  const period=await ask('покажи документы про Усть-Каменогорск после 2000');assert.equal(period.noAnswer,true);
  const photos=await ask('Найди фотографии Өскемен');assert.equal(photos.noAnswer,true);
  assert.equal((await get('/documents?branchId=urgent-hidden&nameMode=expanded&q='+encodeURIComponent('Оскемен'))).total,0);
