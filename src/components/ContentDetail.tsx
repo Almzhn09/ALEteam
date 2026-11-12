@@ -55,6 +55,7 @@ export async function ContentDetail({ slug, path, kinds, crumb, children,content
           <DemoBadge show={item.isDemo} />
         </div>
         <h1 style={{ marginBottom: 0 }}>{p.title}</h1>
+        {originals.some(f=>f.variant==='master'&&!f.mimeType.startsWith('image/'))&&<p className="read-original-cta"><a className="btn btn-primary" href="#material-originals">{t('Читать документ')}<span aria-hidden="true"> ↓</span></a><span className="small muted">{t('Оригинал можно прочитать на странице, открыть или скачать.')}</span></p>}
         <Body item={item} t={t} />
         {children?.(item)}
       </article>
