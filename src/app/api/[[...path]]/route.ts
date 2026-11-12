@@ -44,13 +44,17 @@ async function dispatch(request: Request, context: { params: Promise<{ path?: st
     const { path = [] } = await context.params;
     const method = request.method;
     const route = path.join('/');
-    // Restrict auth surface to login/logout/session. No public sign-up or user mutation.
+    // Public reader registration and sessions only; role/profile mutation stays closed.
     if (path[0] === 'auth') {
-      if (!['auth/sign-in/email', 'auth/sign-out', 'auth/get-session'].includes(route)) throw new ApiError(404, 'NOT_FOUND', 'Маршрут не найден.');
+      if (!['auth/sign-up/email', 'auth/sign-in/email', 'auth/sign-out', 'auth/get-session'].includes(route)) throw new ApiError(404, 'NOT_FOUND', 'Маршрут не найден.');
       if (method !== (route === 'auth/get-session' ? 'GET' : 'POST')) throw new ApiError(405, 'METHOD_NOT_ALLOWED', 'Метод не поддерживается.');
       if (method === 'POST') {
         sameOrigin(request);
-        const body = await readJson(request, 4096);
+        let body = await readJson(request, 4096);
+        if(route==='auth/sign-up/email'){
+          body=z.object({name:z.string().trim().min(2).max(80),email:z.string().trim().toLowerCase().pipe(z.email().max(254)),password:z.string().min(12).max(128)}).strict().parse(body);
+          await rateLimit('auth-signup-gate',10,60);
+        }
         if(route==='auth/sign-in/email'){
           await rateLimit('auth-login-gate',30,60);
           const email=(body as {email?:unknown})?.email;

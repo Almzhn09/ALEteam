@@ -11,7 +11,7 @@ export default async function LoginPage() {
     <div className="container page measure-form">
       <Breadcrumbs items={[{ label: t('Вход') }]} />
       <h1>{t('Вход')}</h1>
-      <p className="muted">{t('Вход нужен, чтобы комментировать материалы, подписываться на новые публикации и задавать вопросы ИИ-помощнику. Публичная регистрация закрыта.')}</p>
+      <p className="muted">{t('Войдите или создайте аккаунт, чтобы комментировать материалы и подписываться на новые публикации.')}</p>
       <Suspense><LoginForm /></Suspense>
     </div>
   );

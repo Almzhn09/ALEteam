@@ -32,13 +32,13 @@ export const getContent = cache(async (slug: string, locale: ContentLocale): Pro
   catch (error) { if (error instanceof ApiError && error.status === 404) return null; throw error; }
 });
 
-/** A publication in the requested language, or the languages where it does exist; never a silent substitution. */
-export async function getLocalized(slug: string, locale: ContentLocale, kinds: readonly ContentKind[]) {
+/** Public editions only. Readers may show a source edition with an explicit language notice. */
+export async function getLocalized(slug: string, locale: ContentLocale, kinds: readonly ContentKind[], allowSource = false) {
   const others = (['ru', 'kk', 'en'] as const).filter(l => l !== locale);
   const item = await getContent(slug, locale);
   if (item) return kinds.includes(item.kind) ? { item, available: item.availableLocales } : { item: null, available: [] };
   const found = (await Promise.all(others.map(l => getContent(slug, l)))).filter((v): v is PublicContentItem => !!v && kinds.includes(v.kind));
-  return { item: null, available: found.map(v => v.locale) };
+  return { item: allowSource ? found[0] ?? null : null, available: found.map(v => v.locale) };
 }
 
 export const allContentById = cache(async (locale: ContentLocale) => {

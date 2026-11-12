@@ -24,12 +24,12 @@ function LanguageSelect() {
   const id = useId();
   function change(next: Lang) {
     setLang(next);
-    // A stale ?lang= would be re-applied by the proxy, so it is removed from the address.
-    if (params.has('lang')) {
-      const rest = new URLSearchParams(params.toString()); rest.delete('lang');
-      router.replace(rest.size ? `${pathname}?${rest}` : pathname);
-    }
-    router.refresh();
+    // Release both the interface URL override and an explicitly selected source edition.
+    // Otherwise the previous original stays pinned even when a translation exists.
+    if (params.has('lang') || params.has('contentLang')) {
+      const rest = new URLSearchParams(params.toString()); rest.delete('lang'); rest.delete('contentLang');
+      router.replace((rest.size ? `${pathname}?${rest}` : pathname) + window.location.hash, {scroll:false});
+    } else router.refresh();
   }
   return <>
     <label htmlFor={id} className="visually-hidden">{t('Язык')}</label>

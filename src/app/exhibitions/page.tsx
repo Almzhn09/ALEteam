@@ -2,7 +2,7 @@ import { ContentCard, EmptyList, FilterBar, Pager, includes, inPeriod, one, page
 import { Breadcrumbs } from '@/components/ui';
 import { getLang, getT } from '@/lib/i18n-server';
 import { languageAlternates } from '@/lib/seo';
-import { listContent } from '@/server/public-read';
+import { listWithSource } from '@/lib/sections-server';
 
 const PAGE_SIZE = 12;
 export async function generateMetadata() {
@@ -13,7 +13,7 @@ export async function generateMetadata() {
 export default async function ExhibitionsPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const [t, lang, sp] = await Promise.all([getT(), getLang(), searchParams]);
   const q = one(sp.q); const category = one(sp.category); const fromText = one(sp.from); const toText = one(sp.to);
-  const all = await listContent(lang, 'EXHIBITION');
+  const all = (await listWithSource(lang, 'EXHIBITION')).map(({item})=>item);
   const categories = [...new Set(all.map(i => i.payload.category).filter(Boolean) as string[])].sort();
   const items = all.filter(i => (!q || includes(i.payload.title, q) || includes(i.payload.body, q)) && (!category || i.payload.category === category) && inPeriod(i.payload, yearOf(fromText), yearOf(toText)));
   const pageNumber = Math.max(1, Number(one(sp.page)) || 1);

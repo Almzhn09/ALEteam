@@ -30,8 +30,9 @@ export function ContentCard({ item, lang, t, href }: { item: PublicContentItem; 
         {sectionOf(p.category) && <span className="badge badge-neutral">{t(sectionOf(p.category)!.title)}</span>}
         <DemoBadge show={item.isDemo} />
       </div>
-      <h2 style={{ fontSize: '1.1rem', marginBottom: 'var(--space-2)' }}><Link href={href ?? contentHref(item)}>{p.title}</Link></h2>
-      <p className="small muted clamp-2" style={{ margin: 0 }}>{p.seoDescription ?? p.body}</p>
+      <h2 lang={item.locale} style={{ fontSize: '1.1rem', marginBottom: 'var(--space-2)' }}><Link href={href ?? contentHref(item)}>{p.title}</Link></h2>
+      <p lang={item.locale} className="small muted clamp-2" style={{ margin: 0 }}>{p.seoDescription ?? p.body}</p>
+      {item.locale!==lang&&<p className="source-language small muted">{t('Материал на языке источника')} · {item.locale.toUpperCase()}</p>}
     </article>
   );
 }
@@ -112,7 +113,7 @@ export function NoTranslation({ available, t, crumbs, path }: { available: strin
         <h1>{t('Нет перевода на выбранный язык')}</h1>
         <p className="muted">{t('Материал опубликован на других языках. Автоматическая подмена не выполняется.')}</p>
         <div className="row" style={{ justifyContent: 'center' }}>
-          {available.map(l => <a key={l} className="btn btn-secondary" lang={l} href={`${path}?lang=${l}`}>{langName[l as Lang] ?? l}</a>)}
+          {available.map(l => <a key={l} className="btn btn-secondary" lang={l} href={`${path}?${path.startsWith('/materials/')?'contentLang':'lang'}=${l}`}>{langName[l as Lang] ?? l}</a>)}
         </div>
       </div>
     </div>

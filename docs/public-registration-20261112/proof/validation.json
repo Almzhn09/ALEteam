@@ -1,0 +1,24 @@
+{
+  "codeCommit": "6170a76",
+  "build": "passed",
+  "typecheck": "passed",
+  "i18n": {
+    "keys": 1050,
+    "missing": 0
+  },
+  "unitTests": {
+    "passed": 379,
+    "failed": 0
+  },
+  "httpTests": {
+    "passed": 22,
+    "failed": 0
+  },
+  "browserChecks": {
+    "passed": 7,
+    "failed": 0
+  },
+  "testDatabase": "Dedicated randomly named _test database created for this task and removed after testing",
+  "patchCheck": "git apply --check against origin/artur-full-tz-20261109 at d8b3971 passed",
+  "deployment": "Not deployed to Cloud Run; local code and transferable patch only"
+}

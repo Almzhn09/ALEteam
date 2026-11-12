@@ -2,7 +2,7 @@ import { ContentCard, EmptyList, FilterBar, Pager, one, includes, pageHref, year
 import { Breadcrumbs } from '@/components/ui';
 import { getLang, getT } from '@/lib/i18n-server';
 import { languageAlternates } from '@/lib/seo';
-import { listContent } from '@/server/public-read';
+import { listWithSource } from '@/lib/sections-server';
 
 const PAGE_SIZE = 10;
 export async function generateMetadata() {
@@ -14,7 +14,7 @@ export default async function NewsPage({ searchParams }: { searchParams: Promise
   const [t, lang, sp] = await Promise.all([getT(), getLang(), searchParams]);
   const q = one(sp.q); const category = one(sp.category); const yearText = one(sp.year);
   const year = yearOf(yearText);
-  const all = (await listContent(lang, 'NEWS')).sort((a, b) => (b.payload.date ?? '').localeCompare(a.payload.date ?? ''));
+  const all = ((await listWithSource(lang, 'NEWS')).map(({item})=>item)).sort((a, b) => (b.payload.date ?? '').localeCompare(a.payload.date ?? ''));
   const categories = [...new Set(all.map(i => i.payload.category).filter(Boolean) as string[])].sort();
   const items = all.filter(i => (!q || includes(i.payload.title, q) || includes(i.payload.body, q))
     && (!category || i.payload.category === category) && inPeriod(i.payload, year, year));

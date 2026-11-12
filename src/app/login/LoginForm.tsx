@@ -60,6 +60,7 @@ export function LoginForm() {
         <input id={`${id}-password`} className="input" type="password" autoComplete="current-password" required value={password} onChange={e => setPassword(e.target.value)} aria-invalid={!!error} />
       </div>
       <button type="submit" className="btn btn-primary" disabled={busy}>{busy ? <><span className="spinner" aria-hidden="true" /> {t('Вход…')}</> : t('Войти')}</button>
+      <p className="small">{t('Ещё нет аккаунта?')} <Link href={`/register?returnTo=${encodeURIComponent(returnTo)}`}>{t('Создать аккаунт')}</Link></p>
       {MOCK_MODE && <p className="small muted" style={{ margin: 0 }}>{t('Режим моков:')} author@example.test / moderator@example.test, {t('пароль')} <code>{MOCK_PASSWORD}</code>.</p>}
     </form>
   );

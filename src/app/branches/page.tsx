@@ -3,7 +3,7 @@ import { EmptyList } from '@/components/content';
 import { Breadcrumbs } from '@/components/ui';
 import { getLang, getT } from '@/lib/i18n-server';
 import { languageAlternates } from '@/lib/seo';
-import { listContent } from '@/server/public-read';
+import { listWithSource } from '@/lib/sections-server';
 
 export async function generateMetadata() {
   const t = await getT();
@@ -12,7 +12,7 @@ export async function generateMetadata() {
 
 export default async function BranchesPage() {
   const [t, lang] = await Promise.all([getT(), getLang()]);
-  const branches = (await listContent(lang, 'BRANCH_PROFILE')).sort((a, b) => a.payload.title.localeCompare(b.payload.title));
+  const branches = ((await listWithSource(lang, 'BRANCH_PROFILE')).map(({item})=>item)).sort((a, b) => a.payload.title.localeCompare(b.payload.title));
   return (
     <div className="container page stack">
       <Breadcrumbs items={[{ label: t('Филиалы и подразделения') }]} />
