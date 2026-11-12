@@ -1,0 +1,7 @@
+{
+  "checks": [
+    "Click immediately exposes visible and announced loading feedback during delayed navigation",
+    "Feedback and busy state clear when destination opens",
+    "Same-page anchor navigation does not trigger a page-loading notice"
+  ]
+}

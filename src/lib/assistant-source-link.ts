@@ -22,3 +22,9 @@ export function assistantReadingLink(source:{id:string;kind:string;href?:string;
  const document=href.match(/^\/api\/documents\/([a-zA-Z0-9_-]{1,80})\?locale=(kk|en)$/u);
  return document?'/documents/'+document[1]+'?contentLang='+document[2]:href;
 }
+
+/** A result link may be restored from browser history, so only the local search route is accepted. */
+export function assistantSearchLink(value:unknown):string|undefined{
+ if(typeof value!=='string'||!value.startsWith('/')||value.startsWith('//')||/[\u0000-\u0020\\]/u.test(value))return undefined;
+ try{const url=new URL(value,'https://archive.invalid');return url.origin==='https://archive.invalid'&&url.pathname==='/search'?url.pathname+url.search:undefined;}catch{return undefined;}
+}

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
-import type { ReactNode } from 'react';
+import {Suspense, type ReactNode} from 'react';
+import {NavigationFeedback} from '@/components/NavigationFeedback';
 import './fonts.css';
 import './globals.css';
 import './reference-design.css';
@@ -40,6 +41,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
     <html lang={lang} data-theme={theme} data-text-size={size}>
       <body>
         <LangProvider initial={lang} dictionary={dictionaryFor(lang)}>
+          <Suspense fallback={null}><NavigationFeedback/></Suspense>
           <a className="skip-link" href="#main">{t('Перейти к содержимому')}</a>
           {MOCK_MODE && <div className="mock-banner" role="note">{t('Режим моков интерфейса: данные и ответы имитируются в браузере, это не интеграция с сервером.')}</div>}
           <SessionProvider>

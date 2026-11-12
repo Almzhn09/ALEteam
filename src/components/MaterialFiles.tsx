@@ -8,19 +8,19 @@ import {PdfViewer} from './PdfViewer';
 import {SafeImage} from './SafeImage';
 interface Fragment {text:string;page?:number;paragraph?:number}
 interface FileText {text:string;isOcr:boolean;fragments:Fragment[];nextOffset?:number|null;totalCharacters?:number}
+const originalReaderHref=(href:string,offset?:number)=>{const base=href.replace(/^\/api/,'');return `${base}${base.includes('?')?'&':'?'}reader=1${offset===undefined?'':`&offset=${offset}`}`;};
 const fragmentLabel=(f:Fragment,t:(k:string)=>string)=>f.page?`${t('Страница')} ${f.page}`:f.paragraph?`${t('Абзац')} ${f.paragraph}`:'';
 function ReadOriginal({file,initiallyOpen=false}:{file:AttachmentRef;initiallyOpen?:boolean}){
  const {t}=useI18n();const [open,setOpen]=useState(initiallyOpen),[data,setData]=useState<FileText|null>(null),[error,setError]=useState<unknown>(null),[attempt,retry]=useState(0);
  // Long originals arrive in parts (nextOffset); each part is appended so the whole text can be read here.
  const [more,setMore]=useState<{loading:boolean;error:unknown}>({loading:false,error:null});
  const firstNew=useRef<HTMLDivElement>(null),focusIndex=useRef<number|null>(null);
- useEffect(()=>{setData(null);setError(null);setMore({loading:false,error:null});if(!open)return;const abort=new AbortController();apiGet<{item:FileText}>(file.textHref.replace(/^\/api/,''),abort.signal).then(r=>setData(r.item),e=>{if(e.name!=='AbortError')setError(e);});return()=>abort.abort();},[open,file.textHref,attempt]);
+ useEffect(()=>{setData(null);setError(null);setMore({loading:false,error:null});if(!open)return;const abort=new AbortController();apiGet<{item:FileText}>(originalReaderHref(file.textHref),abort.signal).then(r=>setData(r.item),e=>{if(e.name!=='AbortError')setError(e);});return()=>abort.abort();},[open,file.textHref,attempt]);
  useEffect(()=>{if(focusIndex.current!==null){firstNew.current?.focus();focusIndex.current=null;}},[data]);
  async function loadMore(){
   if(!data||data.nextOffset==null||more.loading)return;
   setMore({loading:true,error:null});
-  const href=file.textHref.replace(/^\/api/,'');
-  try{const r=await apiGet<{item:FileText}>(`${href}${href.includes('?')?'&':'?'}offset=${data.nextOffset}`);
+  try{const r=await apiGet<{item:FileText}>(originalReaderHref(file.textHref,data.nextOffset));
    focusIndex.current=data.fragments.length;
    setData({...r.item,fragments:[...data.fragments,...r.item.fragments],isOcr:data.isOcr||r.item.isOcr});setMore({loading:false,error:null});}
   catch(e){setMore({loading:false,error:e});}
@@ -37,7 +37,7 @@ export function MaterialFiles({materialId,contentLocale,initialFiles}:{materialI
  const {t}=useI18n();const [data,setData]=useState<AttachmentRef[]|null>(initialFiles??null),[error,setError]=useState<unknown>(null),[attempt,retry]=useState(0);
  useEffect(()=>{const abort=new AbortController();setData(initialFiles??null);setError(null);apiGet<{items:AttachmentRef[]}>(`/discovery/materials/cms/${encodeURIComponent(materialId)}/attachments?locale=${contentLocale}`,abort.signal).then(r=>setData(r.items),e=>{if(e.name!=='AbortError')setError(e);});return()=>abort.abort();},[materialId,contentLocale,attempt,initialFiles]);
  if(!error&&data?.length===0)return null;
- return <section id="material-originals" className="stack material-originals" aria-label={t('Оригиналы документов')}><h2>{t('Оригиналы документов')}</h2>{error?<ErrorNotice error={error} onRetry={()=>retry(v=>v+1)}/>:!data?<Loading rows={1}/>:<ul className="result-list">{data.filter(f=>f.variant==='master').map((file,index,masters)=>{const firstReadable=masters.find(m=>!m.mimeType.startsWith('image/'))?.id===file.id;const preview=data.find(f=>f.parentId===file.id);return <li key={file.id} className="card card-flat stack"><div className="row spread"><h3 lang={file.locale}>{file.name}</h3><span className="small muted">{file.mimeType.split('/').at(-1)==='pdf'?'PDF':file.name.split('.').at(-1)?.toUpperCase()} · {new Intl.NumberFormat().format(Math.ceil(file.bytes/1024))} KB</span></div>
+ return <section id="material-originals" className="stack material-originals" aria-label={t('Оригиналы документов')}><h2>{t('Оригиналы документов')}</h2>{error?<ErrorNotice error={error} onRetry={()=>retry(v=>v+1)}/>:!data?<Loading rows={1}/>:<ul className="result-list">{data.filter(f=>f.variant==='master').map((file,index,masters)=>{const firstReadable=masters.find(m=>!m.mimeType.startsWith('image/')&&m.mimeType!=='application/pdf')?.id===file.id;const preview=data.find(f=>f.parentId===file.id);return <li key={file.id} className="card card-flat stack"><div className="row spread"><h3 lang={file.locale}>{file.name}</h3><span className="small muted">{file.mimeType.split('/').at(-1)==='pdf'?'PDF':file.name.split('.').at(-1)?.toUpperCase()} · {new Intl.NumberFormat().format(Math.ceil(file.bytes/1024))} KB</span></div>
   {file.mimeType.startsWith('image/')?<details><summary>{t('Просмотреть изображение')}</summary><SafeImage className="source-preview" src={file.href} alt={file.source.label} loading="lazy" decoding="async"/></details>:preview&&<details><summary>{t('Посмотреть страницу источника')}{preview.source.page?` · ${t('Страница')} ${preview.source.page}`:''}</summary><SafeImage className="source-preview" src={preview.href} alt={file.source.label} loading="lazy" decoding="async"/></details>}
   <div className="row">{file.downloadable&&<a className="btn btn-secondary" href={file.href+'?download=1'}>{t('Скачать оригинал')}</a>}{file.mimeType==='application/pdf'&&<PdfViewer file={file} title={file.source.label} href={file.href}/>}</div>
   {!file.mimeType.startsWith('image/')&&<ReadOriginal file={file} initiallyOpen={firstReadable}/>}
