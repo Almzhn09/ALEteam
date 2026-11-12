@@ -87,7 +87,7 @@ const place=(await api('/places?locale=ru&limit=3')).items[0];assert.ok(place);
    matrix.push({...v,page:name,...geometry});assert.equal(geometry.overflow,0,JSON.stringify(matrix.at(-1)));assert.deepEqual(geometry.problems,[],JSON.stringify(matrix.at(-1)));
    if(v.width===1440&&v.lang==='ru'&&v.size==='100')await p.screenshot({path:out+'/'+name+'-desktop-'+v.theme+'.png',fullPage:true});
    if(v.width===360&&v.lang==='ru'&&v.theme==='dark'&&v.size==='150')await p.screenshot({path:out+'/'+name+'-mobile-dark-150.png',fullPage:true});
-   if(v.width===1440&&v.lang==='ru'&&v.size==='100'){await p.addScriptTag({content:axe});const violations=await p.evaluate(async()=> (await axe.run(document,{runOnly:['wcag2a','wcag2aa','wcag21aa']})).violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.length})));assert.deepEqual(violations,[],JSON.stringify({v,name,violations}));}
+   if(v.width===1440&&v.lang==='ru'&&v.size==='100'){await p.addScriptTag({content:axe});const violations=await p.evaluate(async()=> (await axe.run(document,{runOnly:['wcag2a','wcag2aa','wcag21a','wcag21aa']})).violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.length})));assert.deepEqual(violations,[],JSON.stringify({v,name,violations}));}
   }await c.close();
  }
  checks.push({name:'432 real-page reading layouts: 36 size/language/theme/text variants × 12 screens, no overflow or overlapping controls; axe checks on 24 desktop screens',passed:true});

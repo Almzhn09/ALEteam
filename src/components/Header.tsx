@@ -93,7 +93,7 @@ export function Header({ initialTheme, initialSize }: { initialTheme: DisplayThe
       else if(open){setOpen(false);toggle.current?.focus();}
     }}>
       <div className="container header-inner">
-        <Link href="/" className="brand" aria-label={t('Электронный архив — на главную')}>
+        <Link href="/" className="brand" title={t('Электронный архив — на главную')}>
           <span className="brand-mark" aria-hidden="true">ЭА</span>
           <span><span className="brand-long">{copy.brand}</span><span className="brand-short">{copy.shortBrand}</span><small>{copy.branchSubtitle}</small></span>
         </Link>
