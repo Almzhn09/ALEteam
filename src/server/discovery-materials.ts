@@ -1,3 +1,4 @@
+import type {ContentItem,ContentRevision} from '../generated/prisma/index.js';
 import {db} from './db';
 import {Prisma} from '../generated/prisma/index.js';
 import {publicDocumentWhere,publicContentScope} from './public-visibility';
@@ -20,6 +21,9 @@ export async function resolveMaterial(key:MaterialKey,locale:ContentLocale,fallb
   return {material,source,text,fundId:d.fundId,topicIds:[],placeIds:[],eventRevision:t.revisionId??fingerprint};
  }
  const item=await client.contentItem.findFirst({where:{id:key.id,...publicContentScope,kind:{notIn:['SETTING','ARCHIVE_DOCUMENT']}},include:{revisions:{where:{status:'PUBLISHED'},orderBy:{locale:'asc'}}}});if(!item)return;
+ return resolveCmsRow(item,locale,fallback);
+}
+export function resolveCmsRow(item:ContentItem&{revisions:ContentRevision[]},locale:ContentLocale,fallback=true):ResolvedMaterial|undefined{
  const eligible=item.revisions.filter(r=>r.reviewerId&&r.authorId!==r.reviewerId&&contentPayload.safeParse(r.payload).success);
  const r=selectLocale(eligible,locale,fallback);if(!r)return;
  const p=contentPayload.parse(r.payload),text=p.body.slice(0,10000),fingerprint=digest([r.id,r.locale,p,r.updatedAt.toISOString(),item.isDemo]);
