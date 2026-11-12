@@ -1122,4 +1122,6 @@ export const en: Record<string,string> = {
   "Анализ коррупционных рисков": "Corruption risk analysis",
   "Здание архива на официальной странице контактной информации. Дата съёмки не указана.": "The archive building shown on its official contact page. The photograph is undated.",
   "Светлое многоэтажное здание архива с узкими окнами и деревьями у входа.": "A light-coloured multi-storey archive building with narrow windows and trees by the entrance.",
+  "Текст не распознан. Просмотрите оригинал документа.": "No text was recognised. View the original document.",
+  "Открыть в новой вкладке": "Open in a new tab",
 };
