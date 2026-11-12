@@ -1,0 +1,16 @@
+{
+  "testedAt": "2026-11-12T18:07:58.492Z",
+  "scope": "Dedicated disposable _test database, local production SSR3125, official repository source R01; no Neon or production accounts changed",
+  "sourceId": "R01",
+  "sha256": "6480e6fd39bbf0f48c7c8396028da57d29cbec405c44a83a3ede7d575fad3b8f",
+  "bytes": 1636084,
+  "pages": 15,
+  "checks": [
+    "actual stageUpload + QUARANTINED + parser + independent technical approval + publication",
+    "idempotent second apply retains same ID and one attachment",
+    "public CMS file response byte count and SHA256",
+    "withdrawn attachment is not republished; prior test PUBLISHED restored",
+    "existing page payload and user count unchanged",
+    "HTTP200 from current production SSR file endpoint"
+  ]
+}
